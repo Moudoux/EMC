@@ -2,13 +2,11 @@ package me.deftware.client.framework.Main;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
@@ -23,6 +21,8 @@ public class FrameworkLoader {
 	
 	public static Logger logger = Logger.getLogger("Minecraft");
 	
+	private static URLClassLoader clientLoader;
+
 	/**
 	 * Our client instance
 	 */
@@ -49,11 +49,11 @@ public class FrameworkLoader {
 			// Load client
 			
 			URL jarfile = new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/");
-			URLClassLoader cl = URLClassLoader.newInstance(new URL[] { jarfile });
+			clientLoader = URLClassLoader.newInstance(new URL[] { jarfile });
 			
 			// Read client.json
 			
-			InputStream in = cl.getResourceAsStream("client.json"); 
+			InputStream in = clientLoader.getResourceAsStream("client.json");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			StringBuilder result = new StringBuilder("");
 			
@@ -72,7 +72,7 @@ public class FrameworkLoader {
 	        	return;
 	        }
 	        
-			client = (EMCClient) cl.loadClass(jsonObject.get("main").getAsString()).newInstance();
+			client = (EMCClient) clientLoader.loadClass(jsonObject.get("main").getAsString()).newInstance();
 			client.init();
 			
 			logger.info("Loaded client jar");
@@ -85,6 +85,27 @@ public class FrameworkLoader {
 
 	public static EMCClient getClient() {
 		return client;
+	}
+
+	/**
+	 * Unloads the client
+	 */
+	public static void ejectClient() {
+		client = null;
+		try {
+			clientLoader.close();
+			clientLoader = null;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Reloads the client
+	 */
+	public static void reload() {
+		ejectClient();
+		init();
 	}
 	
 }

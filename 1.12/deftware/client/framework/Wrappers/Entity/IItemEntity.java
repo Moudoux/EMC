@@ -42,4 +42,8 @@ public class IItemEntity {
 		return item;
 	}
 
+	public void setGlowing(boolean state) {
+		this.item.setGlowing(state);
+	}
+
 }
