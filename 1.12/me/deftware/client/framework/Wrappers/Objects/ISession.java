@@ -17,11 +17,11 @@ public class ISession extends Session {
 	}
 
 	public String getIUsername() {
-		return this.username;
+		return this.getUsername();
 	}
 
 	public String getIToken() {
-		return this.token;
+		return this.getToken();
 	}
 	
 }

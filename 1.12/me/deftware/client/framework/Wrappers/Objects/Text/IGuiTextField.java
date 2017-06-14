@@ -1,7 +1,6 @@
 package me.deftware.client.framework.Wrappers.Objects.Text;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
 
 public class IGuiTextField extends GuiTextField {

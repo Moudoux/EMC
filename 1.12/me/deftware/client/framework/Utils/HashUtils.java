@@ -3,10 +3,7 @@ package me.deftware.client.framework.Utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.security.MessageDigest;
-import java.util.Arrays;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 

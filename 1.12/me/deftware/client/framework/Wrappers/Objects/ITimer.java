@@ -1,6 +1,5 @@
 package me.deftware.client.framework.Wrappers.Objects;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.Timer;
 
 public class ITimer extends Timer {
