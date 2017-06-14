@@ -29,7 +29,7 @@ public abstract class Event {
 				if (((EventClientCommand) event).getCommand().equals(".version")) {
 					ChatProcessor
 							.printClientMessage(
-									"�7You are running " + FrameworkConstants.FRAMEWORK_NAME + " version "
+									"§7You are running " + FrameworkConstants.FRAMEWORK_NAME + " version "
 											+ FrameworkConstants.VERSION + " built by " + FrameworkConstants.AUTHOR,
 									false);
 					return;

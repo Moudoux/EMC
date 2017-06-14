@@ -20,7 +20,7 @@ public enum ChatColor {
 													true), UNDERLINE("UNDERLINE", 19, 'n', 19, true), ITALIC("ITALIC",
 															20, 'o', 20, true), RESET("RESET", 21, 'r', 21);
 
-	public static final char COLOR_CHAR = 'ง';
+	public static final char COLOR_CHAR = 'ยง';
 	private static final Pattern STRIP_COLOR_PATTERN, STRIP_COLOR_PATTERN2;
 	private final int intCode;
 	private final char code;
@@ -51,7 +51,7 @@ public enum ChatColor {
 		this.code = code;
 		this.intCode = intCode;
 		this.isFormat = isFormat;
-		this.toString = new String(new char[] { 'ง', code });
+		this.toString = new String(new char[] { 'ยง', code });
 	}
 
 	public char getChar() {
@@ -94,7 +94,7 @@ public enum ChatColor {
 		char[] b = textToTranslate.toCharArray();
 		for (int i = 0; i < b.length - 1; i++) {
 			if ((b[i] == altColorChar) && ("0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(b[(i + 1)]) > -1)) {
-				b[i] = 'ง';
+				b[i] = 'ยง';
 				b[(i + 1)] = Character.toLowerCase(b[(i + 1)]);
 			}
 		}
@@ -106,7 +106,7 @@ public enum ChatColor {
 		int length = input.length();
 		for (int index = length - 1; index > -1; index--) {
 			char section = input.charAt(index);
-			if ((section == 'ง') && (index < length - 1)) {
+			if ((section == 'ยง') && (index < length - 1)) {
 				char c = input.charAt(index + 1);
 				ChatColor color = getByChar(c);
 				if (color != null) {
