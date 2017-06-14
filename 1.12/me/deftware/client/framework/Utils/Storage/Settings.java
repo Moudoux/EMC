@@ -79,7 +79,6 @@ public class Settings {
 	 * @param node
 	 * @param array
 	 */
-	@SuppressWarnings("unchecked")
 	public synchronized void addArrayList(String node, ArrayList<String> array) {
 		try {
 			JsonObject jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
@@ -163,7 +162,6 @@ public class Settings {
 	 * @param node
 	 * @param value
 	 */
-	@SuppressWarnings("unchecked")
 	public synchronized void addNode(String node, String value) {
 		try {
 			JsonObject jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);

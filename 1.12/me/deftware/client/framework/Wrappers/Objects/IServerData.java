@@ -44,12 +44,12 @@ public class IServerData extends ServerData {
 		return this.pingToServer;
 	}
 	
-	public String getBase64EncodedIconData() {
-		return this.serverIcon;
+	public String getIBase64EncodedIconData() {
+		return this.getBase64EncodedIconData();
 	}
 	
-	public void setBase64EncodedIconData(String icon) {
-		this.serverIcon = icon;
+	public void setIBase64EncodedIconData(String icon) {
+		this.setBase64EncodedIconData(icon);
 	}
 
 }

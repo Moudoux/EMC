@@ -21,7 +21,7 @@ public class MCLeaks {
 						+ "\",\"mcname\":\"" + session.getMcname()
 						+ "\",\"serverhash\":\"" + serverHash
 						+ "\",\"server\":\"" + server + "\"}";
-				String output = WebUtils.sendPostRequest(url, StringEscapeUtils.unescapeJava(payload));
+				/** String output = */ WebUtils.sendPostRequest(url, StringEscapeUtils.unescapeJava(payload));
 				return true;
 			} catch (Exception ex) {
 				;
