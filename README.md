@@ -11,7 +11,7 @@ How it works
 
 In short:
 
-`Your code -> EMC Wrapper -> Obfuscated Minecraft code`
+`Your code <-> EMC Wrapper <-> Obfuscated Minecraft code`
 
 Example:
 
