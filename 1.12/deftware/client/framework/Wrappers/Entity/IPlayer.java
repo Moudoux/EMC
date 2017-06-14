@@ -1,4 +1,4 @@
-package me.deftware.client.framework.Wrappers.EntityPlayer;
+package me.deftware.client.framework.Wrappers.Entity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,7 +35,8 @@ public class IPlayer {
 	}
 
 	public boolean isSelf() {
-		if (player == Minecraft.getMinecraft().player) {
+		if (player == Minecraft.getMinecraft().player
+				|| player.getName().equals(Minecraft.getMinecraft().session.getUsername())) {
 			return true;
 		}
 		return false;

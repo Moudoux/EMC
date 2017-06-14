@@ -7,6 +7,9 @@ import java.awt.Color;
 
 import org.lwjgl.opengl.GL11;
 
+import me.deftware.client.framework.Wrappers.Entity.IItemEntity;
+import me.deftware.client.framework.Wrappers.Entity.IMob;
+import me.deftware.client.framework.Wrappers.Entity.IPlayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -556,6 +559,18 @@ public class RenderUtils {
 		vb.pos(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ).color(red, green, blue, alpha).endVertex();
 		vb.pos(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ).color(red, green, blue, alpha).endVertex();
 		ts.draw();
+	}
+
+	public static void tracerLine(IItemEntity entity, int mode) {
+		tracerLine(entity.getItem(), mode);
+	}
+
+	public static void tracerLine(IPlayer entity, int mode) {
+		tracerLine(entity.getPlayer(), mode);
+	}
+
+	public static void tracerLine(IMob entity, int mode) {
+		tracerLine(entity.getMob(), mode);
 	}
 
 	public static void tracerLine(Entity entity, int mode) {

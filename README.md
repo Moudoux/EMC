@@ -130,3 +130,8 @@ Developing EMC
 3. Add the EMC framework code
 4. Apply the EMC Minecraft code hook patch file (Coming soon)
 5. Start working
+
+License
+-------------------
+
+EMC is licensed under GPL-3.0

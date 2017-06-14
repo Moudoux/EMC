@@ -1,4 +1,4 @@
-package me.deftware.client.framework.Wrappers.EntityPlayer;
+package me.deftware.client.framework.Wrappers.Entity;
 
 import me.deftware.client.framework.Wrappers.Objects.IEntity;
 import net.minecraft.client.Minecraft;

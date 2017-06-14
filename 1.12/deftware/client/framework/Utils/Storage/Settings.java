@@ -193,6 +193,14 @@ public class Settings {
 		}
 	} 
 	
+	public synchronized void saveDouble(String node, double value) {
+		try {
+			addNode(node, String.valueOf(value));
+		} catch (Exception ex) {
+			;
+		}
+	}
+
 	public synchronized boolean getBool(String node, boolean _default) {
 		String data = getNode(node,"");
 		if (data.equals("")) {
@@ -205,6 +213,18 @@ public class Settings {
 		}
 	}
 	
+	public synchronized float getFloat(String node, float _default) {
+		String data = getNode(node, "");
+		if (data.equals("")) {
+			return _default;
+		}
+		try {
+			return Float.valueOf(data);
+		} catch (Exception ex) {
+			return _default;
+		}
+	}
+
 	public synchronized int getInt(String node, int _default) {
 		String data = getNode(node,"");
 		if (data.equals("")) {
@@ -212,6 +232,18 @@ public class Settings {
 		}
 		try {
 			return Integer.valueOf(data);
+		} catch (Exception ex) {
+			return _default;
+		}
+	}
+
+	public synchronized double getDouble(String node, double _default) {
+		String data = getNode(node, "");
+		if (data.equals("")) {
+			return _default;
+		}
+		try {
+			return Double.valueOf(data);
 		} catch (Exception ex) {
 			return _default;
 		}

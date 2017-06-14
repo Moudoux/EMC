@@ -1,10 +1,9 @@
 package me.deftware.client.framework.Client;
 
 import me.deftware.client.framework.Event.Event;
-import me.deftware.client.framework.Main.FrameworkLoader;
 import me.deftware.client.framework.Utils.Storage.Settings;
 
-public abstract class Client {
+public abstract class EMCClient {
 
 	private Settings settings;
 	
@@ -21,7 +20,7 @@ public abstract class Client {
 	
 	public abstract void initialize();
 
-	public abstract ClientInfo getClientInfo();
+	public abstract EMCClientInfo getClientInfo();
 	
 	public abstract void onEvent(Event event);
 	
@@ -29,24 +28,13 @@ public abstract class Client {
 		return settings;
 	}
 	
-	public static class ClientInfo {
+	public static class EMCClientInfo {
 		
-		private int protocol;
-		private String mcName, clientName, clientVersion;
+		private String clientName, clientVersion;
 
-		public ClientInfo(int protocol, String mcName, String clientName, String clientVersion) {
-			this.protocol = protocol;
-			this.mcName = mcName;
+		public EMCClientInfo(String clientName, String clientVersion) {
 			this.clientName = clientName;
 			this.clientVersion = clientVersion;
-		}
-
-		public int getProtocol() {
-			return protocol;
-		}
-
-		public String getMcName() {
-			return mcName;
 		}
 
 		public String getClientName() {

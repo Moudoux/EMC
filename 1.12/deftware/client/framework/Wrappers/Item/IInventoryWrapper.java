@@ -2,7 +2,7 @@ package me.deftware.client.framework.Wrappers.Item;
 
 import java.util.ArrayList;
 
-import me.deftware.client.framework.Wrappers.EntityPlayer.IPlayer;
+import me.deftware.client.framework.Wrappers.Entity.IPlayer;
 import net.minecraft.item.ItemStack;
 
 public class IInventoryWrapper {

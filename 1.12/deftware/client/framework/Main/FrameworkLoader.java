@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import me.deftware.client.framework.FrameworkConstants;
-import me.deftware.client.framework.Client.Client;
+import me.deftware.client.framework.Client.EMCClient;
 import me.deftware.client.framework.FontRender.Fonts;
 import net.minecraft.client.Minecraft;
 
@@ -26,7 +26,7 @@ public class FrameworkLoader {
 	/**
 	 * Our client instance
 	 */
-	private static Client client;
+	private static EMCClient client;
 	
 	/**
 	 * Called from the Minecraft initialization method
@@ -72,7 +72,7 @@ public class FrameworkLoader {
 	        	return;
 	        }
 	        
-			client = (Client) cl.loadClass(jsonObject.get("main").getAsString()).newInstance();
+			client = (EMCClient) cl.loadClass(jsonObject.get("main").getAsString()).newInstance();
 			client.init();
 			
 			logger.info("Loaded client jar");
@@ -83,7 +83,7 @@ public class FrameworkLoader {
 		}
 	}
 
-	public static Client getClient() {
+	public static EMCClient getClient() {
 		return client;
 	}
 	
