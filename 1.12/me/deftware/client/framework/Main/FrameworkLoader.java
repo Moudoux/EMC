@@ -24,6 +24,11 @@ public class FrameworkLoader {
 	private static URLClassLoader clientLoader;
 
 	/**
+	 * Info about the loaded client
+	 */
+	public static JsonObject clientInfo = null;
+
+	/**
 	 * Our client instance
 	 */
 	private static EMCClient client;
@@ -64,6 +69,7 @@ public class FrameworkLoader {
 	        in.close();
 			
 	        JsonObject jsonObject = new Gson().fromJson(result.toString(), JsonObject.class);
+			clientInfo = jsonObject;
 	        
 	        logger.info("Loading client: " + jsonObject.get("name").getAsString() + " by " + jsonObject.get("author").getAsString());
 	        

@@ -8,19 +8,19 @@ public class ISession extends Session {
 		super(usernameIn, playerIDIn, tokenIn, sessionTypeIn);
 	}
 	
-	public String getSessionID() {
-		return "token:" + this.token + ":" + this.playerID;
+	public String getISessionID() {
+		return this.getSessionID();
 	}
 
-	public String getPlayerID() {
-		return this.playerID;
+	public String getIPlayerID() {
+		return this.getPlayerID();
 	}
 
-	public String getUsername() {
+	public String getIUsername() {
 		return this.username;
 	}
 
-	public String getToken() {
+	public String getIToken() {
 		return this.token;
 	}
 	
