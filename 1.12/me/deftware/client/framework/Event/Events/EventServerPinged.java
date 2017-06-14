@@ -7,7 +7,7 @@ public class EventServerPinged extends Event {
 	private String serverMOTD, playerList, gameVersion, populationInfo;
 	private int version;
 	private long pingToServer;
-	
+
 	public EventServerPinged(String serverMOTD, String playerList, String gameVersion, String populationInfo,
 			int version, long pingToServer) {
 		this.serverMOTD = serverMOTD;
@@ -65,5 +65,5 @@ public class EventServerPinged extends Event {
 	public void setPingToServer(long pingToServer) {
 		this.pingToServer = pingToServer;
 	}
-	
+
 }

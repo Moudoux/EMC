@@ -18,9 +18,9 @@ import me.deftware.client.framework.FontRender.Fonts;
 import net.minecraft.client.Minecraft;
 
 public class FrameworkLoader {
-	
+
 	public static Logger logger = Logger.getLogger("Minecraft");
-	
+
 	private static URLClassLoader clientLoader;
 
 	/**
@@ -32,57 +32,59 @@ public class FrameworkLoader {
 	 * Our client instance
 	 */
 	private static EMCClient client;
-	
+
 	/**
 	 * Called from the Minecraft initialization method
 	 */
 	public static void init() {
 		try {
 			logger.info("Loading client framework...");
-			
+
 			// Initialize framework stuff
 			Fonts.loadFonts();
 
 			// Find the client jar
-			File minecraft = new File(Minecraft.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+			File minecraft = new File(
+					Minecraft.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
 			File clientJar = new File(minecraft.getParent() + File.separator + "Client.jar");
-			
+
 			if (!clientJar.exists()) {
 				throw new Exception("Client jar not found");
 			}
-			
+
 			// Load client
-			
+
 			URL jarfile = new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/");
 			clientLoader = URLClassLoader.newInstance(new URL[] { jarfile });
-			
+
 			// Read client.json
-			
+
 			InputStream in = clientLoader.getResourceAsStream("client.json");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			StringBuilder result = new StringBuilder("");
-			
+
 			String line;
-	        while ((line = reader.readLine()) != null) {
-	            result.append(line);
-	        }
-	        in.close();
-			
-	        JsonObject jsonObject = new Gson().fromJson(result.toString(), JsonObject.class);
+			while ((line = reader.readLine()) != null) {
+				result.append(line);
+			}
+			in.close();
+
+			JsonObject jsonObject = new Gson().fromJson(result.toString(), JsonObject.class);
 			clientInfo = jsonObject;
-	        
-	        logger.info("Loading client: " + jsonObject.get("name").getAsString() + " by " + jsonObject.get("author").getAsString());
-	        
-	        if (jsonObject.get("minversion").getAsInt() > FrameworkConstants.VERSION) {
-	        	Minecraft.getMinecraft().displayGuiScreen(new GuiUpdateLoader(jsonObject));
-	        	return;
-	        }
-	        
+
+			logger.info("Loading client: " + jsonObject.get("name").getAsString() + " by "
+					+ jsonObject.get("author").getAsString());
+
+			if (jsonObject.get("minversion").getAsInt() > FrameworkConstants.VERSION) {
+				Minecraft.getMinecraft().displayGuiScreen(new GuiUpdateLoader(jsonObject));
+				return;
+			}
+
 			client = (EMCClient) clientLoader.loadClass(jsonObject.get("main").getAsString()).newInstance();
 			client.init();
-			
+
 			logger.info("Loaded client jar");
-			
+
 		} catch (Exception ex) {
 			logger.warning("Failed to load client framework");
 			ex.printStackTrace();
@@ -113,5 +115,5 @@ public class FrameworkLoader {
 		ejectClient();
 		init();
 	}
-	
+
 }

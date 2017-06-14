@@ -7,7 +7,7 @@ public class ISession extends Session {
 	public ISession(String usernameIn, String playerIDIn, String tokenIn, String sessionTypeIn) {
 		super(usernameIn, playerIDIn, tokenIn, sessionTypeIn);
 	}
-	
+
 	public String getISessionID() {
 		return this.getSessionID();
 	}
@@ -23,5 +23,5 @@ public class ISession extends Session {
 	public String getIToken() {
 		return this.getToken();
 	}
-	
+
 }

@@ -16,7 +16,7 @@ public class MCLeaksHandler {
 			String url = MCLeaks.ENDPOINT + "redeem";
 			String payload = "{\"token\":\"" + token + "\"}";
 			String output = WebUtils.sendPostRequest(url, payload);
-			
+
 			JsonObject jsonObject = new Gson().fromJson(output, JsonObject.class);
 
 			if (jsonObject.get("success").getAsString().trim().toLowerCase().equals("true")) {
@@ -46,23 +46,22 @@ public class MCLeaksHandler {
 		}
 		return status;
 	}
-	
+
 	public static String getCustomuserUUID(String username) {
 		try {
-			String uuidjson = WebUtils
-					.get("https://api.mojang.com/users/profiles/minecraft/" + username);
-			
+			String uuidjson = WebUtils.get("https://api.mojang.com/users/profiles/minecraft/" + username);
+
 			JsonObject jsonObject = new Gson().fromJson(uuidjson, JsonObject.class);
-			
+
 			return jsonObject.get("id").getAsString();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return "";
 	}
-	
+
 	public static class MCLeaksLoginStatus {
-		
+
 		private boolean status;
 		private String message;
 
@@ -86,7 +85,7 @@ public class MCLeaksHandler {
 		public void setMessage(String message) {
 			this.message = message;
 		}
-		
+
 	}
-	
+
 }

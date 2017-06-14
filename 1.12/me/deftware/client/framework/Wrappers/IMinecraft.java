@@ -12,14 +12,14 @@ import net.minecraft.realms.RealmsSharedConstants;
 public class IMinecraft {
 
 	/**
-	 * Sets the window title 
+	 * Sets the window title
 	 * 
 	 * @param title
 	 */
 	public static void setTitle(String title) {
 		Display.setTitle(title);
 	}
-	
+
 	/**
 	 * Returns the Minecraft gui scale
 	 * 
@@ -37,7 +37,7 @@ public class IMinecraft {
 	public static boolean isDebugInfoShown() {
 		return Minecraft.getMinecraft().gameSettings.showDebugInfo;
 	}
-	
+
 	/**
 	 * Gets the current gui screen
 	 * 
@@ -46,7 +46,7 @@ public class IMinecraft {
 	public static GuiScreen getCurrentScreen() {
 		return Minecraft.getMinecraft().currentScreen;
 	}
-	
+
 	/**
 	 * Displays a new gui screen, ONLY IGuiScreen instances!
 	 * 
@@ -55,14 +55,14 @@ public class IMinecraft {
 	public static void setGuiScreen(IGuiScreen screen) {
 		Minecraft.getMinecraft().displayGuiScreen(screen);
 	}
-	
+
 	/**
 	 * Shuts down Minecraft
 	 */
 	public static void shutdown() {
 		Minecraft.getMinecraft().shutdown();
 	}
-	
+
 	/**
 	 * Sets the current session
 	 * 
@@ -71,7 +71,7 @@ public class IMinecraft {
 	public static void setSession(ISession session) {
 		Minecraft.getMinecraft().session = session;
 	}
-		
+
 	/**
 	 * Sets the Minecraft timer
 	 * 
@@ -80,19 +80,20 @@ public class IMinecraft {
 	public static void setTimer(ITimer timer) {
 		Minecraft.getMinecraft().timer = timer;
 	}
-	
+
 	/**
 	 * Converts the Minecraft timer to a ITimer and returns it
+	 * 
 	 * @return
 	 */
 	public static ITimer getTimer() {
-		// TODO: 
-		//ITimer timer = new ITimer(Minecraft.getMinecraft().timer.timerSpeed);
-		//setTimer(timer);
-		//return timer;
+		// TODO:
+		// ITimer timer = new ITimer(Minecraft.getMinecraft().timer.timerSpeed);
+		// setTimer(timer);
+		// return timer;
 		return null;
 	}
-	
+
 	/**
 	 * Set's the gamma
 	 * 
@@ -101,7 +102,7 @@ public class IMinecraft {
 	public static void setGamma(float value) {
 		Minecraft.getMinecraft().gameSettings.gammaSetting = value;
 	}
-	
+
 	/**
 	 * Get's the gamma
 	 * 
@@ -110,7 +111,7 @@ public class IMinecraft {
 	public static float getGamma() {
 		return Minecraft.getMinecraft().gameSettings.gammaSetting;
 	}
-	
+
 	/**
 	 * Sets the right click delay
 	 * 
@@ -119,19 +120,19 @@ public class IMinecraft {
 	public static void setRightClickDelayTimer(int delay) {
 		Minecraft.getMinecraft().rightClickDelayTimer = delay;
 	}
-	
+
 	/**
 	 * Get's the current Minecraft version
 	 */
 	public static String getMinecraftVersion() {
 		return RealmsSharedConstants.VERSION_STRING;
 	}
-	
+
 	/**
 	 * Get's the current Minecraft protocol version
 	 */
 	public static int getMinecraftProtocolVersion() {
 		return RealmsSharedConstants.NETWORK_PROTOCOL_VERSION;
 	}
-	
+
 }

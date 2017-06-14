@@ -13,6 +13,7 @@ public class HashUtils {
 
 	/**
 	 * Returns the SHA-512 hash of a given string
+	 * 
 	 * @param string
 	 * @return
 	 * @throws Exception
@@ -22,9 +23,10 @@ public class HashUtils {
 		sha1.update(string.getBytes());
 		return new HexBinaryAdapter().marshal(sha1.digest());
 	}
-	
+
 	/**
 	 * Returns the SHA-512 checksum of a give file
+	 * 
 	 * @param file
 	 * @return
 	 * @throws Exception

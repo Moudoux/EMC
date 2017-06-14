@@ -11,14 +11,13 @@ import javax.net.ssl.HttpsURLConnection;
 
 import me.deftware.client.framework.FrameworkConstants;
 
-
 public class WebUtils {
 
 	public static String get(String url) throws Exception {
 		try {
 			URL url1 = new URL(url);
-			Object connection = (url.startsWith("https://")
-					? (HttpsURLConnection) url1.openConnection() : (HttpURLConnection) url1.openConnection());
+			Object connection = (url.startsWith("https://") ? (HttpsURLConnection) url1.openConnection()
+					: (HttpURLConnection) url1.openConnection());
 			((URLConnection) connection).setConnectTimeout(8 * 1000);
 			((URLConnection) connection).setRequestProperty("User-Agent", FrameworkConstants.FRAMEWORK_NAME);
 
@@ -46,10 +45,8 @@ public class WebUtils {
 			connection.setDoOutput(true);
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Accept", "application/json");
-			connection.setRequestProperty("Content-Type",
-					"application/json; charset=UTF-8");
-			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(),
-					"UTF-8");
+			connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
 			writer.write(payload);
 			writer.close();
 			BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));

@@ -343,9 +343,12 @@ public class IFontRendererObject extends FontRenderer {
 						if (colorIndex < 16) { // coloring
 							bold = false;
 							italic = false;
-						} else if (colorIndex == 16) {} else if (colorIndex == 17)
+						} else if (colorIndex == 16) {
+						} else if (colorIndex == 17)
 							bold = true;
-						else if (colorIndex == 18) {} else if (colorIndex == 19) {} else if (colorIndex == 20)
+						else if (colorIndex == 18) {
+						} else if (colorIndex == 19) {
+						} else if (colorIndex == 20)
 							italic = true;
 						else if (colorIndex == 21) { // reset
 							bold = false;
@@ -592,5 +595,6 @@ public class IFontRendererObject extends FontRenderer {
 	}
 
 	@Override
-	public void onResourceManagerReload(final IResourceManager p_110549_1_) {}
+	public void onResourceManagerReload(final IResourceManager p_110549_1_) {
+	}
 }

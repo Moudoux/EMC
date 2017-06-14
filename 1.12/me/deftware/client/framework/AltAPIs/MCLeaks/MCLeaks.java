@@ -17,11 +17,10 @@ public class MCLeaks {
 		if (session != null) {
 			try {
 				String url = ENDPOINT + "joinserver";
-				String payload = "{\"session\":\"" + session.getSession()
-						+ "\",\"mcname\":\"" + session.getMcname()
-						+ "\",\"serverhash\":\"" + serverHash
-						+ "\",\"server\":\"" + server + "\"}";
-				/** String output = */ WebUtils.sendPostRequest(url, StringEscapeUtils.unescapeJava(payload));
+				String payload = "{\"session\":\"" + session.getSession() + "\",\"mcname\":\"" + session.getMcname()
+						+ "\",\"serverhash\":\"" + serverHash + "\",\"server\":\"" + server + "\"}";
+				/** String output = */
+				WebUtils.sendPostRequest(url, StringEscapeUtils.unescapeJava(payload));
 				return true;
 			} catch (Exception ex) {
 				;
@@ -29,20 +28,20 @@ public class MCLeaks {
 		}
 		return false;
 	}
-	
+
 	public static boolean isOriginalSessionSet() {
 		if (original == null) {
 			return false;
 		}
 		return true;
 	}
-	
+
 	public static void backupSession() {
 		if (original == null) {
 			original = Minecraft.getMinecraft().getSession();
 		}
 	}
-	
+
 	public static void clearMCLeaksSession() {
 		original = null;
 		session = null;

@@ -13,7 +13,7 @@ public class IGuiPasswordTextField extends IGuiTextField {
 	public IGuiPasswordTextField(int componentId, int x, int y, int width, int height) {
 		super(componentId, x, y, width, height);
 	}
-	
+
 	@Override
 	public void drawTextBox() {
 		if (getVisible()) {
