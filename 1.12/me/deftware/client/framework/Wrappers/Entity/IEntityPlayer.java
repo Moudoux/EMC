@@ -1,8 +1,6 @@
 package me.deftware.client.framework.Wrappers.Entity;
 
-import me.deftware.client.framework.Wrappers.Objects.IEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLivingBase;
 
 /**
  * EntityPlayerSP wrapper
@@ -12,6 +10,20 @@ import net.minecraft.entity.EntityLivingBase;
  */
 public class IEntityPlayer {
 	
+	public static boolean isRowingBoat() {
+		if (isNull()) {
+			return false;
+		}
+		return Minecraft.getMinecraft().player.isRowingBoat();
+	}
+
+	public static boolean isInLiquid() {
+		if (isNull()) {
+			return false;
+		}
+		return Minecraft.getMinecraft().player.isInWater() || Minecraft.getMinecraft().player.isInLava();
+	}
+
 	public static void setFlying(boolean state) {
 		if (isNull()) {
 			return;
