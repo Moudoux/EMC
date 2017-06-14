@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -126,11 +127,11 @@ public abstract class IGuiScreen extends GuiScreen {
 		GuiScreen.setClipboardString(clipboard);
 	}
 	
-	public int getWidth() {
+	public int getIGuiScreenWidth() {
 		return this.width;
 	}
 	
-	public int getHeight() {
+	public int getIGuiScreenHeight() {
 		return this.height;
 	}
 	
@@ -183,6 +184,14 @@ public abstract class IGuiScreen extends GuiScreen {
 		GuiScreen.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
 	}
 	
+	protected int getScreenWidth() {
+		return Display.getWidth();
+	}
+
+	protected int getScreenHeight() {
+		return Display.getHeight();
+	}
+
 	/*
 	 * The abstract handlers
 	 */

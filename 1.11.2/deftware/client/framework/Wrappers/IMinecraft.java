@@ -1,17 +1,12 @@
 package me.deftware.client.framework.Wrappers;
 
-import java.util.ArrayList;
-
 import org.lwjgl.opengl.Display;
 
-import me.deftware.client.framework.Wrappers.EntityPlayer.IPlayer;
 import me.deftware.client.framework.Wrappers.Objects.IGuiScreen;
 import me.deftware.client.framework.Wrappers.Objects.ISession;
 import me.deftware.client.framework.Wrappers.Objects.ITimer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.realms.RealmsSharedConstants;
 
 public class IMinecraft {
@@ -25,6 +20,15 @@ public class IMinecraft {
 		Display.setTitle(title);
 	}
 	
+	/**
+	 * Returns the Minecraft gui scale
+	 * 
+	 * @return
+	 */
+	public static int getGuiScale() {
+		return Minecraft.getMinecraft().gameSettings.guiScale;
+	}
+
 	/**
 	 * If the F3 overlay is on
 	 * 
