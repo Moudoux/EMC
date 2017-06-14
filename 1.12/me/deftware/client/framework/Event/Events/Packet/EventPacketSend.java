@@ -21,6 +21,10 @@ public class EventPacketSend extends Event {
 		this.packet = packet;
 	}
 
+	public void setPacket(IPacket packet) {
+		this.packet = packet.getPacket();
+	}
+
 	public IPacket getIPacket() {
 		if (packet instanceof CPacketPlayer) {
 			return new ICPacketPlayer(packet);
