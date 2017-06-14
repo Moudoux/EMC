@@ -42,4 +42,8 @@ public class IMob {
 		return mob;
 	}
 
+	public void setGlowing(boolean state) {
+		mob.setGlowing(state);
+	}
+
 }

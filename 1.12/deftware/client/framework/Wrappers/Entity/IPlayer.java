@@ -74,5 +74,9 @@ public class IPlayer {
 		return player.height;
 	}
 
+	public void setGlowing(boolean state) {
+		player.setGlowing(state);
+	}
+
 }
 
