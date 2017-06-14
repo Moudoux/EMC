@@ -15,7 +15,7 @@ In short:
 
 Example:
 
-Say you want to change the walk speed, you simply call the EMC wrapper and it does the hard work for you,
+Let's say you want to change the walk speed. To do so, you would simply call the EMC wrapper and it does the hard work for you,
 in this case `IEntityPlayer` is the Minecraft player wrapper that translates the EntityPlayer calls,
 all wrappers start with an `I` followed by the name of the Minecraft class it handles:
 
@@ -26,16 +26,16 @@ public void setWalkspeed(float speed) {
 }
 ```
 
-That's it, it's not harder than that, the IEntityPlayer.setWalkspeed then calls the obfuscated Minecraft call.
+That's it. It is as easy as that. The IEntityPlayer.setWalkspeed then calls the obfuscated Minecraft call.
 
 Why use EMC ?
 -------------------
 
 * Easy to use (You don't have to think about Minecraft obfuscation)
-* Does not violate the Minecraft EULA (No DMCA takedowns)
+* Completely compliant with the Minecraft EULA (You don't have to worry about DMCA takedown requests)
 * Write once, use on multiple Minecraft versions
-* Less code (This requires less code than writing your client with Minecraft
-* This framework was made specifically for creating Minecraft hacked clients
+* Less code (This requires less code than writing your client with Minecraft)
+* This framework was made specifically for creating Minecraft "hacked clients"
 
 EULA compliant
 -------------------
@@ -47,13 +47,13 @@ Minecraft source code, only EMC wrapper calls.
 Installing EMC/Setting up for making mods
 -------------------
 
-Download EMC for whatever Minecraft version (Doesn't matter since all versions are compatible with your mod)
+Download EMC for any Minecraft version (It doesn't matter since all versions are compatible with your mod)
 
 Install it, then open your favourite Java IDE and make a new project, import the EMC Minecraft jar in `.minecraft/versions/<MC Version>_EMC/<MC Version>_EMC.jar`
 
-Make a class called `Main.java`, extend it by `Client` and add the required methods.
+Make a class called `Main.java`, make it extend `Client` and add the required methods.
 
-Create a file called `client.json` in the root of your project, in it add the following:
+Create a file called `client.json` in the root of your project. In the file, add the following:
 
 ```
 {
