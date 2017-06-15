@@ -7,7 +7,7 @@ public class IResourceLocation extends ResourceLocation {
 	public IResourceLocation(String resourceName) {
 		super(resourceName);
 	}
-	
+
 	public IResourceLocation(String resourceDomainIn, String resourcePathIn) {
 		super(resourceDomainIn, resourcePathIn);
 	}

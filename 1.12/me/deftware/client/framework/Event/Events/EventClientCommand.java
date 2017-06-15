@@ -5,7 +5,7 @@ import me.deftware.client.framework.Event.Event;
 public class EventClientCommand extends Event {
 
 	private String command, args, full;
-	
+
 	public EventClientCommand(String command) {
 		this.full = command;
 		if (command.contains(" ")) {
@@ -28,5 +28,5 @@ public class EventClientCommand extends Event {
 	public String getFull() {
 		return full;
 	}
-	
+
 }

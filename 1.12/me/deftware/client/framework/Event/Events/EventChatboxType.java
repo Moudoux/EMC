@@ -5,7 +5,7 @@ import me.deftware.client.framework.Event.Event;
 public class EventChatboxType extends Event {
 
 	private String text, overlay;
-	
+
 	public EventChatboxType(String text, String overlay) {
 		this.text = text;
 		this.overlay = overlay;
@@ -22,5 +22,5 @@ public class EventChatboxType extends Event {
 	public String getText() {
 		return text;
 	}
-	
+
 }

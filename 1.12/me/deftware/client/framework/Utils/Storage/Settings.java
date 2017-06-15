@@ -33,7 +33,8 @@ public class Settings {
 	 */
 	public synchronized void initialize() {
 		try {
-			File minecraft = new File(Minecraft.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+			File minecraft = new File(
+					Minecraft.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
 			File configFile = new File(minecraft.getParent() + File.separator + "Client_Config.json");
 			this.configPath = configFile.getAbsolutePath();
 			if (!configFile.exists()) {
@@ -174,23 +175,23 @@ public class Settings {
 			;
 		}
 	}
-	
+
 	public synchronized void saveBool(String node, boolean value) {
 		try {
-			addNode(node,String.valueOf(value));
+			addNode(node, String.valueOf(value));
 		} catch (Exception ex) {
 			;
 		}
-	} 
-	
+	}
+
 	public synchronized void saveInt(String node, int value) {
 		try {
-			addNode(node,String.valueOf(value));
+			addNode(node, String.valueOf(value));
 		} catch (Exception ex) {
 			;
 		}
-	} 
-	
+	}
+
 	public synchronized void saveDouble(String node, double value) {
 		try {
 			addNode(node, String.valueOf(value));
@@ -200,7 +201,7 @@ public class Settings {
 	}
 
 	public synchronized boolean getBool(String node, boolean _default) {
-		String data = getNode(node,"");
+		String data = getNode(node, "");
 		if (data.equals("")) {
 			return _default;
 		}
@@ -210,7 +211,7 @@ public class Settings {
 			return _default;
 		}
 	}
-	
+
 	public synchronized float getFloat(String node, float _default) {
 		String data = getNode(node, "");
 		if (data.equals("")) {
@@ -224,7 +225,7 @@ public class Settings {
 	}
 
 	public synchronized int getInt(String node, int _default) {
-		String data = getNode(node,"");
+		String data = getNode(node, "");
 		if (data.equals("")) {
 			return _default;
 		}

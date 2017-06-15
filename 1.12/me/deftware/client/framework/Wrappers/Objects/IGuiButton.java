@@ -12,54 +12,55 @@ public class IGuiButton extends GuiButton {
 	public IGuiButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText) {
 		super(buttonId, x, y, widthIn, heightIn, buttonText);
 	}
-	
+
 	public void setText(String text) {
 		this.displayString = text;
 	}
-	
+
 	protected String getText() {
 		return this.displayString;
 	}
-	
+
 	@Override
 	public void func_191745_a(final Minecraft mc, final int mouseX, final int mouseY, float partialTicks) {
-		if (onDraw(mouseX,mouseY) == 0) {
+		if (onDraw(mouseX, mouseY) == 0) {
 			super.func_191745_a(mc, mouseX, mouseY, partialTicks);
 		}
 	}
-	
+
 	public void drawCenteredString(String text, int x, int y, int color) {
-		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(text, x - Minecraft.getMinecraft().fontRendererObj.getStringWidth(text) / 2, y, color);
+		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(text,
+				x - Minecraft.getMinecraft().fontRendererObj.getStringWidth(text) / 2, y, color);
 	}
-	
+
 	protected int onDraw(final int mouseX, final int mouseY) {
 		return 0;
 	}
-	
+
 	protected boolean isVisible() {
 		return this.visible;
 	}
-	
+
 	public void setEnabled(boolean state) {
 		this.enabled = state;
 	}
-	
+
 	public void setVisible(boolean state) {
 		this.visible = state;
 	}
-	
+
 	public boolean isEnabled() {
 		return this.enabled;
 	}
-	
+
 	/*
 	 * Getters/Setters
 	 */
-	
+
 	protected int getX() {
 		return this.xPosition;
 	}
-	
+
 	protected int getY() {
 		return this.yPosition;
 	}
@@ -67,15 +68,15 @@ public class IGuiButton extends GuiButton {
 	protected void setY(int y) {
 		this.yPosition = y;
 	}
-	
+
 	protected void setX(int x) {
 		this.xPosition = x;
 	}
-	
+
 	protected int getWidth() {
 		return this.width;
 	}
-	
+
 	protected int getHeight() {
 		return this.height;
 	}
@@ -83,17 +84,17 @@ public class IGuiButton extends GuiButton {
 	protected void setButtonWidth(int width) {
 		this.width = width;
 	}
-	
+
 	protected void setButtonHeight(int height) {
 		this.height = height;
 	}
-	
+
 	protected boolean isHovered() {
 		return this.hovered;
 	}
-	
+
 	protected void setHovered(boolean state) {
 		this.hovered = state;
 	}
-	
+
 }

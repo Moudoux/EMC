@@ -3,11 +3,11 @@ package me.deftware.client.framework.Wrappers.Render;
 import org.lwjgl.opengl.GL11;
 
 public class IGL11 {
-	
+
 	public static void glNormal3f(float nx, float ny, float nz) {
 		GL11.glNormal3f(nx, ny, nz);
 	}
-	
+
 	public static void glRotatef(float angle, float x, float y, float z) {
 		GL11.glRotatef(angle, x, y, z);
 	}

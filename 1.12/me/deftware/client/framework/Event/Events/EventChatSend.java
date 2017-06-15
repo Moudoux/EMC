@@ -5,7 +5,7 @@ import me.deftware.client.framework.Event.Event;
 public class EventChatSend extends Event {
 
 	private String message;
-	
+
 	public EventChatSend(String message) {
 		this.message = message;
 	}
@@ -17,5 +17,5 @@ public class EventChatSend extends Event {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+
 }

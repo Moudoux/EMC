@@ -116,9 +116,10 @@ public class ChatProcessor {
 
 	public static void printClientMessage(String chatMessage) {
 		if (FrameworkLoader.getClient() != null) {
-			printChatMessage("งbงl" + FrameworkLoader.getClient().getClientInfo().getClientName() + " งrง7ป " + ChatColor.GRAY + chatMessage);
+			printChatMessage("ยงbยงl" + FrameworkLoader.getClient().getClientInfo().getClientName() + " ยงrยง7ยง "
+					+ ChatColor.GRAY + chatMessage);
 		} else {
-			printChatMessage("งbงl" + "Client" + " งrง7ป " + ChatColor.GRAY + chatMessage);
+			printChatMessage("ยงbยงl" + "Client" + " ยงrยง7ยง " + ChatColor.GRAY + chatMessage);
 		}
 	}
 

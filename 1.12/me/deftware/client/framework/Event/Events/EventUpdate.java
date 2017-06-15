@@ -3,7 +3,7 @@ package me.deftware.client.framework.Event.Events;
 import me.deftware.client.framework.Event.Event;
 
 public class EventUpdate extends Event {
-	
+
 	private double posX, posY, posZ;
 	public float rotationYaw, rotationPitch;
 	private boolean onGround;
@@ -41,5 +41,5 @@ public class EventUpdate extends Event {
 	public boolean isOnGround() {
 		return onGround;
 	}
-	
+
 }

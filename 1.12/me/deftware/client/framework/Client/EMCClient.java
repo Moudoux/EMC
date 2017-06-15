@@ -6,7 +6,7 @@ import me.deftware.client.framework.Utils.Storage.Settings;
 public abstract class EMCClient {
 
 	private Settings settings;
-	
+
 	/**
 	 * Called internally
 	 * 
@@ -17,19 +17,19 @@ public abstract class EMCClient {
 		settings.initialize();
 		this.initialize();
 	}
-	
+
 	public abstract void initialize();
 
 	public abstract EMCClientInfo getClientInfo();
-	
+
 	public abstract void onEvent(Event event);
-	
+
 	public Settings getSettings() {
 		return settings;
 	}
-	
+
 	public static class EMCClientInfo {
-		
+
 		private String clientName, clientVersion;
 
 		public EMCClientInfo(String clientName, String clientVersion) {
@@ -44,7 +44,7 @@ public abstract class EMCClient {
 		public String getClientVersion() {
 			return clientVersion;
 		}
-		
+
 	}
-	
+
 }

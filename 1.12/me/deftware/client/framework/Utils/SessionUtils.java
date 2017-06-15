@@ -35,17 +35,17 @@ public class SessionUtils {
 			String accessToken = auth.getAuthenticatedToken();
 
 			session = new Session(userName, playerUUID.toString(), accessToken,
-					username.contains("@") ? "mojang"
-							: "legacy");
-			
+					username.contains("@") ? "mojang" : "legacy");
+
 			MCLeaks.clearMCLeaksSession();
-			
+
 			if (setFlags) {
 				Minecraft.getMinecraft().session = session;
 			}
 
 			return session;
-		} catch (AuthenticationException e) {}
+		} catch (AuthenticationException e) {
+		}
 		return null;
 	}
 
@@ -54,5 +54,5 @@ public class SessionUtils {
 		MCLeaks.clearMCLeaksSession();
 		return Minecraft.getMinecraft().getSession();
 	}
-	
+
 }

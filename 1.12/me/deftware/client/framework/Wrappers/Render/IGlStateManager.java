@@ -35,7 +35,7 @@ public class IGlStateManager {
 	public static void color(float colorRed, float colorGreen, float colorBlue) {
 		GlStateManager.color(colorRed, colorGreen, colorBlue, 1.0F);
 	}
-	
+
 	public static void pushMatrix() {
 		GlStateManager.pushMatrix();
 	}
@@ -43,7 +43,7 @@ public class IGlStateManager {
 	public static void popMatrix() {
 		GlStateManager.popMatrix();
 	}
-	
+
 	public static void enableDepth() {
 		GlStateManager.enableDepth();
 	}
@@ -63,7 +63,7 @@ public class IGlStateManager {
 	public static void disableTexture2D() {
 		GlStateManager.disableTexture2D();
 	}
-	
+
 	public static void tryBlendFuncSeparate(int srcFactor, int dstFactor, int srcFactorAlpha, int dstFactorAlpha) {
 		GlStateManager.tryBlendFuncSeparate(srcFactor, dstFactor, srcFactorAlpha, dstFactorAlpha);
 	}

@@ -10,7 +10,7 @@ public class EventGuiScreenDisplay extends Event {
 
 	private GuiScreen screen;
 	private ScreenTypes type;
-	
+
 	public EventGuiScreenDisplay(GuiScreen screen) {
 		this.screen = screen;
 		if (screen instanceof GuiMainMenu) {
@@ -27,7 +27,7 @@ public class EventGuiScreenDisplay extends Event {
 	public void setScreen(IGuiScreen screen) {
 		this.screen = screen;
 	}
-	
+
 	public ScreenTypes getType() {
 		return type;
 	}
@@ -35,5 +35,5 @@ public class EventGuiScreenDisplay extends Event {
 	public static enum ScreenTypes {
 		MainMenu, Multiplayer
 	}
-	
+
 }
