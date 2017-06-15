@@ -7,7 +7,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -19,7 +21,7 @@ import net.minecraft.client.Minecraft;
 
 public class FrameworkLoader {
 	
-	public static Logger logger = Logger.getLogger("Minecraft");
+	public static Logger logger = LogManager.getLogger();
 	
 	private static URLClassLoader clientLoader;
 
@@ -84,7 +86,7 @@ public class FrameworkLoader {
 			logger.info("Loaded client jar");
 			
 		} catch (Exception ex) {
-			logger.warning("Failed to load client framework");
+			logger.warn("Failed to load client framework");
 			ex.printStackTrace();
 		}
 	}
