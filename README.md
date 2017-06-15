@@ -77,25 +77,25 @@ A simple one class client example
 ```
 package me.deftware.client;
 
-import me.deftware.client.framework.Client.Client;
+import me.deftware.client.framework.Client.EMCClient;
 import me.deftware.client.framework.Event.Event;
 import me.deftware.client.framework.Event.Events.EventClientCommand;
 import me.deftware.client.framework.Wrappers.IChat;
 
 public class Main extends Client {
 	
-	private ClientInfo clientInfo;
+	private EMCClientInfo clientInfo;
 	
 	@Override
 	public void initialize() {
-		// Protocol version, Minecraft version, Client name, Client version
-		clientInfo = new ClientInfo(316, "1.11.2", "Example client", "1");
+		// Client name, Client version
+		clientInfo = new ClientInfo("Example client", "1");
 		// We can even set the window title with one call to EMC
 		IMinecraft.setTitle("Example client");
 	}
 
 	@Override
-	public ClientInfo getClientInfo() {
+	public EMCClient getClientInfo() {
 		// This is used for the framework to know what client it has
 		return clientInfo;
 	}
