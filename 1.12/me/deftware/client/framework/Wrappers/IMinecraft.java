@@ -3,7 +3,6 @@ package me.deftware.client.framework.Wrappers;
 import org.lwjgl.opengl.Display;
 
 import me.deftware.client.framework.Wrappers.Objects.IGuiScreen;
-import me.deftware.client.framework.Wrappers.Objects.ISession;
 import me.deftware.client.framework.Wrappers.Objects.ITimer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -63,15 +62,6 @@ public class IMinecraft {
 		Minecraft.getMinecraft().shutdown();
 	}
 	
-	/**
-	 * Sets the current session
-	 * 
-	 * @param session
-	 */
-	public static void setSession(ISession session) {
-		Minecraft.getMinecraft().session = session;
-	}
-		
 	/**
 	 * Sets the Minecraft timer
 	 * 

@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 import me.deftware.client.framework.Wrappers.Entity.IItemEntity;
 import me.deftware.client.framework.Wrappers.Entity.IMob;
 import me.deftware.client.framework.Wrappers.Entity.IPlayer;
+import me.deftware.client.framework.Wrappers.Objects.IBlockPos;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -19,7 +20,6 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -75,10 +75,10 @@ public class RenderUtils {
 		GL11.glPopMatrix();
 	}
 
-	public static void blockEspBox(BlockPos blockPos, double red, double green, double blue) {
-		double x = blockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y = blockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z = blockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
+	public static void blockEspBox(IBlockPos IBlockPos, double red, double green, double blue) {
+		double x = IBlockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = IBlockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = IBlockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(GL_BLEND);
 		GL11.glLineWidth(2.0F);
@@ -291,10 +291,11 @@ public class RenderUtils {
 		GL11.glDisable(3042);
 	}
 
-	public static void blockESPBox(BlockPos blockPos) {
-		double x = blockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y = blockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z = blockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
+
+	public static void blockESPBox(IBlockPos IBlockPos) {
+		double x = IBlockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = IBlockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = IBlockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(3042);
 		GL11.glLineWidth(1.0F);
@@ -311,12 +312,12 @@ public class RenderUtils {
 		GL11.glDisable(3042);
 	}
 
-	public static void blockESPBox(BlockPos blockPos, float red, float green, float blue) {
+	public static void blockESPBox(IBlockPos IBlockPos, float red, float green, float blue) {
 		RenderUtils.fixDarkLight();
 		GlStateManager.resetColor();
-		double x = blockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y = blockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z = blockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
+		double x = IBlockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = IBlockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = IBlockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(3042);
 		GL11.glLineWidth(1.0F);
@@ -339,13 +340,13 @@ public class RenderUtils {
 		RenderHelper.disableStandardItemLighting();
 	}
 
-	public static void blockESPBox(BlockPos blockPos, Color c) {
+	public static void blockESPBox(IBlockPos IBlockPos, Color c) {
 		RenderUtils.fixDarkLight();
 		GlStateManager.resetColor();
 		float red = c.getRed(), green = c.getGreen(), blue = c.getBlue();
-		double x = blockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y = blockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z = blockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
+		double x = IBlockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = IBlockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = IBlockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(3042);
 		GL11.glLineWidth(1.0F);
@@ -363,12 +364,12 @@ public class RenderUtils {
 		GlStateManager.resetColor();
 	}
 
-	public static void framelessBlockESP(BlockPos blockPos, float red, float green, float blue) {
+	public static void framelessBlockESP(IBlockPos IBlockPos, float red, float green, float blue) {
 		RenderUtils.fixDarkLight();
 		GlStateManager.resetColor();
-		double x = blockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y = blockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z = blockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
+		double x = IBlockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = IBlockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = IBlockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(3042);
 		GL11.glLineWidth(2.0F);
@@ -384,12 +385,12 @@ public class RenderUtils {
 		GlStateManager.resetColor();
 	}
 
-	public static void emptyBlockESPBox(BlockPos blockPos) {
+	public static void emptyBlockESPBox(IBlockPos IBlockPos) {
 		RenderUtils.fixDarkLight();
 		GlStateManager.resetColor();
-		double x = blockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y = blockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z = blockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
+		double x = IBlockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = IBlockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = IBlockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(3042);
 		GL11.glLineWidth(2.0F);
@@ -445,12 +446,12 @@ public class RenderUtils {
 		GL11.glDisable(3042);
 	}
 
-	public static void nukerBox(BlockPos blockPos, float damage) {
+	public static void nukerBox(IBlockPos IBlockPos, float damage) {
 		RenderUtils.fixDarkLight();
 		GlStateManager.resetColor();
-		double x = blockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y = blockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z = blockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
+		double x = IBlockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = IBlockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = IBlockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(3042);
 		GL11.glLineWidth(1.0F);
@@ -472,12 +473,12 @@ public class RenderUtils {
 		GL11.glDisable(3042);
 	}
 
-	public static void searchBox(BlockPos blockPos) {
+	public static void searchBox(IBlockPos IBlockPos) {
 		RenderUtils.fixDarkLight();
 		GlStateManager.resetColor();
-		double x = blockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y = blockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z = blockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
+		double x = IBlockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = IBlockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = IBlockPos.getZ() - Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(3042);
 		GL11.glLineWidth(1.0F);
