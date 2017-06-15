@@ -2,6 +2,7 @@ package me.deftware.client.framework.Utils.Chat;
 
 import java.util.regex.Pattern;
 
+import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.Main.FrameworkLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
@@ -120,6 +121,10 @@ public class ChatProcessor {
 		} else {
 			printChatMessage("§b§l" + "Client" + " §r§7» " + ChatColor.GRAY + chatMessage);
 		}
+	}
+
+	public static void printFrameworkMessage(String msg) {
+		printChatMessage("§b§l" + FrameworkConstants.FRAMEWORK_NAME + " §r§7» " + ChatColor.GRAY + msg);
 	}
 
 	public static void printClientMessage(String chatMessage, boolean prefix) {

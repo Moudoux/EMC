@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
+import me.deftware.client.framework.Main.FrameworkLoader;
 import net.minecraft.client.Minecraft;
 
 /**
@@ -33,8 +34,19 @@ public class Settings {
 	 */
 	public synchronized void initialize() {
 		try {
+			String clientName = "EMC";
+			if (FrameworkLoader.clientInfo != null) {
+				clientName = FrameworkLoader.clientInfo.get("name").getAsString();
+			}
 			File minecraft = new File(Minecraft.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-			File configFile = new File(minecraft.getParent() + File.separator + "Client_Config.json");
+
+			String p = minecraft.getParent();
+			p = p.replace(p.split("\\" + File.separator)[p.split("\\" + File.separator).length - 1], "");
+			p = p.replace(p.split("\\" + File.separator)[p.split("\\" + File.separator).length - 1], "");
+			p = p.substring(0, p.length() - 2);
+
+			File configFile = new File(minecraft.getParent().replace(File.separator + "versions", "") + File.separator
+					+ "Client_Config.json");
 			this.configPath = configFile.getAbsolutePath();
 			if (!configFile.exists()) {
 				try {
@@ -46,7 +58,8 @@ public class Settings {
 				}
 			}
 		} catch (Exception ex) {
-			;
+			ex.printStackTrace();
+			System.exit(0);
 		}
 	}
 

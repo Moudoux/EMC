@@ -26,22 +26,25 @@ public abstract class Event {
 		try {
 			if (event instanceof EventClientCommand) {
 				if (((EventClientCommand) event).getCommand().equals(".version")) {
-					ChatProcessor.printClientMessage("§7You are running " + FrameworkConstants.FRAMEWORK_NAME + " version " + FrameworkConstants.VERSION
-							+ " built by " + FrameworkConstants.AUTHOR, false);
+					ChatProcessor
+							.printFrameworkMessage(
+									"§7You are running " + FrameworkConstants.FRAMEWORK_NAME + " version "
+											+ FrameworkConstants.VERSION
+											+ " built by " + FrameworkConstants.AUTHOR);
 					return;
 				} else if (((EventClientCommand) event).getCommand().equals(".unload")) {
 					FrameworkLoader.ejectClient();
 					Display.setTitle("Minecraft " + IMinecraft.getMinecraftVersion());
-					ChatProcessor.printClientMessage("Unloaded client jar, Minecraft is now running as vanilla");
+					ChatProcessor.printFrameworkMessage("Unloaded client jar, Minecraft is now running as vanilla");
 					return;
 				} else if (((EventClientCommand) event).getCommand().equals(".cinfo")) {
 					if (FrameworkLoader.clientInfo == null || FrameworkLoader.getClient() == null) {
-						ChatProcessor.printClientMessage("You are running vanilla, no client is loaded");
+						ChatProcessor.printFrameworkMessage("You are running vanilla, no client is loaded");
 					}
 					String name = FrameworkLoader.clientInfo.get("name").getAsString();
 					int version = FrameworkLoader.clientInfo.get("version").getAsInt();
 					String author = FrameworkLoader.clientInfo.get("author").getAsString();
-					ChatProcessor.printClientMessage(
+					ChatProcessor.printFrameworkMessage(
 							"You are running \"" + name + "\" version " + version + " made by " + author);
 					return;
 				}
