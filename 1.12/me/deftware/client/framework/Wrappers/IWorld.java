@@ -3,6 +3,7 @@ package me.deftware.client.framework.Wrappers;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import me.deftware.client.framework.Wrappers.Entity.IEntity;
 import me.deftware.client.framework.Wrappers.Entity.IItemEntity;
 import me.deftware.client.framework.Wrappers.Entity.IMob;
 import me.deftware.client.framework.Wrappers.Entity.IPlayer;
@@ -27,7 +28,30 @@ public class IWorld {
 	private static ArrayList<IMob> iMobCacheArray = new ArrayList<IMob>();
 	private static ArrayList<IItemEntity> iItemCacheArray = new ArrayList<IItemEntity>();
 	private static ArrayList<IChest> iChestCacheArray = new ArrayList<IChest>();
-	private static int iPlayerCache = 0, iMobCache = 0, iItemCache = 0, iChestCache = 0;
+	private static ArrayList<IEntity> iEntityCacheArray = new ArrayList<IEntity>();
+	private static int iEntityCache = 0, iPlayerCache = 0, iMobCache = 0, iItemCache = 0, iChestCache = 0;
+
+	/**
+	 * Converts the loaded entity list to IMobs and returns it
+	 * 
+	 * @return
+	 */
+	public static ArrayList<IEntity> getIEntity() {
+		try {
+			if (iEntityCache == Minecraft.getMinecraft().world.loadedEntityList.size()) {
+				return iEntityCacheArray;
+			}
+			ArrayList<IEntity> result = new ArrayList<IEntity>();
+			for (Entity e : Minecraft.getMinecraft().world.loadedEntityList) {
+				result.add(new IEntity(e));
+			}
+			iEntityCache = Minecraft.getMinecraft().world.loadedEntityList.size();
+			iEntityCacheArray = result;
+			return result;
+		} catch (Exception ex) {
+			return new ArrayList<IEntity>();
+		}
+	}
 
 	/**
 	 * Converts the loaded entity list to IPlayers and returns it

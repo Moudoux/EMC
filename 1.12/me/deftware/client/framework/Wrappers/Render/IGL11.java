@@ -36,4 +36,8 @@ public class IGL11 {
 		GL11.glDisable(cap);
 	}
 
+	public static void glTranslatef(float x, float y, float z) {
+		GL11.glTranslatef(x, y, z);
+	}
+
 }

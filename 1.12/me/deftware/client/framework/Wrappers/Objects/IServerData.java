@@ -4,43 +4,45 @@ import net.minecraft.client.multiplayer.ServerData;
 
 public class IServerData extends ServerData {
 
+	/**
+	 * 
+	 * @param name
+	 * @param ip
+	 * @param isLan
+	 */
 	public IServerData(String name, String ip, boolean isLan) {
 		super(name, ip, isLan);
 	}
 	
-	public String getMotd() {
+	public String getIMotd() {
 		return this.serverMOTD;
 	}
 	
-	public boolean isPinged() {
+	public boolean isIPinged() {
 		return this.pinged;
 	}
 	
-	public boolean isLanServer() {
-		return this.isLanServer();
+	public boolean isILanServer() {
+		return this.isOnLAN();
 	}
-	
-	public String getServerList() {
-		return this.getServerList();
-	}
-	
-	public String getServerName() {
+
+	public String getIServerName() {
 		return this.serverName;
 	}
 	
-	public String getGameVersion() {
+	public String getIGameVersion() {
 		return this.gameVersion;
 	}
 	
-	public int getVersion() {
+	public int getIVersion() {
 		return this.version;
 	}
 	
-	public String getPopulationInfo() {
+	public String getIPopulationInfo() {
 		return this.populationInfo;
 	}
 	
-	public long getPingToServer() {
+	public long getIPingToServer() {
 		return this.pingToServer;
 	}
 	

@@ -2,6 +2,9 @@ package me.deftware.client.framework.Utils.Render;
 
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.glColor4f;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
 
 import java.awt.Color;
 
@@ -12,6 +15,8 @@ import me.deftware.client.framework.Wrappers.Entity.IMob;
 import me.deftware.client.framework.Wrappers.Entity.IPlayer;
 import me.deftware.client.framework.Wrappers.Objects.IBlockPos;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -340,6 +345,32 @@ public class RenderUtils {
 		RenderHelper.disableStandardItemLighting();
 	}
 
+	public static void drawAltFace(String name, int x, int y, int w, int h, boolean selected) {
+		try {
+
+			AbstractClientPlayer.getDownloadImageSkin(AbstractClientPlayer.getLocationSkin(name), name)
+					.loadTexture(Minecraft.getMinecraft().getResourceManager());
+			Minecraft.getMinecraft().getTextureManager().bindTexture(AbstractClientPlayer.getLocationSkin(name));
+			glEnable(GL_BLEND);
+			glColor4f(0.9F, 0.9F, 0.9F, 1.0F);
+
+			float fw = 192;
+			float fh = 192;
+			float u = 24;
+			float v = 24;
+			Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
+			fw = 192;
+			fh = 192;
+			u = 120;
+			v = 24;
+			Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
+
+			glDisable(GL_BLEND);
+
+		} catch (Exception e) {
+			;
+		}
+	}
 	public static void blockESPBox(IBlockPos IBlockPos, Color c) {
 		RenderUtils.fixDarkLight();
 		GlStateManager.resetColor();

@@ -3,12 +3,32 @@ package me.deftware.client.framework.Wrappers;
 import org.lwjgl.opengl.Display;
 
 import me.deftware.client.framework.Wrappers.Objects.IGuiScreen;
+import me.deftware.client.framework.Wrappers.Objects.IServerData;
 import me.deftware.client.framework.Wrappers.Objects.ITimer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.realms.RealmsSharedConstants;
 
 public class IMinecraft {
+
+	private static IServerData iServerCache = null;
+
+	public synchronized static IServerData getCurrentServer() {
+		if (Minecraft.getMinecraft().getCurrentServerData() == null) {
+			return null;
+		}
+		if (iServerCache != null && Minecraft.getMinecraft().getCurrentServerData() != null) {
+			if (iServerCache.serverIP.equals(Minecraft.getMinecraft().getCurrentServerData().serverIP)) {
+				return iServerCache;
+			}
+		}
+		ServerData sd = Minecraft.getMinecraft().getCurrentServerData();
+		iServerCache = new IServerData(sd.serverName,sd.serverIP,sd.isOnLAN());
+		iServerCache.gameVersion = sd.gameVersion;
+		return iServerCache;
+	}
 
 	/**
 	 * Sets the window title 
@@ -110,6 +130,20 @@ public class IMinecraft {
 		Minecraft.getMinecraft().rightClickDelayTimer = delay;
 	}
 	
+	/**
+	 * Checks if the Minecraft chat is open
+	 * 
+	 * @return
+	 */
+	public static boolean isChatOpen() {
+		if (Minecraft.getMinecraft().currentScreen != null) {
+			if (Minecraft.getMinecraft().currentScreen instanceof GuiChat) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Get's the current Minecraft version
 	 */
