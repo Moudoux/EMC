@@ -33,6 +33,11 @@ Clients using EMC
 
 * [Aristois](https://aristois.opentexon.com/) (Comming soon)
 
+Built in commands
+-------------------
+
+You can type `.version` to check what EMC version you are running, you can type `.cinfo` to see what client is loaded.
+
 Why use EMC ?
 -------------------
 
