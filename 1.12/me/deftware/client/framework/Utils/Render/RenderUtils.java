@@ -347,26 +347,14 @@ public class RenderUtils {
 
 	public static void drawAltFace(String name, int x, int y, int w, int h, boolean selected) {
 		try {
-
 			AbstractClientPlayer.getDownloadImageSkin(AbstractClientPlayer.getLocationSkin(name), name)
 					.loadTexture(Minecraft.getMinecraft().getResourceManager());
 			Minecraft.getMinecraft().getTextureManager().bindTexture(AbstractClientPlayer.getLocationSkin(name));
 			glEnable(GL_BLEND);
 			glColor4f(0.9F, 0.9F, 0.9F, 1.0F);
-
-			float fw = 192;
-			float fh = 192;
-			float u = 24;
-			float v = 24;
-			Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
-			fw = 192;
-			fh = 192;
-			u = 120;
-			v = 24;
-			Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
-
+			Gui.drawModalRectWithCustomSizedTexture(x, y, 24, 24, w, h, 192, 192);
+			Gui.drawModalRectWithCustomSizedTexture(x, y, 120, 24, w, h, 192, 192);
 			glDisable(GL_BLEND);
-
 		} catch (Exception e) {
 			;
 		}

@@ -32,7 +32,7 @@ public class IWorld {
 	private static int iEntityCache = 0, iPlayerCache = 0, iMobCache = 0, iItemCache = 0, iChestCache = 0;
 
 	/**
-	 * Converts the loaded entity list to IMobs and returns it
+	 * Converts the loaded entity list to IEntites and returns it
 	 * 
 	 * @return
 	 */
