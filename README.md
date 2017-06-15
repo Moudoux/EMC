@@ -49,7 +49,7 @@ Installing EMC/Setting up for making mods
 
 Download EMC for any Minecraft version (It doesn't matter since all versions are compatible with your mod)
 
-You can install EMC using the [EMC Installer](https://github.com/Moudoux/EMC/releases)
+You can install EMC using the [EMC Installer](https://github.com/Moudoux/EMC-Installer/releases)
 
 Install it, then open your favourite Java IDE and make a new project, import the EMC Minecraft jar in `.minecraft/versions/EMC_1.12/EMC_1.12.jar`
 
