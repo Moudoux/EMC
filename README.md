@@ -49,9 +49,11 @@ Installing EMC/Setting up for making mods
 
 Download EMC for any Minecraft version (It doesn't matter since all versions are compatible with your mod)
 
-Install it, then open your favourite Java IDE and make a new project, import the EMC Minecraft jar in `.minecraft/versions/<MC Version>_EMC/<MC Version>_EMC.jar`
+You can install EMC using the [EMC Installer](https://github.com/Moudoux/EMC/releases)
 
-Make a class called `Main.java`, make it extend `Client` and add the required methods.
+Install it, then open your favourite Java IDE and make a new project, import the EMC Minecraft jar in `.minecraft/versions/EMC_1.12/EMC_1.12.jar`
+
+Make a class called `Main.java`, make it extend `EMCClient` and add the required methods.
 
 Create a file called `client.json` in the root of your project. In the file, add the following:
 
@@ -68,8 +70,7 @@ Create a file called `client.json` in the root of your project. In the file, add
 }
 ```
 
-After you've written your mod, export it to a file named `Client.jar`, drop that jar in `.minecraft/versions/<MC Version>_EMC/` and start Minecraft, your
-mod should now be loaded.
+After you've written your mod, export it to a file named `Client.jar`, drop that jar in `.minecraft/versions/EMC_1.12/` and start Minecraft, your mod should now be loaded.
 
 A simple one class client example
 -------------------
@@ -82,7 +83,7 @@ import me.deftware.client.framework.Event.Event;
 import me.deftware.client.framework.Event.Events.EventClientCommand;
 import me.deftware.client.framework.Wrappers.IChat;
 
-public class Main extends Client {
+public class Main extends EMCClient {
 	
 	private EMCClientInfo clientInfo;
 	
