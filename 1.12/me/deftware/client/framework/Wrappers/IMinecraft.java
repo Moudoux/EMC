@@ -6,7 +6,6 @@ import me.deftware.client.framework.Wrappers.Entity.IEntity;
 import me.deftware.client.framework.Wrappers.Entity.IEntity.EntityType;
 import me.deftware.client.framework.Wrappers.Objects.IGuiScreen;
 import me.deftware.client.framework.Wrappers.Objects.IServerData;
-import me.deftware.client.framework.Wrappers.Objects.ITimer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
@@ -85,27 +84,6 @@ public class IMinecraft {
 	 */
 	public static void shutdown() {
 		Minecraft.getMinecraft().shutdown();
-	}
-	
-	/**
-	 * Sets the Minecraft timer
-	 * 
-	 * @param timer
-	 */
-	public static void setTimer(ITimer timer) {
-		Minecraft.getMinecraft().timer = timer;
-	}
-	
-	/**
-	 * Converts the Minecraft timer to a ITimer and returns it
-	 * @return
-	 */
-	public static ITimer getTimer() {
-		// TODO: 
-		//ITimer timer = new ITimer(Minecraft.getMinecraft().timer.timerSpeed);
-		//setTimer(timer);
-		//return timer;
-		return null;
 	}
 	
 	/**
