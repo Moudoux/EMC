@@ -35,6 +35,98 @@ public class IEntityPlayer {
 		return Minecraft.getMinecraft().player.isCreative();
 	}
 
+	public static void setPositionY(int y) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.setPosition(Minecraft.getMinecraft().player.posX,
+				Minecraft.getMinecraft().player.posY + y, Minecraft.getMinecraft().player.posZ);
+	}
+
+	public static void setNoClip(boolean state) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.noClip = state;
+	}
+
+	public static void setFalldistance(float distance) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.fallDistance = distance;
+	}
+
+	public static void setOnGround(boolean state) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.onGround = state;
+	}
+
+	public static void setMotionX(double x) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.motionX = x;
+	}
+
+	public static void setMotionY(double y) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.motionY = y;
+	}
+
+	public static void setMotionZ(double z) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.motionZ = z;
+	}
+
+	public static void setMotionPlusX(double x) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.motionX += x;
+	}
+
+	public static void setMotionPlusY(double y) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.motionY += y;
+	}
+
+	public static void setMotionPlusZ(double z) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.motionZ += z;
+	}
+
+	public static void setMotionMinusX(double x) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.motionX -= x;
+	}
+
+	public static void setMotionMinusY(double y) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.motionY -= y;
+	}
+
+	public static void setMotionMinusZ(double z) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.motionZ -= z;
+	}
+
 	public static void respawnPlayer() {
 		if (isNull()) {
 			return;
