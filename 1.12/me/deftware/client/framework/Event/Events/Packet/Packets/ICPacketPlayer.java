@@ -14,4 +14,8 @@ public class ICPacketPlayer extends IPacket {
 		((CPacketPlayer) getPacket()).onGround = state;
 	}
 
+	public void setMoving(boolean state) {
+		((CPacketPlayer) getPacket()).moving = state;
+	}
+
 }
