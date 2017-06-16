@@ -6,7 +6,7 @@ import net.minecraft.client.settings.KeyBinding;
 public class IKeybindWrapper {
 	
 	public static boolean isPressed(IKeybind bind) {
-		return bind.bind.isPressed();
+		return bind.bind.pressed;
 	}
 	
 	public static enum IKeybind {
