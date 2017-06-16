@@ -4,11 +4,11 @@ import me.deftware.client.framework.Event.Event;
 import me.deftware.client.framework.Utils.Chat.ChatProcessor;
 import net.minecraft.util.text.ITextComponent;
 
-public class EventChatRecive extends Event {
+public class EventChatReceive extends Event {
 
 	private ITextComponent itc;
 
-	public EventChatRecive(ITextComponent itc) {
+	public EventChatReceive(ITextComponent itc) {
 		this.itc = itc;
 	}
 
