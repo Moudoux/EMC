@@ -10,6 +10,8 @@ import me.deftware.client.framework.Wrappers.Objects.ITimer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.realms.RealmsSharedConstants;
@@ -141,6 +143,36 @@ public class IMinecraft {
 	public static boolean isChatOpen() {
 		if (Minecraft.getMinecraft().currentScreen != null) {
 			if (Minecraft.getMinecraft().currentScreen instanceof GuiChat) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks if the player is in a container (Chest, Inventory, etc)
+	 * 
+	 * @return
+	 */
+	public static boolean isContainerOpen() {
+		if (Minecraft.getMinecraft().currentScreen != null) {
+			if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer
+					&& !(Minecraft.getMinecraft().currentScreen instanceof GuiInventory)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks if the player has the inventory open
+	 * 
+	 * @return
+	 */
+	public static boolean isInventoryOpen() {
+		if (Minecraft.getMinecraft().currentScreen != null) {
+			if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer
+					&& Minecraft.getMinecraft().currentScreen instanceof GuiInventory) {
 				return true;
 			}
 		}
