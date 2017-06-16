@@ -8,9 +8,11 @@ import me.deftware.client.framework.Wrappers.Objects.IGuiScreen;
 import me.deftware.client.framework.Wrappers.Objects.IServerData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.realms.RealmsSharedConstants;
@@ -37,6 +39,11 @@ public class IMinecraft {
 
 	public static void reloadRenderers() {
 		Minecraft.getMinecraft().renderGlobal.loadRenderers();
+	}
+
+	public static void connectToServer(IServerData server) {
+		Minecraft.getMinecraft().displayGuiScreen(new GuiConnecting(new GuiMultiplayer(null), Minecraft.getMinecraft(),
+				server));
 	}
 
 	/**

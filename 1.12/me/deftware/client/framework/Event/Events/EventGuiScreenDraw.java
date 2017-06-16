@@ -19,6 +19,14 @@ public class EventGuiScreenDraw extends Event {
 		return false;
 	}
 
+	public int getWidth() {
+		return screen.width;
+	}
+
+	public int getHeight() {
+		return screen.height;
+	}
+
 	public static enum CommonScreenTypes {
 		GuiDisconnected
 	}
