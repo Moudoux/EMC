@@ -32,4 +32,9 @@ public class EventChatReceive extends Event {
 		return itc.getUnformattedText();
 	}
 
+	public void replace(String original, String _new) {
+		String message = itc.getUnformattedText();
+		itc = ChatProcessor.getITextComponent(message.replace(original, _new));
+	}
+
 }
