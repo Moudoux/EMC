@@ -150,7 +150,7 @@ public class IMinecraft {
 	}
 
 	/**
-	 * Checks if the player is in a container (Chest, Inventory, etc)
+	 * Checks if the player is in a container
 	 * 
 	 * @return
 	 */

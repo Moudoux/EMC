@@ -3,6 +3,7 @@ package me.deftware.client.framework.Wrappers.Item;
 import java.util.ArrayList;
 
 import me.deftware.client.framework.Wrappers.Entity.IPlayer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
 public class IInventoryWrapper {
@@ -33,6 +34,18 @@ public class IInventoryWrapper {
 		ItemStack item = offhand ? player.getPlayer().getHeldItemOffhand() : player.getPlayer().getHeldItemMainhand();
 		IItemStack stack = new IItemStack(item);
 		return stack;
+	}
+
+	public static IItemStack getArmorInSlot(int id) {
+		return new IItemStack(Minecraft.getMinecraft().player.inventory.armorItemInSlot(id));
+	}
+
+	public static IItemStack getStackInSlot(int id) {
+		return new IItemStack(Minecraft.getMinecraft().player.inventory.getStackInSlot(id));
+	}
+
+	public static int getFirstEmptyStack() {
+		return Minecraft.getMinecraft().player.inventory.getFirstEmptyStack();
 	}
 
 }

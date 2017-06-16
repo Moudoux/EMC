@@ -5,19 +5,21 @@ import net.minecraft.inventory.ClickType;
 
 public class IPlayerController {
 
-	public static void windowClick(int id, IClickType type) {
+	public static void windowClick(int id, int next, IClickType type) {
 		ClickType t = ClickType.THROW;
 		if (type.equals(IClickType.THROW)) {
 			t = ClickType.THROW;
+		} else if (type.equals(IClickType.QUICK_MOVE)) {
+			t = ClickType.QUICK_MOVE;
 		} else {
 			return;
 		}
-		Minecraft.getMinecraft().playerController.windowClick(0, id, 1, t,
+		Minecraft.getMinecraft().playerController.windowClick(0, id, next, t,
 				Minecraft.getMinecraft().player);
 	}
 
 	public static enum IClickType {
-		THROW
+		THROW, QUICK_MOVE
 	}
 
 }

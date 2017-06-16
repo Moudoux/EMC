@@ -31,6 +31,10 @@ public class IItemStack {
 				stack.getStack().stackSize));
 	}
 
+	public IItem getIItem() {
+		return new IItem(stack.getItem());
+	}
+
 	/**
 	 * 0 = COMMON 1 = UNCOMMON 2 = RARE 3 = EPIC
 	 * 
