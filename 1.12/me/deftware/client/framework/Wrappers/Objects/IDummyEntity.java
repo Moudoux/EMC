@@ -5,15 +5,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class IDummieEntity extends IEntity {
+public class IDummyEntity extends IEntity {
 
-	public IDummieEntity(IBlockPos pos) {
-		super(new dummieEntity(pos));
+	public IDummyEntity(IBlockPos pos) {
+		super(new dummyEntity(pos));
 	}
 
-	private static class dummieEntity extends Entity {
+	private static class dummyEntity extends Entity {
 
-		public dummieEntity(IBlockPos pos) {
+		public dummyEntity(IBlockPos pos) {
 			super(Minecraft.getMinecraft().player.getEntityWorld());
 			this.posX = pos.getX();
 			this.posY = pos.getY();
