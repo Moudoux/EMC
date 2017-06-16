@@ -2,6 +2,7 @@ package me.deftware.client.framework.Wrappers;
 
 import org.lwjgl.opengl.Display;
 
+import me.deftware.client.framework.Wrappers.Entity.IEntity;
 import me.deftware.client.framework.Wrappers.Entity.IEntity.EntityType;
 import me.deftware.client.framework.Wrappers.Objects.IGuiScreen;
 import me.deftware.client.framework.Wrappers.Objects.IServerData;
@@ -170,6 +171,13 @@ public class IMinecraft {
 			return true;
 		}
 		return false;
+	}
+
+	public static IEntity getHit() {
+		if (!isMouseOver()) {
+			return null;
+		}
+		return new IEntity(Minecraft.getMinecraft().objectMouseOver.entityHit);
 	}
 
 	/**

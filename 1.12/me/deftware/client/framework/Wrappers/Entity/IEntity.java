@@ -126,6 +126,15 @@ public class IEntity {
 	}
 
 	/**
+	 * If this is invisible the the player
+	 * 
+	 * @return
+	 */
+	public boolean isInvisibleToPlayer() {
+		return entity.isInvisibleToPlayer(Minecraft.getMinecraft().player);
+	}
+
+	/**
 	 * Is this entity the player ?
 	 * 
 	 * @return
