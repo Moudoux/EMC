@@ -202,6 +202,10 @@ public abstract class IGuiScreen extends GuiScreen {
 		return r.getScaledWidth();
 	}
 
+	public void drawITintBackground(int tint) {
+		this.drawBackground(tint);
+	}
+
 	/*
 	 * The handlers
 	 */
