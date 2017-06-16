@@ -10,6 +10,10 @@ public class EventSlowdown extends Event {
 		this.type = type;
 	}
 
+	public SlowdownType getType() {
+		return type;
+	}
+
 	public static enum SlowdownType {
 		Soulsand, Web, Item_Use, Hunger, Blindness, Sneak
 	}
