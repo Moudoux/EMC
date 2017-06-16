@@ -28,6 +28,13 @@ public class IEntityPlayer {
 		swingArmClientSide();
 	}
 
+	public static boolean isCreative() {
+		if (isNull()) {
+			return false;
+		}
+		return Minecraft.getMinecraft().player.isCreative();
+	}
+
 	public static void swingArmClientSide() {
 		if (isNull()) {
 			return;

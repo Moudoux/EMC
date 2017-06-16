@@ -35,6 +35,7 @@ public abstract class Event {
 				} else if (((EventClientCommand) event).getCommand().equals(".unload")) {
 					FrameworkLoader.ejectClient();
 					Display.setTitle("Minecraft " + IMinecraft.getMinecraftVersion());
+					IMinecraft.setGamma(0.5F);
 					ChatProcessor.printFrameworkMessage("Unloaded client jar, Minecraft is now running as vanilla");
 					return;
 				} else if (((EventClientCommand) event).getCommand().equals(".cinfo")) {
