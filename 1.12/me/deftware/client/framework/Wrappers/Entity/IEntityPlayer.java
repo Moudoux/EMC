@@ -43,6 +43,20 @@ public class IEntityPlayer {
 				Minecraft.getMinecraft().player.posY + y, Minecraft.getMinecraft().player.posZ);
 	}
 
+	public static void setPosition(double x, double y, double z) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.setPosition(x, y, z);
+	}
+
+	public static void setPositionAndRotation(double x, double y, double z, float yaw, float pitch) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.setPositionAndRotation(x, y, z, yaw, pitch);
+	}
+
 	public static void setJumpMovementFactor(float speed) {
 		if (isNull()) {
 			return;

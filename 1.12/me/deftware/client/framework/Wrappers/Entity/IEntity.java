@@ -148,7 +148,7 @@ public class IEntity {
 	}
 
 	public double getPosY() {
-		return entity.posZ;
+		return entity.posY;
 	}
 
 	public double getPosZ() {

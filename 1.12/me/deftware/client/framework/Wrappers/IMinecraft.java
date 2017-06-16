@@ -41,6 +41,14 @@ public class IMinecraft {
 		Minecraft.getMinecraft().renderGlobal.loadRenderers();
 	}
 
+	public static void addEntityToWorld(int id, IEntity entity) {
+		Minecraft.getMinecraft().world.addEntityToWorld(id, entity.getEntity());
+	}
+
+	public static void removeEntityFromWorld(int id) {
+		Minecraft.getMinecraft().world.removeEntityFromWorld(id);
+	}
+
 	public static void connectToServer(IServerData server) {
 		Minecraft.getMinecraft().displayGuiScreen(new GuiConnecting(new GuiMultiplayer(null), Minecraft.getMinecraft(),
 				server));
