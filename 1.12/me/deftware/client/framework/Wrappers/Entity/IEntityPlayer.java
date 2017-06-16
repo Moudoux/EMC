@@ -138,7 +138,7 @@ public class IEntityPlayer {
 		if (isNull()) {
 			return 0;
 		}
-		return Minecraft.getMinecraft().player.getHealth();
+		return Minecraft.getMinecraft().player.fallDistance;
 	}
 
 	public static boolean hasPotionEffects() {
