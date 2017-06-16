@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.realms.RealmsSharedConstants;
 
 public class IMinecraft {
