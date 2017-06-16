@@ -35,6 +35,13 @@ public class IEntityPlayer {
 		return Minecraft.getMinecraft().player.isCreative();
 	}
 
+	public static void respawnPlayer() {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.respawnPlayer();
+	}
+
 	public static void swingArmClientSide() {
 		if (isNull()) {
 			return;
