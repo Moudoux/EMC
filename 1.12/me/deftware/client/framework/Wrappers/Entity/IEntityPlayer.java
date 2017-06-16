@@ -43,6 +43,13 @@ public class IEntityPlayer {
 				Minecraft.getMinecraft().player.posY + y, Minecraft.getMinecraft().player.posZ);
 	}
 
+	public static void setJumpMovementFactor(float speed) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.jumpMovementFactor = speed;
+	}
+
 	public static void setNoClip(boolean state) {
 		if (isNull()) {
 			return;
