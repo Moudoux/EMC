@@ -4,12 +4,6 @@ import net.minecraft.client.multiplayer.ServerData;
 
 public class IServerData extends ServerData {
 
-	/**
-	 * 
-	 * @param name
-	 * @param ip
-	 * @param isLan
-	 */
 	public IServerData(String name, String ip, boolean isLan) {
 		super(name, ip, isLan);
 	}
@@ -22,6 +16,10 @@ public class IServerData extends ServerData {
 		return this.pinged;
 	}
 	
+	public String getIIP() {
+		return this.serverIP;
+	}
+
 	public boolean isILanServer() {
 		return this.isOnLAN();
 	}

@@ -17,6 +17,7 @@ import net.minecraft.realms.RealmsSharedConstants;
 
 public class IMinecraft {
 
+	public static IServerData lastServer = null;
 	private static IServerData iServerCache = null;
 
 	public synchronized static IServerData getCurrentServer() {
