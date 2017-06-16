@@ -46,4 +46,20 @@ public class IGL11 {
 		glDisable(GL_LIGHTING);
 	}
 
+	public static void glVertex3d(double x, double y, double z) {
+		GL11.glVertex3d(x, y, z);
+	}
+
+	public static void glDepthMask(boolean b) {
+		GL11.glDepthMask(b);
+	}
+
+	public static void glEnable(int i) {
+		GL11.glEnable(i);
+	}
+
+	public static void glBlendFunc(int sfactor, int dfactor) {
+		GL11.glBlendFunc(sfactor, dfactor);
+	}
+
 }
