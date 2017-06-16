@@ -37,6 +37,10 @@ public class IMinecraft {
 		return iServerCache;
 	}
 
+	public static boolean isInGame() {
+		return Minecraft.getMinecraft().currentScreen == null;
+	}
+
 	public static void reloadRenderers() {
 		Minecraft.getMinecraft().renderGlobal.loadRenderers();
 	}

@@ -2,6 +2,9 @@ package me.deftware.client.framework.Wrappers.Entity;
 
 import java.util.List;
 
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -9,6 +12,7 @@ import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.item.ItemBow;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * EntityPlayerSP wrapper
@@ -104,6 +108,27 @@ public class IEntityPlayer {
 			return;
 		}
 		Minecraft.getMinecraft().player.motionZ = z;
+	}
+
+	public static void setMotionTimesX(double x) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.motionX *= x;
+	}
+
+	public static void setMotionTimesY(double y) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.motionY *= y;
+	}
+
+	public static void setMotionTimesZ(double z) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.motionZ *= z;
 	}
 
 	public static void setMotionPlusX(double x) {
@@ -456,6 +481,38 @@ public class IEntityPlayer {
 
 	public static enum HandItem {
 		ItemBow
+	}
+
+	public static boolean isSneaking() {
+		return Minecraft.getMinecraft().player.isSneaking();
+	}
+
+	public static boolean isInAir() {
+		return Minecraft.getMinecraft().player.isInsideOfMaterial(Material.AIR);
+	}
+
+	public static boolean isTouchingLiquid() {
+		Minecraft mc = Minecraft.getMinecraft();
+		boolean inLiquid = false;
+		int y = (int) mc.player.boundingBox.minY;
+		for (int x = floor_double(mc.player.boundingBox.minX); x < floor_double(mc.player.boundingBox.maxX) + 1; x++) {
+			for (int z = floor_double(mc.player.boundingBox.minZ); z < floor_double(mc.player.boundingBox.maxZ)
+					+ 1; z++) {
+				net.minecraft.block.Block block = mc.world.getBlockState(new BlockPos(x, y, z)).getBlock();
+				if ((block != null) && (!(block instanceof BlockAir))) {
+					if (!(block instanceof BlockLiquid)) {
+						return false;
+					}
+					inLiquid = true;
+				}
+			}
+		}
+		return inLiquid;
+	}
+
+	public static int floor_double(double value) {
+		int i = (int) value;
+		return value < i ? i - 1 : i;
 	}
 
 
