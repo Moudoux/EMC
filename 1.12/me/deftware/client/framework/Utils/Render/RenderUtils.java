@@ -10,6 +10,7 @@ import java.awt.Color;
 
 import org.lwjgl.opengl.GL11;
 
+import me.deftware.client.framework.Wrappers.Entity.IEntity;
 import me.deftware.client.framework.Wrappers.Entity.IItemEntity;
 import me.deftware.client.framework.Wrappers.Entity.IMob;
 import me.deftware.client.framework.Wrappers.Entity.IPlayer;
@@ -591,6 +592,10 @@ public class RenderUtils {
 
 	public static void tracerLine(IMob entity, int mode) {
 		tracerLine(entity.getMob(), mode);
+	}
+
+	public static void tracerLine(IEntity entity, int mode) {
+		tracerLine(entity.getEntity(), mode);
 	}
 
 	public static void tracerLine(Entity entity, int mode) {
