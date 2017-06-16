@@ -262,6 +262,20 @@ public class IEntityPlayer {
 		return Minecraft.getMinecraft().player.getName();
 	}
 
+	public static boolean isOnGround() {
+		if (isNull()) {
+			return false;
+		}
+		return Minecraft.getMinecraft().player.onGround;
+	}
+
+	public static boolean isOnLadder() {
+		if (isNull()) {
+			return false;
+		}
+		return Minecraft.getMinecraft().player.isOnLadder();
+	}
+
 	/**
 	 * Is the Minecraft game even loaded ?
 	 * 

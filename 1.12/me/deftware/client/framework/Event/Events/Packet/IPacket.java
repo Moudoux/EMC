@@ -1,5 +1,6 @@
 package me.deftware.client.framework.Event.Events.Packet;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
 
 public class IPacket {
@@ -12,6 +13,13 @@ public class IPacket {
 
 	public Packet<?> getPacket() {
 		return packet;
+	}
+
+	/**
+	 * Sends the packet
+	 */
+	public void sendPacket() {
+		Minecraft.getMinecraft().player.connection.sendPacket(packet);
 	}
 
 }

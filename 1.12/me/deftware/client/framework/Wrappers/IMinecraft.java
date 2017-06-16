@@ -2,6 +2,7 @@ package me.deftware.client.framework.Wrappers;
 
 import org.lwjgl.opengl.Display;
 
+import me.deftware.client.framework.Wrappers.Entity.IEntity.EntityType;
 import me.deftware.client.framework.Wrappers.Objects.IGuiScreen;
 import me.deftware.client.framework.Wrappers.Objects.IServerData;
 import me.deftware.client.framework.Wrappers.Objects.ITimer;
@@ -158,4 +159,32 @@ public class IMinecraft {
 		return RealmsSharedConstants.NETWORK_PROTOCOL_VERSION;
 	}
 	
+	/**
+	 * Returns true if the mouse is over a object
+	 * 
+	 * @return
+	 */
+	public static boolean isMouseOver() {
+		if (Minecraft.getMinecraft().objectMouseOver != null) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Checks if the entity hit is a certain type
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public static boolean entityHitInstanceOf(EntityType type) {
+		if (!isMouseOver()) {
+			return false;
+		}
+		if (type.equals(EntityType.ENTITY_LIVING_BASE)) {
+			return Minecraft.getMinecraft().objectMouseOver.entityHit instanceof EntityLivingBase;
+		}
+		return false;
+	}
+
 }
