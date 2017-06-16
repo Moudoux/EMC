@@ -1,13 +1,21 @@
 package me.deftware.client.framework.Wrappers.Objects;
 
+import net.minecraft.util.math.BlockPos;
+
 public class IBlockPos {
 
 	private double x, y, z;
+	private BlockPos pos;
 
 	public IBlockPos(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.pos = new BlockPos(x, y, z);
+	}
+
+	public BlockPos getPos() {
+		return pos;
 	}
 
 	public double getX() {

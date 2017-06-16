@@ -164,6 +164,10 @@ public class IWorld {
 		}
 	}
 
+	public static IBlock getBlockFromPos(IBlockPos pos) {
+		return new IBlock(Minecraft.getMinecraft().world.getBlockState(pos.getPos()).getBlock());
+	}
+
 	public static class IChest {
 
 		private IChestType type;
