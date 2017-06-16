@@ -127,6 +127,20 @@ public class IEntityPlayer {
 		return Minecraft.getMinecraft().player.prevPosZ;
 	}
 
+	public static float getHealth() {
+		if (isNull()) {
+			return 0;
+		}
+		return Minecraft.getMinecraft().player.getHealth();
+	}
+
+	public static float getFallDistance() {
+		if (isNull()) {
+			return 0;
+		}
+		return Minecraft.getMinecraft().player.getHealth();
+	}
+
 	public static boolean hasPotionEffects() {
 		if (!Minecraft.getMinecraft().player.getActivePotionEffects().isEmpty()) {
 			return true;
@@ -302,5 +316,6 @@ public class IEntityPlayer {
 	public static enum HandItem {
 		ItemBow
 	}
+
 
 }
