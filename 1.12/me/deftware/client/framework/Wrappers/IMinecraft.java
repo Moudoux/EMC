@@ -34,6 +34,10 @@ public class IMinecraft {
 		return iServerCache;
 	}
 
+	public static void reloadRenderers() {
+		Minecraft.getMinecraft().renderGlobal.loadRenderers();
+	}
+
 	/**
 	 * Sets the window title 
 	 * 
