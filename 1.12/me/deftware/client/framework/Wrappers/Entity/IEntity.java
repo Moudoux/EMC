@@ -146,6 +146,22 @@ public class IEntity {
 		return entity.posZ;
 	}
 
+	public double getPrevPosX() {
+		return entity.prevPosX;
+	}
+
+	public double getPrevPosY() {
+		return entity.prevPosY;
+	}
+
+	public double getPrevPosZ() {
+		return entity.prevPosZ;
+	}
+
+	public double getEyeHeight() {
+		return entity.getEyeHeight();
+	}
+
 	/**
 	 * Returns true if this entity can be seen by the player (Aka if the entity
 	 * is behind a wall)

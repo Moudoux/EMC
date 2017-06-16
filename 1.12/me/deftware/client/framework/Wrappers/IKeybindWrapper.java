@@ -11,7 +11,8 @@ public class IKeybindWrapper {
 	
 	public static enum IKeybind {
 		
-		SNEAK(Minecraft.getMinecraft().gameSettings.keyBindSneak);
+		SNEAK(Minecraft.getMinecraft().gameSettings.keyBindSneak), USEITEM(
+				Minecraft.getMinecraft().gameSettings.keyBindUseItem);
 
 		KeyBinding bind;
 
