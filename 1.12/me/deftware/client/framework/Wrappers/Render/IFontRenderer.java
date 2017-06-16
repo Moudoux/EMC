@@ -6,8 +6,7 @@ import net.minecraft.client.Minecraft;
 public class IFontRenderer {
 	
 	public static void drawString(String text, int x, int y, int color) {
-		Minecraft.getMinecraft().fontRendererObj.drawString(text,
-				x - Minecraft.getMinecraft().fontRendererObj.getStringWidth(text) / 2, y, color);
+		Minecraft.getMinecraft().fontRendererObj.drawString(text, x, y, color);
 	}
 	
 	public static void drawCenteredString(String text, int x, int y, int color) {
