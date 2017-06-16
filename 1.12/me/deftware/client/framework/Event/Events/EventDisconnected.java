@@ -1,5 +1,6 @@
 package me.deftware.client.framework.Event.Events;
 
+import me.deftware.client.framework.Event.Event;
 import me.deftware.client.framework.Wrappers.IMinecraft;
 
 /**
@@ -8,7 +9,7 @@ import me.deftware.client.framework.Wrappers.IMinecraft;
  * @author deftware
  *
  */
-public class EventDisconnected {
+public class EventDisconnected extends Event {
 
 	/**
 	 * The server ip the player was disconnected from
