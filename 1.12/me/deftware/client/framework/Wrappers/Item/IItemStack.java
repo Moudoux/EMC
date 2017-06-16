@@ -1,5 +1,6 @@
 package me.deftware.client.framework.Wrappers.Item;
 
+import me.deftware.client.framework.Wrappers.Item.Items.IItemArmor;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -32,6 +33,9 @@ public class IItemStack {
 	}
 
 	public IItem getIItem() {
+		if (stack.getItem() instanceof ItemArmor) {
+			return new IItemArmor(stack.getItem());
+		}
 		return new IItem(stack.getItem());
 	}
 

@@ -36,6 +36,10 @@ public class IGlStateManager {
 		GlStateManager.color(colorRed, colorGreen, colorBlue, 1.0F);
 	}
 	
+	public static void resetColor() {
+		GlStateManager.resetColor();
+	}
+
 	public static void pushMatrix() {
 		GlStateManager.pushMatrix();
 	}

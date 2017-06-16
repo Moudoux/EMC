@@ -42,6 +42,13 @@ public class IEntityPlayer {
 		Minecraft.getMinecraft().player.swingArm(EnumHand.MAIN_HAND);
 	}
 
+	public static float getSaturationLevel() {
+		if (isNull()) {
+			return 0;
+		}
+		return Minecraft.getMinecraft().player.getFoodStats().getSaturationLevel();
+	}
+
 	public static void swingArmPacket() {
 		if (isNull()) {
 			return;
@@ -225,6 +232,13 @@ public class IEntityPlayer {
 			return false;
 		}
 		return Minecraft.getMinecraft().player.isRowingBoat();
+	}
+
+	public static boolean isRidingHorse() {
+		if (isNull()) {
+			return false;
+		}
+		return Minecraft.getMinecraft().player.isRidingHorse();
 	}
 
 	public static boolean isInLiquid() {

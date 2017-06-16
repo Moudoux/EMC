@@ -18,6 +18,10 @@ public class IRenderItem {
 		getRenderItem().renderItemOverlays(Minecraft.getMinecraft().fontRendererObj, stack.getStack(), x, y);
 	}
 
+	public static void renderItemAndEffectIntoGUI(IItemStack stack, int x, int y) {
+		getRenderItem().renderItemAndEffectIntoGUI(stack.getStack(), x, y);
+	}
+
 	public static void setZLevel(float z) {
 		getRenderItem().zLevel = z;
 	}

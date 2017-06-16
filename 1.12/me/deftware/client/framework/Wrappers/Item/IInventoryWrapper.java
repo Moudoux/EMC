@@ -36,6 +36,10 @@ public class IInventoryWrapper {
 		return stack;
 	}
 
+	public static IItemStack getArmorInventorySlot(int id) {
+		return new IItemStack(Minecraft.getMinecraft().player.inventory.armorInventory.get(id));
+	}
+
 	public static IItemStack getArmorInSlot(int id) {
 		return new IItemStack(Minecraft.getMinecraft().player.inventory.armorItemInSlot(id));
 	}
