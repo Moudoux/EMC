@@ -22,7 +22,7 @@ public abstract class Event {
 		this.canceled = canceled;
 	}
 	
-	public static void sendEvent(Event event) {
+	public static Event sendEvent(Event event) {
 		try {
 			if (event instanceof EventClientCommand) {
 				if (((EventClientCommand) event).getCommand().equals(".version")) {
@@ -31,13 +31,13 @@ public abstract class Event {
 									"§7You are running " + FrameworkConstants.FRAMEWORK_NAME + " version "
 											+ FrameworkConstants.VERSION
 											+ " built by " + FrameworkConstants.AUTHOR);
-					return;
+					return event;
 				} else if (((EventClientCommand) event).getCommand().equals(".unload")) {
 					FrameworkLoader.ejectClient();
 					Display.setTitle("Minecraft " + IMinecraft.getMinecraftVersion());
 					IMinecraft.setGamma(0.5F);
 					ChatProcessor.printFrameworkMessage("Unloaded client jar, Minecraft is now running as vanilla");
-					return;
+					return event;
 				} else if (((EventClientCommand) event).getCommand().equals(".cinfo")) {
 					if (FrameworkLoader.clientInfo == null || FrameworkLoader.getClient() == null) {
 						ChatProcessor.printFrameworkMessage("You are running vanilla, no client is loaded");
@@ -47,7 +47,7 @@ public abstract class Event {
 					String author = FrameworkLoader.clientInfo.get("author").getAsString();
 					ChatProcessor.printFrameworkMessage(
 							"You are running \"" + name + "\" version " + version + " made by " + author);
-					return;
+					return event;
 				}
 			}
 			if (FrameworkLoader.getClient() != null) {
@@ -56,6 +56,7 @@ public abstract class Event {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		return event;
 	}
 	
 }
