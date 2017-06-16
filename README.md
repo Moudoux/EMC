@@ -38,7 +38,7 @@ Built in commands
 
 You can type `.version` to check what EMC version you are running, you can type `.cinfo` to see what client is loaded.
 
-Why use EMC ?
+Why use EMC?
 -------------------
 
 * Easy to use (You don't have to think about Minecraft obfuscation)
