@@ -1,5 +1,6 @@
 package me.deftware.client.framework.Wrappers.Item;
 
+import me.deftware.client.framework.Wrappers.IBlock;
 import me.deftware.client.framework.Wrappers.Item.Items.IItemArmor;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -13,6 +14,14 @@ public class IItemStack {
 
 	public IItemStack(ItemStack stack) {
 		this.stack = stack;
+	}
+
+	public IItemStack(IBlock block) {
+		this.stack = new ItemStack(Item.getItemFromBlock(block.getBlock()));
+	}
+
+	public IItemStack(IItem item) {
+		this.stack = new ItemStack(item.getItem());
 	}
 
 	public ItemStack getStack() {

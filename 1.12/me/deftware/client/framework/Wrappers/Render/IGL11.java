@@ -1,5 +1,7 @@
 package me.deftware.client.framework.Wrappers.Render;
 
+import static org.lwjgl.opengl.GL11.GL_LIGHTING;
+
 import org.lwjgl.opengl.GL11;
 
 public class IGL11 {
@@ -38,6 +40,10 @@ public class IGL11 {
 
 	public static void glTranslatef(float x, float y, float z) {
 		GL11.glTranslatef(x, y, z);
+	}
+
+	public static void disableLightning() {
+		glDisable(GL_LIGHTING);
 	}
 
 }

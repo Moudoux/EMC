@@ -41,12 +41,35 @@ public abstract class IGuiSlot extends GuiSlot {
 	}
 
 	/*
-	 * Wrappers
+	 * Handlers
 	 */
 
 	protected abstract int getISize();
 
 	protected abstract void drawISlot(int id, int x, int y);
 
+	/*
+	 * Wrappers
+	 */
+
+	public int getSelectedSlot() {
+		return selectedSlot;
+	}
+
+	public void onMouseInput() {
+		this.handleMouseInput();
+	}
+
+	public void doDraw(int mouseX, int mouseY, float partialTicks) {
+		this.drawScreen(mouseX, mouseY, partialTicks);
+	}
+
+	public void registerScrollbars(int scrollUpButtonIDIn, int scrollDownButtonIDIn) {
+		this.registerScrollButtons(scrollUpButtonIDIn, scrollDownButtonIDIn);
+	}
+
+	public void clickElement(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
+		this.elementClicked(slotIndex, isDoubleClick, mouseX, mouseY);
+	}
 
 }

@@ -22,4 +22,16 @@ public class IBlock {
 		return block.getIdFromBlock(block);
 	}
 
+	public String getLocalizedName() {
+		return block.getLocalizedName();
+	}
+
+	public static boolean isValidBlock(int id) {
+		return Block.getBlockById(id) != null;
+	}
+
+	public static boolean isValidBlock(String id) {
+		return Block.getBlockFromName(id) != null;
+	}
+
 }

@@ -41,4 +41,8 @@ public class IGuiTextField extends GuiTextField {
 		this.drawTextBox();
 	}
 	
+	public void doCursorTick() {
+		this.updateCursorCounter();
+	}
+
 }

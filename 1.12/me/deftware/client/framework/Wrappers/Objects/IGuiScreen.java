@@ -37,6 +37,12 @@ public abstract class IGuiScreen extends GuiScreen {
 	}
 	
 	@Override
+	public void handleMouseInput() throws IOException {
+		this.onMouseInput();
+		super.handleMouseInput();
+	}
+
+	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		super.keyTyped(typedChar, keyCode);
 		this.onKeyTyped(typedChar, keyCode);
@@ -93,6 +99,10 @@ public abstract class IGuiScreen extends GuiScreen {
 	 * Wrappers
 	 */
 	
+	protected void drawIDefaultBackground() {
+		this.drawDefaultBackground();
+	}
+
 	protected void drawDarkOverlay() {
 		Gui.drawRect(0, 0, width, height, Integer.MIN_VALUE);
 	}
@@ -193,10 +203,13 @@ public abstract class IGuiScreen extends GuiScreen {
 	}
 
 	/*
-	 * The abstract handlers
+	 * The handlers
 	 */
 	
 	protected void onGuiClose() {
+	}
+
+	protected void onMouseInput() {
 	}
 
 	protected abstract void onInitGui();

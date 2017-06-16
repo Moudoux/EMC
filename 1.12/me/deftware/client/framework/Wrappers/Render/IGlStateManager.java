@@ -84,4 +84,12 @@ public class IGlStateManager {
 		GlStateManager.disableBlend();
 	}
 
+	public static void enableRescaleNormal() {
+		GlStateManager.enableRescaleNormal();
+	}
+
+	public static void disableRescaleNormal() {
+		GlStateManager.disableRescaleNormal();
+	}
+
 }
