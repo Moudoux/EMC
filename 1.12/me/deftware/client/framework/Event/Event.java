@@ -40,7 +40,8 @@ public abstract class Event {
 					return event;
 				} else if (((EventClientCommand) event).getCommand().equals(".cinfo")) {
 					if (FrameworkLoader.clientInfo == null || FrameworkLoader.getClient() == null) {
-						ChatProcessor.printFrameworkMessage("You are running vanilla, no client is loaded");
+						ChatProcessor.printFrameworkMessage("You are running vanilla Minecraft, no client is loaded");
+						return event;
 					}
 					String name = FrameworkLoader.clientInfo.get("name").getAsString();
 					int version = FrameworkLoader.clientInfo.get("version").getAsInt();
