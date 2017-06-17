@@ -17,6 +17,8 @@ public class EventGuiScreenDisplay extends Event {
 			type = ScreenTypes.MainMenu;
 		} else if (screen instanceof GuiMultiplayer) {
 			type = ScreenTypes.Multiplayer;
+		} else {
+			type = ScreenTypes.Unknown;
 		}
 	}
 
@@ -33,7 +35,7 @@ public class EventGuiScreenDisplay extends Event {
 	}
 
 	public static enum ScreenTypes {
-		MainMenu, Multiplayer
+		MainMenu, Multiplayer, Unknown
 	}
 	
 }

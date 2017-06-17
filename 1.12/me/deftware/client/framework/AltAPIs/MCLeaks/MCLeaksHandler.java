@@ -35,13 +35,13 @@ public class MCLeaksHandler {
 
 				Minecraft.getMinecraft().session = session2;
 
-				status.setMessage("Â§aSuccess");
+				status.setMessage("§aSuccess");
 				status.setStatus(true);
 			} else {
-				status.setMessage("Â§c" + jsonObject.get("errorMessage").getAsString());
+				status.setMessage("§c" + jsonObject.get("errorMessage").getAsString());
 			}
 		} catch (Exception ex) {
-			status.setMessage("Â§cAn error occurred, please try again");
+			status.setMessage("§cAn error occurred, please try again");
 			ex.printStackTrace();
 		}
 		return status;

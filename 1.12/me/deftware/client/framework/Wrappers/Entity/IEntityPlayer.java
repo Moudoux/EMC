@@ -2,6 +2,7 @@ package me.deftware.client.framework.Wrappers.Entity;
 
 import java.util.List;
 
+import me.deftware.client.framework.Wrappers.Objects.IEntityOtherPlayerMP;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -23,6 +24,10 @@ import net.minecraft.util.math.BlockPos;
 public class IEntityPlayer {
 	
 	private static int ping = 0;
+
+	public static IEntity clonePlayer() {
+		return new IEntity(new IEntityOtherPlayerMP());
+	}
 
 	public static void attackEntity(IEntity entity) {
 		if (isNull()) {

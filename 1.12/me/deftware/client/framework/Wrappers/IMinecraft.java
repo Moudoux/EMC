@@ -37,6 +37,10 @@ public class IMinecraft {
 		return iServerCache;
 	}
 
+	public static int getFPS() {
+		return Minecraft.getDebugFPS();
+	}
+
 	public static boolean isInGame() {
 		return Minecraft.getMinecraft().currentScreen == null;
 	}
