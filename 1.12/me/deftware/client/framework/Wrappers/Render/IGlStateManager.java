@@ -92,4 +92,24 @@ public class IGlStateManager {
 		GlStateManager.disableRescaleNormal();
 	}
 
+	public static void disablePolygonOffset() {
+		GlStateManager.disablePolygonOffset();
+	}
+
+	public static void doPolygonOffset(float f, float g) {
+		GlStateManager.doPolygonOffset(f, g);
+	}
+
+	public static void disableAlpha() {
+		GlStateManager.disableAlpha();
+	}
+
+	public static void enableAlpha() {
+		GlStateManager.enableAlpha();
+	}
+
+	public static void enablePolygonOffset() {
+		GlStateManager.enablePolygonOffset();
+	}
+
 }

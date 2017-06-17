@@ -62,6 +62,10 @@ public class IMinecraft {
 				server));
 	}
 
+	public static int thridPersonView() {
+		return Minecraft.getMinecraft().gameSettings.thirdPersonView;
+	}
+
 	/**
 	 * Sets the window title 
 	 * 

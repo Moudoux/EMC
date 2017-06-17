@@ -3,7 +3,9 @@ package me.deftware.client.framework.Wrappers.Item;
 import java.util.ArrayList;
 
 import me.deftware.client.framework.Wrappers.Entity.IPlayer;
+import me.deftware.client.framework.Wrappers.Objects.ISlot;
 import net.minecraft.client.Minecraft;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class IInventoryWrapper {
@@ -34,6 +36,14 @@ public class IInventoryWrapper {
 		ItemStack item = offhand ? player.getPlayer().getHeldItemOffhand() : player.getPlayer().getHeldItemMainhand();
 		IItemStack stack = new IItemStack(item);
 		return stack;
+	}
+
+	public static ArrayList<ISlot> getSlots() {
+		ArrayList<ISlot> slots = new ArrayList<ISlot>();
+		for (Slot d : Minecraft.getMinecraft().player.inventoryContainer.inventorySlots) {
+			slots.add(new ISlot(d));
+		}
+		return slots;
 	}
 
 	public static IItemStack getArmorInventorySlot(int id) {

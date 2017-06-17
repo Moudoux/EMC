@@ -15,6 +15,7 @@ import me.deftware.client.framework.Wrappers.Entity.IItemEntity;
 import me.deftware.client.framework.Wrappers.Entity.IMob;
 import me.deftware.client.framework.Wrappers.Entity.IPlayer;
 import me.deftware.client.framework.Wrappers.Objects.IBlockPos;
+import me.deftware.client.framework.Wrappers.Objects.IDummyEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.Gui;
@@ -596,6 +597,10 @@ public class RenderUtils {
 
 	public static void tracerLine(IEntity entity, int mode) {
 		tracerLine(entity.getEntity(), mode);
+	}
+
+	public static void tracerLine(IDummyEntity entity, Color color) {
+		tracerLine(entity.getEntity(), color);
 	}
 
 	public static void tracerLine(Entity entity, int mode) {

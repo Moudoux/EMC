@@ -24,6 +24,19 @@ public class IItemStack {
 		this.stack = new ItemStack(item.getItem());
 	}
 
+	/**
+	 * Name/ID
+	 * 
+	 * @param name
+	 */
+	public IItemStack(String name) {
+		this.stack = new ItemStack(Item.getByNameOrId(name));
+	}
+
+	public static boolean validName(String name) {
+		return Item.getByNameOrId(name) != null;
+	}
+
 	public ItemStack getStack() {
 		return stack;
 	}
