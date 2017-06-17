@@ -15,6 +15,7 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.network.play.client.CPacketChatMessage;
 import net.minecraft.realms.RealmsSharedConstants;
 
 public class IMinecraft {
@@ -35,6 +36,14 @@ public class IMinecraft {
 		iServerCache = new IServerData(sd.serverName,sd.serverIP,sd.isOnLAN());
 		iServerCache.gameVersion = sd.gameVersion;
 		return iServerCache;
+	}
+
+	public static float getRenderPartialTicks() {
+		return Minecraft.getMinecraft().getRenderPartialTicks();
+	}
+
+	public static void leaveServer() {
+		Minecraft.getMinecraft().player.connection.sendPacket(new CPacketChatMessage("§"));
 	}
 
 	public static int getFPS() {

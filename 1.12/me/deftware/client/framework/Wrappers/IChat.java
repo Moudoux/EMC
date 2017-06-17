@@ -17,4 +17,8 @@ public class IChat {
 		ChatProcessor.printClientMessage(prefix + " " + message, false);
 	}
 	
+	public static void clearMessages() {
+		Minecraft.getMinecraft().ingameGUI.getChatGUI().clearChatMessages(true);
+	}
+
 }

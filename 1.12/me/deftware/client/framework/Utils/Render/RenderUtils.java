@@ -14,6 +14,7 @@ import me.deftware.client.framework.Wrappers.Entity.IEntity;
 import me.deftware.client.framework.Wrappers.Entity.IItemEntity;
 import me.deftware.client.framework.Wrappers.Entity.IMob;
 import me.deftware.client.framework.Wrappers.Entity.IPlayer;
+import me.deftware.client.framework.Wrappers.Objects.IAxisAlignedBB;
 import me.deftware.client.framework.Wrappers.Objects.IBlockPos;
 import me.deftware.client.framework.Wrappers.Objects.IDummyEntity;
 import net.minecraft.client.Minecraft;
@@ -98,6 +99,10 @@ public class RenderUtils {
 		GL11.glEnable(GL_DEPTH_TEST);
 		GL11.glDepthMask(true);
 		GL11.glDisable(GL_BLEND);
+	}
+
+	public static void drawSelectionBoundingBox(IAxisAlignedBB boundingBox) {
+		drawSelectionBoundingBox(boundingBox.getAABB());
 	}
 
 	public static void drawSelectionBoundingBox(AxisAlignedBB boundingBox) {
@@ -516,6 +521,10 @@ public class RenderUtils {
 		GL11.glEnable(2929);
 		GL11.glDepthMask(true);
 		GL11.glDisable(3042);
+	}
+
+	public static void drawColorBox(IAxisAlignedBB axisalignedbb, float red, float green, float blue, float alpha) {
+		drawColorBox(axisalignedbb.getAABB(), red, green, blue, alpha);
 	}
 
 	public static void drawColorBox(AxisAlignedBB axisalignedbb, float red, float green, float blue, float alpha) {

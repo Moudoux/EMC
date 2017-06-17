@@ -16,4 +16,8 @@ public class IInventory {
 		Minecraft.getMinecraft().player.inventory.currentItem = id;
 	}
 
+	public static int getItemInUseCount() {
+		return Minecraft.getMinecraft().player.activeItemStackUseCount;
+	}
+
 }

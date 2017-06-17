@@ -21,7 +21,7 @@ import net.minecraft.util.Session;
  */
 public class SessionUtils {
 
-	public static Session loginWithPassword(String username, String password, boolean setFlags) {
+	public static boolean loginWithPassword(String username, String password) {
 		Session session = null;
 
 		UserAuthentication auth = new YggdrasilUserAuthentication(
@@ -40,19 +40,16 @@ public class SessionUtils {
 			
 			MCLeaks.clearMCLeaksSession();
 			
-			if (setFlags) {
-				Minecraft.getMinecraft().session = session;
-			}
+			Minecraft.getMinecraft().session = session;
 
-			return session;
+			return true;
 		} catch (AuthenticationException e) {}
-		return null;
+		return false;
 	}
 
-	public static Session loginWithoutPassword(String username) {
+	public static void loginWithoutPassword(String username) {
 		Minecraft.getMinecraft().session = new Session(username, "", "0", "legacy");
 		MCLeaks.clearMCLeaksSession();
-		return Minecraft.getMinecraft().getSession();
 	}
 	
 }

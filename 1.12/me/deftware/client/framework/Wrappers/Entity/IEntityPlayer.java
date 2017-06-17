@@ -1,16 +1,21 @@
 package me.deftware.client.framework.Wrappers.Entity;
 
 import java.util.List;
+import java.util.Set;
 
+import me.deftware.client.framework.Wrappers.Item.IItemStack;
 import me.deftware.client.framework.Wrappers.Objects.IEntityOtherPlayerMP;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -25,8 +30,106 @@ public class IEntityPlayer {
 	
 	private static int ping = 0;
 
+	/**
+	 * Draws a mini version of the player on screen
+	 */
+	public static void drawPlayer(int posX, int posY, int scale) {
+		GuiInventory.drawEntityOnScreen(posX, posY, scale, 0, 0, Minecraft.getMinecraft().player);
+	}
+
+	public static IItemStack getHeldItem(boolean offset) {
+		ItemStack stack = Minecraft.getMinecraft().player.inventory.getCurrentItem();
+		if (offset) {
+			stack = Minecraft.getMinecraft().player.getHeldItemOffhand();
+		}
+		if (stack == null) {
+			return null;
+		}
+		return new IItemStack(stack);
+	}
+
+	public static double getLastTickPosX() {
+		return Minecraft.getMinecraft().player.lastTickPosX;
+	}
+
+	public static double getLastTickPosY() {
+		return Minecraft.getMinecraft().player.lastTickPosY;
+	}
+
+	public static double getLastTickPosZ() {
+		return Minecraft.getMinecraft().player.lastTickPosZ;
+	}
+
 	public static IEntity clonePlayer() {
 		return new IEntity(new IEntityOtherPlayerMP());
+	}
+
+	public static boolean isAirBorne() {
+		return Minecraft.getMinecraft().player.isAirBorne;
+	}
+
+	public static boolean getFlag(int flag) {
+		return Minecraft.getMinecraft().player.getFlag(flag);
+	}
+	
+	public static void setSprinting(boolean state) {
+		Minecraft.getMinecraft().player.setSprinting(state);
+	}
+
+	public static float getMoveStrafing() {
+		return Minecraft.getMinecraft().player.moveStrafing;
+	}
+
+	public static float getMoveForward() {
+		return Minecraft.getMinecraft().player.moveForward;
+	}
+
+	public static boolean isCollidedHorizontally() {
+		return Minecraft.getMinecraft().player.isCollidedHorizontally;
+	}
+
+	public static boolean isRidingEntityInWater() {
+		return Minecraft.getMinecraft().player.getRidingEntity().isInWater();
+	}
+
+	public static double getRidingEntityMotionY() {
+		return Minecraft.getMinecraft().player.getRidingEntity().motionY;
+	}
+
+	public static double getRidingEntityMotionX() {
+		return Minecraft.getMinecraft().player.getRidingEntity().motionX;
+	}
+
+	public static double getRidingEntityMotionZ() {
+		return Minecraft.getMinecraft().player.getRidingEntity().motionZ;
+	}
+
+	public static void ridingEntityMotionY(double y) {
+		Minecraft.getMinecraft().player.getRidingEntity().motionY = y;
+	}
+
+	public static void ridingEntityMotionX(double x) {
+		Minecraft.getMinecraft().player.getRidingEntity().motionX = x;
+	}
+
+	public static void ridingEntityMotionZ(double z) {
+		Minecraft.getMinecraft().player.getRidingEntity().motionZ = z;
+	}
+
+	public static void ridingEntityMotionTimesY(double y) {
+		Minecraft.getMinecraft().player.getRidingEntity().motionY *= y;
+	}
+
+	public static void ridingEntityMotionTimesX(double x) {
+		Minecraft.getMinecraft().player.getRidingEntity().motionX *= x;
+	}
+
+	public static boolean isRidingOnGround() {
+		return Minecraft.getMinecraft().player.getRidingEntity().onGround;
+	}
+
+	public static void ridingEntityMotionTimesZ(double z) {
+		Minecraft.getMinecraft().player.getRidingEntity().motionZ *= z;
 	}
 
 	public static void attackEntity(IEntity entity) {
@@ -73,6 +176,13 @@ public class IEntityPlayer {
 		Minecraft.getMinecraft().player.jumpMovementFactor = speed;
 	}
 
+	public static void setJumpMovementFactorTimes(float speed) {
+		if (isNull()) {
+			return;
+		}
+		Minecraft.getMinecraft().player.jumpMovementFactor *= speed;
+	}
+
 	public static void setNoClip(boolean state) {
 		if (isNull()) {
 			return;
@@ -92,6 +202,27 @@ public class IEntityPlayer {
 			return;
 		}
 		Minecraft.getMinecraft().player.onGround = state;
+	}
+
+	public static double getMotionX() {
+		if (isNull()) {
+			return 0;
+		}
+		return Minecraft.getMinecraft().player.motionX;
+	}
+
+	public static double getMotionY() {
+		if (isNull()) {
+			return 0;
+		}
+		return Minecraft.getMinecraft().player.motionY;
+	}
+
+	public static double getMotionZ() {
+		if (isNull()) {
+			return 0;
+		}
+		return Minecraft.getMinecraft().player.motionZ;
 	}
 
 	public static void setMotionX(double x) {
@@ -384,6 +515,10 @@ public class IEntityPlayer {
 		return Minecraft.getMinecraft().player.isRowingBoat();
 	}
 
+	public static boolean isRiding() {
+		return Minecraft.getMinecraft().player.isRiding();
+	}
+
 	public static boolean isRidingHorse() {
 		if (isNull()) {
 			return false;
@@ -520,5 +655,11 @@ public class IEntityPlayer {
 		return value < i ? i - 1 : i;
 	}
 
+	public static void toggleSkinLayers() {
+		Set<?> activeParts = Minecraft.getMinecraft().gameSettings.getModelParts();
+		for (EnumPlayerModelParts part : EnumPlayerModelParts.values()) {
+			Minecraft.getMinecraft().gameSettings.setModelPartEnabled(part, !activeParts.contains(part));
+		}
+	}
 
 }

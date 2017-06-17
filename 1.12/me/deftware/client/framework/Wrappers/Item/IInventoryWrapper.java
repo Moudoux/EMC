@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import me.deftware.client.framework.Wrappers.Entity.IPlayer;
 import me.deftware.client.framework.Wrappers.Objects.ISlot;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -24,6 +26,16 @@ public class IInventoryWrapper {
 			array.add(stack);
 		}
 		return array;
+	}
+	
+	public static boolean hasElytra() {
+		ItemStack chest = Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+		if (chest != null) {
+			if (chest.getItem() == Items.ELYTRA) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
