@@ -2,6 +2,7 @@ package me.deftware.client.framework.Event.Events;
 
 import me.deftware.client.framework.Event.Event;
 import net.minecraft.client.gui.GuiDisconnected;
+import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiScreen;
 
 public class EventGuiScreenDraw extends Event {
@@ -15,6 +16,8 @@ public class EventGuiScreenDraw extends Event {
 	public boolean instanceOf(CommonScreenTypes type) {
 		if (type.equals(CommonScreenTypes.GuiDisconnected)) {
 			return screen instanceof GuiDisconnected;
+		} else if (type.equals(CommonScreenTypes.GuiIngameMenu)) {
+			return screen instanceof GuiIngameMenu;
 		}
 		return false;
 	}
@@ -28,7 +31,7 @@ public class EventGuiScreenDraw extends Event {
 	}
 
 	public static enum CommonScreenTypes {
-		GuiDisconnected
+		GuiDisconnected, GuiIngameMenu
 	}
 
 }
