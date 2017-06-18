@@ -4,6 +4,7 @@ import org.lwjgl.opengl.Display;
 
 import me.deftware.client.framework.Wrappers.Entity.IEntity;
 import me.deftware.client.framework.Wrappers.Entity.IEntity.EntityType;
+import me.deftware.client.framework.Wrappers.Objects.IBlockPos;
 import me.deftware.client.framework.Wrappers.Objects.IGuiScreen;
 import me.deftware.client.framework.Wrappers.Objects.IServerData;
 import net.minecraft.client.Minecraft;
@@ -14,7 +15,10 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ContainerChest;
 import net.minecraft.network.play.client.CPacketChatMessage;
 import net.minecraft.realms.RealmsSharedConstants;
 
@@ -38,12 +42,48 @@ public class IMinecraft {
 		return iServerCache;
 	}
 
+	/**
+	 * Returns null if the screen instance is not a iguiscreen type
+	 * 
+	 * @return
+	 */
+	public static IGuiScreen getIScreen() {
+		if (Minecraft.getMinecraft().currentScreen != null) {
+			if (Minecraft.getMinecraft().currentScreen instanceof IGuiScreen) {
+				return (IGuiScreen) Minecraft.getMinecraft().currentScreen;
+			}
+		}
+		return null;
+	}
+
 	public static float getRenderPartialTicks() {
 		return Minecraft.getMinecraft().getRenderPartialTicks();
 	}
 
 	public static void leaveServer() {
 		Minecraft.getMinecraft().player.connection.sendPacket(new CPacketChatMessage("§"));
+	}
+
+	public static IBlockPos getBlockOver() {
+		if (!IMinecraft.isMouseOver()) {
+			return null;
+		}
+		if (Minecraft.getMinecraft().objectMouseOver.getBlockPos() != null) {
+			return new IBlockPos(Minecraft.getMinecraft().objectMouseOver.getBlockPos());
+		}
+		return null;
+	}
+
+	public static IEntity getPointedEntity() {
+		Entity pointedEntity = Minecraft.getMinecraft().pointedEntity;
+		if ((pointedEntity != null) && ((pointedEntity instanceof EntityPlayer))) {
+			return new IEntity(pointedEntity);
+		}
+		return null;
+	}
+
+	public static boolean isEntityHit() {
+		return Minecraft.getMinecraft().objectMouseOver.entityHit != null;
 	}
 
 	public static int getFPS() {
@@ -192,6 +232,15 @@ public class IMinecraft {
 		if (Minecraft.getMinecraft().currentScreen != null) {
 			if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer
 					&& Minecraft.getMinecraft().currentScreen instanceof GuiInventory) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean isChestOpen() {
+		if (Minecraft.getMinecraft().player.openContainer != null) {
+			if (Minecraft.getMinecraft().player.openContainer instanceof ContainerChest) {
 				return true;
 			}
 		}

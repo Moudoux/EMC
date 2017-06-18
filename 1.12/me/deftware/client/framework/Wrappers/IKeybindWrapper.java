@@ -28,7 +28,10 @@ public class IKeybindWrapper {
 										Minecraft.getMinecraft().gameSettings.keyBindForward), BACK(
 												Minecraft.getMinecraft().gameSettings.keyBindBack), LEFT(
 														Minecraft.getMinecraft().gameSettings.keyBindLeft), RIGHT(
-																Minecraft.getMinecraft().gameSettings.keyBindRight);
+																Minecraft
+																		.getMinecraft().gameSettings.keyBindRight), ATTACK(
+																				Minecraft
+																						.getMinecraft().gameSettings.keyBindAttack);
 
 		KeyBinding bind;
 

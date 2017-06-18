@@ -17,6 +17,10 @@ public class IGuiTextField extends GuiTextField {
 		this.setText(text);
 	}
 	
+	public void setMaxLenght(int lenght) {
+		this.maxStringLength = lenght;
+	}
+
 	public boolean isTextboxFocused() {
 		return this.isFocused();
 	}
@@ -39,6 +43,10 @@ public class IGuiTextField extends GuiTextField {
 	
 	public void doCursorTick() {
 		this.updateCursorCounter();
+	}
+
+	public void setTextboxEnabled(boolean state) {
+		this.setEnabled(state);
 	}
 
 	public int getPosX() {

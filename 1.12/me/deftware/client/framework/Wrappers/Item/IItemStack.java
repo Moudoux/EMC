@@ -2,6 +2,11 @@ package me.deftware.client.framework.Wrappers.Item;
 
 import me.deftware.client.framework.Wrappers.IBlock;
 import me.deftware.client.framework.Wrappers.Item.Items.IItemArmor;
+import me.deftware.client.framework.Wrappers.Objects.IBlockPos;
+import net.minecraft.client.Minecraft;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -33,6 +38,23 @@ public class IItemStack {
 		this.stack = new ItemStack(Item.getByNameOrId(name));
 	}
 
+	public void enchantAll() {
+		for (Enchantment enchantment : Enchantment.REGISTRY) {
+			try {
+				if (enchantment != Enchantments.SILK_TOUCH || enchantment != Enchantments.field_190941_k
+						|| enchantment != Enchantments.field_190940_C) {
+					stack.addEnchantment(enchantment, 127);
+				}
+			} catch (Exception ex) {
+				;
+			}
+		}
+	}
+
+	public void setStackDisplayName(String name) {
+		this.stack.setStackDisplayName(name);
+	}
+
 	public static boolean validName(String name) {
 		return Item.getByNameOrId(name) != null;
 	}
@@ -47,6 +69,19 @@ public class IItemStack {
 
 	public int getItemID() {
 		return Item.getIdFromItem(this.stack.getItem());
+	}
+
+	public float getStrVsBlock(IBlockPos pos) {
+		return stack.getStrVsBlock(Minecraft.getMinecraft().world.getBlockState(pos.getPos()));
+	}
+
+	/**
+	 * Is this a AIR block ?
+	 * 
+	 * @return
+	 */
+	public boolean isEmpty() {
+		return this.stack.getItem() == Item.getItemFromBlock(Blocks.AIR);
 	}
 
 	public static IItemStack cloneWithoutEffects(IItemStack stack) {

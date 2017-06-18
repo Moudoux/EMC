@@ -7,6 +7,13 @@ public class IBlockPos {
 	private double x, y, z;
 	private BlockPos pos;
 
+	public IBlockPos(BlockPos pos) {
+		this.pos = pos;
+		this.x = pos.getX();
+		this.y = pos.getY();
+		this.z = pos.getZ();
+	}
+
 	public IBlockPos(double x, double y, double z) {
 		this.x = x;
 		this.y = y;

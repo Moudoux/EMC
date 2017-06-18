@@ -50,6 +50,10 @@ public class IInventoryWrapper {
 		return stack;
 	}
 
+	public static IItemStack getHeldItem(boolean offhand) {
+		return getHeldItem(new IPlayer(Minecraft.getMinecraft().player), offhand);
+	}
+
 	public static ArrayList<ISlot> getSlots() {
 		ArrayList<ISlot> slots = new ArrayList<ISlot>();
 		for (Slot d : Minecraft.getMinecraft().player.inventoryContainer.inventorySlots) {

@@ -17,7 +17,7 @@ public class IGuiButton extends GuiButton {
 		this.displayString = text;
 	}
 	
-	protected String getText() {
+	public String getText() {
 		return this.displayString;
 	}
 	

@@ -17,7 +17,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
 import me.deftware.client.framework.Main.FrameworkLoader;
-import net.minecraft.client.Minecraft;
+import me.deftware.client.framework.Utils.OSUtils;
 
 /**
  * Client settings
@@ -38,15 +38,8 @@ public class Settings {
 			if (FrameworkLoader.clientInfo != null) {
 				clientName = FrameworkLoader.clientInfo.get("name").getAsString();
 			}
-			File minecraft = new File(Minecraft.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-
-			String p = minecraft.getParent();
-			p = p.replace(p.split("\\" + File.separator)[p.split("\\" + File.separator).length - 1], "");
-			p = p.replace(p.split("\\" + File.separator)[p.split("\\" + File.separator).length - 1], "");
-			p = p.substring(0, p.length() - 2);
-
-			File configFile = new File(minecraft.getParent().replace(File.separator + "versions", "") + File.separator
-					+ "Client_Config.json");
+			String file = OSUtils.getMCDir() + clientName + "_Config.json";
+			File configFile = new File(file);
 			this.configPath = configFile.getAbsolutePath();
 			if (!configFile.exists()) {
 				try {

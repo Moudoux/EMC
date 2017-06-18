@@ -37,6 +37,21 @@ public class IEntityPlayer {
 		GuiInventory.drawEntityOnScreen(posX, posY, scale, 0, 0, Minecraft.getMinecraft().player);
 	}
 
+	/**
+	 * If the player is at the edge of a block
+	 * 
+	 * @return
+	 */
+	public static boolean isAtEdge() {
+		return Minecraft.getMinecraft().world.getCollisionBoxes(Minecraft.getMinecraft().player,
+				Minecraft.getMinecraft().player.getEntityBoundingBox().offset(0, -0.5, 0).expand(-0.001, 0, -0.001))
+				.isEmpty();
+	}
+
+	public static void doJump() {
+		Minecraft.getMinecraft().player.jump();
+	}
+
 	public static IItemStack getHeldItem(boolean offset) {
 		ItemStack stack = Minecraft.getMinecraft().player.inventory.getCurrentItem();
 		if (offset) {
@@ -46,6 +61,10 @@ public class IEntityPlayer {
 			return null;
 		}
 		return new IItemStack(stack);
+	}
+
+	public static int getFoodLevel() {
+		return Minecraft.getMinecraft().player.getFoodStats().getFoodLevel();
 	}
 
 	public static double getLastTickPosX() {
