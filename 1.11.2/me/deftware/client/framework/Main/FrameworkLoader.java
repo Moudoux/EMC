@@ -2,31 +2,41 @@ package me.deftware.client.framework.Main;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.logging.Logger;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import me.deftware.client.framework.FrameworkConstants;
-import me.deftware.client.framework.Client.Client;
+import me.deftware.client.framework.Client.EMCClient;
 import me.deftware.client.framework.FontRender.Fonts;
 import net.minecraft.client.Minecraft;
 
 public class FrameworkLoader {
 	
-	public static Logger logger = Logger.getLogger("Minecraft");
+	public static Logger logger = LogManager.getLogger();
 	
+	private static URLClassLoader clientLoader;
+
+	/**
+	 * Info about the loaded client
+	 */
+	public static JsonObject clientInfo = null;
+
 	/**
 	 * Our client instance
 	 */
-	private static Client client;
+	private static EMCClient client;
 	
 	/**
 	 * Called from the Minecraft initialization method
@@ -48,12 +58,15 @@ public class FrameworkLoader {
 			
 			// Load client
 			
+			JarFile jarFile = new JarFile(clientJar);
+			Enumeration e = jarFile.entries();
+
 			URL jarfile = new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/");
-			URLClassLoader cl = URLClassLoader.newInstance(new URL[] { jarfile });
+			clientLoader = URLClassLoader.newInstance(new URL[] { jarfile });
 			
 			// Read client.json
 			
-			InputStream in = cl.getResourceAsStream("client.json"); 
+			InputStream in = clientLoader.getResourceAsStream("client.json");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			StringBuilder result = new StringBuilder("");
 			
@@ -64,27 +77,61 @@ public class FrameworkLoader {
 	        in.close();
 			
 	        JsonObject jsonObject = new Gson().fromJson(result.toString(), JsonObject.class);
+			clientInfo = jsonObject;
 	        
 	        logger.info("Loading client: " + jsonObject.get("name").getAsString() + " by " + jsonObject.get("author").getAsString());
 	        
 	        if (jsonObject.get("minversion").getAsInt() > FrameworkConstants.VERSION) {
 	        	Minecraft.getMinecraft().displayGuiScreen(new GuiUpdateLoader(jsonObject));
+				jarFile.close();
 	        	return;
 	        }
 	        
-			client = (Client) cl.loadClass(jsonObject.get("main").getAsString()).newInstance();
+			client = (EMCClient) clientLoader.loadClass(jsonObject.get("main").getAsString()).newInstance();
+
+			for (JarEntry je = (JarEntry) e.nextElement(); e.hasMoreElements(); je = (JarEntry) e.nextElement()) {
+				if (je.isDirectory() || !je.getName().endsWith(".class")) {
+					continue;
+				}
+				String className = je.getName().replace(".class", "").replace('/', '.');
+				logger.info("Loaded class " + clientLoader.loadClass(className).getName());
+			}
+
+			jarFile.close();
+
 			client.init();
 			
 			logger.info("Loaded client jar");
 			
 		} catch (Exception ex) {
-			logger.warning("Failed to load client framework");
+			logger.warn("Failed to load client framework");
 			ex.printStackTrace();
 		}
 	}
 
-	public static Client getClient() {
+	public static EMCClient getClient() {
 		return client;
+	}
+
+	/**
+	 * Unloads the client
+	 */
+	public static void ejectClient() {
+		client = null;
+		try {
+			clientLoader.close();
+			clientLoader = null;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Reloads the client
+	 */
+	public static void reload() {
+		ejectClient();
+		init();
 	}
 	
 }

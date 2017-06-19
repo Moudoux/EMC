@@ -6,8 +6,7 @@ import net.minecraft.client.Minecraft;
 public class IFontRenderer {
 	
 	public static void drawString(String text, int x, int y, int color) {
-		Minecraft.getMinecraft().fontRendererObj.drawString(text,
-				x - Minecraft.getMinecraft().fontRendererObj.getStringWidth(text) / 2, y, color);
+		Minecraft.getMinecraft().fontRendererObj.drawString(text, x, y, color);
 	}
 	
 	public static void drawCenteredString(String text, int x, int y, int color) {
@@ -26,12 +25,12 @@ public class IFontRenderer {
 		return Minecraft.getMinecraft().fontRendererObj.getStringWidth(string);
 	}
 	
-	public static void drawStringWithShadow(String text, int x, int y, IFontRendererObject font) {
-		font.drawStringWithShadow(text, x, y, 0xFFFFFF);
+	public static void drawStringWithShadow(String text, float x, float y, IFontRendererObject font) {
+		font.drawStringWithShadow(text, (int) x, (int) y, 0xFFFFFF);
 	}
 	
-	public static void drawStringWithShadow(String text, int x, int y, int color, IFontRendererObject font) {
-		font.drawStringWithShadow(text, x, y, color);
+	public static void drawStringWithShadow(String text, float x, float y, int color, IFontRendererObject font) {
+		font.drawStringWithShadow(text, (int) x, (int) y, color);
 	}
 	
 	public static int getFontHeight(IFontRendererObject font) {

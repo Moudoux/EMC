@@ -16,7 +16,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
-import net.minecraft.client.Minecraft;
+import me.deftware.client.framework.Main.FrameworkLoader;
+import me.deftware.client.framework.Utils.OSUtils;
 
 /**
  * Client settings
@@ -33,8 +34,12 @@ public class Settings {
 	 */
 	public synchronized void initialize() {
 		try {
-			File minecraft = new File(Minecraft.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-			File configFile = new File(minecraft.getParent() + File.separator + "Client_Config.json");
+			String clientName = "EMC";
+			if (FrameworkLoader.clientInfo != null) {
+				clientName = FrameworkLoader.clientInfo.get("name").getAsString();
+			}
+			String file = OSUtils.getMCDir() + clientName + "_Config.json";
+			File configFile = new File(file);
 			this.configPath = configFile.getAbsolutePath();
 			if (!configFile.exists()) {
 				try {
@@ -46,7 +51,8 @@ public class Settings {
 				}
 			}
 		} catch (Exception ex) {
-			;
+			ex.printStackTrace();
+			System.exit(0);
 		}
 	}
 
@@ -79,7 +85,6 @@ public class Settings {
 	 * @param node
 	 * @param array
 	 */
-	@SuppressWarnings("unchecked")
 	public synchronized void addArrayList(String node, ArrayList<String> array) {
 		try {
 			JsonObject jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
@@ -163,7 +168,6 @@ public class Settings {
 	 * @param node
 	 * @param value
 	 */
-	@SuppressWarnings("unchecked")
 	public synchronized void addNode(String node, String value) {
 		try {
 			JsonObject jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
@@ -193,6 +197,14 @@ public class Settings {
 		}
 	} 
 	
+	public synchronized void saveDouble(String node, double value) {
+		try {
+			addNode(node, String.valueOf(value));
+		} catch (Exception ex) {
+			;
+		}
+	}
+
 	public synchronized boolean getBool(String node, boolean _default) {
 		String data = getNode(node,"");
 		if (data.equals("")) {
@@ -205,6 +217,18 @@ public class Settings {
 		}
 	}
 	
+	public synchronized float getFloat(String node, float _default) {
+		String data = getNode(node, "");
+		if (data.equals("")) {
+			return _default;
+		}
+		try {
+			return Float.valueOf(data);
+		} catch (Exception ex) {
+			return _default;
+		}
+	}
+
 	public synchronized int getInt(String node, int _default) {
 		String data = getNode(node,"");
 		if (data.equals("")) {
@@ -212,6 +236,18 @@ public class Settings {
 		}
 		try {
 			return Integer.valueOf(data);
+		} catch (Exception ex) {
+			return _default;
+		}
+	}
+
+	public synchronized double getDouble(String node, double _default) {
+		String data = getNode(node, "");
+		if (data.equals("")) {
+			return _default;
+		}
+		try {
+			return Double.valueOf(data);
 		} catch (Exception ex) {
 			return _default;
 		}

@@ -24,4 +24,16 @@ public class IRenderManager {
 		return Minecraft.getMinecraft().getRenderManager().playerViewX;
 	}
 	
+	public static double getViewerX() {
+		return Minecraft.getMinecraft().getRenderManager().viewerPosX;
+	}
+
+	public static double getViewerY() {
+		return Minecraft.getMinecraft().getRenderManager().viewerPosY;
+	}
+
+	public static double getViewerZ() {
+		return Minecraft.getMinecraft().getRenderManager().viewerPosZ;
+	}
+
 }

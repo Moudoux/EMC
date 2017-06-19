@@ -1,5 +1,7 @@
 package me.deftware.client.framework.Wrappers.Render;
 
+import static org.lwjgl.opengl.GL11.GL_LIGHTING;
+
 import org.lwjgl.opengl.GL11;
 
 public class IGL11 {
@@ -34,6 +36,30 @@ public class IGL11 {
 
 	public static void glDisable(int cap) {
 		GL11.glDisable(cap);
+	}
+
+	public static void glTranslatef(float x, float y, float z) {
+		GL11.glTranslatef(x, y, z);
+	}
+
+	public static void disableLightning() {
+		glDisable(GL_LIGHTING);
+	}
+
+	public static void glVertex3d(double x, double y, double z) {
+		GL11.glVertex3d(x, y, z);
+	}
+
+	public static void glDepthMask(boolean b) {
+		GL11.glDepthMask(b);
+	}
+
+	public static void glEnable(int i) {
+		GL11.glEnable(i);
+	}
+
+	public static void glBlendFunc(int sfactor, int dfactor) {
+		GL11.glBlendFunc(sfactor, dfactor);
 	}
 
 }

@@ -2,7 +2,6 @@ package me.deftware.client.framework.AltAPIs.MCLeaks;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import me.deftware.client.framework.AltAPIs.MCLeaks.MCLeaks.MCLeaksSession;
 import me.deftware.client.framework.Utils.WebUtils;

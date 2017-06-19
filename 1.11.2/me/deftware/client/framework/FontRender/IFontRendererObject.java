@@ -563,7 +563,7 @@ public class IFontRendererObject extends FontRenderer {
 	}
 
 	@Override
-	protected String wrapFormattedStringToWidth(String str, int wrapWidth) {
+	public String wrapFormattedStringToWidth(String str, int wrapWidth) {
 		final int var3 = sizeStringToWidth(str, wrapWidth);
 		if (str.length() <= var3)
 			return str;

@@ -17,12 +17,12 @@ public class IGuiButton extends GuiButton {
 		this.displayString = text;
 	}
 	
-	protected String getText() {
+	public String getText() {
 		return this.displayString;
 	}
 	
 	@Override
-	public void drawButton(final Minecraft mc, final int mouseX, final int mouseY) {
+	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
 		if (onDraw(mouseX,mouseY) == 0) {
 			super.drawButton(mc, mouseX, mouseY);
 		}

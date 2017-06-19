@@ -36,6 +36,10 @@ public class IGlStateManager {
 		GlStateManager.color(colorRed, colorGreen, colorBlue, 1.0F);
 	}
 	
+	public static void resetColor() {
+		GlStateManager.resetColor();
+	}
+
 	public static void pushMatrix() {
 		GlStateManager.pushMatrix();
 	}
@@ -78,6 +82,34 @@ public class IGlStateManager {
 
 	public static void disableBlend() {
 		GlStateManager.disableBlend();
+	}
+
+	public static void enableRescaleNormal() {
+		GlStateManager.enableRescaleNormal();
+	}
+
+	public static void disableRescaleNormal() {
+		GlStateManager.disableRescaleNormal();
+	}
+
+	public static void disablePolygonOffset() {
+		GlStateManager.disablePolygonOffset();
+	}
+
+	public static void doPolygonOffset(float f, float g) {
+		GlStateManager.doPolygonOffset(f, g);
+	}
+
+	public static void disableAlpha() {
+		GlStateManager.disableAlpha();
+	}
+
+	public static void enableAlpha() {
+		GlStateManager.enableAlpha();
+	}
+
+	public static void enablePolygonOffset() {
+		GlStateManager.enablePolygonOffset();
 	}
 
 }

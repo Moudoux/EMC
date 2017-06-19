@@ -1,27 +1,23 @@
 package me.deftware.client.framework.Wrappers.Objects;
 
-import net.minecraft.util.Session;
+import net.minecraft.client.Minecraft;
 
-public class ISession extends Session {
+public class ISession {
 
-	public ISession(String usernameIn, String playerIDIn, String tokenIn, String sessionTypeIn) {
-		super(usernameIn, playerIDIn, tokenIn, sessionTypeIn);
-	}
-	
-	public String getSessionID() {
-		return "token:" + this.token + ":" + this.playerID;
+	public static String getISessionID() {
+		return Minecraft.getMinecraft().session.getSessionID();
 	}
 
-	public String getPlayerID() {
-		return this.playerID;
+	public static String getIPlayerID() {
+		return Minecraft.getMinecraft().session.getPlayerID();
 	}
 
-	public String getUsername() {
-		return this.username;
+	public static String getIUsername() {
+		return Minecraft.getMinecraft().session.getUsername();
 	}
 
-	public String getToken() {
-		return this.token;
+	public static String getIToken() {
+		return Minecraft.getMinecraft().session.getToken();
 	}
 	
 }

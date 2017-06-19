@@ -8,48 +8,48 @@ public class IServerData extends ServerData {
 		super(name, ip, isLan);
 	}
 	
-	public String getMotd() {
+	public String getIMotd() {
 		return this.serverMOTD;
 	}
 	
-	public boolean isPinged() {
+	public boolean isIPinged() {
 		return this.pinged;
 	}
 	
-	public boolean isLanServer() {
-		return this.isLanServer();
+	public String getIIP() {
+		return this.serverIP;
 	}
-	
-	public String getServerList() {
-		return this.getServerList();
+
+	public boolean isILanServer() {
+		return this.isOnLAN();
 	}
-	
-	public String getServerName() {
+
+	public String getIServerName() {
 		return this.serverName;
 	}
 	
-	public String getGameVersion() {
+	public String getIGameVersion() {
 		return this.gameVersion;
 	}
 	
-	public int getVersion() {
+	public int getIVersion() {
 		return this.version;
 	}
 	
-	public String getPopulationInfo() {
+	public String getIPopulationInfo() {
 		return this.populationInfo;
 	}
 	
-	public long getPingToServer() {
+	public long getIPingToServer() {
 		return this.pingToServer;
 	}
 	
-	public String getBase64EncodedIconData() {
-		return this.serverIcon;
+	public String getIBase64EncodedIconData() {
+		return this.getBase64EncodedIconData();
 	}
 	
-	public void setBase64EncodedIconData(String icon) {
-		this.serverIcon = icon;
+	public void setIBase64EncodedIconData(String icon) {
+		this.setBase64EncodedIconData(icon);
 	}
 
 }

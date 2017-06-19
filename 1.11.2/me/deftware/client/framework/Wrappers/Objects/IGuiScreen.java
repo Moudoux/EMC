@@ -37,6 +37,12 @@ public abstract class IGuiScreen extends GuiScreen {
 	}
 	
 	@Override
+	public void handleMouseInput() throws IOException {
+		this.onMouseInput();
+		super.handleMouseInput();
+	}
+
+	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		super.keyTyped(typedChar, keyCode);
 		this.onKeyTyped(typedChar, keyCode);
@@ -93,6 +99,10 @@ public abstract class IGuiScreen extends GuiScreen {
 	 * Wrappers
 	 */
 	
+	protected void drawIDefaultBackground() {
+		this.drawDefaultBackground();
+	}
+
 	protected void drawDarkOverlay() {
 		Gui.drawRect(0, 0, width, height, Integer.MIN_VALUE);
 	}
@@ -182,21 +192,28 @@ public abstract class IGuiScreen extends GuiScreen {
 		return Display.getHeight();
 	}
 
-	public int getScaledHeight() {
-		ScaledResolution r = new ScaledResolution(mc);
+	public static int getScaledHeight() {
+		ScaledResolution r = new ScaledResolution(Minecraft.getMinecraft());
 		return r.getScaledHeight();
 	}
 
-	public int getScaledWidth() {
-		ScaledResolution r = new ScaledResolution(mc);
+	public static int getScaledWidth() {
+		ScaledResolution r = new ScaledResolution(Minecraft.getMinecraft());
 		return r.getScaledWidth();
 	}
 
+	public void drawITintBackground(int tint) {
+		this.drawBackground(tint);
+	}
+
 	/*
-	 * The abstract handlers
+	 * The handlers
 	 */
 	
 	protected void onGuiClose() {
+	}
+
+	protected void onMouseInput() {
 	}
 
 	protected abstract void onInitGui();
