@@ -31,7 +31,7 @@ That's it. It is as easy as that. The IEntityPlayer.setWalkspeed then calls the 
 Clients using EMC
 -------------------
 
-* [Aristois](https://aristois.opentexon.com/) (Coming soon)
+* [Aristois](https://aristois.opentexon.com/download)
 
 Built in commands
 -------------------
