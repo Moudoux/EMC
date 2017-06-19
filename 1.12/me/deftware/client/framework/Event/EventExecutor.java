@@ -40,7 +40,7 @@ public class EventExecutor {
 	}
 
 	private static void sendEvent(Event event) {
-		if (event == null || FrameworkLoader.getClient() == null) {
+		if (event == null) {
 			return;
 		}
 		FrameworkLoader.getClient().onEvent(event);

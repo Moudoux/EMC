@@ -89,15 +89,12 @@ public class FrameworkLoader {
 	        
 			client = (EMCClient) clientLoader.loadClass(jsonObject.get("main").getAsString()).newInstance();
 
-			while (e.hasMoreElements()) {
-				JarEntry je = (JarEntry) e.nextElement();
+			for (JarEntry je = (JarEntry) e.nextElement(); e.hasMoreElements(); je = (JarEntry) e.nextElement()) {
 				if (je.isDirectory() || !je.getName().endsWith(".class")) {
 					continue;
 				}
-				String className = je.getName().substring(0, je.getName().length() - 6);
-				className = className.replace('/', '.');
-				Class c = clientLoader.loadClass(className);
-				logger.info("Loaded class " + c.getName());
+				String className = je.getName().replace(".class", "").replace('/', '.');
+				logger.info("Loaded class " + clientLoader.loadClass(className).getName());
 			}
 
 			jarFile.close();
