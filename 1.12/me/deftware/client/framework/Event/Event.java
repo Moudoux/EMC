@@ -11,8 +11,9 @@ import me.deftware.client.framework.Wrappers.IMinecraft;
 public abstract class Event {
 
 	private boolean canceled = false;
-	
-	public Event() {}
+
+	public Event() {
+	}
 
 	public boolean isCanceled() {
 		return canceled;
@@ -21,16 +22,13 @@ public abstract class Event {
 	public void setCanceled(boolean canceled) {
 		this.canceled = canceled;
 	}
-	
+
 	public static Event sendEvent(Event event) {
 		try {
 			if (event instanceof EventClientCommand) {
 				if (((EventClientCommand) event).getCommand().equals(".version")) {
-					ChatProcessor
-							.printFrameworkMessage(
-									"§7You are running " + FrameworkConstants.FRAMEWORK_NAME + " version "
-											+ FrameworkConstants.VERSION
-											+ " built by " + FrameworkConstants.AUTHOR);
+					ChatProcessor.printFrameworkMessage("§7You are running " + FrameworkConstants.FRAMEWORK_NAME
+							+ " version " + FrameworkConstants.VERSION + " built by " + FrameworkConstants.AUTHOR);
 					return event;
 				} else if (((EventClientCommand) event).getCommand().equals(".unload")) {
 					FrameworkLoader.ejectClient();
@@ -52,12 +50,12 @@ public abstract class Event {
 				}
 			}
 			if (FrameworkLoader.getClient() != null) {
-				FrameworkLoader.getClient().onEvent(event);
+				return EventExecutor.postEvent(event);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return event;
 	}
-	
+
 }

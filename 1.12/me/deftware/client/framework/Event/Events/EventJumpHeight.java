@@ -1,8 +1,8 @@
 package me.deftware.client.framework.Event.Events;
 
-import me.deftware.client.framework.Event.Event;
+import me.deftware.client.framework.Event.AsyncEvent;
 
-public class EventJumpHeight extends Event {
+public class EventJumpHeight extends AsyncEvent {
 
 	private float height;
 

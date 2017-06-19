@@ -7,6 +7,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,6 +58,9 @@ public class FrameworkLoader {
 			
 			// Load client
 			
+			JarFile jarFile = new JarFile(clientJar);
+			Enumeration e = jarFile.entries();
+
 			URL jarfile = new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/");
 			clientLoader = URLClassLoader.newInstance(new URL[] { jarfile });
 			
@@ -77,10 +83,25 @@ public class FrameworkLoader {
 	        
 	        if (jsonObject.get("minversion").getAsInt() > FrameworkConstants.VERSION) {
 	        	Minecraft.getMinecraft().displayGuiScreen(new GuiUpdateLoader(jsonObject));
+				jarFile.close();
 	        	return;
 	        }
 	        
 			client = (EMCClient) clientLoader.loadClass(jsonObject.get("main").getAsString()).newInstance();
+
+			while (e.hasMoreElements()) {
+				JarEntry je = (JarEntry) e.nextElement();
+				if (je.isDirectory() || !je.getName().endsWith(".class")) {
+					continue;
+				}
+				String className = je.getName().substring(0, je.getName().length() - 6);
+				className = className.replace('/', '.');
+				Class c = clientLoader.loadClass(className);
+				logger.info("Loaded class " + c.getName());
+			}
+
+			jarFile.close();
+
 			client.init();
 			
 			logger.info("Loaded client jar");

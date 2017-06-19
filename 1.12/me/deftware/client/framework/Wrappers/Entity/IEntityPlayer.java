@@ -3,6 +3,7 @@ package me.deftware.client.framework.Wrappers.Entity;
 import java.util.List;
 import java.util.Set;
 
+import me.deftware.client.framework.Wrappers.Item.IItem;
 import me.deftware.client.framework.Wrappers.Item.IItemStack;
 import me.deftware.client.framework.Wrappers.Objects.IEntityOtherPlayerMP;
 import net.minecraft.block.BlockAir;
@@ -151,6 +152,13 @@ public class IEntityPlayer {
 		Minecraft.getMinecraft().player.getRidingEntity().motionZ *= z;
 	}
 
+	/**
+	 * Attacks a given entity with the current held item
+	 * 
+	 * @param entity
+	 * @see IEntity
+	 * @see IItem
+	 */
 	public static void attackEntity(IEntity entity) {
 		if (isNull()) {
 			return;
