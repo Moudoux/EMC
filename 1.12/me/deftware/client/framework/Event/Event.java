@@ -3,6 +3,7 @@ package me.deftware.client.framework.Event;
 import org.lwjgl.opengl.Display;
 
 import me.deftware.client.framework.FrameworkConstants;
+import me.deftware.client.framework.Client.EMCClient;
 import me.deftware.client.framework.Event.Events.EventClientCommand;
 import me.deftware.client.framework.Main.FrameworkLoader;
 import me.deftware.client.framework.Utils.Chat.ChatProcessor;
@@ -31,25 +32,28 @@ public abstract class Event {
 							+ " version " + FrameworkConstants.VERSION + " built by " + FrameworkConstants.AUTHOR);
 					return event;
 				} else if (((EventClientCommand) event).getCommand().equals(".unload")) {
-					FrameworkLoader.ejectClient();
+					FrameworkLoader.ejectClients();
 					Display.setTitle("Minecraft " + IMinecraft.getMinecraftVersion());
 					IMinecraft.setGamma(0.5F);
-					ChatProcessor.printFrameworkMessage("Unloaded client jar, Minecraft is now running as vanilla");
+					ChatProcessor.printFrameworkMessage("Unloaded mods, Minecraft is now running as vanilla");
 					return event;
 				} else if (((EventClientCommand) event).getCommand().equals(".cinfo")) {
-					if (FrameworkLoader.clientInfo == null || FrameworkLoader.getClient() == null) {
-						ChatProcessor.printFrameworkMessage("You are running vanilla Minecraft, no client is loaded");
+					if (FrameworkLoader.modsInfo == null || FrameworkLoader.getClients().isEmpty()) {
+						ChatProcessor.printFrameworkMessage("You are running vanilla Minecraft, no mods are loaded");
 						return event;
 					}
-					String name = FrameworkLoader.clientInfo.get("name").getAsString();
-					int version = FrameworkLoader.clientInfo.get("version").getAsInt();
-					String author = FrameworkLoader.clientInfo.get("author").getAsString();
-					ChatProcessor.printFrameworkMessage(
-							"You are running \"" + name + "\" version " + version + " made by " + author);
+					ChatProcessor.printFrameworkMessage("== Loaded mods ==");
+					for (EMCClient client : FrameworkLoader.getClients().values()) {
+						String name = client.clientInfo.get("name").getAsString();
+						int version = client.clientInfo.get("version").getAsInt();
+						String author = client.clientInfo.get("author").getAsString();
+						ChatProcessor.printFrameworkMessage(
+								name + " version " + version + " made by " + author);
+					}
 					return event;
 				}
 			}
-			if (FrameworkLoader.getClient() != null) {
+			if (FrameworkLoader.getClients() != null) {
 				return EventExecutor.postEvent(event);
 			}
 		} catch (Exception ex) {

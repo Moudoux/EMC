@@ -32,11 +32,11 @@ public class Settings {
 	/**
 	 * Initialize the config file
 	 */
-	public synchronized void initialize() {
+	public synchronized void initialize(JsonObject clientInfo) {
 		try {
 			String clientName = "EMC";
-			if (FrameworkLoader.clientInfo != null) {
-				clientName = FrameworkLoader.clientInfo.get("name").getAsString();
+			if (FrameworkLoader.modsInfo != null) {
+				clientName = clientInfo.get("name").getAsString();
 			}
 			String file = OSUtils.getMCDir() + clientName + "_Config.json";
 			File configFile = new File(file);
