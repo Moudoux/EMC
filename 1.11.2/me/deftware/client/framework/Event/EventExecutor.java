@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import me.deftware.client.framework.Client.EMCClient;
 import me.deftware.client.framework.Main.FrameworkLoader;
 
 /**
@@ -43,7 +44,9 @@ public class EventExecutor {
 		if (event == null) {
 			return;
 		}
-		FrameworkLoader.getClient().onEvent(event);
+		for (EMCClient client : FrameworkLoader.getClients().values()) {
+			client.onEvent(event);
+		}
 	}
 
 }

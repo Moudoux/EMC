@@ -3,7 +3,6 @@ package me.deftware.client.framework.Utils.Chat;
 import java.util.regex.Pattern;
 
 import me.deftware.client.framework.FrameworkConstants;
-import me.deftware.client.framework.Main.FrameworkLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -116,11 +115,7 @@ public class ChatProcessor {
 	}
 
 	public static void printClientMessage(String chatMessage) {
-		if (FrameworkLoader.getClient() != null) {
-			printChatMessage("§b§l" + FrameworkLoader.getClient().getClientInfo().getClientName() + " §r§7» " + ChatColor.GRAY + chatMessage);
-		} else {
-			printChatMessage("§b§l" + "Client" + " §r§7» " + ChatColor.GRAY + chatMessage);
-		}
+		printChatMessage("§b§l" + FrameworkConstants.FRAMEWORK_NAME + " §r§7» " + ChatColor.GRAY + chatMessage);
 	}
 
 	public static void printFrameworkMessage(String msg) {

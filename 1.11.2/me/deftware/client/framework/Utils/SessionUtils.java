@@ -37,7 +37,6 @@ public class SessionUtils {
 			session = new Session(userName, playerUUID.toString(), accessToken,
 					username.contains("@") ? "mojang"
 							: "legacy");
-			
 			MCLeaks.clearMCLeaksSession();
 			
 			Minecraft.getMinecraft().session = session;

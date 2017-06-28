@@ -1,20 +1,24 @@
 package me.deftware.client.framework.Client;
 
+import com.google.gson.JsonObject;
+
 import me.deftware.client.framework.Event.Event;
 import me.deftware.client.framework.Utils.Storage.Settings;
 
 public abstract class EMCClient {
 
 	private Settings settings;
+	public JsonObject clientInfo;
 	
 	/**
 	 * Called internally
 	 * 
 	 * @param instance
 	 */
-	public void init() {
+	public void init(JsonObject json) {
+		clientInfo = json;
 		settings = new Settings();
-		settings.initialize();
+		settings.initialize(json);
 		this.initialize();
 	}
 	
