@@ -5,6 +5,8 @@ import org.lwjgl.opengl.Display;
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.Client.EMCClient;
 import me.deftware.client.framework.Event.Events.EventClientCommand;
+import me.deftware.client.framework.Event.Events.EventRender2D;
+import me.deftware.client.framework.Event.Events.EventRender3D;
 import me.deftware.client.framework.Main.FrameworkLoader;
 import me.deftware.client.framework.Utils.Chat.ChatProcessor;
 import me.deftware.client.framework.Wrappers.IMinecraft;
@@ -53,8 +55,16 @@ public abstract class Event {
 					return event;
 				}
 			}
+			long start = System.currentTimeMillis();
 			if (FrameworkLoader.getClients() != null) {
-				return EventExecutor.postEvent(event);
+				EventExecutor.postEvent(event);
+				long delay = System.currentTimeMillis() - start;
+				if (delay > 1 && !(event instanceof EventRender2D) && !(event instanceof EventRender3D)) {
+					// Debugging
+					// System.out.println(">> Execution Time: " + delay + " >
+					// Type: " + event.getClass().getSimpleName());
+				}
+				return event;
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();

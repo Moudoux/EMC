@@ -14,8 +14,4 @@ public class EventKeyPress extends Event {
 		return key;
 	}
 
-	public void setKey(int key) {
-		this.key = key;
-	}
-	
 }
