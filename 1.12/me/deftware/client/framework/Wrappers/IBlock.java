@@ -1,6 +1,7 @@
 package me.deftware.client.framework.Wrappers;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 
 public class IBlock {
 
@@ -20,6 +21,10 @@ public class IBlock {
 
 	public boolean isValidBlock() {
 		return block != null;
+	}
+
+	public boolean isAir() {
+		return block == Blocks.AIR;
 	}
 
 	public Block getBlock() {

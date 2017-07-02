@@ -1,10 +1,10 @@
 package me.deftware.client.framework.Event.Events.Packet.Packets;
 
 import me.deftware.client.framework.Event.Events.Packet.IPacket;
+import me.deftware.client.framework.Wrappers.IEnumFacing;
 import me.deftware.client.framework.Wrappers.Objects.IBlockPos;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
-import net.minecraft.util.EnumFacing;
 
 public class ICPacketDig extends IPacket {
 
@@ -12,15 +12,8 @@ public class ICPacketDig extends IPacket {
 		super(packet);
 	}
 
-	public ICPacketDig(IDigAction action, IBlockPos pos, IFacing facing) {
-		super(new CPacketPlayerDigging(getAction(action), pos.getPos(), getFacing(facing)));
-	}
-
-	public static EnumFacing getFacing(IFacing facing) {
-		if (facing.equals(IFacing.DOWN)) {
-			return EnumFacing.DOWN;
-		}
-		return null;
+	public ICPacketDig(IDigAction action, IBlockPos pos, IEnumFacing facing) {
+		super(new CPacketPlayerDigging(getAction(action), pos.getPos(), IEnumFacing.getFacing(facing)));
 	}
 
 	public static CPacketPlayerDigging.Action getAction(IDigAction action) {
@@ -30,10 +23,6 @@ public class ICPacketDig extends IPacket {
 			return CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK;
 		}
 		return null;
-	}
-
-	public static enum IFacing {
-		DOWN
 	}
 
 	public static enum IDigAction {

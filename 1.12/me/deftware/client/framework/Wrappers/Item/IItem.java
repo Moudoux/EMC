@@ -1,6 +1,7 @@
 package me.deftware.client.framework.Wrappers.Item;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemEgg;
 import net.minecraft.item.ItemEnderPearl;
@@ -73,12 +74,14 @@ public class IItem {
 			return item instanceof ItemTool;
 		} else if (type.equals(IItemType.ItemNameTag)) {
 			return item instanceof ItemNameTag;
+		} else if (type.equals(IItemType.ItemBlock)) {
+			return item instanceof ItemBlock;
 		}
 		return false;
 	}
 
 	public static enum IItemType {
-		ItemPotion, ItemFishingRod, ItemFood, ItemSword, ItemTool, ItemNameTag
+		ItemPotion, ItemFishingRod, ItemFood, ItemSword, ItemTool, ItemNameTag, ItemBlock
 	}
 
 }

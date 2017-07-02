@@ -3,9 +3,12 @@ package me.deftware.client.framework.Wrappers.Entity;
 import java.util.List;
 import java.util.Set;
 
+import me.deftware.client.framework.Wrappers.IEnumFacing;
 import me.deftware.client.framework.Wrappers.Item.IItem;
 import me.deftware.client.framework.Wrappers.Item.IItemStack;
+import me.deftware.client.framework.Wrappers.Objects.IBlockPos;
 import me.deftware.client.framework.Wrappers.Objects.IEntityOtherPlayerMP;
+import me.deftware.client.framework.Wrappers.Objects.IVec3d;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -18,6 +21,7 @@ import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketAnimation;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 
@@ -47,6 +51,12 @@ public class IEntityPlayer {
 		return Minecraft.getMinecraft().world.getCollisionBoxes(Minecraft.getMinecraft().player,
 				Minecraft.getMinecraft().player.getEntityBoundingBox().offset(0, -0.5, 0).expand(-0.001, 0, -0.001))
 				.isEmpty();
+	}
+
+	public static boolean processRightClickBlock(IBlockPos pos, IEnumFacing facing, IVec3d vec) {
+		return Minecraft.getMinecraft().playerController.processRightClickBlock(Minecraft.getMinecraft().player,
+				Minecraft.getMinecraft().world, pos.getPos(), IEnumFacing.getFacing(facing), vec.getVector(),
+				EnumHand.MAIN_HAND) == EnumActionResult.SUCCESS;
 	}
 
 	public static void doJump() {
@@ -687,6 +697,10 @@ public class IEntityPlayer {
 		for (EnumPlayerModelParts part : EnumPlayerModelParts.values()) {
 			Minecraft.getMinecraft().gameSettings.setModelPartEnabled(part, !activeParts.contains(part));
 		}
+	}
+
+	public static IBlockPos getPos() {
+		return new IBlockPos(getPosX(), getPosY(), getPosZ());
 	}
 
 }
