@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>me.deftware</groupId>
+	<artifactId>EMC</artifactId>
+	<version>7.0</version>
+	<name>me.deftware:EMC</name>
+	<url>https://github.com/Moudoux/EMC</url>
+
+	<scm>
+		<connection>scm:git:https://github.com/Moudoux/EMC.git</connection>
+		<developerConnection>scm:git:https://github.com/Moudoux/EMC.git</developerConnection>
+		<url>https://github.com/Moudoux/EMC</url>
+	</scm>
+	
+	<licenses>
+		<license>
+			<name>GPL-3.0</name>
+			<url>https://www.gnu.org/licenses/gpl.txt</url>
+		</license>
+	</licenses>
+	
+	<developers>
+		<developer>
+			<name>Deftware</name>
+			<organization>OpenTexon</organization>
+			<organizationUrl>https://opentexon.com/</organizationUrl>
+			<roles>
+				<role>Project Lead</role>
+			</roles>
+			<timezone>-1</timezone>
+		</developer>
+	</developers>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+</project>
