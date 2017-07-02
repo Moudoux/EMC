@@ -61,7 +61,7 @@ public class IMinecraft {
 	}
 
 	public static void leaveServer() {
-		Minecraft.getMinecraft().player.connection.sendPacket(new CPacketChatMessage("ยง"));
+		Minecraft.getMinecraft().player.connection.sendPacket(new CPacketChatMessage("ง"));
 	}
 
 	public static IBlockPos getBlockOver() {

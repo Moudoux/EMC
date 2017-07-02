@@ -30,7 +30,7 @@ public abstract class Event {
 		try {
 			if (event instanceof EventClientCommand) {
 				if (((EventClientCommand) event).getCommand().equals(".version")) {
-					ChatProcessor.printFrameworkMessage("ยง7You are running " + FrameworkConstants.FRAMEWORK_NAME
+					ChatProcessor.printFrameworkMessage("ง7You are running " + FrameworkConstants.FRAMEWORK_NAME
 							+ " version " + FrameworkConstants.VERSION + " built by " + FrameworkConstants.AUTHOR);
 					return event;
 				} else if (((EventClientCommand) event).getCommand().equals(".unload")) {

@@ -28,6 +28,11 @@ public void setWalkspeed(float speed) {
 
 That's it. It is as easy as that. The IEntityPlayer.setWalkspeed then calls the obfuscated Minecraft call.
 
+Making client mods with EMC 
+-------------------
+
+Check out the [EMC Development Kit](https://github.com/Moudoux/EDK)
+
 Clients using EMC
 -------------------
 
@@ -54,86 +59,7 @@ The EMC framework is compliant with the Minecraft EULA, it does not distribute a
 Any mods you make using this framework will be compliant with the Minecraft EULA as your mod will not contain ANY
 Minecraft source code, only EMC wrapper calls.
 
-Installing EMC/Setting up for making mods
--------------------
-
-Download EMC for any Minecraft version (It doesn't matter since all versions are compatible with your mod)
-
-You can install EMC using the [EMC Installer](https://github.com/Moudoux/EMC-Installer/releases)
-
-Install it, then open your favourite Java IDE and make a new project, import the EMC Minecraft jar in `.minecraft/versions/EMC_1.12/EMC_1.12.jar`
-
-Make a class called `Main.java`, make it extend `EMCClient` and add the required methods.
-
-Create a file called `client.json` in the root of your project. In the file, add the following:
-
-```
-{
-
-    "name":"<Client name>",
-    "website":"<Client website>",
-    "author":"<Who made the client>",
-    "minversion":<Minimum version of EMC required to run your client, integer>,
-    "version":<Your client version, integer>,
-    "main":"<The main class>"
-
-}
-```
-
-After you've written your mod, export it to a file named `Client.jar`, drop that jar in `.minecraft/versions/EMC_1.12/` and start Minecraft, your mod should now be loaded.
-
-A simple one class client example
--------------------
-
-```
-package me.deftware.client;
-
-import me.deftware.client.framework.Client.EMCClient;
-import me.deftware.client.framework.Event.Event;
-import me.deftware.client.framework.Event.Events.EventClientCommand;
-import me.deftware.client.framework.Wrappers.IChat;
-
-public class Main extends EMCClient {
-	
-	private EMCClientInfo clientInfo;
-	
-	@Override
-	public void initialize() {
-		// Client name, Client version
-		clientInfo = new ClientInfo("Example client", "1");
-		// We can even set the window title with one call to EMC
-		IMinecraft.setTitle("Example client");
-	}
-
-	@Override
-	public EMCClient getClientInfo() {
-		// This is used for the framework to know what client it has
-		return clientInfo;
-	}
-
-	@Override
-	public void onEvent(Event event) {
-		// Our events come in here
-		// Check if it's a chat message starting with a .
-		if (event instanceof EventClientCommand) {
-			// Get our event
-			EventClientCommand cmd = (EventClientCommand) event;
-			// Check the command
-			if (cmd.getCommand().equals(".client")) {
-				// Prints a message in the Minecraft chat, client side, servers cannot see it
-				IChat.sendClientMessage("It works!");
-				// Cancel the event so Minecraft won't process the sent chat message
-				event.setCanceled(true);
-			}
-		}
-	}
-
-}
-```
-
-And that's it! If you now type `.client` in the Minecraft chat it will print `It works!` in the Minecraft chat.
-
-Developing EMC
+Developing EMC (Not making client mods, the actual framework)
 -------------------
 
 1. Download the latest MCP

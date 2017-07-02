@@ -2,8 +2,8 @@ package me.deftware.client.framework;
 
 public class FrameworkConstants {
 
-	public static final int VERSION = 8;
-	public static final String AUTHOR = "Deftware";
-	public static final String FRAMEWORK_NAME = "EMC";
+	public static int VERSION = 8;
+	public static String AUTHOR = "Deftware";
+	public static String FRAMEWORK_NAME = "EMC";
 
 }
