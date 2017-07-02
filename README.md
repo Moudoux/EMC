@@ -42,6 +42,7 @@ Built in commands
 -------------------
 
 You can type `.version` to check what EMC version you are running, you can type `.cinfo` to see what client is loaded.
+You can also type `.unload` to eject mods running in your client.
 
 Why use EMC?
 -------------------
