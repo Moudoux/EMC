@@ -21,7 +21,7 @@ public class EventChatReceive extends Event {
 	}
 
 	/**
-	 * Converts &c to §c, etc
+	 * Converts &c to Â§c, etc
 	 */
 	public void setColorCodes() {
 		this.itc = ChatProcessor.getITextComponent(

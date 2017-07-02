@@ -115,11 +115,11 @@ public class ChatProcessor {
 	}
 
 	public static void printClientMessage(String chatMessage) {
-		printChatMessage("งbงl" + FrameworkConstants.FRAMEWORK_NAME + " งrง7ป " + ChatColor.GRAY + chatMessage);
+		printChatMessage("ยงbยงl" + FrameworkConstants.FRAMEWORK_NAME + " ยงrยง7ยง " + ChatColor.GRAY + chatMessage);
 	}
 
 	public static void printFrameworkMessage(String msg) {
-		printChatMessage("งbงl" + FrameworkConstants.FRAMEWORK_NAME + " งrง7ป " + ChatColor.GRAY + msg);
+		printChatMessage("ยงbยงl" + FrameworkConstants.FRAMEWORK_NAME + " ยงrยง7ยง " + ChatColor.GRAY + msg);
 	}
 
 	public static void printClientMessage(String chatMessage, boolean prefix) {
