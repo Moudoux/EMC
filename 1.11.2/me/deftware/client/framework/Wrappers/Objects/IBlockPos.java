@@ -49,4 +49,11 @@ public class IBlockPos {
 		this.z = z;
 	}
 
+	/**
+	 * Add the given coordinates to the coordinates of this BlockPos
+	 */
+	public IBlockPos add(int x, int y, int z) {
+		return x == 0 && y == 0 && z == 0 ? this : new IBlockPos(this.getX() + x, this.getY() + y, this.getZ() + z);
+	}
+
 }
