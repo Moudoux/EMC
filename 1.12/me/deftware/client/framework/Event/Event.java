@@ -18,6 +18,10 @@ public abstract class Event {
 	public Event() {
 	}
 
+	public void send() {
+		Event.sendEvent(this);
+	}
+
 	public boolean isCanceled() {
 		return canceled;
 	}
