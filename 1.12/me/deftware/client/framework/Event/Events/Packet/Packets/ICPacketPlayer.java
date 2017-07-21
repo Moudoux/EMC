@@ -10,6 +10,10 @@ public class ICPacketPlayer extends IPacket {
 		super(packet);
 	}
 
+	public ICPacketPlayer() {
+		super(new CPacketPlayer());
+	}
+
 	public void setOnGround(boolean state) {
 		((CPacketPlayer) getPacket()).onGround = state;
 	}

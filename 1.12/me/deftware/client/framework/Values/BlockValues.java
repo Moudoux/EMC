@@ -24,7 +24,7 @@ public class BlockValues {
 	 *            = The value you want
 	 * @param _default
 	 *            = Default in case of no values set
-	 * @return
+	 * @return Value
 	 */
 	public static <V> V getValue(int map, String key, V _default) {
 		if (values.containsKey(map)) {
