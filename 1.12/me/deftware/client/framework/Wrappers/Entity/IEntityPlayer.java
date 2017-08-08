@@ -32,7 +32,7 @@ import net.minecraft.util.math.BlockPos;
  *
  */
 public class IEntityPlayer {
-	
+
 	private static int ping = 0;
 
 	/**
@@ -101,7 +101,7 @@ public class IEntityPlayer {
 	public static boolean getFlag(int flag) {
 		return Minecraft.getMinecraft().player.getFlag(flag);
 	}
-	
+
 	public static void setSprinting(boolean state) {
 		Minecraft.getMinecraft().player.setSprinting(state);
 	}
@@ -576,42 +576,42 @@ public class IEntityPlayer {
 		}
 		Minecraft.getMinecraft().player.capabilities.isFlying = state;
 	}
-	
+
 	public static boolean isFlying() {
 		if (isNull()) {
 			return false;
 		}
 		return Minecraft.getMinecraft().player.capabilities.isFlying;
 	}
-	
+
 	public static void setFlySpeed(float speed) {
 		if (isNull()) {
 			return;
 		}
 		Minecraft.getMinecraft().player.capabilities.setFlySpeed(speed);
 	}
-	
+
 	public static float getFlySpeed() {
 		if (isNull()) {
 			return 0F;
 		}
 		return Minecraft.getMinecraft().player.capabilities.getFlySpeed();
 	}
-	
+
 	public static void setWalkSpeed(float speed) {
 		if (isNull()) {
 			return;
 		}
 		Minecraft.getMinecraft().player.capabilities.setPlayerWalkSpeed(speed);
 	}
-	
+
 	public static float getWalkSpeed() {
 		if (isNull()) {
 			return 0F;
 		}
 		return Minecraft.getMinecraft().player.capabilities.getWalkSpeed();
 	}
-	
+
 	public static String getName() {
 		if (isNull()) {
 			return "";

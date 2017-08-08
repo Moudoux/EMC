@@ -1,6 +1,9 @@
 package me.deftware.client.framework.Wrappers;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.play.client.CPacketPlayerDigging;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 
 public class IInventory {
 
@@ -18,6 +21,11 @@ public class IInventory {
 
 	public static int getItemInUseCount() {
 		return Minecraft.getMinecraft().player.activeItemStackUseCount;
+	}
+
+	public static void swapHands() {
+		Minecraft.getMinecraft().player.connection.sendPacket(new CPacketPlayerDigging(
+				CPacketPlayerDigging.Action.SWAP_HELD_ITEMS, BlockPos.ORIGIN, EnumFacing.DOWN));
 	}
 
 }
