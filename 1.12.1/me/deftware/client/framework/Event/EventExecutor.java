@@ -1,7 +1,9 @@
 package me.deftware.client.framework.Event;
 
 import me.deftware.client.framework.Client.EMCClient;
+import me.deftware.client.framework.Event.Events.EventRender2D;
 import me.deftware.client.framework.Main.FrameworkLoader;
+import me.deftware.client.framework.Wrappers.IInventory;
 
 /**
  * 
@@ -11,6 +13,9 @@ import me.deftware.client.framework.Main.FrameworkLoader;
 public class EventExecutor {
 
 	protected static Event postEvent(Event event) {
+		if (event instanceof EventRender2D) {
+			IInventory.onRender();
+		}
 		sendEvent(event);
 		return event;
 	}

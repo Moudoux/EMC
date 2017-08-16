@@ -1,0 +1,39 @@
+package me.deftware.client.framework.MC_OAuth;
+
+import java.net.InetAddress;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.EnumConnectionState;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.handshake.client.C00Handshake;
+import net.minecraft.network.login.client.CPacketLoginStart;
+
+public class OAuth {
+
+	private static final String ip = "srv.mc-oauth.net";
+	private static final int port = 25565;
+
+	public static void oAuth(OAuthCallback callback) {
+		new Thread(() -> {
+			try {
+				InetAddress inetaddress = InetAddress.getByName(ip);
+				NetworkManager manager = NetworkManager.createNetworkManagerAndConnect(inetaddress, port,
+						Minecraft.getMinecraft().gameSettings.isUsingNativeTransport());
+				manager.setNetHandler(new OAuthNetHandler(manager, Minecraft.getMinecraft(), null, callback));
+				manager.sendPacket(new C00Handshake(338, ip, port, EnumConnectionState.LOGIN));
+				manager.sendPacket(new CPacketLoginStart(Minecraft.getMinecraft().getSession().getProfile()));
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}).start();
+	}
+
+	public static abstract class OAuthCallback {
+
+		public abstract void onSuccess(String code, String time);
+
+		public abstract void onFail();
+
+	}
+
+}

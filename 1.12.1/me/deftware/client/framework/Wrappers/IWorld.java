@@ -11,17 +11,20 @@ import me.deftware.client.framework.Wrappers.Entity.IPlayer;
 import me.deftware.client.framework.Wrappers.Objects.IBlockPos;
 import net.minecraft.block.BlockChest;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityEnderChest;
 import net.minecraft.tileentity.TileEntityShulkerBox;
 import net.minecraft.util.math.BlockPos;
 
 public class IWorld {
-	
+
 	private static final ICachedList iPlayerCacheArray = new ICachedList() {
 		@Override
 		public void execute() {
@@ -29,7 +32,8 @@ public class IWorld {
 				@Override
 				public void run() {
 					ArrayList<IPlayer> result = new ArrayList<IPlayer>();
-					for (Entity e : Minecraft.getMinecraft().world.loadedEntityList) {
+					for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
+							.getMinecraft().world.loadedEntityList).clone()) {
 						if (e instanceof EntityPlayer) {
 							result.add(new IPlayer((EntityPlayer) e));
 						}
@@ -47,8 +51,10 @@ public class IWorld {
 				@Override
 				public void run() {
 					ArrayList<IMob> result = new ArrayList<IMob>();
-					for (Entity e : Minecraft.getMinecraft().world.loadedEntityList) {
-						if (e instanceof EntityMob) {
+					for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
+							.getMinecraft().world.loadedEntityList).clone()) {
+						if ((e instanceof EntityMob || e instanceof EntityLiving) && !(e instanceof EntityPlayer)
+								&& !(e instanceof EntityItem)) {
 							result.add(new IMob(e));
 						}
 					}
@@ -65,7 +71,8 @@ public class IWorld {
 				@Override
 				public void run() {
 					ArrayList<IItemEntity> result = new ArrayList<IItemEntity>();
-					for (Entity e : Minecraft.getMinecraft().world.loadedEntityList) {
+					for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
+							.getMinecraft().world.loadedEntityList).clone()) {
 						if (e instanceof EntityItem) {
 							result.add(new IItemEntity(e));
 						}
@@ -83,7 +90,8 @@ public class IWorld {
 				@Override
 				public void run() {
 					ArrayList<IEntity> result = new ArrayList<IEntity>();
-					for (Entity e : Minecraft.getMinecraft().world.loadedEntityList) {
+					for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
+							.getMinecraft().world.loadedEntityList).clone()) {
 						result.add(new IEntity(e));
 					}
 					list = result;
@@ -103,7 +111,8 @@ public class IWorld {
 						list = result;
 						return;
 					}
-					for (Object o : Minecraft.getMinecraft().world.loadedTileEntityList) {
+					for (Object o : (ArrayList<TileEntity>) ((ArrayList<TileEntity>) Minecraft
+							.getMinecraft().world.loadedTileEntityList).clone()) {
 						if (o instanceof TileEntityChest) {
 							BlockPos p = ((TileEntityChest) o).getPos();
 							if (((TileEntityChest) o).getChestType() == BlockChest.Type.TRAP) {
@@ -128,6 +137,18 @@ public class IWorld {
 			}.start();
 		}
 	};
+
+	public static IEntity getEntityFromName(String username) {
+		for (Entity entity : Minecraft.getMinecraft().world.loadedEntityList) {
+			if (entity instanceof EntityOtherPlayerMP) {
+				EntityOtherPlayerMP player = (EntityOtherPlayerMP) entity;
+				if (player.getName().toLowerCase().equals(username.toLowerCase())) {
+					return new IEntity(player);
+				}
+			}
+		}
+		return null;
+	}
 
 	public static ArrayList<IChest> getIChests() {
 		iChestArray.execute();
