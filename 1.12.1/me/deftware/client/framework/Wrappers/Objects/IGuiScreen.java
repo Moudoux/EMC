@@ -235,4 +235,8 @@ public abstract class IGuiScreen extends GuiScreen {
 
 	protected abstract void onGuiResize(int w, int h);
 
+	public void onTick() {
+
+	}
+
 }

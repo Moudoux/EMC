@@ -303,7 +303,6 @@ public class RenderUtils {
 		GL11.glDisable(3042);
 	}
 
-
 	public static void blockESPBox(IBlockPos IBlockPos) {
 		double x = IBlockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
 		double y = IBlockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
@@ -366,6 +365,7 @@ public class RenderUtils {
 			;
 		}
 	}
+
 	public static void blockESPBox(IBlockPos IBlockPos, Color c) {
 		RenderUtils.fixDarkLight();
 		GlStateManager.resetColor();

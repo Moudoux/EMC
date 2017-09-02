@@ -2,6 +2,7 @@ package me.deftware.client.framework.Wrappers.Entity;
 
 import java.awt.Color;
 
+import me.deftware.client.framework.Event.Events.Packet.IPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
@@ -31,6 +32,20 @@ public class IEntity {
 
 	public Entity getEntity() {
 		return entity;
+	}
+
+	public void addPacketToQueue(IPacket packet) {
+		if (entity != null) {
+
+		}
+	}
+
+	public void setStepHeight(float height) {
+		this.entity.stepHeight = height;
+	}
+
+	public float getStepHeight() {
+		return this.entity.stepHeight;
 	}
 
 	public Color getEntityColor() {
@@ -172,8 +187,8 @@ public class IEntity {
 	}
 
 	/**
-	 * Returns true if this entity can be seen by the player (Aka if the entity
-	 * is behind a wall)
+	 * Returns true if this entity can be seen by the player (Aka if the entity is
+	 * behind a wall)
 	 * 
 	 * @return
 	 */

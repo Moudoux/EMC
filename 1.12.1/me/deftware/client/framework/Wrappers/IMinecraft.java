@@ -15,7 +15,6 @@ import me.deftware.client.framework.Wrappers.Objects.IServerData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiMultiplayer;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.main.Main;
@@ -181,8 +180,8 @@ public class IMinecraft {
 	 * 
 	 * @return
 	 */
-	public static GuiScreen getCurrentScreen() {
-		return Minecraft.getMinecraft().currentScreen;
+	public static IGuiScreen getCurrentScreen() {
+		return (IGuiScreen) Minecraft.getMinecraft().currentScreen;
 	}
 
 	/**

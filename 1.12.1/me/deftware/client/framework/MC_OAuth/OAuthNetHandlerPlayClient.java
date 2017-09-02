@@ -24,7 +24,7 @@ public class OAuthNetHandlerPlayClient extends NetHandlerPlayClient {
 		String code = packetIn.getReason().getUnformattedText().split("\n")[0].split("\"")[1].replace("\"", "");
 		String time = packetIn.getReason().getUnformattedText().split("\n")[2]
 				.substring("Your code will expire in ".length());
-		callback.onSuccess(code, time);
+		callback.callback(true, code, time);
 		this.netManager.closeChannel(packetIn.getReason());
 	}
 

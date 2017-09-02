@@ -28,11 +28,16 @@ public class OAuth {
 		}).start();
 	}
 
-	public static abstract class OAuthCallback {
+	@FunctionalInterface
+	public static interface OAuthCallback {
 
-		public abstract void onSuccess(String code, String time);
-
-		public abstract void onFail();
+		/**
+		 * 
+		 * @param status
+		 * @param code
+		 * @param time
+		 */
+		public void callback(boolean success, String code, String time);
 
 	}
 

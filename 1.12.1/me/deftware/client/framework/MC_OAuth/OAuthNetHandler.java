@@ -21,7 +21,7 @@ public class OAuthNetHandler extends NetHandlerLoginClient {
 
 	@Override
 	public void onDisconnect(ITextComponent reason) {
-		callback.onFail();
+		callback.callback(false, "", "");
 	}
 
 	@Override
