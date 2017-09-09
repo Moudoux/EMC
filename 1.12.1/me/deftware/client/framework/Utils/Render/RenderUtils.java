@@ -68,13 +68,16 @@ public class RenderUtils {
 		GL11.glDisable(3553);
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(2848);
+		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
 		GL11.glBegin(6);
+
 		for (int i = 0; i < 50; i++) {
 			float x = (float) (radius * Math.sin(i * 0.12566370614359174D));
 			float y = (float) (radius * Math.cos(i * 0.12566370614359174D));
 			GL11.glColor4f(f2, f3, f4, f);
 			GL11.glVertex2f(xx + x, yy + y);
 		}
+
 		GL11.glEnd();
 		GL11.glEnable(3553);
 		GL11.glDisable(3042);

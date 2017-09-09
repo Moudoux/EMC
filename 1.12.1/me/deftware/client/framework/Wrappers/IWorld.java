@@ -32,11 +32,15 @@ public class IWorld {
 				@Override
 				public void run() {
 					ArrayList<IPlayer> result = new ArrayList<IPlayer>();
-					for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
-							.getMinecraft().world.loadedEntityList).clone()) {
-						if (e instanceof EntityPlayer) {
-							result.add(new IPlayer((EntityPlayer) e));
+					try {
+						for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
+								.getMinecraft().world.loadedEntityList).clone()) {
+							if (e instanceof EntityPlayer) {
+								result.add(new IPlayer((EntityPlayer) e));
+							}
 						}
+					} catch (Exception ex) {
+						result.clear();
 					}
 					list = result;
 				}
@@ -51,12 +55,16 @@ public class IWorld {
 				@Override
 				public void run() {
 					ArrayList<IMob> result = new ArrayList<IMob>();
-					for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
-							.getMinecraft().world.loadedEntityList).clone()) {
-						if ((e instanceof EntityMob || e instanceof EntityLiving) && !(e instanceof EntityPlayer)
-								&& !(e instanceof EntityItem)) {
-							result.add(new IMob(e));
+					try {
+						for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
+								.getMinecraft().world.loadedEntityList).clone()) {
+							if ((e instanceof EntityMob || e instanceof EntityLiving) && !(e instanceof EntityPlayer)
+									&& !(e instanceof EntityItem)) {
+								result.add(new IMob(e));
+							}
 						}
+					} catch (Exception ex) {
+						result.clear();
 					}
 					list = result;
 				}
@@ -71,11 +79,15 @@ public class IWorld {
 				@Override
 				public void run() {
 					ArrayList<IItemEntity> result = new ArrayList<IItemEntity>();
-					for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
-							.getMinecraft().world.loadedEntityList).clone()) {
-						if (e instanceof EntityItem) {
-							result.add(new IItemEntity(e));
+					try {
+						for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
+								.getMinecraft().world.loadedEntityList).clone()) {
+							if (e instanceof EntityItem) {
+								result.add(new IItemEntity(e));
+							}
 						}
+					} catch (Exception ex) {
+						result.clear();
 					}
 					list = result;
 				}
@@ -90,9 +102,13 @@ public class IWorld {
 				@Override
 				public void run() {
 					ArrayList<IEntity> result = new ArrayList<IEntity>();
-					for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
-							.getMinecraft().world.loadedEntityList).clone()) {
-						result.add(new IEntity(e));
+					try {
+						for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
+								.getMinecraft().world.loadedEntityList).clone()) {
+							result.add(new IEntity(e));
+						}
+					} catch (Exception ex) {
+						result.clear();
 					}
 					list = result;
 				}
@@ -111,26 +127,30 @@ public class IWorld {
 						list = result;
 						return;
 					}
-					for (Object o : (ArrayList<TileEntity>) ((ArrayList<TileEntity>) Minecraft
-							.getMinecraft().world.loadedTileEntityList).clone()) {
-						if (o instanceof TileEntityChest) {
-							BlockPos p = ((TileEntityChest) o).getPos();
-							if (((TileEntityChest) o).getChestType() == BlockChest.Type.TRAP) {
-								result.add(new IChest(IChestType.TRAPPED_CHEST,
-										new IBlockPos(p.getX(), p.getY(), p.getZ()), Color.RED));
-							} else {
-								result.add(new IChest(IChestType.CHEST, new IBlockPos(p.getX(), p.getY(), p.getZ()),
-										Color.ORANGE));
+					try {
+						for (Object o : (ArrayList<TileEntity>) ((ArrayList<TileEntity>) Minecraft
+								.getMinecraft().world.loadedTileEntityList).clone()) {
+							if (o instanceof TileEntityChest) {
+								BlockPos p = ((TileEntityChest) o).getPos();
+								if (((TileEntityChest) o).getChestType() == BlockChest.Type.TRAP) {
+									result.add(new IChest(IChestType.TRAPPED_CHEST,
+											new IBlockPos(p.getX(), p.getY(), p.getZ()), Color.RED));
+								} else {
+									result.add(new IChest(IChestType.CHEST, new IBlockPos(p.getX(), p.getY(), p.getZ()),
+											Color.ORANGE));
+								}
+							} else if (o instanceof TileEntityEnderChest) {
+								BlockPos p = ((TileEntityEnderChest) o).getPos();
+								result.add(new IChest(IChestType.ENDER_CHEST,
+										new IBlockPos(p.getX(), p.getY(), p.getZ()), Color.BLUE));
+							} else if (o instanceof TileEntityShulkerBox) {
+								BlockPos p = ((TileEntityShulkerBox) o).getPos();
+								result.add(new IChest(IChestType.SHULKER_BOX,
+										new IBlockPos(p.getX(), p.getY(), p.getZ()), Color.PINK));
 							}
-						} else if (o instanceof TileEntityEnderChest) {
-							BlockPos p = ((TileEntityEnderChest) o).getPos();
-							result.add(new IChest(IChestType.ENDER_CHEST, new IBlockPos(p.getX(), p.getY(), p.getZ()),
-									Color.BLUE));
-						} else if (o instanceof TileEntityShulkerBox) {
-							BlockPos p = ((TileEntityShulkerBox) o).getPos();
-							result.add(new IChest(IChestType.SHULKER_BOX, new IBlockPos(p.getX(), p.getY(), p.getZ()),
-									Color.PINK));
 						}
+					} catch (Exception ex) {
+						result.clear();
 					}
 					list = result;
 				}

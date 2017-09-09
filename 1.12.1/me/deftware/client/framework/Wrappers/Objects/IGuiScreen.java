@@ -105,7 +105,7 @@ public abstract class IGuiScreen extends GuiScreen {
 		this.drawDefaultBackground();
 	}
 
-	protected void drawDarkOverlay() {
+	public void drawDarkOverlay() {
 		Gui.drawRect(0, 0, width, height, Integer.MIN_VALUE);
 	}
 

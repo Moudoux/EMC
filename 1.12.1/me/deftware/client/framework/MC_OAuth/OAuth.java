@@ -4,7 +4,6 @@ import java.net.InetAddress;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.EnumConnectionState;
-import net.minecraft.network.NetworkManager;
 import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.network.login.client.CPacketLoginStart;
 
@@ -17,13 +16,13 @@ public class OAuth {
 		new Thread(() -> {
 			try {
 				InetAddress inetaddress = InetAddress.getByName(ip);
-				NetworkManager manager = NetworkManager.createNetworkManagerAndConnect(inetaddress, port,
-						Minecraft.getMinecraft().gameSettings.isUsingNativeTransport());
+				OAuthNetworkManager manager = OAuthNetworkManager.createNetworkManagerAndConnect(inetaddress, port,
+						Minecraft.getMinecraft().gameSettings.isUsingNativeTransport(), callback);
 				manager.setNetHandler(new OAuthNetHandler(manager, Minecraft.getMinecraft(), null, callback));
 				manager.sendPacket(new C00Handshake(338, ip, port, EnumConnectionState.LOGIN));
 				manager.sendPacket(new CPacketLoginStart(Minecraft.getMinecraft().getSession().getProfile()));
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				callback.callback(false, "", "");
 			}
 		}).start();
 	}

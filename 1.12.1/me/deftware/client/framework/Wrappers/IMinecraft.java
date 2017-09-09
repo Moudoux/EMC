@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.main.Main;
 import net.minecraft.client.multiplayer.GuiConnecting;
@@ -264,7 +265,8 @@ public class IMinecraft {
 	public static boolean isInventoryOpen() {
 		if (Minecraft.getMinecraft().currentScreen != null) {
 			if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer
-					&& Minecraft.getMinecraft().currentScreen instanceof GuiInventory) {
+					&& (Minecraft.getMinecraft().currentScreen instanceof GuiInventory
+							|| Minecraft.getMinecraft().currentScreen instanceof GuiContainerCreative)) {
 				return true;
 			}
 		}
