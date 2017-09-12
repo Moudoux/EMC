@@ -11,17 +11,20 @@ import me.deftware.client.framework.Wrappers.Entity.IPlayer;
 import me.deftware.client.framework.Wrappers.Objects.IBlockPos;
 import net.minecraft.block.BlockChest;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityEnderChest;
 import net.minecraft.tileentity.TileEntityShulkerBox;
 import net.minecraft.util.math.BlockPos;
 
 public class IWorld {
-	
+
 	private static final ICachedList iPlayerCacheArray = new ICachedList() {
 		@Override
 		public void execute() {
@@ -29,10 +32,15 @@ public class IWorld {
 				@Override
 				public void run() {
 					ArrayList<IPlayer> result = new ArrayList<IPlayer>();
-					for (Entity e : Minecraft.getMinecraft().world.loadedEntityList) {
-						if (e instanceof EntityPlayer) {
-							result.add(new IPlayer((EntityPlayer) e));
+					try {
+						for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
+								.getMinecraft().world.loadedEntityList).clone()) {
+							if (e instanceof EntityPlayer) {
+								result.add(new IPlayer((EntityPlayer) e));
+							}
 						}
+					} catch (Exception ex) {
+						result.clear();
 					}
 					list = result;
 				}
@@ -47,10 +55,16 @@ public class IWorld {
 				@Override
 				public void run() {
 					ArrayList<IMob> result = new ArrayList<IMob>();
-					for (Entity e : Minecraft.getMinecraft().world.loadedEntityList) {
-						if (e instanceof EntityMob) {
-							result.add(new IMob(e));
+					try {
+						for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
+								.getMinecraft().world.loadedEntityList).clone()) {
+							if ((e instanceof EntityMob || e instanceof EntityLiving) && !(e instanceof EntityPlayer)
+									&& !(e instanceof EntityItem)) {
+								result.add(new IMob(e));
+							}
 						}
+					} catch (Exception ex) {
+						result.clear();
 					}
 					list = result;
 				}
@@ -65,10 +79,15 @@ public class IWorld {
 				@Override
 				public void run() {
 					ArrayList<IItemEntity> result = new ArrayList<IItemEntity>();
-					for (Entity e : Minecraft.getMinecraft().world.loadedEntityList) {
-						if (e instanceof EntityItem) {
-							result.add(new IItemEntity(e));
+					try {
+						for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
+								.getMinecraft().world.loadedEntityList).clone()) {
+							if (e instanceof EntityItem) {
+								result.add(new IItemEntity(e));
+							}
 						}
+					} catch (Exception ex) {
+						result.clear();
 					}
 					list = result;
 				}
@@ -83,8 +102,13 @@ public class IWorld {
 				@Override
 				public void run() {
 					ArrayList<IEntity> result = new ArrayList<IEntity>();
-					for (Entity e : Minecraft.getMinecraft().world.loadedEntityList) {
-						result.add(new IEntity(e));
+					try {
+						for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
+								.getMinecraft().world.loadedEntityList).clone()) {
+							result.add(new IEntity(e));
+						}
+					} catch (Exception ex) {
+						result.clear();
 					}
 					list = result;
 				}
@@ -103,31 +127,48 @@ public class IWorld {
 						list = result;
 						return;
 					}
-					for (Object o : Minecraft.getMinecraft().world.loadedTileEntityList) {
-						if (o instanceof TileEntityChest) {
-							BlockPos p = ((TileEntityChest) o).getPos();
-							if (((TileEntityChest) o).getChestType() == BlockChest.Type.TRAP) {
-								result.add(new IChest(IChestType.TRAPPED_CHEST,
-										new IBlockPos(p.getX(), p.getY(), p.getZ()), Color.RED));
-							} else {
-								result.add(new IChest(IChestType.CHEST, new IBlockPos(p.getX(), p.getY(), p.getZ()),
-										Color.ORANGE));
+					try {
+						for (Object o : (ArrayList<TileEntity>) ((ArrayList<TileEntity>) Minecraft
+								.getMinecraft().world.loadedTileEntityList).clone()) {
+							if (o instanceof TileEntityChest) {
+								BlockPos p = ((TileEntityChest) o).getPos();
+								if (((TileEntityChest) o).getChestType() == BlockChest.Type.TRAP) {
+									result.add(new IChest(IChestType.TRAPPED_CHEST,
+											new IBlockPos(p.getX(), p.getY(), p.getZ()), Color.RED));
+								} else {
+									result.add(new IChest(IChestType.CHEST, new IBlockPos(p.getX(), p.getY(), p.getZ()),
+											Color.ORANGE));
+								}
+							} else if (o instanceof TileEntityEnderChest) {
+								BlockPos p = ((TileEntityEnderChest) o).getPos();
+								result.add(new IChest(IChestType.ENDER_CHEST,
+										new IBlockPos(p.getX(), p.getY(), p.getZ()), Color.BLUE));
+							} else if (o instanceof TileEntityShulkerBox) {
+								BlockPos p = ((TileEntityShulkerBox) o).getPos();
+								result.add(new IChest(IChestType.SHULKER_BOX,
+										new IBlockPos(p.getX(), p.getY(), p.getZ()), Color.PINK));
 							}
-						} else if (o instanceof TileEntityEnderChest) {
-							BlockPos p = ((TileEntityEnderChest) o).getPos();
-							result.add(new IChest(IChestType.ENDER_CHEST, new IBlockPos(p.getX(), p.getY(), p.getZ()),
-									Color.BLUE));
-						} else if (o instanceof TileEntityShulkerBox) {
-							BlockPos p = ((TileEntityShulkerBox) o).getPos();
-							result.add(new IChest(IChestType.SHULKER_BOX, new IBlockPos(p.getX(), p.getY(), p.getZ()),
-									Color.PINK));
 						}
+					} catch (Exception ex) {
+						result.clear();
 					}
 					list = result;
 				}
 			}.start();
 		}
 	};
+
+	public static IEntity getEntityFromName(String username) {
+		for (Entity entity : Minecraft.getMinecraft().world.loadedEntityList) {
+			if (entity instanceof EntityOtherPlayerMP) {
+				EntityOtherPlayerMP player = (EntityOtherPlayerMP) entity;
+				if (player.getName().toLowerCase().equals(username.toLowerCase())) {
+					return new IEntity(player);
+				}
+			}
+		}
+		return null;
+	}
 
 	public static ArrayList<IChest> getIChests() {
 		iChestArray.execute();

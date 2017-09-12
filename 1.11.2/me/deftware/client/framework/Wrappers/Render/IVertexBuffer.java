@@ -1,17 +1,17 @@
 package me.deftware.client.framework.Wrappers.Render;
 
 import me.deftware.client.framework.Wrappers.Render.IDefaultVertexFormats.IVertexFormat;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 
 public class IVertexBuffer {
 
-	private VertexBuffer vertexbuffer;
+	private BufferBuilder vertexbuffer;
 	
 	public IVertexBuffer(ITessellator tessellator) {
 		vertexbuffer = tessellator.getTessellator().getBuffer();
 	}
 
-	public IVertexBuffer(VertexBuffer buffer) {
+	public IVertexBuffer(BufferBuilder buffer) {
 		this.vertexbuffer = buffer;
 	}
 

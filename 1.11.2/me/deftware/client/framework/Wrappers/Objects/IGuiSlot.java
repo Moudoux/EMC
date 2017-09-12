@@ -35,8 +35,9 @@ public abstract class IGuiSlot extends GuiSlot {
 	/**
 	 * drawSlot(int id, int x, int y, int var4, int var5, int var6)
 	 */
-	protected void drawSlot(int id, int x, int y, int var4, int var5, int var6) {
-		this.drawISlot(id, x, y);
+	protected void func_192637_a(int p_192637_1_, int p_192637_2_, int p_192637_3_, int p_192637_4_, int p_192637_5_,
+			int p_192637_6_, float p_192637_7_) {
+		this.drawISlot(p_192637_1_, p_192637_2_, p_192637_3_);
 	}
 
 	/*

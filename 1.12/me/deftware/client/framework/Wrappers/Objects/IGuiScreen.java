@@ -105,7 +105,7 @@ public abstract class IGuiScreen extends GuiScreen {
 		this.drawDefaultBackground();
 	}
 
-	protected void drawDarkOverlay() {
+	public void drawDarkOverlay() {
 		Gui.drawRect(0, 0, width, height, Integer.MIN_VALUE);
 	}
 
@@ -234,5 +234,9 @@ public abstract class IGuiScreen extends GuiScreen {
 	protected abstract void onMouseClicked(int mouseX, int mouseY, int mouseButton);
 
 	protected abstract void onGuiResize(int w, int h);
+
+	public void onTick() {
+
+	}
 
 }

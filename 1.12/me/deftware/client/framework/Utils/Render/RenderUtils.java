@@ -20,7 +20,6 @@ import me.deftware.client.framework.Wrappers.Objects.IDummyEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -68,13 +67,16 @@ public class RenderUtils {
 		GL11.glDisable(3553);
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(2848);
+		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
 		GL11.glBegin(6);
+
 		for (int i = 0; i < 50; i++) {
 			float x = (float) (radius * Math.sin(i * 0.12566370614359174D));
 			float y = (float) (radius * Math.cos(i * 0.12566370614359174D));
 			GL11.glColor4f(f2, f3, f4, f);
 			GL11.glVertex2f(xx + x, yy + y);
 		}
+
 		GL11.glEnd();
 		GL11.glEnable(3553);
 		GL11.glDisable(3042);
@@ -303,7 +305,6 @@ public class RenderUtils {
 		GL11.glDisable(3042);
 	}
 
-
 	public static void blockESPBox(IBlockPos IBlockPos) {
 		double x = IBlockPos.getX() - Minecraft.getMinecraft().getRenderManager().renderPosX;
 		double y = IBlockPos.getY() - Minecraft.getMinecraft().getRenderManager().renderPosY;
@@ -366,6 +367,7 @@ public class RenderUtils {
 			;
 		}
 	}
+
 	public static void blockESPBox(IBlockPos IBlockPos, Color c) {
 		RenderUtils.fixDarkLight();
 		GlStateManager.resetColor();

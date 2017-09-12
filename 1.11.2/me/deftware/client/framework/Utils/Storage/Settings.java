@@ -123,8 +123,8 @@ public class Settings {
 	}
 
 	/**
-	 * Adds a value to a ArrayList<String> node, where node is a ArrayList and
-	 * value the value you want to add
+	 * Adds a value to a ArrayList<String> node, where node is a ArrayList and value
+	 * the value you want to add
 	 * 
 	 * @param node
 	 * @param value
@@ -143,8 +143,8 @@ public class Settings {
 	}
 
 	/**
-	 * Removes a value from a ArrayList<String> node, where node is a ArrayList
-	 * and value the value you want to add
+	 * Removes a value from a ArrayList<String> node, where node is a ArrayList and
+	 * value the value you want to add
 	 * 
 	 * @param node
 	 * @param value
@@ -180,23 +180,31 @@ public class Settings {
 			;
 		}
 	}
-	
+
 	public synchronized void saveBool(String node, boolean value) {
 		try {
-			addNode(node,String.valueOf(value));
+			addNode(node, String.valueOf(value));
 		} catch (Exception ex) {
 			;
 		}
-	} 
-	
+	}
+
 	public synchronized void saveInt(String node, int value) {
 		try {
-			addNode(node,String.valueOf(value));
+			addNode(node, String.valueOf(value));
 		} catch (Exception ex) {
 			;
 		}
-	} 
-	
+	}
+
+	public synchronized void saveFloat(String node, float value) {
+		try {
+			addNode(node, String.valueOf(value));
+		} catch (Exception ex) {
+			;
+		}
+	}
+
 	public synchronized void saveDouble(String node, double value) {
 		try {
 			addNode(node, String.valueOf(value));
@@ -206,7 +214,7 @@ public class Settings {
 	}
 
 	public synchronized boolean getBool(String node, boolean _default) {
-		String data = getNode(node,"");
+		String data = getNode(node, "");
 		if (data.equals("")) {
 			return _default;
 		}
@@ -216,7 +224,7 @@ public class Settings {
 			return _default;
 		}
 	}
-	
+
 	public synchronized float getFloat(String node, float _default) {
 		String data = getNode(node, "");
 		if (data.equals("")) {
@@ -230,7 +238,7 @@ public class Settings {
 	}
 
 	public synchronized int getInt(String node, int _default) {
-		String data = getNode(node,"");
+		String data = getNode(node, "");
 		if (data.equals("")) {
 			return _default;
 		}

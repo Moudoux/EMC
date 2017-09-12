@@ -1,5 +1,10 @@
 package me.deftware.client.framework.Wrappers;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.net.URISyntaxException;
+
 import org.lwjgl.opengl.Display;
 
 import me.deftware.client.framework.Wrappers.Entity.IEntity;
@@ -10,9 +15,10 @@ import me.deftware.client.framework.Wrappers.Objects.IServerData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiMultiplayer;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.main.Main;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.entity.Entity;
@@ -26,6 +32,29 @@ public class IMinecraft {
 
 	public static IServerData lastServer = null;
 	private static IServerData iServerCache = null;
+	private static String[] launch_data;
+
+	public static void setLaunchData(String[] data) {
+		IMinecraft.launch_data = data;
+	}
+
+	/**
+	 * Restarts Minecraft
+	 * 
+	 * @throws IOException
+	 */
+	public static void restart(String lwjgl) throws IOException {
+		StringBuilder cmd = new StringBuilder();
+		cmd.append("java ");
+		cmd.append("-Djava.library.path=\"" + lwjgl + "\" ");
+		cmd.append("-cp \"").append(ManagementFactory.getRuntimeMXBean().getClassPath()).append("\" ");
+		cmd.append(Main.class.getName()).append(" ");
+		for (String arg : launch_data) {
+			cmd.append(arg).append(" ");
+		}
+		Runtime.getRuntime().exec(cmd.toString());
+		System.exit(0);
+	}
 
 	public synchronized static IServerData getCurrentServer() {
 		if (Minecraft.getMinecraft().getCurrentServerData() == null) {
@@ -37,9 +66,14 @@ public class IMinecraft {
 			}
 		}
 		ServerData sd = Minecraft.getMinecraft().getCurrentServerData();
-		iServerCache = new IServerData(sd.serverName,sd.serverIP,sd.isOnLAN());
+		iServerCache = new IServerData(sd.serverName, sd.serverIP, sd.isOnLAN());
 		iServerCache.gameVersion = sd.gameVersion;
 		return iServerCache;
+	}
+
+	public static String getRunningLocation() throws URISyntaxException {
+		return new File(Minecraft.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
+				.getParent();
 	}
 
 	/**
@@ -107,8 +141,8 @@ public class IMinecraft {
 	}
 
 	public static void connectToServer(IServerData server) {
-		Minecraft.getMinecraft().displayGuiScreen(new GuiConnecting(new GuiMultiplayer(null), Minecraft.getMinecraft(),
-				server));
+		Minecraft.getMinecraft()
+				.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(null), Minecraft.getMinecraft(), server));
 	}
 
 	public static int thridPersonView() {
@@ -116,14 +150,14 @@ public class IMinecraft {
 	}
 
 	/**
-	 * Sets the window title 
+	 * Sets the window title
 	 * 
 	 * @param title
 	 */
 	public static void setTitle(String title) {
 		Display.setTitle(title);
 	}
-	
+
 	/**
 	 * Returns the Minecraft gui scale
 	 * 
@@ -141,16 +175,16 @@ public class IMinecraft {
 	public static boolean isDebugInfoShown() {
 		return Minecraft.getMinecraft().gameSettings.showDebugInfo;
 	}
-	
+
 	/**
 	 * Gets the current gui screen
 	 * 
 	 * @return
 	 */
-	public static GuiScreen getCurrentScreen() {
-		return Minecraft.getMinecraft().currentScreen;
+	public static IGuiScreen getCurrentScreen() {
+		return (IGuiScreen) Minecraft.getMinecraft().currentScreen;
 	}
-	
+
 	/**
 	 * Displays a new gui screen, ONLY IGuiScreen instances!
 	 * 
@@ -159,14 +193,14 @@ public class IMinecraft {
 	public static void setGuiScreen(IGuiScreen screen) {
 		Minecraft.getMinecraft().displayGuiScreen(screen);
 	}
-	
+
 	/**
 	 * Shuts down Minecraft
 	 */
 	public static void shutdown() {
 		Minecraft.getMinecraft().shutdown();
 	}
-	
+
 	/**
 	 * Set's the gamma
 	 * 
@@ -175,7 +209,7 @@ public class IMinecraft {
 	public static void setGamma(float value) {
 		Minecraft.getMinecraft().gameSettings.gammaSetting = value;
 	}
-	
+
 	/**
 	 * Get's the gamma
 	 * 
@@ -184,7 +218,7 @@ public class IMinecraft {
 	public static float getGamma() {
 		return Minecraft.getMinecraft().gameSettings.gammaSetting;
 	}
-	
+
 	/**
 	 * Sets the right click delay
 	 * 
@@ -193,7 +227,7 @@ public class IMinecraft {
 	public static void setRightClickDelayTimer(int delay) {
 		Minecraft.getMinecraft().rightClickDelayTimer = delay;
 	}
-	
+
 	/**
 	 * Checks if the Minecraft chat is open
 	 * 
@@ -231,7 +265,8 @@ public class IMinecraft {
 	public static boolean isInventoryOpen() {
 		if (Minecraft.getMinecraft().currentScreen != null) {
 			if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer
-					&& Minecraft.getMinecraft().currentScreen instanceof GuiInventory) {
+					&& (Minecraft.getMinecraft().currentScreen instanceof GuiInventory
+							|| Minecraft.getMinecraft().currentScreen instanceof GuiContainerCreative)) {
 				return true;
 			}
 		}
@@ -253,14 +288,14 @@ public class IMinecraft {
 	public static String getMinecraftVersion() {
 		return RealmsSharedConstants.VERSION_STRING;
 	}
-	
+
 	/**
 	 * Get's the current Minecraft protocol version
 	 */
 	public static int getMinecraftProtocolVersion() {
 		return RealmsSharedConstants.NETWORK_PROTOCOL_VERSION;
 	}
-	
+
 	/**
 	 * Returns true if the mouse is over a object
 	 * 

@@ -74,6 +74,21 @@ public class IEntityPlayer {
 		return new IItemStack(stack);
 	}
 
+	public static float getStepHeight() {
+		return Minecraft.getMinecraft().player.stepHeight;
+	}
+
+	public static void setStepHeight(float height) {
+		Minecraft.getMinecraft().player.stepHeight = height;
+	}
+
+	public static IEntity getRidingEntity() {
+		if (Minecraft.getMinecraft().player.ridingEntity != null) {
+			return new IEntity(Minecraft.getMinecraft().player.ridingEntity);
+		}
+		return null;
+	}
+
 	public static int getFoodLevel() {
 		return Minecraft.getMinecraft().player.getFoodStats().getFoodLevel();
 	}

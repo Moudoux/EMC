@@ -28,7 +28,8 @@ public class EventDisconnected extends Event {
 	 */
 	public int getPort() {
 		return IMinecraft.lastServer.getIIP().contains(":")
-				? Integer.valueOf(IMinecraft.lastServer.getIIP().split(":")[1]) : 25565;
+				? Integer.valueOf(IMinecraft.lastServer.getIIP().split(":")[1])
+				: 25565;
 	}
 
 }

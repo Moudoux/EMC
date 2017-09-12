@@ -24,9 +24,9 @@ import me.deftware.client.framework.FontRender.Fonts;
 import net.minecraft.client.Minecraft;
 
 public class FrameworkLoader {
-	
+
 	public static Logger logger = LogManager.getLogger();
-	
+
 	private static URLClassLoader clientLoader;
 
 	/**
@@ -38,14 +38,14 @@ public class FrameworkLoader {
 	 * Our client instances
 	 */
 	private static HashMap<String, EMCClient> mods = new HashMap<String, EMCClient>();
-	
+
 	/**
 	 * Called from the Minecraft initialization method
 	 */
 	public static void init() {
 		try {
 			logger.info("Loading EMC...");
-			
+
 			// Initialize framework stuff
 			Fonts.loadFonts();
 
@@ -66,8 +66,14 @@ public class FrameworkLoader {
 				}
 			}
 
+			if (new File(minecraft.getParent() + File.separator + "Client_update.jar").exists()) {
+				new File(minecraft.getParent() + File.separator + "Client.jar").delete();
+				new File(minecraft.getParent() + File.separator + "Client_update.jar")
+						.renameTo(new File(minecraft.getParent() + File.separator + "Client.jar"));
+			}
+
 			loadClient(new File(minecraft.getParent() + File.separator + "Client.jar"));
-			
+
 		} catch (Exception ex) {
 			logger.warn("Failed to load some EMC mods");
 			ex.printStackTrace();
@@ -141,5 +147,5 @@ public class FrameworkLoader {
 	public static void ejectClients() {
 		mods.clear();
 	}
-	
+
 }

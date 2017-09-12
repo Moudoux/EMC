@@ -22,9 +22,9 @@ public class IGuiButton extends GuiButton {
 	}
 	
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+	public void func_191745_a(final Minecraft mc, final int mouseX, final int mouseY, float partialTicks) {
 		if (onDraw(mouseX,mouseY) == 0) {
-			super.drawButton(mc, mouseX, mouseY);
+			super.func_191745_a(mc, mouseX, mouseY, partialTicks);
 		}
 	}
 	

@@ -33,6 +33,18 @@ public class IEntity {
 		return entity;
 	}
 
+	public boolean isOnGround() {
+		return ((EntityLivingBase) entity).onGround;
+	}
+
+	public void setStepHeight(float height) {
+		this.entity.stepHeight = height;
+	}
+
+	public float getStepHeight() {
+		return this.entity.stepHeight;
+	}
+
 	public Color getEntityColor() {
 		if ((entity instanceof EntityAnimal)) {
 			return Color.white;
@@ -172,8 +184,8 @@ public class IEntity {
 	}
 
 	/**
-	 * Returns true if this entity can be seen by the player (Aka if the entity
-	 * is behind a wall)
+	 * Returns true if this entity can be seen by the player (Aka if the entity is
+	 * behind a wall)
 	 * 
 	 * @return
 	 */

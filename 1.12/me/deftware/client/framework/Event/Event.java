@@ -53,8 +53,7 @@ public abstract class Event {
 						String name = client.clientInfo.get("name").getAsString();
 						int version = client.clientInfo.get("version").getAsInt();
 						String author = client.clientInfo.get("author").getAsString();
-						ChatProcessor.printFrameworkMessage(
-								name + " version " + version + " made by " + author);
+						ChatProcessor.printFrameworkMessage(name + " version " + version + " made by " + author);
 					}
 					return event;
 				}
