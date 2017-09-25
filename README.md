@@ -28,15 +28,19 @@ public void setWalkspeed(float speed) {
 
 That's it. It is as easy as that. The IEntityPlayer.setWalkspeed then calls the obfuscated Minecraft call.
 
+Minecraft currently versions supported
+-------------------
+
+* 1.12.2
+* 1.12.1
+* 1.12
+* 1.11.2
+
+
 Making client mods with EMC 
 -------------------
 
 Check out the [EMC Development Kit](https://github.com/Moudoux/EDK)
-
-Clients using EMC
--------------------
-
-* [Aristois](https://aristois.opentexon.com/download)
 
 Built in commands
 -------------------
