@@ -29,7 +29,6 @@ public class IItemStack {
 		this.stack = new ItemStack(item.getItem());
 	}
 
-	
 	public IItemStack(String name) {
 		this.stack = new ItemStack(Item.getByNameOrId(name));
 	}
@@ -37,8 +36,8 @@ public class IItemStack {
 	public void enchantAll() {
 		for (Enchantment enchantment : Enchantment.REGISTRY) {
 			try {
-				if (enchantment != Enchantments.SILK_TOUCH || enchantment != Enchantments.field_190941_k
-						|| enchantment != Enchantments.field_190940_C) {
+				if (enchantment != Enchantments.SILK_TOUCH && enchantment != Enchantments.field_190941_k
+						&& enchantment != Enchantments.field_190940_C) {
 					stack.addEnchantment(enchantment, 127);
 				}
 			} catch (Exception ex) {
@@ -71,7 +70,6 @@ public class IItemStack {
 		return stack.getStrVsBlock(Minecraft.getMinecraft().world.getBlockState(pos.getPos()));
 	}
 
-	
 	public boolean isEmpty() {
 		return this.stack.getItem() == Item.getItemFromBlock(Blocks.AIR);
 	}
@@ -88,7 +86,6 @@ public class IItemStack {
 		return new IItem(stack.getItem());
 	}
 
-	
 	public int getRarity() {
 		if (stack.getRarity() == EnumRarity.COMMON) {
 			return 0;
