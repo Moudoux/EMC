@@ -29,13 +29,10 @@ public class FrameworkLoader {
 
 	private static URLClassLoader clientLoader;
 
-	
 	public static ArrayList<JsonObject> modsInfo = new ArrayList<JsonObject>();
 
-	
 	private static HashMap<String, EMCClient> mods = new HashMap<String, EMCClient>();
 
-	
 	public static void init() {
 		try {
 			logger.info("Loading EMC...");
@@ -135,7 +132,6 @@ public class FrameworkLoader {
 		return mods;
 	}
 
-	
 	public static void ejectClients() {
 		mods.clear();
 	}

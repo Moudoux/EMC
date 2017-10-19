@@ -9,6 +9,8 @@ public class IDefaultVertexFormats {
 		IVertexFormat format = null;
 		if (type.equals(Types.POSITION_COLOR)) {
 			format = new IVertexFormat(DefaultVertexFormats.POSITION_COLOR);
+		} else if (type.equals(Types.POSITION_TEX_COLOR)) {
+			format = new IVertexFormat(DefaultVertexFormats.POSITION_TEX_COLOR);
 		}
 		return format;
 	}
@@ -28,7 +30,7 @@ public class IDefaultVertexFormats {
 	}
 
 	public static enum Types {
-		POSITION_COLOR
+		POSITION_COLOR, POSITION_TEX_COLOR
 	}
 
 }

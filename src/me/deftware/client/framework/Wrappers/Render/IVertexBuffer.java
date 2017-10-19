@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 public class IVertexBuffer {
 
 	private BufferBuilder vertexbuffer;
-	
+
 	public IVertexBuffer(ITessellator tessellator) {
 		vertexbuffer = tessellator.getTessellator().getBuffer();
 	}
@@ -21,6 +21,11 @@ public class IVertexBuffer {
 
 	public IVertexBuffer pos(double x, double y, double z) {
 		vertexbuffer.pos(x, y, z);
+		return this;
+	}
+
+	public IVertexBuffer tex(double u, double v) {
+		vertexbuffer.tex(u, v);
 		return this;
 	}
 

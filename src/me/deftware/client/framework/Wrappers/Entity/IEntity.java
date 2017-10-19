@@ -9,9 +9,12 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityAmbientCreature;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityBat;
@@ -67,7 +70,6 @@ public class IEntity {
 		return Color.white;
 	}
 
-	
 	public float getDistanceToPlayer() {
 		return entity.getDistanceToEntity(Minecraft.getMinecraft().player);
 	}
@@ -83,7 +85,6 @@ public class IEntity {
 		return this.entity.isDead;
 	}
 
-	
 	public float getHealth() {
 		if (this.entity instanceof EntityLivingBase) {
 			return ((EntityLivingBase) entity).getHealth();
@@ -91,7 +92,6 @@ public class IEntity {
 		return 0;
 	}
 
-	
 	public boolean isPlayerOwned() {
 		if (this.entity instanceof EntityWolf) {
 			if (((EntityWolf) entity).isOwner(Minecraft.getMinecraft().player)) {
@@ -101,7 +101,6 @@ public class IEntity {
 		return false;
 	}
 
-	
 	public boolean isSleeping() {
 		if (this.entity instanceof EntityPlayer) {
 			return ((EntityLivingBase) entity).isPlayerSleeping();
@@ -109,7 +108,6 @@ public class IEntity {
 		return false;
 	}
 
-	
 	public boolean isInvisible() {
 		if (this.entity instanceof EntityPlayer) {
 			return ((EntityLivingBase) entity).isInvisible();
@@ -117,12 +115,10 @@ public class IEntity {
 		return false;
 	}
 
-	
 	public boolean isInvisibleToPlayer() {
 		return entity.isInvisibleToPlayer(Minecraft.getMinecraft().player);
 	}
 
-	
 	public boolean isSelf() {
 		return entity == Minecraft.getMinecraft().player;
 	}
@@ -155,7 +151,6 @@ public class IEntity {
 		return entity.getEyeHeight();
 	}
 
-	
 	public boolean canBeSeen() {
 		return Minecraft.getMinecraft().player.canEntityBeSeen(this.entity);
 	}
@@ -188,12 +183,24 @@ public class IEntity {
 			return entity instanceof EntityFlying;
 		} else if (e.equals(EntityType.EntityGolem)) {
 			return entity instanceof EntityGolem;
+		} else if (e.equals(EntityType.ENTITY_SPIDER)) {
+			return entity instanceof EntitySpider;
+		} else if (e.equals(EntityType.ENTITY_SPIDER)) {
+			return entity instanceof EntitySpider;
+		} else if (e.equals(EntityType.ENTITY_ZOMBIE_PIGMAN)) {
+			return entity instanceof EntityZombie;
+		} else if (e.equals(EntityType.ENTITY_ENDERMAN)) {
+			return entity instanceof EntityEnderman;
 		}
 		return false;
 	}
 
 	public static enum EntityType {
-		ENTITY_PLAYER_SP, ENTITY_PLAYER, EntitySlime, EntityGolem, EntityFlying, EntityMob, EntityWaterMob, ENTITY_WOLF, ENTITY_LIVING_BASE, ENTITY_LIVING, Entity_Ageable, EntityAmbientCreature
+		ENTITY_PLAYER_SP, ENTITY_PLAYER, EntitySlime, EntityGolem, EntityFlying, EntityMob, EntityWaterMob, ENTITY_WOLF, ENTITY_LIVING_BASE, ENTITY_LIVING, Entity_Ageable, EntityAmbientCreature,
+		/*
+		 * Hostile mobs
+		 */
+		ENTITY_ENDERMAN, ENTITY_ZOMBIE_PIGMAN, ENTITY_SPIDER
 	}
 
 }

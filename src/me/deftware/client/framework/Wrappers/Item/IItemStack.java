@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
 
 public class IItemStack {
 
@@ -29,8 +30,16 @@ public class IItemStack {
 		this.stack = new ItemStack(item.getItem());
 	}
 
+	public IItemStack(IItem item, int amount, int metadata) {
+		this.stack = new ItemStack(item.getItem(), amount, metadata);
+	}
+
 	public IItemStack(String name) {
 		this.stack = new ItemStack(Item.getByNameOrId(name));
+	}
+
+	public void setNBT(String nbt) throws Exception {
+		this.stack.setTagCompound(JsonToNBT.getTagFromJson(nbt));
 	}
 
 	public void enchantAll() {

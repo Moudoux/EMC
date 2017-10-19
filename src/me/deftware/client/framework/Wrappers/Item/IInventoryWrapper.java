@@ -10,10 +10,10 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 
 public class IInventoryWrapper {
 
-	
 	public static ArrayList<IItemStack> getArmorInventory(IPlayer player) {
 		if (IEntityPlayer.isNull()) {
 			return new ArrayList<IItemStack>();
@@ -26,7 +26,7 @@ public class IInventoryWrapper {
 		}
 		return array;
 	}
-	
+
 	public static boolean hasElytra() {
 		if (IEntityPlayer.isNull()) {
 			return false;
@@ -40,7 +40,17 @@ public class IInventoryWrapper {
 		return false;
 	}
 
-	
+	public static boolean placeStackInHotbar(IItemStack stack) {
+		for (int i = 0; i < 9; i++)
+			if (getStackInSlot(i).isEmpty()) {
+				Minecraft.getMinecraft().player.connection
+						.sendPacket(new CPacketCreativeInventoryAction(36 + i, stack.getStack()));
+				return true;
+			}
+
+		return false;
+	}
+
 	public static IItemStack getHeldItem(IPlayer player, boolean offhand) {
 		if (IEntityPlayer.isNull()) {
 			return null;

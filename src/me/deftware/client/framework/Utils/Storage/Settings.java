@@ -19,12 +19,10 @@ import com.google.gson.JsonPrimitive;
 import me.deftware.client.framework.Main.FrameworkLoader;
 import me.deftware.client.framework.Utils.OSUtils;
 
-
 public class Settings {
 
 	private String configPath;
 
-	
 	public synchronized void initialize(JsonObject clientInfo) {
 		try {
 			String clientName = "EMC";
@@ -49,7 +47,6 @@ public class Settings {
 		}
 	}
 
-	
 	public synchronized ArrayList<String> getArrayList(String node) {
 		ArrayList<String> array = new ArrayList<String>();
 		try {
@@ -67,7 +64,6 @@ public class Settings {
 		return array;
 	}
 
-	
 	public synchronized void addArrayList(String node, ArrayList<String> array) {
 		try {
 			JsonObject jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
@@ -105,7 +101,6 @@ public class Settings {
 		}
 	}
 
-	
 	public synchronized void addArrayListValue(String node, String value) {
 		try {
 			ArrayList<String> array = getArrayList(node);
@@ -119,7 +114,6 @@ public class Settings {
 		}
 	}
 
-	
 	public synchronized void removeArrayListValue(String node, String value) {
 		try {
 			ArrayList<String> array = getArrayList(node);
@@ -133,7 +127,6 @@ public class Settings {
 		}
 	}
 
-	
 	public synchronized void addNode(String node, String value) {
 		try {
 			JsonObject jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
@@ -227,12 +220,10 @@ public class Settings {
 		}
 	}
 
-	
 	public synchronized String getNode(String node) {
 		return getNode(node, "");
 	}
 
-	
 	public synchronized String getNode(String node, String defaultr) {
 		try {
 			JsonObject jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
@@ -246,7 +237,6 @@ public class Settings {
 		}
 	}
 
-	
 	public synchronized boolean hasNode(String node) {
 		try {
 			JsonObject jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
@@ -260,7 +250,6 @@ public class Settings {
 		}
 	}
 
-	
 	public synchronized void deleteNode(String node) {
 		try {
 			JsonObject jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
@@ -273,7 +262,6 @@ public class Settings {
 		}
 	}
 
-	
 	public synchronized String getConfigFileContents() {
 		try {
 			String output = "";
@@ -282,12 +270,10 @@ public class Settings {
 			}
 			return output;
 		} catch (Exception ex) {
-			;
 			return "";
 		}
 	}
 
-	
 	public synchronized void flushConfig(String jsonContent) {
 		try {
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
