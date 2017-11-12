@@ -691,4 +691,8 @@ public class IEntityPlayer {
 		return new IBlockPos(getPosX(), getPosY(), getPosZ());
 	}
 
+	public static void setHorseJumpPower(float f) {
+		Minecraft.getMinecraft().player.horseJumpPower = f;
+	}
+
 }

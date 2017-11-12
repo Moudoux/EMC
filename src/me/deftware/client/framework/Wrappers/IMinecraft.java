@@ -38,7 +38,6 @@ public class IMinecraft {
 		IMinecraft.launch_data = data;
 	}
 
-	
 	public static void restart(String lwjgl) throws IOException {
 		StringBuilder cmd = new StringBuilder();
 		cmd.append("java ");
@@ -72,7 +71,6 @@ public class IMinecraft {
 				.getParent();
 	}
 
-	
 	public static IGuiScreen getIScreen() {
 		if (Minecraft.getMinecraft().currentScreen != null) {
 			if (Minecraft.getMinecraft().currentScreen instanceof IGuiScreen) {
@@ -141,52 +139,42 @@ public class IMinecraft {
 		return Minecraft.getMinecraft().gameSettings.thirdPersonView;
 	}
 
-	
 	public static void setTitle(String title) {
 		Display.setTitle(title);
 	}
 
-	
 	public static int getGuiScale() {
 		return Minecraft.getMinecraft().gameSettings.guiScale;
 	}
 
-	
 	public static boolean isDebugInfoShown() {
 		return Minecraft.getMinecraft().gameSettings.showDebugInfo;
 	}
 
-	
 	public static IGuiScreen getCurrentScreen() {
 		return (IGuiScreen) Minecraft.getMinecraft().currentScreen;
 	}
 
-	
 	public static void setGuiScreen(IGuiScreen screen) {
 		Minecraft.getMinecraft().displayGuiScreen(screen);
 	}
 
-	
 	public static void shutdown() {
 		Minecraft.getMinecraft().shutdown();
 	}
 
-	
 	public static void setGamma(float value) {
 		Minecraft.getMinecraft().gameSettings.gammaSetting = value;
 	}
 
-	
 	public static float getGamma() {
 		return Minecraft.getMinecraft().gameSettings.gammaSetting;
 	}
 
-	
 	public static void setRightClickDelayTimer(int delay) {
 		Minecraft.getMinecraft().rightClickDelayTimer = delay;
 	}
 
-	
 	public static boolean isChatOpen() {
 		if (Minecraft.getMinecraft().currentScreen != null) {
 			if (Minecraft.getMinecraft().currentScreen instanceof GuiChat) {
@@ -196,7 +184,6 @@ public class IMinecraft {
 		return false;
 	}
 
-	
 	public static boolean isContainerOpen() {
 		if (Minecraft.getMinecraft().currentScreen != null) {
 			if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer
@@ -207,7 +194,6 @@ public class IMinecraft {
 		return false;
 	}
 
-	
 	public static boolean isInventoryOpen() {
 		if (Minecraft.getMinecraft().currentScreen != null) {
 			if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer
@@ -228,17 +214,14 @@ public class IMinecraft {
 		return false;
 	}
 
-	
 	public static String getMinecraftVersion() {
 		return RealmsSharedConstants.VERSION_STRING;
 	}
 
-	
 	public static int getMinecraftProtocolVersion() {
 		return RealmsSharedConstants.NETWORK_PROTOCOL_VERSION;
 	}
 
-	
 	public static boolean isMouseOver() {
 		if (Minecraft.getMinecraft().objectMouseOver != null) {
 			return true;
@@ -253,7 +236,6 @@ public class IMinecraft {
 		return new IEntity(Minecraft.getMinecraft().objectMouseOver.entityHit);
 	}
 
-	
 	public static boolean entityHitInstanceOf(EntityType type) {
 		if (!isMouseOver()) {
 			return false;
