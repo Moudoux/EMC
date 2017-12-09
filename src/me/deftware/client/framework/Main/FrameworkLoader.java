@@ -131,7 +131,7 @@ public class FrameworkLoader {
 		logger.info("Loading mod: " + jsonObject.get("name").getAsString() + " by "
 				+ jsonObject.get("author").getAsString());
 
-		if (jsonObject.get("minversion").getAsInt() > FrameworkConstants.VERSION) {
+		if (jsonObject.get("minversion").getAsDouble() > FrameworkConstants.VERSION) {
 			Minecraft.getMinecraft().displayGuiScreen(new GuiUpdateLoader(jsonObject));
 			jarFile.close();
 			return;
