@@ -31,7 +31,22 @@ public class FrameworkLoader {
 
 	public static ArrayList<JsonObject> modsInfo = new ArrayList<JsonObject>();
 
+	/**
+	 * Key: Name, Value: EMCClient object
+	 */
 	private static HashMap<String, EMCClient> mods = new HashMap<String, EMCClient>();
+
+	/**
+	 * Calls a method in a specific mod
+	 * 
+	 * @param mod
+	 * @param clazz
+	 */
+	public static void callMethod(String mod, String method, String caller) {
+		if (mods.containsKey(mod)) {
+			mods.get(mod).callMethod(method, caller);
+		}
+	}
 
 	public static void init() {
 		try {
@@ -53,7 +68,12 @@ public class FrameworkLoader {
 					continue;
 				}
 				if (fileEntry.getName().endsWith(".jar")) {
-					loadClient(fileEntry);
+					try {
+						loadClient(fileEntry);
+					} catch (Exception ex) {
+						logger.warn("Failed to load some EMC mod: " + fileEntry.getName());
+						ex.printStackTrace();
+					}
 				}
 			}
 
@@ -63,10 +83,17 @@ public class FrameworkLoader {
 						.renameTo(new File(minecraft.getParent() + File.separator + "Client.jar"));
 			}
 
-			loadClient(new File(minecraft.getParent() + File.separator + "Client.jar"));
-
+			File clientFile = new File(minecraft.getParent() + File.separator + "Client.jar");
+			if (clientFile.exists()) {
+				try {
+					loadClient(clientFile);
+				} catch (Exception ex) {
+					logger.warn("Failed to load main client mod");
+					ex.printStackTrace();
+				}
+			}
 		} catch (Exception ex) {
-			logger.warn("Failed to load some EMC mods");
+			logger.warn("Failed to load EMC");
 			ex.printStackTrace();
 		}
 	}

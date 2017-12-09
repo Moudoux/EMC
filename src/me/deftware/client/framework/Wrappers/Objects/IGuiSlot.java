@@ -32,19 +32,15 @@ public abstract class IGuiSlot extends GuiSlot {
 	}
 
 	@Override
-	
+
 	protected void func_192637_a(int p_192637_1_, int p_192637_2_, int p_192637_3_, int p_192637_4_, int p_192637_5_,
 			int p_192637_6_, float p_192637_7_) {
 		this.drawISlot(p_192637_1_, p_192637_2_, p_192637_3_);
 	}
 
-	
-
 	protected abstract int getISize();
 
 	protected abstract void drawISlot(int id, int x, int y);
-
-	
 
 	public int getSelectedSlot() {
 		return selectedSlot;
