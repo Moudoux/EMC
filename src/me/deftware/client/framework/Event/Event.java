@@ -39,10 +39,18 @@ public abstract class Event {
 							+ " version " + FrameworkConstants.VERSION + " built by " + FrameworkConstants.AUTHOR);
 					return event;
 				} else if (((EventClientCommand) event).getCommand().equals(".unload")) {
-					FrameworkLoader.ejectClients();
-					Display.setTitle("Minecraft " + IMinecraft.getMinecraftVersion());
-					IMinecraft.setGamma(0.5F);
-					ChatProcessor.printFrameworkMessage("Unloaded mods, Minecraft is now running as vanilla");
+					if (((EventClientCommand) event).getArgs().isEmpty()) {
+						// Unload all
+						FrameworkLoader.ejectClients();
+						Display.setTitle("Minecraft " + IMinecraft.getMinecraftVersion());
+						IMinecraft.setGamma(0.5F);
+						ChatProcessor.printFrameworkMessage("Unloaded mods, Minecraft is now running as vanilla");
+					} else {
+						if (FrameworkLoader.getClients().containsKey(((EventClientCommand) event).getArgs())) {
+							FrameworkLoader.getClients().remove(((EventClientCommand) event).getArgs());
+							ChatProcessor.printFrameworkMessage("Unloaded " + ((EventClientCommand) event).getArgs());
+						}
+					}
 					return event;
 				} else if (((EventClientCommand) event).getCommand().equals(".cinfo")) {
 					if (FrameworkLoader.modsInfo == null || FrameworkLoader.getClients().isEmpty()) {

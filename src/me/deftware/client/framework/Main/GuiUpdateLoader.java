@@ -22,7 +22,7 @@ public class GuiUpdateLoader extends GuiScreen {
 		return clientInfo.get(node).getAsString();
 	}
 
-	private int getInt(String node) {
+	private int getDouble(String node) {
 		return clientInfo.get(node).getAsInt();
 	}
 
@@ -64,7 +64,7 @@ public class GuiUpdateLoader extends GuiScreen {
 
 		this.drawCenteredString(this.fontRendererObj, "Name: " + get("name"), this.width / 2 - 110, 90, 16777215);
 
-		this.drawCenteredString(this.fontRendererObj, "Version: " + getInt("version"), this.width / 2 - 110, 105,
+		this.drawCenteredString(this.fontRendererObj, "Version: " + getDouble("version"), this.width / 2 - 110, 105,
 				16777215);
 
 		this.drawCenteredString(this.fontRendererObj, "Author: " + get("author"), this.width / 2 - 110, 120, 16777215);
