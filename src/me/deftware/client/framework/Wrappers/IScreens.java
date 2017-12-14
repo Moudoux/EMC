@@ -13,8 +13,8 @@ public class IScreens {
 	public static enum Screen {
 		Multiplayer, WorldSelection, Options
 	}
-	
-	public static void displayGuiScreen(Screen type, IGuiScreen parent) {
+
+	public static GuiScreen translate(Screen type, IGuiScreen parent) {
 		GuiScreen screen = null;
 		if (type.equals(Screen.Multiplayer)) {
 			screen = new GuiMultiplayer(parent);
@@ -23,12 +23,16 @@ public class IScreens {
 		} else if (type.equals(Screen.Options)) {
 			screen = new GuiOptions(parent, Minecraft.getMinecraft().gameSettings);
 		}
-		Minecraft.getMinecraft().displayGuiScreen(screen);
+		return screen;
 	}
-	
+
+	public static void displayGuiScreen(Screen type, IGuiScreen parent) {
+		Minecraft.getMinecraft().displayGuiScreen(translate(type, parent));
+	}
+
 	public static void switchToRealms(IGuiScreen parent) {
 		RealmsBridge realmsbridge = new RealmsBridge();
 		realmsbridge.switchToRealms(parent);
 	}
-	
+
 }

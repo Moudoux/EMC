@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 
 import org.lwjgl.opengl.Display;
 
+import me.deftware.client.framework.Wrappers.IScreens.Screen;
 import me.deftware.client.framework.Wrappers.Entity.IEntity;
 import me.deftware.client.framework.Wrappers.Entity.IEntity.EntityType;
 import me.deftware.client.framework.Wrappers.Objects.IBlockPos;
@@ -157,6 +158,10 @@ public class IMinecraft {
 
 	public static void setGuiScreen(IGuiScreen screen) {
 		Minecraft.getMinecraft().displayGuiScreen(screen);
+	}
+
+	public static void setGuiScreenType(Screen screen) {
+		Minecraft.getMinecraft().displayGuiScreen(IScreens.translate(screen, null));
 	}
 
 	public static void shutdown() {

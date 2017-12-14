@@ -13,7 +13,6 @@ import me.deftware.client.framework.AltAPIs.MCLeaks.MCLeaks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Session;
 
-
 public class SessionUtils {
 
 	public static boolean loginWithPassword(String username, String password) {
@@ -30,14 +29,14 @@ public class SessionUtils {
 			String accessToken = auth.getAuthenticatedToken();
 
 			session = new Session(userName, playerUUID.toString(), accessToken,
-					username.contains("@") ? "mojang"
-							: "legacy");
+					username.contains("@") ? "mojang" : "legacy");
 			MCLeaks.clearMCLeaksSession();
-			
+
 			Minecraft.getMinecraft().session = session;
 
 			return true;
-		} catch (AuthenticationException e) {}
+		} catch (AuthenticationException e) {
+		}
 		return false;
 	}
 
@@ -45,5 +44,5 @@ public class SessionUtils {
 		Minecraft.getMinecraft().session = new Session(username, "", "0", "legacy");
 		MCLeaks.clearMCLeaksSession();
 	}
-	
+
 }
