@@ -47,6 +47,7 @@ public abstract class Event {
 						ChatProcessor.printFrameworkMessage("Unloaded mods, Minecraft is now running as vanilla");
 					} else {
 						if (FrameworkLoader.getClients().containsKey(((EventClientCommand) event).getArgs())) {
+							FrameworkLoader.getClients().get(((EventClientCommand) event).getArgs()).onUnload();
 							FrameworkLoader.getClients().remove(((EventClientCommand) event).getArgs());
 							ChatProcessor.printFrameworkMessage("Unloaded " + ((EventClientCommand) event).getArgs());
 						}

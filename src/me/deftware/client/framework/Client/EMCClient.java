@@ -55,4 +55,7 @@ public abstract class EMCClient {
 
 	}
 
+	public void onUnload() {
+	}
+
 }
