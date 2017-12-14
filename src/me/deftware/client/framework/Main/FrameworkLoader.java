@@ -160,6 +160,9 @@ public class FrameworkLoader {
 	}
 
 	public static void ejectClients() {
+		mods.forEach((key, mod) -> {
+			mod.onUnload();
+		});
 		mods.clear();
 	}
 
