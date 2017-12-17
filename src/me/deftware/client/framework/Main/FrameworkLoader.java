@@ -69,7 +69,13 @@ public class FrameworkLoader {
 				}
 				if (fileEntry.getName().endsWith(".jar")) {
 					try {
-						loadClient(fileEntry);
+						if (new File(fileEntry.getAbsolutePath() + ".delete").exists()) {
+							logger.info("Deleting mod " + fileEntry.getName() + "...");
+							new File(fileEntry.getAbsolutePath() + ".delete").delete();
+							fileEntry.delete();
+						} else {
+							loadClient(fileEntry);
+						}
 					} catch (Exception ex) {
 						logger.warn("Failed to load some EMC mod: " + fileEntry.getName());
 						ex.printStackTrace();
@@ -98,7 +104,7 @@ public class FrameworkLoader {
 		}
 	}
 
-	private static void loadClient(File clientJar) throws Exception {
+	public static void loadClient(File clientJar) throws Exception {
 		// Find the client jar
 
 		if (!clientJar.exists()) {
