@@ -52,6 +52,10 @@ public class IMinecraft {
 		System.exit(0);
 	}
 
+	public static File getMinecraftFile() throws URISyntaxException {
+		return new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+	}
+
 	public synchronized static IServerData getCurrentServer() {
 		if (Minecraft.getMinecraft().getCurrentServerData() == null) {
 			return null;
