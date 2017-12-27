@@ -32,6 +32,7 @@ public abstract class IGuiScreen extends GuiScreen {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		this.onDraw(mouseX, mouseY, partialTicks);
 		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.onPostDraw(mouseX, mouseY, partialTicks);
 	}
 
 	@Override
@@ -208,6 +209,9 @@ public abstract class IGuiScreen extends GuiScreen {
 	}
 
 	protected abstract void onInitGui();
+
+	protected void onPostDraw(int mouseX, int mouseY, float partialTicks) {
+	}
 
 	protected abstract void onDraw(int mouseX, int mouseY, float partialTicks);
 
