@@ -17,7 +17,7 @@ public class MarketplaceAPI
         {
             if (success)
             {
-                String response = WebUtils.get(getLoginURL(token));
+                String response = WebUtils.get(getLoginURL(token), Cookies);
 
                 if (response.equals("Successfully logged in"))
                 {
