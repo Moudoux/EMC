@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import me.deftware.client.framework.FrameworkConstants;
+import me.deftware.client.framework.MarketplaceAPI;
 import me.deftware.client.framework.Client.EMCClient;
 import me.deftware.client.framework.FontRender.Fonts;
 import net.minecraft.client.Minecraft;
@@ -62,6 +63,9 @@ public class FrameworkLoader {
 			if (!mods.exists()) {
 				mods.mkdir();
 			}
+
+			// Load EMC API
+			MarketplaceAPI.init();
 
 			for (final File fileEntry : mods.listFiles()) {
 				if (fileEntry.isDirectory()) {
