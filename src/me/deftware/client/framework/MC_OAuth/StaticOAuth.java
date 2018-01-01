@@ -13,7 +13,7 @@ public class StaticOAuth {
 			public void run() {
 				token = "";
 			}
-		}, 0, 5, TimeUnit.MINUTES);
+		}, 0, 2, TimeUnit.MINUTES);
 	}
 
 	/**
