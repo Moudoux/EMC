@@ -1,4 +1,4 @@
-package me.deftware.client.framework.Utils;
+package com.someguy.oraclebot.Main;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -14,99 +14,103 @@ import javax.net.ssl.HttpsURLConnection;
 
 import me.deftware.client.framework.FrameworkConstants;
 
-public class WebUtils {
-	public static CookieManager LastCookies = new CookieManager();
-	private static final String COOKIES_HEADER = "Set-Cookie";
+public class WebUtils
+{
+    private static CookieManager lastCookies = new CookieManager();
+    private static final String COOKIES_HEADER = "Set-Cookie";
 
-	public static String get(String requestUrl) {
-		return get(requestUrl, null);
-	}
+    public static CookieManager getLastCookies()
+    {
+        return lastCookies;
+    }
 
-	public static String get(String requestUrl, CookieManager cookies) {
-		try {
-			URL url = new URL(requestUrl);
-			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+    public static String get(String requestUrl) throws Exception
+    {
+        return get(requestUrl, null);
+    }
 
-			if (cookies != null)
-				applyCookies(connection);
+    public static String get(String requestUrl, CookieManager cookies) throws Exception
+    {
+        URL url = new URL(requestUrl);
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
-			connection.setConnectTimeout(8 * 1000);
-			connection.setRequestProperty("User-Agent", FrameworkConstants.FRAMEWORK_NAME);
-			connection.setRequestMethod("GET");
+        if (cookies != null)
+            applyCookies(connection);
 
-			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String text;
-			StringBuilder result = new StringBuilder();
-			while ((text = in.readLine()) != null)
-				result.append(text);
+        connection.setConnectTimeout(8 * 1000);
+        connection.setRequestProperty("User-Agent", FrameworkConstants.FRAMEWORK_NAME);
+        connection.setRequestMethod("GET");
 
-			in.close();
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String text;
+        StringBuilder result = new StringBuilder();
+        while ((text = in.readLine()) != null)
+            result.append(text);
 
-			storeCookies(connection);
-			return result.toString();
-		} catch (Exception e) {
-			return "";
-		}
-	}
+        in.close();
 
-	public static String sendPostRequest(String requestUrl, String payload) {
-		return sendPostRequest(requestUrl, payload, null);
-	}
+        storeCookies(connection);
+        return result.toString();
+    }
 
-	public static String sendPostRequest(String requestUrl, String payload, CookieManager cookies) {
-		try {
-			URL url = new URL(requestUrl);
-			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-			if (cookies != null)
-				applyCookies(connection);
+    public static String post(String requestUrl, String payload) throws Exception
+    {
+        return post(requestUrl, payload, null);
+    }
 
-			connection.setDoInput(true);
-			connection.setDoOutput(true);
-			connection.setRequestMethod("POST");
-			connection.setRequestProperty("Accept", "application/json");
-			connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+    public static String post(String requestUrl, String payload, CookieManager cookies) throws Exception
+    {
+        URL url = new URL(requestUrl);
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        if (cookies != null)
+            applyCookies(connection);
 
-			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
-			writer.write(payload);
-			writer.close();
+        connection.setDoInput(true);
+        connection.setDoOutput(true);
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Accept", "application/json");
+        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
-			BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			StringBuilder jsonString = new StringBuilder();
-			String line;
-			while ((line = br.readLine()) != null)
-				jsonString.append(line);
+        OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
+        writer.write(payload);
+        writer.close();
 
-			br.close();
-			connection.disconnect();
+        BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        StringBuilder jsonString = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null)
+            jsonString.append(line);
 
-			storeCookies(connection);
-			return jsonString.toString();
-		} catch (Exception e) {
-			return "";
-		}
-	}
+        br.close();
+        connection.disconnect();
 
-	private static void storeCookies(URLConnection urlConnection) {
-		Map<String, List<String>> headerFields = urlConnection.getHeaderFields();
-		List<String> cookiesHeader = headerFields.get(COOKIES_HEADER);
+        storeCookies(connection);
+        return jsonString.toString();
+    }
 
-		if (cookiesHeader == null)
-			return;
+    private static void storeCookies(URLConnection urlConnection)
+    {
+        Map<String, List<String>> headerFields = urlConnection.getHeaderFields();
+        List<String> cookiesHeader = headerFields.get(COOKIES_HEADER);
 
-		LastCookies = new CookieManager();
-		for (String cookie : cookiesHeader)
-			LastCookies.getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
-	}
+        if (cookiesHeader == null)
+            return;
 
-	private static void applyCookies(URLConnection urlConnection) {
-		if (LastCookies.getCookieStore().getCookies().size() <= 0)
-			return;
+        lastCookies = new CookieManager();
+        for (String cookie : cookiesHeader)
+            lastCookies.getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
+    }
 
-		StringBuilder cookieHeader = new StringBuilder();
-		for (HttpCookie cookie : LastCookies.getCookieStore().getCookies())
-			cookieHeader.append(cookie).append(";");
-		cookieHeader.delete(cookieHeader.length() - 1, 1);
+    private static void applyCookies(URLConnection urlConnection)
+    {
+        if (lastCookies.getCookieStore().getCookies().size() < 1)
+            return;
 
-		urlConnection.setRequestProperty("Cookie", cookieHeader.toString());
-	}
+        StringBuilder cookieHeader = new StringBuilder();
+        for (HttpCookie cookie : lastCookies.getCookieStore().getCookies())
+            cookieHeader.append(cookie).append(";");
+        cookieHeader.deleteCharAt(cookieHeader.length() - 1);
+
+        urlConnection.setRequestProperty("Cookie", cookieHeader.toString());
+    }
 }
