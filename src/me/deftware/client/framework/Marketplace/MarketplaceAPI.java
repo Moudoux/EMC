@@ -1,4 +1,4 @@
-package me.deftware.client.framework.marketplace;
+package me.deftware.client.framework.Marketplace;
 
 import java.net.CookieManager;
 
