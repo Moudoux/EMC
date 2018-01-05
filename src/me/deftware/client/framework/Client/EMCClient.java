@@ -24,6 +24,10 @@ public abstract class EMCClient {
 
 	public abstract void onEvent(Event event);
 
+	public void onMarketplaceAuth(boolean status) {
+
+	}
+
 	protected void disable() {
 		FrameworkLoader.getClients().remove(clientInfo.get("name").getAsString());
 	}

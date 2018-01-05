@@ -1,4 +1,4 @@
-package me.deftware.client.framework;
+package me.deftware.client.framework.marketplace;
 
 /**
  * The default response body from the Marketplace API

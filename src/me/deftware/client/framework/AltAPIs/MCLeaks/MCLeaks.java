@@ -8,7 +8,7 @@ import net.minecraft.util.Session;
 
 public class MCLeaks {
 
-	public static final String ENDPOINT = "https://auth.mcleaks.net/v1/";
+	public static String ENDPOINT = "https://auth.mcleaks.net/v1/";
 
 	public static MCLeaksSession session = null;
 	private static Session original = null;
@@ -19,7 +19,7 @@ public class MCLeaks {
 				String url = ENDPOINT + "joinserver";
 				String payload = "{\"session\":\"" + session.getSession() + "\",\"mcname\":\"" + session.getMcname()
 						+ "\",\"serverhash\":\"" + serverHash + "\",\"server\":\"" + server + "\"}";
-				WebUtils.sendPostRequest(url, StringEscapeUtils.unescapeJava(payload));
+				WebUtils.post(url, StringEscapeUtils.unescapeJava(payload));
 				return true;
 			} catch (Exception ex) {
 				;
