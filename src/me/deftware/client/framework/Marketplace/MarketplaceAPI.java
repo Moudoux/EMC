@@ -90,23 +90,23 @@ public class MarketplaceAPI {
 	/**
 	 * Retrieves a mod if licensed
 	 *
-	 * @param clientInfo
-	 *            the mod's info
+	 * @param name
+	 *            the mod name you want to download
 	 * @return {@link MarketplaceResponse} with the mod's bytes base64-encoded in
 	 *         {@link MarketplaceResponse#data}
 	 */
-	public static MarketplaceResponse downloadMod(EMCClient.EMCClientInfo clientInfo) {
-		return parseResponse(getSafe(getDownloadURL(clientInfo.getClientName())));
+	public static MarketplaceResponse downloadMod(String name) {
+		return parseResponse(getSafe(getDownloadURL(name)));
 	}
 
-    /**
-     * Retrieves a list with the names of all mods licensed to the user
-     *
-     * @return {@code String array} of the mod names
-     */
-    private static String[] getLicensedModNames() {
-        return new Gson().fromJson(getSafe(getUserLicensedProductNamesURL()), String[].class);
-    }
+	/**
+	 * Retrieves a list with the names of all mods licensed to the user
+	 *
+	 * @return {@code String array} of the mod names
+	 */
+	public static String[] getLicensedModNames() {
+		return new Gson().fromJson(getSafe(getUserLicensedProductNamesURL()), String[].class);
+	}
 
 	private static String getSafe(String url) {
 		try {
@@ -135,8 +135,8 @@ public class MarketplaceAPI {
 	}
 
 	private static String getUserLicensedProductNamesURL() {
-        return APIDomain + "/user/licensed-product-names";
-    }
+		return APIDomain + "/user/licensed-product-names";
+	}
 
 	private static String getLoginURL(String code) {
 		return APIDomain + "/user/login/" + code;

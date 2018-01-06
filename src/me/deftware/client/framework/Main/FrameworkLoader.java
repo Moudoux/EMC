@@ -21,7 +21,7 @@ import com.google.gson.JsonObject;
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.Client.EMCClient;
 import me.deftware.client.framework.FontRender.Fonts;
-import me.deftware.client.framework.marketplace.MarketplaceAPI;
+import me.deftware.client.framework.Marketplace.MarketplaceAPI;
 import net.minecraft.client.Minecraft;
 
 public class FrameworkLoader {
