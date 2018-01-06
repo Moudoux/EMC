@@ -231,4 +231,11 @@ public abstract class IGuiScreen extends GuiScreen {
 
 	}
 
+	/**
+	 * Called 60 times/second
+	 */
+	public void onFastTick() {
+
+	}
+
 }

@@ -56,6 +56,10 @@ public class IMinecraft {
 		return new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
 	}
 
+	public static void clickMouse() {
+		Minecraft.getMinecraft().clickMouse();
+	}
+
 	public synchronized static IServerData getCurrentServer() {
 		if (Minecraft.getMinecraft().getCurrentServerData() == null) {
 			return null;
@@ -157,7 +161,12 @@ public class IMinecraft {
 	}
 
 	public static IGuiScreen getCurrentScreen() {
-		return (IGuiScreen) Minecraft.getMinecraft().currentScreen;
+		if (Minecraft.getMinecraft().currentScreen != null) {
+			if (Minecraft.getMinecraft().currentScreen instanceof IGuiScreen) {
+				return (IGuiScreen) Minecraft.getMinecraft().currentScreen;
+			}
+		}
+		return null;
 	}
 
 	public static void setGuiScreen(IGuiScreen screen) {

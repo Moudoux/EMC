@@ -32,6 +32,8 @@ public class FrameworkLoader {
 
 	public static ArrayList<JsonObject> modsInfo = new ArrayList<JsonObject>();
 
+	private static final double ticks = 60D;
+
 	/**
 	 * Key: Name, Value: EMCClient object
 	 */
@@ -105,6 +107,7 @@ public class FrameworkLoader {
 			logger.warn("Failed to load EMC");
 			ex.printStackTrace();
 		}
+
 	}
 
 	public static void loadClient(File clientJar) throws Exception {
