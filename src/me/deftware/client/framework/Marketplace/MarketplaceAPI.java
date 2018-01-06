@@ -1,8 +1,11 @@
 package me.deftware.client.framework.Marketplace;
 
 import java.net.CookieManager;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import me.deftware.client.framework.Client.EMCClient;
@@ -104,8 +107,12 @@ public class MarketplaceAPI {
 	 *
 	 * @return {@code String array} of the mod names
 	 */
-	public static String[] getLicensedModNames() {
-		return new Gson().fromJson(getSafe(getUserLicensedProductNamesURL()), String[].class);
+	public static List<String> getLicensedModNames() {
+		JsonObject json = new Gson().fromJson(getSafe(getUserLicensedProductNamesURL()), JsonObject.class);
+		JsonArray arr = json.get("data").getAsJsonArray();
+		List<String> list = new ArrayList<String>();
+		arr.forEach((jsonElement) -> list.add(jsonElement.getAsString()));
+		return list;
 	}
 
 	private static String getSafe(String url) {
