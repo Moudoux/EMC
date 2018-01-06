@@ -1,4 +1,4 @@
-package me.deftware.client.framework.marketplace;
+package me.deftware.client.framework.Marketplace;
 
 import java.net.CookieManager;
 
@@ -99,6 +99,15 @@ public class MarketplaceAPI {
 		return parseResponse(getSafe(getDownloadURL(clientInfo.getClientName())));
 	}
 
+    /**
+     * Retrieves a list with the names of all mods licensed to the user
+     *
+     * @return {@code String array} of the mod names
+     */
+    private static String[] getLicensedModNames() {
+        return new Gson().fromJson(getSafe(getUserLicensedProductNamesURL()), String[].class);
+    }
+
 	private static String getSafe(String url) {
 		try {
 			return WebUtils.get(url, cookies);
@@ -124,6 +133,10 @@ public class MarketplaceAPI {
 	private static String getDownloadURL(String productName) {
 		return APIDomain + "/user/products/" + productName + "/download";
 	}
+
+	private static String getUserLicensedProductNamesURL() {
+        return APIDomain + "/user/licensed-product-names";
+    }
 
 	private static String getLoginURL(String code) {
 		return APIDomain + "/user/login/" + code;
