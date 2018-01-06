@@ -6,6 +6,12 @@ obfuscation as the framework will act as a middle man handling your calls to Min
 
 This framework also allows you to write a mod once, then use it on Minecraft 1.8 and above.
 
+Discord
+-------------------
+
+We now have an official Discord server for EMC related development, feel free to join us, [EMC Discord](discord.gg/jcPDsGT).
+
+
 How it works
 -------------------
 
