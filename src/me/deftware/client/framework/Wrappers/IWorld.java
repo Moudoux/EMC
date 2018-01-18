@@ -170,6 +170,16 @@ public class IWorld {
 		return null;
 	}
 
+	public static void sendQuittingPacket() {
+		if (Minecraft.getMinecraft().world != null) {
+			Minecraft.getMinecraft().world.sendQuittingDisconnectingPacket();
+		}
+	}
+
+	public static void leaveWorld() {
+		Minecraft.getMinecraft().loadWorld(null);
+	}
+
 	public static ArrayList<IChest> getIChests() {
 		iChestArray.execute();
 		return (ArrayList<IChest>) iChestArray.getList();
