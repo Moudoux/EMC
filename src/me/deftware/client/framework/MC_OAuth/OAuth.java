@@ -30,7 +30,6 @@ public class OAuth {
 	@FunctionalInterface
 	public static interface OAuthCallback {
 
-		
 		public void callback(boolean success, String code, String time);
 
 	}

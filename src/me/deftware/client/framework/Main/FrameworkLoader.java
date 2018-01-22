@@ -32,6 +32,8 @@ public class FrameworkLoader {
 
 	public static ArrayList<JsonObject> modsInfo = new ArrayList<JsonObject>();
 
+	public static ArrayList<String> commandTriggers = new ArrayList<String>();
+
 	/**
 	 * Key: Name, Value: EMCClient object
 	 */
@@ -47,6 +49,28 @@ public class FrameworkLoader {
 		if (mods.containsKey(mod)) {
 			mods.get(mod).callMethod(method, caller);
 		}
+	}
+
+	public static void registerCommandTrigger(String trigger) {
+		logger.info("Registering EMC command trigger: " + trigger);
+		if (!commandTriggers.contains(trigger)) {
+			commandTriggers.add(trigger);
+		}
+	}
+
+	public static void unregisterCommandTrigger(String trigger) {
+		if (commandTriggers.contains(trigger)) {
+			commandTriggers.remove(trigger);
+		}
+	}
+
+	public static String isTrigger(String message) {
+		for (String trigger : commandTriggers) {
+			if (message.startsWith(trigger)) {
+				return trigger;
+			}
+		}
+		return "";
 	}
 
 	public static void init() {

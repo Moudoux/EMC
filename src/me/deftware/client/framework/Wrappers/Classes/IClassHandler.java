@@ -49,6 +49,10 @@ public class IClassHandler {
 			super(GuiEditSign.class);
 		}
 
+		public String getText(int line) {
+			return ((GuiEditSign) this.screen).tileSign.signText[line].getUnformattedText();
+		}
+
 		public void setText(String text, int line) {
 			((GuiEditSign) this.screen).tileSign.signText[line] = new TextComponentString(text);
 		}

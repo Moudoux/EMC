@@ -4,10 +4,11 @@ import me.deftware.client.framework.Event.Event;
 
 public class EventClientCommand extends Event {
 
-	private String command, args, full;
+	private String command, args, full, trigger;
 
-	public EventClientCommand(String command) {
+	public EventClientCommand(String command, String trigger) {
 		this.full = command;
+		this.trigger = trigger;
 		if (command.contains(" ")) {
 			this.command = command.split(" ")[0];
 			this.args = command.replace(this.command + " ", "");

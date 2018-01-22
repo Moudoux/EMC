@@ -38,6 +38,8 @@ public class MarketplaceAPI {
 					callback.cb(true);
 				} else
 					callback.cb(false);
+			} else {
+				callback.cb(false);
 			}
 		});
 	}
