@@ -2,6 +2,7 @@ package me.deftware.client.framework.Utils.Storage;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -21,7 +22,8 @@ import me.deftware.client.framework.Utils.OSUtils;
 
 public class Settings {
 
-	private String configPath;
+	private File configFile;
+	private JsonObject config;
 
 	public synchronized void initialize(JsonObject clientInfo) {
 		try {
@@ -30,21 +32,19 @@ public class Settings {
 				clientName = clientInfo.get("name").getAsString();
 			}
 			String file = OSUtils.getMCDir() + clientName + "_Config.json";
-			File configFile = new File(file);
-			this.configPath = configFile.getAbsolutePath();
+			configFile = new File(file);
 			if (!configFile.exists()) {
-				try {
-					configFile.createNewFile();
-					flushConfig("{}");
-					addNode("version", "1.0");
-				} catch (Exception e) {
-					;
-				}
+				configFile.createNewFile();
+				addNode("version", "1.0");
+				saveConfig();
+			} else {
+				config = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.exit(0);
 		}
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> saveConfig()));
 	}
 
 	public synchronized ArrayList<String> getArrayList(String node) {
@@ -65,17 +65,11 @@ public class Settings {
 	}
 
 	public synchronized void addArrayList(String node, ArrayList<String> array) {
-		try {
-			JsonObject jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
-			JsonArray jsonArray = new JsonArray();
-			for (String s : array) {
-				jsonArray.add(new JsonPrimitive(s));
-			}
-			jsonObject.add(node, jsonArray);
-			flushConfig(jsonObject.toString());
-		} catch (Exception ex) {
-			;
+		JsonArray jsonArray = new JsonArray();
+		for (String s : array) {
+			jsonArray.add(new JsonPrimitive(s));
 		}
+		config.add(node, jsonArray);
 	}
 
 	public synchronized Color getColor(String node, Color _default) {
@@ -128,163 +122,81 @@ public class Settings {
 	}
 
 	public synchronized void addNode(String node, String value) {
-		try {
-			JsonObject jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
-			if (jsonObject.has(node)) {
-				jsonObject.remove(node);
-			}
-			jsonObject.add(node, new JsonPrimitive(value));
-			flushConfig(jsonObject.toString());
-		} catch (Exception ex) {
-			;
+		if (config.has(node)) {
+			config.remove(node);
 		}
+		config.add(node, new JsonPrimitive(value));
 	}
 
 	public synchronized void saveBool(String node, boolean value) {
-		try {
-			addNode(node, String.valueOf(value));
-		} catch (Exception ex) {
-			;
-		}
+		addNode(node, String.valueOf(value));
 	}
 
 	public synchronized void saveInt(String node, int value) {
-		try {
-			addNode(node, String.valueOf(value));
-		} catch (Exception ex) {
-			;
-		}
+		addNode(node, String.valueOf(value));
 	}
 
 	public synchronized void saveFloat(String node, float value) {
-		try {
-			addNode(node, String.valueOf(value));
-		} catch (Exception ex) {
-			;
-		}
+		addNode(node, String.valueOf(value));
 	}
 
 	public synchronized void saveDouble(String node, double value) {
-		try {
-			addNode(node, String.valueOf(value));
-		} catch (Exception ex) {
-			;
-		}
+		addNode(node, String.valueOf(value));
 	}
 
 	public synchronized boolean getBool(String node, boolean _default) {
-		String data = getNode(node, "");
-		if (data.equals("")) {
-			return _default;
-		}
-		try {
-			return Boolean.valueOf(data);
-		} catch (Exception ex) {
-			return _default;
-		}
+		return Boolean.valueOf(getNode(node, String.valueOf(_default)));
 	}
 
 	public synchronized float getFloat(String node, float _default) {
-		String data = getNode(node, "");
-		if (data.equals("")) {
-			return _default;
-		}
-		try {
-			return Float.valueOf(data);
-		} catch (Exception ex) {
-			return _default;
-		}
+		return Float.valueOf(getNode(node, String.valueOf(_default)));
 	}
 
 	public synchronized int getInt(String node, int _default) {
-		String data = getNode(node, "");
-		if (data.equals("")) {
-			return _default;
-		}
-		try {
-			return Integer.valueOf(data);
-		} catch (Exception ex) {
-			return _default;
-		}
+		return Integer.valueOf(getNode(node, String.valueOf(_default)));
 	}
 
 	public synchronized double getDouble(String node, double _default) {
-		String data = getNode(node, "");
-		if (data.equals("")) {
-			return _default;
-		}
-		try {
-			return Double.valueOf(data);
-		} catch (Exception ex) {
-			return _default;
-		}
+		return Double.valueOf(getNode(node, String.valueOf(_default)));
 	}
 
 	public synchronized String getNode(String node) {
 		return getNode(node, "");
 	}
 
-	public synchronized String getNode(String node, String defaultr) {
-		try {
-			JsonObject jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
-			if (!jsonObject.has(node)) {
-				return defaultr;
-			}
-			return jsonObject.get(node).getAsString();
-		} catch (Exception ex) {
-			;
-			return defaultr;
-		}
+	public synchronized String getNode(String node, String defaultStr) {
+		return config.has(node) ? config.get(node).getAsString() : defaultStr;
 	}
 
 	public synchronized boolean hasNode(String node) {
-		try {
-			JsonObject jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
-			if (!jsonObject.has(node)) {
-				return true;
-			}
-			return false;
-		} catch (Exception ex) {
-			;
-			return false;
-		}
+		return config.has(node);
 	}
 
 	public synchronized void deleteNode(String node) {
-		try {
-			JsonObject jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
-			if (jsonObject.has(node)) {
-				jsonObject.remove(node);
-			}
-			flushConfig(jsonObject.toString());
-		} catch (Exception ex) {
-			;
+		if (config.has(node)) {
+			config.remove(node);
 		}
 	}
 
-	public synchronized String getConfigFileContents() {
-		try {
-			String output = "";
-			for (String s : Files.readAllLines(Paths.get(configPath), StandardCharsets.UTF_8)) {
-				output += s;
-			}
-			return output;
-		} catch (Exception ex) {
-			return "";
+	public synchronized String getConfigFileContents() throws IOException {
+		String output = "";
+		for (String s : Files.readAllLines(Paths.get(configFile.getAbsolutePath()), StandardCharsets.UTF_8)) {
+			output += s;
 		}
+		return output;
 	}
 
-	public synchronized void flushConfig(String jsonContent) {
+	public synchronized void saveConfig() {
 		try {
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			JsonParser jp = new JsonParser();
-			JsonElement je = jp.parse(jsonContent);
-			jsonContent = gson.toJson(je);
-			PrintWriter writer = new PrintWriter(configPath, "UTF-8");
+			JsonElement je = jp.parse(config.toString());
+			String jsonContent = gson.toJson(je);
+			PrintWriter writer = new PrintWriter(configFile.getAbsolutePath(), "UTF-8");
 			writer.println(jsonContent);
 			writer.close();
 		} catch (Exception ex) {
-			;
+			ex.printStackTrace();
 		}
 	}
 
