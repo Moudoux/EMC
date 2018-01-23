@@ -35,16 +35,23 @@ public class Settings {
 			configFile = new File(file);
 			if (!configFile.exists()) {
 				configFile.createNewFile();
-				addNode("version", "1.0");
+				config = new Gson().fromJson("{}", JsonObject.class);
+				addNode("version", "2.0");
 				saveConfig();
 			} else {
 				config = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
 			}
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> saveConfig()));
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			System.exit(0);
+			System.out.println("Failed to load mod config, resetting it..");
+			if (configFile != null) {
+				if (configFile.exists()) {
+					configFile.delete();
+				}
+			}
+			initialize(clientInfo);
 		}
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> saveConfig()));
 	}
 
 	public synchronized ArrayList<String> getArrayList(String node) {
