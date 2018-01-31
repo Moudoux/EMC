@@ -9,15 +9,34 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityElderGuardian;
 import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityEndermite;
+import net.minecraft.entity.monster.EntityEvoker;
+import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityGolem;
+import net.minecraft.entity.monster.EntityGuardian;
+import net.minecraft.entity.monster.EntityHusk;
+import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntityShulker;
+import net.minecraft.entity.monster.EntitySilverfish;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityStray;
+import net.minecraft.entity.monster.EntityVex;
+import net.minecraft.entity.monster.EntityVindicator;
+import net.minecraft.entity.monster.EntityWitch;
+import net.minecraft.entity.monster.EntityWitherSkeleton;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.passive.EntityAmbientCreature;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityBat;
+import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWaterMob;
@@ -153,6 +172,24 @@ public class IEntity {
 
 	public boolean canBeSeen() {
 		return Minecraft.getMinecraft().player.canEntityBeSeen(this.entity);
+	}
+
+	public boolean isHostile() {
+		if (entity instanceof EntityBlaze || entity instanceof EntityCreeper || entity instanceof EntityElderGuardian
+				|| entity instanceof EntityEndermite || entity instanceof EntityEvoker || entity instanceof EntityGhast
+				|| entity instanceof EntityGuardian || entity instanceof EntityHusk || entity instanceof EntityMagmaCube
+				|| entity instanceof EntityShulker || entity instanceof EntitySilverfish
+				|| entity instanceof EntitySkeleton || entity instanceof EntitySlime || entity instanceof EntitySpider
+				|| entity instanceof EntityStray || entity instanceof EntityVex || entity instanceof EntityVindicator
+				|| entity instanceof EntityWitch || entity instanceof EntityWitherSkeleton
+				|| entity instanceof EntityZombie || entity instanceof EntityZombieVillager) {
+			return true;
+		} else if (entity instanceof EntityChicken) {
+			if (((EntityChicken) entity).chickenJockey) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean instanceOf(EntityType e) {
