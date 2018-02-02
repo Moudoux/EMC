@@ -172,7 +172,13 @@ public class Settings {
 	}
 
 	public synchronized String getNode(String node, String defaultStr) {
-		return config.has(node) ? config.get(node).getAsString() : defaultStr;
+		try {
+			return config.has(node) ? config.get(node).getAsString() : defaultStr;
+		} catch (Exception ex) {
+			System.err.println("Failed to read config value");
+			ex.printStackTrace();
+			return defaultStr;
+		}
 	}
 
 	public synchronized boolean hasNode(String node) {
