@@ -1,6 +1,5 @@
 package me.deftware.client.framework.Values;
 
-
 public class SettingsMap extends ValueMap {
 
 	public static final int MapID = 5544;
@@ -23,6 +22,10 @@ public class SettingsMap extends ValueMap {
 
 	public static void drawCrosshair(boolean state) {
 		updateValue(MapID, "crosshair", state);
+	}
+
+	public static void setFlipUsernames(String names) {
+		updateValue(MapID, "flip_usernames", names);
 	}
 
 	public static enum AABBType {

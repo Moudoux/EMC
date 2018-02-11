@@ -2,7 +2,6 @@ package me.deftware.client.framework.Values;
 
 import java.util.HashMap;
 
-
 public abstract class ValueMap {
 
 	public static HashMap<Integer, HashMap<String, IValue>> values = new HashMap<Integer, HashMap<String, IValue>>();
@@ -16,19 +15,16 @@ public abstract class ValueMap {
 		return (V) new IValue(_default).getValue();
 	}
 
-	
 	public static void clear() {
 		values = new HashMap<Integer, HashMap<String, IValue>>();
 	}
 
-	
 	public static void clearMap(int map) {
 		if (values.containsKey(map)) {
 			values.get(map).clear();
 		}
 	}
 
-	
 	public static void removeValue(int map, String key) {
 		if (values.containsKey(map)) {
 			if (values.get(map).containsKey(key)) {
@@ -37,7 +33,6 @@ public abstract class ValueMap {
 		}
 	}
 
-	
 	public static boolean hasMapKey(int map, String key) {
 		if (values.containsKey(map)) {
 			return values.get(map).containsKey(key);
@@ -45,7 +40,6 @@ public abstract class ValueMap {
 		return false;
 	}
 
-	
 	public static synchronized <V> void updateValue(int map, String key, V value) {
 		if (!values.containsKey(map)) {
 			values.put(map, new HashMap<String, IValue>());
