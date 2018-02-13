@@ -28,6 +28,10 @@ public class SettingsMap extends ValueMap {
 		updateValue(MapID, "flip_usernames", names);
 	}
 
+	public static void setWorldDepth(boolean val) {
+		updateValue(MapID, "world_depth", val);
+	}
+
 	public static enum AABBType {
 		NULL_AABB, FULL_BLOCK_AABB
 	}
