@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityElderGuardian;
@@ -182,7 +183,8 @@ public class IEntity {
 				|| entity instanceof EntitySkeleton || entity instanceof EntitySlime || entity instanceof EntitySpider
 				|| entity instanceof EntityStray || entity instanceof EntityVex || entity instanceof EntityVindicator
 				|| entity instanceof EntityWitch || entity instanceof EntityWitherSkeleton
-				|| entity instanceof EntityZombie || entity instanceof EntityZombieVillager) {
+				|| entity instanceof EntityZombie || entity instanceof EntityZombieVillager
+				|| entity instanceof EntityWither) {
 			return true;
 		} else if (entity instanceof EntityChicken) {
 			if (((EntityChicken) entity).chickenJockey) {
