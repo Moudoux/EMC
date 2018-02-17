@@ -8,7 +8,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -37,7 +37,7 @@ public class FrameworkLoader {
 	/**
 	 * Key: Name, Value: EMCClient object
 	 */
-	private static HashMap<String, EMCClient> mods = new HashMap<String, EMCClient>();
+	private static ConcurrentHashMap<String, EMCClient> mods = new ConcurrentHashMap<String, EMCClient>();
 
 	/**
 	 * Calls a method in a specific mod
@@ -189,7 +189,7 @@ public class FrameworkLoader {
 		logger.info("Loaded mod");
 	}
 
-	public static HashMap<String, EMCClient> getClients() {
+	public static ConcurrentHashMap<String, EMCClient> getClients() {
 		return mods;
 	}
 
