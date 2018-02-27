@@ -61,7 +61,6 @@ Why use EMC?
 * Completely compliant with the Minecraft EULA (You don't have to worry about DMCA takedown requests)
 * Write once, use on multiple Minecraft versions
 * Less code (This requires less code than writing your client with Minecraft)
-* This framework was made specifically for creating Minecraft "hacked clients"
 
 EULA compliant
 -------------------
