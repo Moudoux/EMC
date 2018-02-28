@@ -11,6 +11,7 @@ import me.deftware.client.framework.Wrappers.IScreens.Screen;
 import me.deftware.client.framework.Wrappers.Entity.IEntity;
 import me.deftware.client.framework.Wrappers.Entity.IEntity.EntityType;
 import me.deftware.client.framework.Wrappers.Objects.IBlockPos;
+import me.deftware.client.framework.Wrappers.Objects.IGuiInventory;
 import me.deftware.client.framework.Wrappers.Objects.IGuiScreen;
 import me.deftware.client.framework.Wrappers.Objects.IServerData;
 import net.minecraft.client.Minecraft;
@@ -171,6 +172,10 @@ public class IMinecraft {
 
 	public static void setGuiScreen(IGuiScreen screen) {
 		Minecraft.getMinecraft().displayGuiScreen(screen);
+	}
+
+	public static void openInventory(IGuiInventory inventory) {
+		Minecraft.getMinecraft().displayGuiScreen(inventory);
 	}
 
 	public static void setGuiScreenType(Screen screen) {

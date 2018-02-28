@@ -3,6 +3,7 @@ package me.deftware.client.framework.Wrappers.Entity;
 import java.awt.Color;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -198,6 +199,8 @@ public class IEntity {
 		// Generic types and players
 		if (e.equals(EntityType.ENTITY_PLAYER_SP)) {
 			return entity instanceof EntityPlayerSP;
+		} else if (e.equals(EntityType.EntityOtherPlayerMP)) {
+			return entity instanceof EntityOtherPlayerMP;
 		} else if (e.equals(EntityType.ENTITY_PLAYER)) {
 			return entity instanceof EntityPlayer;
 		} else if (e.equals(EntityType.ENTITY_LIVING_BASE)) {
@@ -235,7 +238,7 @@ public class IEntity {
 	}
 
 	public static enum EntityType {
-		ENTITY_PLAYER_SP, ENTITY_PLAYER, EntitySlime, EntityGolem, EntityFlying, EntityMob, EntityWaterMob, ENTITY_WOLF, ENTITY_LIVING_BASE, ENTITY_LIVING, Entity_Ageable, EntityAmbientCreature,
+		ENTITY_PLAYER_SP, EntityOtherPlayerMP, ENTITY_PLAYER, EntitySlime, EntityGolem, EntityFlying, EntityMob, EntityWaterMob, ENTITY_WOLF, ENTITY_LIVING_BASE, ENTITY_LIVING, Entity_Ageable, EntityAmbientCreature,
 		/*
 		 * Hostile mobs
 		 */
