@@ -1,2 +1,6 @@
-Update-git.bat
-build/
+/*
+!/.gitignore
+!/src
+!/gradle
+!/README.md
+!/build.gradle
