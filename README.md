@@ -72,11 +72,12 @@ Minecraft source code, only EMC wrapper calls.
 Developing EMC (Not making client mods, the actual framework)
 -------------------
 
-1. Download the latest MCP
-2. Decompile Minecraft
-3. Add the EMC framework code
-4. Apply the EMC Minecraft code hook patch file (Coming soon)
-5. Start working
+1. Clone this git
+2. Import it into your IDE as a gradle project
+3. Run the `setupDecompWrokspace` task
+4. Refresh the gradle project
+
+You can now start modifying EMC, if you are using IDEA run the `genIntellijRuns` task as well.
 
 License
 -------------------
