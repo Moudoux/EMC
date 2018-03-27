@@ -78,7 +78,6 @@ dependencies {
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
-    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
 mixin {
@@ -93,6 +92,7 @@ shadowJar {
     }
 
     manifest {
+        attributes 'Implementation-Title':   'EMC'
         attributes 'Implementation-Version': version
     }
 
@@ -101,14 +101,16 @@ shadowJar {
     classifier = 'full'
 }
 
-task createPom << {
-    pom {
-        project {
-            groupId "me.deftware"
-            artifactId "EMC"
-            version "13.0"
-        }
-    }.writeTo("build/libs/EMC-13.0.pom")
+task createPom {
+    doLast {
+        pom {
+            project {
+                groupId "me.deftware"
+                artifactId "EMC"
+                version version
+            }
+        }.writeTo("build/libs/EMC-13.0.pom")
+    }
 }
 
 reobf {
@@ -120,3 +122,4 @@ reobf {
 
 build.dependsOn(shadowJar)
 build.dependsOn(createPom)
+compileTestJava.dependsOn(shadowJar)

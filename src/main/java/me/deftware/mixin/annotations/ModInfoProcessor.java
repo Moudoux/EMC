@@ -1,5 +1,7 @@
 package me.deftware.mixin.annotations;
 
+import me.deftware.client.framework.FrameworkConstants;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -132,9 +134,7 @@ public class ModInfoProcessor extends AbstractProcessor {
     private void checkValid(final ModInfo annotation) {
         Arrays.asList(
                 annotation.author(),
-                annotation.minversion(),
                 annotation.name(),
-                annotation.version(),
                 annotation.website()
         ).forEach(Objects::requireNonNull);
         try {
@@ -144,6 +144,14 @@ public class ModInfoProcessor extends AbstractProcessor {
                     classValidatingVisitor,
                     null
             );
+        }
+        if (annotation.minversion() > FrameworkConstants.VERSION) {
+            throw new RuntimeException(String.format(
+                    "This version of EMC is less than specified version for %s (%s > %s).",
+                    getModClassname(annotation),
+                    annotation.minversion(),
+                    FrameworkConstants.VERSION
+            ));
         }
     }
 
@@ -155,12 +163,12 @@ public class ModInfoProcessor extends AbstractProcessor {
                 annotation.author(),
                 annotation.minversion(),
                 annotation.version(),
-                getModName(annotation),
+                getModClassname(annotation),
                 annotation.updateLinkOverride()
         );
     }
 
-    private String getModName(final ModInfo annotation) {
+    private String getModClassname(final ModInfo annotation) {
         try {
             annotation.main();
         } catch (MirroredTypeException mte) {
