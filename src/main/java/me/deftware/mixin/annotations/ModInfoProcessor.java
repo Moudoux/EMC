@@ -145,7 +145,7 @@ public class ModInfoProcessor extends AbstractProcessor {
 
     private String fromAnnotation(final ModInfo annotation) {
         return String.format(
-                "{\n    \"name\":\"%s\",\n    \"website\":\"%s\",\n    \"author\":\"%s\",\n    \"minversion\":\"%s\",\n    \"version\":\"%s\",\n    \"main\":\"%s\",\n    \"updateLinkOverride\":\"%s\"\n}\n",
+                "{\n    \"name\":\"%s\",\n    \"website\":\"%s\",\n    \"author\":\"%s\",\n    \"minversion\":%s,\n    \"version\":%s,\n    \"main\":\"%s\",\n    \"updateLinkOverride\":%s\n}\n",
                 annotation.name(),
                 annotation.website(),
                 annotation.author(),
