@@ -1,7 +1,5 @@
 package me.deftware.mixin.annotations;
 
-import com.google.gson.Gson;
-
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -16,6 +14,7 @@ import javax.lang.model.type.TypeVisitor;
 import javax.lang.model.util.SimpleTypeVisitor8;
 import javax.tools.StandardLocation;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
@@ -27,15 +26,6 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 @SupportedAnnotationTypes("me.deftware.mixin.annotations.ModInfo")
 @SupportedSourceVersion(RELEASE_8)
 public class ModInfoProcessor extends AbstractProcessor {
-    private final Gson gson = new Gson();
-    private final TypeVisitor<Void, ModInfoInstantiable> classNameWritingVisitor = new SimpleTypeVisitor8<Void, ModInfoInstantiable>() {
-        @Override
-        public Void visitDeclared(final DeclaredType t,
-                                  final ModInfoInstantiable modInfoInstantiable) {
-            modInfoInstantiable.setMain(t.toString());
-            return null;
-        }
-    };
     private final TypeVisitor<Void, Void> checkInternalClassForStatic = new SimpleTypeVisitor8<Void, Void>() {
         @Override
         public Void visitDeclared(final DeclaredType t,
@@ -52,7 +42,6 @@ public class ModInfoProcessor extends AbstractProcessor {
             return null;
         }
     };
-    private int count = 0;
     private TypeVisitor<Boolean, Void> noArgsVisitor = new SimpleTypeVisitor8<Boolean, Void>() {
         @Override
         public Boolean visitExecutable(final ExecutableType t,
@@ -91,29 +80,32 @@ public class ModInfoProcessor extends AbstractProcessor {
     @Override
     public boolean process(final Set<? extends TypeElement> annotations,
                            final RoundEnvironment roundEnv) {
+        boolean alreadyProcessed = false;
         if (!roundEnv.processingOver()) {
             for (TypeElement type : annotations) {
                 for (Element element : roundEnv.getElementsAnnotatedWith(type)) {
+                    if (alreadyProcessed) {
+                        throw new RuntimeException("Too many ModInfo annotations for one given library.");
+                    }
                     ModInfo modInfo = element.getAnnotation(ModInfo.class);
                     if (isValid(modInfo)) {
-                        ModInfoInstantiable instantiable = fromAnnotation(modInfo);
-                        try {
-                            gson.toJson(
-                                    instantiable,
-                                    processingEnv.getFiler().createResource(
-                                            StandardLocation.CLASS_OUTPUT,
-                                            "",
-                                            "modinfo_" + getModName(modInfo)
-                                    ).openWriter()
-                            );
+                        String json = fromAnnotation(modInfo);
+                        try (
+                                Writer writer = processingEnv.getFiler().createResource(
+                                        StandardLocation.CLASS_OUTPUT,
+                                        "",
+                                        "client.json"
+                                ).openWriter()
+                        ) {
+                            writer.write(json);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        count++;
+                        alreadyProcessed = true;
                     }
                 }
             }
-            if (count == 0) {
+            if (!alreadyProcessed) {
                 throw new RuntimeException("Must have one class declared with ModInfo (preferably, an implementation of EMCMod).");
             }
         }
@@ -139,18 +131,17 @@ public class ModInfoProcessor extends AbstractProcessor {
         return false;
     }
 
-    private ModInfoInstantiable fromAnnotation(final ModInfo annotation) {
-        ModInfoInstantiable instantiable = new ModInfoInstantiable();
-        instantiable.setAuthor(annotation.author());
-        try {
-            annotation.main();
-        } catch (MirroredTypeException mte) {
-            mte.getTypeMirror().accept(
-                    classNameWritingVisitor,
-                    instantiable
-            );
-        }
-        return null;
+    private String fromAnnotation(final ModInfo annotation) {
+        return String.format(
+                "{\n    \"name\":\"%s\",\n    \"website\":\"%s\",\n    \"author\":\"%s\",\n    \"minversion\":\"%s\",\n    \"version\":\"%s\",\n    \"main\":\"%s\",\n    \"updateLinkOverride\":\"%s\"\n}\n",
+                annotation.name(),
+                annotation.website(),
+                annotation.author(),
+                annotation.minversion(),
+                annotation.version(),
+                getModName(annotation),
+                annotation.updateLinkOverride()
+        );
     }
 
     private String getModName(final ModInfo annotation) {

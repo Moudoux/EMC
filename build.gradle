@@ -91,6 +91,10 @@ shadowJar {
         include(dependency('org.reflections:reflections'))
     }
 
+    manifest {
+        attributes 'Implementation-Version': version
+    }
+
     exclude 'dummyThing'
     exclude 'LICENSE.txt'
     classifier = 'full'
