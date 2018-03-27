@@ -35,9 +35,17 @@ public class ModInfoProcessor extends AbstractProcessor {
                         this,
                         null
                 );
-            }
-            if (!t.asElement().getModifiers().contains(Modifier.STATIC)) {
-                throw new RuntimeException("EMCMod must be instantiable via .newInstance(): inner class must be declared static.");
+                if (!t.asElement().getModifiers().contains(Modifier.STATIC)) {
+                    throw new RuntimeException(String.format(
+                            "EMCMod must be instantiable via .newInstance(): inner class %s must be declared static.",
+                            t.toString()
+                    ));
+                } else if (!t.asElement().getModifiers().contains(Modifier.PUBLIC)) {
+                    throw new RuntimeException(String.format(
+                            "EMCMod must be instantiable via .newInstance(): inner class %s must be declared public.",
+                            t.toString()
+                    ));
+                }
             }
             return null;
         }
@@ -58,6 +66,12 @@ public class ModInfoProcessor extends AbstractProcessor {
                         checkInternalClassForStatic,
                         null
                 );
+            }
+            if (!t.asElement().getModifiers().contains(Modifier.PUBLIC)) {
+                throw new RuntimeException(String.format(
+                        "EMCMod must be instantiable via .newInstance(): inner class %s must be declared public.",
+                        t.toString()
+                ));
             }
             if (t.asElement().getEnclosedElements().stream().filter(subelement -> subelement.getKind() == CONSTRUCTOR && subelement.getModifiers().contains(PUBLIC)).map(Element::asType).anyMatch(typeMirror -> typeMirror.accept(
                     noArgsVisitor,
