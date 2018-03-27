@@ -102,21 +102,20 @@ public class ModInfoProcessor extends AbstractProcessor {
                         throw new RuntimeException("Too many ModInfo annotations for one given library.");
                     }
                     ModInfo modInfo = element.getAnnotation(ModInfo.class);
-                    if (isValid(modInfo)) {
-                        String json = fromAnnotation(modInfo);
-                        try (
-                                Writer writer = processingEnv.getFiler().createResource(
-                                        StandardLocation.CLASS_OUTPUT,
-                                        "",
-                                        "client.json"
-                                ).openWriter()
-                        ) {
-                            writer.write(json);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        alreadyProcessed = true;
+                    checkValid(modInfo);
+                    String json = fromAnnotation(modInfo);
+                    try (
+                            Writer writer = processingEnv.getFiler().createResource(
+                                    StandardLocation.CLASS_OUTPUT,
+                                    "",
+                                    "client.json"
+                            ).openWriter()
+                    ) {
+                        writer.write(json);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+                    alreadyProcessed = true;
                 }
             }
             if (!alreadyProcessed) {
@@ -126,7 +125,7 @@ public class ModInfoProcessor extends AbstractProcessor {
         return true;
     }
 
-    private boolean isValid(final ModInfo annotation) {
+    private void checkValid(final ModInfo annotation) {
         Arrays.asList(
                 annotation.author(),
                 annotation.minversion(),
@@ -142,7 +141,6 @@ public class ModInfoProcessor extends AbstractProcessor {
                     null
             );
         }
-        return false;
     }
 
     private String fromAnnotation(final ModInfo annotation) {
