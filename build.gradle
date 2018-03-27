@@ -78,6 +78,7 @@ dependencies {
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
+    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
 mixin {
