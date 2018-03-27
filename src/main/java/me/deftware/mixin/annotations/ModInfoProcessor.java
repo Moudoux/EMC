@@ -28,7 +28,6 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 @SupportedSourceVersion(RELEASE_8)
 public class ModInfoProcessor extends AbstractProcessor {
     private final Gson gson = new Gson();
-    private int count = 0;
     private final TypeVisitor<Void, ModInfoInstantiable> classNameWritingVisitor = new SimpleTypeVisitor8<Void, ModInfoInstantiable>() {
         @Override
         public Void visitDeclared(final DeclaredType t,
@@ -37,6 +36,23 @@ public class ModInfoProcessor extends AbstractProcessor {
             return null;
         }
     };
+    private final TypeVisitor<Void, Void> checkInternalClassForStatic = new SimpleTypeVisitor8<Void, Void>() {
+        @Override
+        public Void visitDeclared(final DeclaredType t,
+                                  final Void aVoid) {
+            if (t.asElement().getEnclosingElement().getKind().isClass()) {
+                t.asElement().getEnclosingElement().asType().accept(
+                        this,
+                        null
+                );
+            }
+            if (!t.asElement().getModifiers().contains(Modifier.STATIC)) {
+                throw new RuntimeException("EMCMod must be instantiable via .newInstance(): inner class must be declared static.");
+            }
+            return null;
+        }
+    };
+    private int count = 0;
     private TypeVisitor<Boolean, Void> noArgsVisitor = new SimpleTypeVisitor8<Boolean, Void>() {
         @Override
         public Boolean visitExecutable(final ExecutableType t,
@@ -62,22 +78,6 @@ public class ModInfoProcessor extends AbstractProcessor {
             } else {
                 throw new RuntimeException("EMCMod must be instantiable via .newInstance(): EMCMods must define publicly accessible no args constructor.");
             }
-        }
-    };
-    private final TypeVisitor<Void, Void> checkInternalClassForStatic = new SimpleTypeVisitor8<Void, Void>() {
-        @Override
-        public Void visitDeclared(final DeclaredType t,
-                                  final Void aVoid) {
-            if (t.asElement().getEnclosingElement().getKind().isClass()) {
-                t.asElement().getEnclosingElement().asType().accept(
-                        this,
-                        null
-                );
-            }
-            if (!t.asElement().getModifiers().contains(Modifier.STATIC)) {
-                throw new RuntimeException("EMCMod must be instantiable via .newInstance(): inner class must be declared static.");
-            }
-            return null;
         }
     };
     private TypeVisitor<String, Void> nameFetchingVisitor = new SimpleTypeVisitor8<String, Void>() {
@@ -120,6 +120,25 @@ public class ModInfoProcessor extends AbstractProcessor {
         return true;
     }
 
+    private boolean isValid(final ModInfo annotation) {
+        Arrays.asList(
+                annotation.author(),
+                annotation.minversion(),
+                annotation.name(),
+                annotation.version(),
+                annotation.website()
+        ).forEach(Objects::requireNonNull);
+        try {
+            annotation.main();
+        } catch (MirroredTypeException mte) {
+            mte.getTypeMirror().accept(
+                    classValidatingVisitor,
+                    null
+            );
+        }
+        return false;
+    }
+
     private ModInfoInstantiable fromAnnotation(final ModInfo annotation) {
         ModInfoInstantiable instantiable = new ModInfoInstantiable();
         instantiable.setAuthor(annotation.author());
@@ -144,24 +163,5 @@ public class ModInfoProcessor extends AbstractProcessor {
             );
         }
         return null;
-    }
-
-    private boolean isValid(final ModInfo annotation) {
-        Arrays.asList(
-                annotation.author(),
-                annotation.minversion(),
-                annotation.name(),
-                annotation.version(),
-                annotation.website()
-        ).forEach(Objects::requireNonNull);
-        try {
-            annotation.main();
-        } catch (MirroredTypeException mte) {
-            mte.getTypeMirror().accept(
-                    classValidatingVisitor,
-                    null
-            );
-        }
-        return false;
     }
 }
