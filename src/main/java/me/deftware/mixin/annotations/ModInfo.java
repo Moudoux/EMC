@@ -18,11 +18,11 @@ public @interface ModInfo {
 
     @Nonnull String author();
 
-    @Nonnull String minversion();
-
-    @Nonnull String version();
-
     @Nonnull Class<? extends EMCMod> main();
 
     boolean updateLinkOverride();
+
+    double minversion();
+
+    double version();
 }
