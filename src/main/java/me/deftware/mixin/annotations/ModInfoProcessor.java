@@ -37,14 +37,14 @@ public class ModInfoProcessor extends AbstractProcessor {
                 );
                 if (!t.asElement().getModifiers().contains(Modifier.STATIC)) {
                     throw new RuntimeException(String.format(
-                            "EMCMod must be instantiable via .newInstance(): inner class %s must be declared static.",
+                            "EMCMod must be instantiable via .newInstance(): class %s must be declared static.",
                             t.toString()
                     ));
                 }
             }
             if (!t.asElement().getModifiers().contains(Modifier.PUBLIC)) {
                 throw new RuntimeException(String.format(
-                        "EMCMod must be instantiable via .newInstance(): inner class %s must be declared public.",
+                        "EMCMod must be instantiable via .newInstance(): class %s must be declared public.",
                         t.toString()
                 ));
             }
@@ -70,7 +70,7 @@ public class ModInfoProcessor extends AbstractProcessor {
             }
             if (!t.asElement().getModifiers().contains(Modifier.PUBLIC)) {
                 throw new RuntimeException(String.format(
-                        "EMCMod must be instantiable via .newInstance(): inner class %s must be declared public.",
+                        "EMCMod must be instantiable via .newInstance(): class %s must be declared public.",
                         t.toString()
                 ));
             }
@@ -80,7 +80,10 @@ public class ModInfoProcessor extends AbstractProcessor {
             ))) {
                 return null;
             } else {
-                throw new RuntimeException("EMCMod must be instantiable via .newInstance(): EMCMods must define publicly accessible no args constructor.");
+                throw new RuntimeException(String.format(
+                        "EMCMod must be instantiable via .newInstance(): class %s must define publicly accessible no args constructor.",
+                        t.toString()
+                ));
             }
         }
     };
