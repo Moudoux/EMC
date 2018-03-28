@@ -28,7 +28,7 @@ public class Bootstrap {
 
 	public static ArrayList<String> commandTriggers = new ArrayList<>();
 	public static Logger logger = LogManager.getLogger();
-	private static URLClassLoader clientLoader;
+	private static URLClassLoader modClassLoader;
 	public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
 	private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
 
@@ -40,18 +40,11 @@ public class Bootstrap {
 			Fonts.loadFonts();
 
 			File emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator);
-
 			if (!emc_root.exists()) {
 				emc_root.mkdir();
 			}
 
-			File mods = new File(emc_root.getAbsolutePath() + File.separator + "mods");
-
-			if (!mods.exists()) {
-				mods.mkdir();
-			}
-
-			for (File fileEntry : mods.listFiles()) {
+			for (File fileEntry : emc_root.listFiles()) {
 				if (fileEntry.isDirectory()) {
 					continue;
 				}
@@ -62,28 +55,19 @@ public class Bootstrap {
 							new File(fileEntry.getAbsolutePath() + ".delete").delete();
 							fileEntry.delete();
 						} else {
+							File udpateJar = new File(emc_root.getAbsolutePath() + File.separator
+									+ fileEntry.getName().substring(0, fileEntry.getName().length() - ".jar".length())
+									+ "_update.jar");
+							if (udpateJar.exists()) {
+								fileEntry.delete();
+								udpateJar.renameTo(fileEntry);
+							}
 							Bootstrap.loadMod(fileEntry);
 						}
 					} catch (Exception ex) {
-						Bootstrap.logger.warn("Failed to load some EMC mod: " + fileEntry.getName());
+						Bootstrap.logger.warn("Failed to load EMC mod: " + fileEntry.getName());
 						ex.printStackTrace();
 					}
-				}
-			}
-
-			if (new File(emc_root.getAbsolutePath() + File.separator + "Client_update.jar").exists()) {
-				new File(emc_root.getAbsolutePath() + File.separator + "Client.jar").delete();
-				new File(emc_root.getAbsolutePath() + File.separator + "Client_update.jar")
-						.renameTo(new File(emc_root.getAbsolutePath() + File.separator + "Client.jar"));
-			}
-
-			File clientFile = new File(emc_root.getAbsolutePath() + File.separator + "Client.jar");
-			if (clientFile.exists()) {
-				try {
-					Bootstrap.loadMod(clientFile);
-				} catch (Exception ex) {
-					Bootstrap.logger.warn("Failed to load main EMC mod");
-					ex.printStackTrace();
 				}
 			}
 
@@ -104,14 +88,14 @@ public class Bootstrap {
 		// Load client
 
 		JarFile jarFile = new JarFile(clientJar);
-		Enumeration e = jarFile.entries();
+		Enumeration<?> e = jarFile.entries();
 
 		URL jarfile = new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/");
-		Bootstrap.clientLoader = URLClassLoader.newInstance(new URL[] { jarfile }, Bootstrap.class.getClassLoader());
+		Bootstrap.modClassLoader = URLClassLoader.newInstance(new URL[] { jarfile }, Bootstrap.class.getClassLoader());
 
 		// Read client.json
 
-		InputStream in = Bootstrap.clientLoader.getResourceAsStream("client.json");
+		InputStream in = Bootstrap.modClassLoader.getResourceAsStream("client.json");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		StringBuilder result = new StringBuilder("");
 
@@ -133,17 +117,15 @@ public class Bootstrap {
 			return;
 		}
 
-		Class c = Bootstrap.clientLoader.loadClass(jsonObject.get("main").getAsString());
-		System.out.println("Superclass of " + jsonObject.get("main").getAsString() + " is " + c.getSuperclass());
-		EMCMod clazz = (EMCMod) c.newInstance();
-		Bootstrap.mods.put(jsonObject.get("name").getAsString(), clazz);
+		Class<?> c = Bootstrap.modClassLoader.loadClass(jsonObject.get("main").getAsString());
+		Bootstrap.mods.put(jsonObject.get("name").getAsString(), (EMCMod) c.newInstance());
 
 		for (JarEntry je = (JarEntry) e.nextElement(); e.hasMoreElements(); je = (JarEntry) e.nextElement()) {
 			if (je.isDirectory() || !je.getName().endsWith(".class")) {
 				continue;
 			}
 			String className = je.getName().replace(".class", "").replace('/', '.');
-			Bootstrap.logger.info("Loaded class " + Bootstrap.clientLoader.loadClass(className).getName());
+			Bootstrap.logger.info("Loaded class " + Bootstrap.modClassLoader.loadClass(className).getName());
 		}
 
 		jarFile.close();
