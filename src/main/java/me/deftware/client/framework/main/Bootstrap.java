@@ -1,14 +1,5 @@
 package me.deftware.client.framework.main;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import me.deftware.client.framework.FrameworkConstants;
-import me.deftware.client.framework.apis.marketplace.MarketplaceAPI;
-import me.deftware.client.framework.fonts.Fonts;
-import net.minecraft.client.Minecraft;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
@@ -21,8 +12,19 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public enum Bootstrap {
-	INSTANCE;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import me.deftware.client.framework.FrameworkConstants;
+import me.deftware.client.framework.apis.marketplace.MarketplaceAPI;
+import me.deftware.client.framework.fonts.Fonts;
+import me.deftware.client.framework.utils.OSUtils;
+import net.minecraft.client.Minecraft;
+
+public class Bootstrap {
 
 	public static ArrayList<String> commandTriggers = new ArrayList<>();
 	public static Logger logger = LogManager.getLogger();
@@ -30,17 +32,20 @@ public enum Bootstrap {
 	public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
 	private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
 
-	public void init() {
+	public static void init() {
 		try {
 			Bootstrap.logger.info("Loading EMC...");
 
 			Bootstrap.registerCommandTrigger(".");
-
-			// Initialize framework stuff
 			Fonts.loadFonts();
 
-			File minecraft = new File(Minecraft.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-			File mods = new File(minecraft.getParent() + File.separator + "mods");
+			File emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator);
+
+			if (!emc_root.exists()) {
+				emc_root.mkdir();
+			}
+
+			File mods = new File(emc_root.getAbsolutePath() + File.separator + "mods");
 
 			if (!mods.exists()) {
 				mods.mkdir();
@@ -66,18 +71,18 @@ public enum Bootstrap {
 				}
 			}
 
-			if (new File(minecraft.getParent() + File.separator + "Client_update.jar").exists()) {
-				new File(minecraft.getParent() + File.separator + "Client.jar").delete();
-				new File(minecraft.getParent() + File.separator + "Client_update.jar")
-						.renameTo(new File(minecraft.getParent() + File.separator + "Client.jar"));
+			if (new File(emc_root.getAbsolutePath() + File.separator + "Client_update.jar").exists()) {
+				new File(emc_root.getAbsolutePath() + File.separator + "Client.jar").delete();
+				new File(emc_root.getAbsolutePath() + File.separator + "Client_update.jar")
+						.renameTo(new File(emc_root.getAbsolutePath() + File.separator + "Client.jar"));
 			}
 
-			File clientFile = new File(minecraft.getParent() + File.separator + "Client.jar");
+			File clientFile = new File(emc_root.getAbsolutePath() + File.separator + "Client.jar");
 			if (clientFile.exists()) {
 				try {
 					Bootstrap.loadMod(clientFile);
 				} catch (Exception ex) {
-					Bootstrap.logger.warn("Failed to load main client mod");
+					Bootstrap.logger.warn("Failed to load main EMC mod");
 					ex.printStackTrace();
 				}
 			}
@@ -102,7 +107,7 @@ public enum Bootstrap {
 		Enumeration e = jarFile.entries();
 
 		URL jarfile = new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/");
-		Bootstrap.clientLoader = URLClassLoader.newInstance(new URL[]{jarfile});
+		Bootstrap.clientLoader = URLClassLoader.newInstance(new URL[] { jarfile }, Bootstrap.class.getClassLoader());
 
 		// Read client.json
 
@@ -128,8 +133,10 @@ public enum Bootstrap {
 			return;
 		}
 
-		Bootstrap.mods.put(jsonObject.get("name").getAsString(),
-				(EMCMod) Bootstrap.clientLoader.loadClass(jsonObject.get("main").getAsString()).newInstance());
+		Class c = Bootstrap.clientLoader.loadClass(jsonObject.get("main").getAsString());
+		System.out.println("Superclass of " + jsonObject.get("main").getAsString() + " is " + c.getSuperclass());
+		EMCMod clazz = (EMCMod) c.newInstance();
+		Bootstrap.mods.put(jsonObject.get("name").getAsString(), clazz);
 
 		for (JarEntry je = (JarEntry) e.nextElement(); e.hasMoreElements(); je = (JarEntry) e.nextElement()) {
 			if (je.isDirectory() || !je.getName().endsWith(".class")) {
@@ -145,7 +152,6 @@ public enum Bootstrap {
 
 		Bootstrap.logger.info("Loaded mod");
 	}
-
 
 	public static void callMethod(String mod, String method, String caller) {
 		if (Bootstrap.mods.containsKey(mod)) {
@@ -165,7 +171,7 @@ public enum Bootstrap {
 	}
 
 	/*
-		Command triggers
+	 * Command triggers
 	 */
 
 	public static void registerCommandTrigger(String trigger) {

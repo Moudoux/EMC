@@ -1,19 +1,33 @@
 package me.deftware.client.framework.wrappers.item;
 
-
 import me.deftware.mixin.imp.IMixinItemTool;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemEgg;
+import net.minecraft.item.ItemEnderPearl;
+import net.minecraft.item.ItemFishingRod;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemHoe;
+import net.minecraft.item.ItemLingeringPotion;
+import net.minecraft.item.ItemNameTag;
+import net.minecraft.item.ItemPotion;
+import net.minecraft.item.ItemSnowball;
+import net.minecraft.item.ItemSplashPotion;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.item.ItemTool;
 
 public class IItem {
 
 	private Item item;
 
-	public IItem(Item item) {
-		this.item = item;
-	}
-
 	public IItem(String name) {
 		item = Item.getByNameOrId(name);
+	}
+
+	public IItem(Item item) {
+		this.item = item;
 	}
 
 	public Item getItem() {

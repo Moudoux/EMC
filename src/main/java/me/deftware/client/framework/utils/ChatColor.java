@@ -20,7 +20,7 @@ public enum ChatColor {
 			true), UNDERLINE("UNDERLINE", 19, 'n', 19, true), ITALIC("ITALIC",
 			20, 'o', 20, true), RESET("RESET", 21, 'r', 21);
 
-	public static final char COLOR_CHAR = "ยง".charAt(0);
+	public static final char COLOR_CHAR = "ง".charAt(0);
 	private static final Pattern STRIP_COLOR_PATTERN, STRIP_COLOR_PATTERN2;
 	public final int intCode;
 	public final char code;
@@ -30,7 +30,7 @@ public enum ChatColor {
 	private static final Map<Character, ChatColor> BY_CHAR;
 
 	static {
-		STRIP_COLOR_PATTERN = Pattern.compile("(?i)ยง[0-9A-FK-OR]");
+		STRIP_COLOR_PATTERN = Pattern.compile("(?i)ง[0-9A-FK-OR]");
 		STRIP_COLOR_PATTERN2 = Pattern.compile("(?i)&[0-9A-FK-OR]");
 		BY_ID = Maps.newHashMap();
 		BY_CHAR = Maps.newHashMap();
@@ -51,7 +51,7 @@ public enum ChatColor {
 		this.code = code;
 		this.intCode = intCode;
 		this.isFormat = isFormat;
-		toString = new String(new char[]{"ยง".charAt(0), code});
+		toString = new String(new char[]{"ง".charAt(0), code});
 	}
 
 	public char getChar() {
@@ -94,7 +94,7 @@ public enum ChatColor {
 		char[] b = textToTranslate.toCharArray();
 		for (int i = 0; i < b.length - 1; i++) {
 			if ((b[i] == altColorChar) && ("0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(b[(i + 1)]) > -1)) {
-				b[i] = "ยง".charAt(0);
+				b[i] = "ง".charAt(0);
 				b[(i + 1)] = Character.toLowerCase(b[(i + 1)]);
 			}
 		}
@@ -106,7 +106,7 @@ public enum ChatColor {
 		int length = input.length();
 		for (int index = length - 1; index > -1; index--) {
 			char section = input.charAt(index);
-			if ((section == "ยง".charAt(0)) && (index < length - 1)) {
+			if ((section == "ง".charAt(0)) && (index < length - 1)) {
 				char c = input.charAt(index + 1);
 				ChatColor color = ChatColor.getByChar(c);
 				if (color != null) {

@@ -3,16 +3,9 @@ package me.deftware.client.framework.wrappers.world;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
-/**
- *
- */
 public class IBlock {
 
 	private Block block;
-
-	public IBlock(Block block) {
-		this.block = block;
-	}
 
 	public IBlock(int id) {
 		block = Block.getBlockById(id);
@@ -20,6 +13,10 @@ public class IBlock {
 
 	public IBlock(String name) {
 		block = Block.getBlockFromName(name);
+	}
+
+	public IBlock(Block block) {
+		this.block = block;
 	}
 
 	public boolean isValidBlock() {
@@ -35,7 +32,7 @@ public class IBlock {
 	}
 
 	public int getID() {
-		return block.getIdFromBlock(block);
+		return Block.getIdFromBlock(block);
 	}
 
 	public String getLocalizedName() {

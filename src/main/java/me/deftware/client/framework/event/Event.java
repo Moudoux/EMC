@@ -28,7 +28,7 @@ public class Event {
 		try {
 			if (this instanceof EventClientCommand) {
 				if (((EventClientCommand) this).getCommand().equals(".version")) {
-					ChatProcessor.printFrameworkMessage("ยง7You are running " + FrameworkConstants.FRAMEWORK_NAME
+					ChatProcessor.printFrameworkMessage("ง7You are running " + FrameworkConstants.FRAMEWORK_NAME
 							+ " version " + FrameworkConstants.VERSION + " built by " + FrameworkConstants.AUTHOR);
 					return (T) this;
 				} else if (((EventClientCommand) this).getCommand().equals(".unload")) {
