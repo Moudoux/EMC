@@ -6,3 +6,4 @@
 !/build.gradle
 !/maven
 !/.travis.yml
+!/versions.json
