@@ -1,5 +1,7 @@
 package me.deftware.client.framework.event;
 
+import org.lwjgl.opengl.Display;
+
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.event.events.EventClientCommand;
 import me.deftware.client.framework.event.events.EventRender2D;
@@ -9,7 +11,6 @@ import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.utils.ChatProcessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.realms.RealmsSharedConstants;
-import org.lwjgl.opengl.Display;
 
 public class Event {
 
@@ -28,7 +29,7 @@ public class Event {
 		try {
 			if (this instanceof EventClientCommand) {
 				if (((EventClientCommand) this).getCommand().equals(".version")) {
-					ChatProcessor.printFrameworkMessage("§7You are running " + FrameworkConstants.FRAMEWORK_NAME
+					ChatProcessor.printFrameworkMessage("You are running " + FrameworkConstants.FRAMEWORK_NAME
 							+ " version " + FrameworkConstants.VERSION + " built by " + FrameworkConstants.AUTHOR);
 					return (T) this;
 				} else if (((EventClientCommand) this).getCommand().equals(".unload")) {
