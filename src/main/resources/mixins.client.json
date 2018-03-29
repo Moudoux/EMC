@@ -43,6 +43,7 @@
     "MixinItemStack",
     "MixinItemTool",
     "MixinKeyBinding",
-    "MixinGuiEditSign"
+    "MixinGuiEditSign",
+    "MixinRenderPlayer"
   ]
 }

@@ -28,7 +28,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: "com.github.johnrengelman.shadow"
 
 group 'me.deftware'
-version '13.1.2'
+version '13.1.3'
 
 sourceCompatibility = targetCompatibility = 1.8
 compileJava {
