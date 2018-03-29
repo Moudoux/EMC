@@ -20,7 +20,7 @@ public enum ChatColor {
 													true), UNDERLINE("UNDERLINE", 19, 'n', 19, true), ITALIC("ITALIC",
 															20, 'o', 20, true), RESET("RESET", 21, 'r', 21);
 
-	public static final char COLOR_CHAR = "§".charAt(0);
+	public static final char COLOR_CHAR = 167;
 	private static final Pattern STRIP_COLOR_PATTERN, STRIP_COLOR_PATTERN2;
 	public final int intCode;
 	public final char code;
@@ -94,7 +94,7 @@ public enum ChatColor {
 		char[] b = textToTranslate.toCharArray();
 		for (int i = 0; i < b.length - 1; i++) {
 			if ((b[i] == altColorChar) && ("0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(b[(i + 1)]) > -1)) {
-				b[i] = "§".charAt(0);
+				b[i] = 167;
 				b[(i + 1)] = Character.toLowerCase(b[(i + 1)]);
 			}
 		}
