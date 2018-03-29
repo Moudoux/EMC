@@ -1,5 +1,14 @@
 package me.deftware.mixin.mixins;
 
+import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import me.deftware.client.framework.event.events.EventKnockback;
 import me.deftware.client.framework.event.events.EventNoClip;
 import me.deftware.client.framework.event.events.EventSlowdown;
@@ -8,14 +17,6 @@ import me.deftware.mixin.imp.IMixinEntity;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
 
 @Mixin(Entity.class)
 public abstract class MixinEntity implements IMixinEntity {
@@ -107,13 +108,13 @@ public abstract class MixinEntity implements IMixinEntity {
 		return isInWeb;
 	}
 
-	@Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;onGround:Z", opcode = GETFIELD, ordinal = 0))
+	@Redirect(method = "move", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.isSneaking()Z", opcode = GETFIELD, ordinal = 0))
 	private boolean sneakingCheck(Entity self) {
 		EventSneakingCheck event = new EventSneakingCheck(isSneaking()).send();
-		if (isSneaking() && !event.isSneaking()) {
-			return false;
+		if (event.isSneaking()) {
+			return true;
 		}
-		return onGround;
+		return getFlag(1);
 	}
 
 	@Inject(method = "setVelocity", at = @At("HEAD"), cancellable = true)

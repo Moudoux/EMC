@@ -15,6 +15,8 @@ import net.minecraft.util.text.ITextComponent;
 @Mixin(GuiNewChat.class)
 public abstract class MixinGuiNewChat implements IMixinGuiNewChat {
 
+	EventChatReceive event;
+
 	@Shadow
 	protected abstract void setChatLine(ITextComponent chatComponent, int chatLineId, int updateCounter,
 			boolean displayOnly);
@@ -26,13 +28,12 @@ public abstract class MixinGuiNewChat implements IMixinGuiNewChat {
 
 	@ModifyVariable(method = "printChatMessageWithOptionalDeletion", at = @At("HEAD"))
 	public ITextComponent printChatMessageWithOptionalDeletion_modify(ITextComponent chatComponent) {
-		EventChatReceive event = new EventChatReceive(chatComponent).send();
+		event = new EventChatReceive(chatComponent).send();
 		return event.getItc();
 	}
 
 	@Inject(method = "printChatMessageWithOptionalDeletion", at = @At("HEAD"), cancellable = true)
 	public void printChatMessageWithOptionalDeletion(ITextComponent chatComponent, int chatLineId, CallbackInfo ci) {
-		EventChatReceive event = new EventChatReceive(chatComponent).send();
 		if (event.isCanceled()) {
 			ci.cancel();
 		}
