@@ -28,6 +28,7 @@ import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextFormatting;
 
 @Mixin(EntityPlayerSP.class)
 public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinEntityPlayerSP {
@@ -122,7 +123,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 		if (!trigger.equals("")) {
 			if (message.startsWith(trigger + "say")) {
 				if (!message.contains(" ")) {
-					ChatProcessor.printClientMessage("Invalid syntax, please use: §b" + trigger + "say <Message>");
+					ChatProcessor.printClientMessage("Invalid syntax, please use: " + TextFormatting.AQUA.toString()
+							+ trigger + "say <Message>");
 					return;
 				}
 				connection.sendPacket(new CPacketChatMessage(message.substring((trigger + "say ").length())));
@@ -137,7 +139,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 				message = message.substring(1);
 			}
 			if (message.equals("")) {
-				ChatProcessor.printClientMessage("Invalid syntax, please use: §b# <Message>");
+				ChatProcessor.printClientMessage(
+						"Invalid syntax, please use: " + TextFormatting.AQUA.toString() + "# <Message>");
 				return;
 			}
 			new EventIRCMessage(message).send();
