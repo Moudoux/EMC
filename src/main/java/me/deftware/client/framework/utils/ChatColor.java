@@ -51,7 +51,7 @@ public enum ChatColor {
 		this.code = code;
 		this.intCode = intCode;
 		this.isFormat = isFormat;
-		toString = new String(new char[] { "§".charAt(0), code });
+		toString = new String(new char[] { 167, code });
 	}
 
 	public char getChar() {
@@ -106,7 +106,7 @@ public enum ChatColor {
 		int length = input.length();
 		for (int index = length - 1; index > -1; index--) {
 			char section = input.charAt(index);
-			if ((String.valueOf(section) == "§") && (index < length - 1)) {
+			if ((section == 167) && (index < length - 1)) {
 				char c = input.charAt(index + 1);
 				ChatColor color = ChatColor.getByChar(c);
 				if (color != null) {
