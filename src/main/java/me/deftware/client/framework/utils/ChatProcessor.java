@@ -116,12 +116,15 @@ public class ChatProcessor {
 	}
 
 	public static void printClientMessage(String chatMessage) {
-		ChatProcessor.printChatMessage(
-				"§b§l" + FrameworkConstants.FRAMEWORK_NAME + " §r§7» " + ChatColor.GRAY + chatMessage);
+		ChatProcessor.printChatMessage(TextFormatting.AQUA.toString() + TextFormatting.BOLD.toString()
+				+ FrameworkConstants.FRAMEWORK_NAME + " " + TextFormatting.RESET.toString()
+				+ TextFormatting.GRAY.toString() + "> " + ChatColor.GRAY + chatMessage);
 	}
 
 	public static void printFrameworkMessage(String msg) {
-		ChatProcessor.printChatMessage("§b§l" + FrameworkConstants.FRAMEWORK_NAME + " §r§7» " + ChatColor.GRAY + msg);
+		ChatProcessor.printChatMessage(TextFormatting.AQUA.toString() + TextFormatting.BOLD.toString()
+				+ FrameworkConstants.FRAMEWORK_NAME + " " + TextFormatting.RESET.toString()
+				+ TextFormatting.GRAY.toString() + "> " + ChatColor.GRAY + msg);
 	}
 
 	public static void printClientMessage(String chatMessage, boolean prefix) {
