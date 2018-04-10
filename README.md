@@ -49,12 +49,12 @@ Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To
 
 ```
 {
-    "name": "me.deftware:EMC:13.1.0",
+	"name": "me.deftware:EMC:13.1.0",
 	"url": "https://github.com/Moudoux/EMC/raw/master/maven/"
 }
 ```
 
-Then in the `minecraftArguments` field append `--tweakClass me.deftware.launch.Launcher` at the end. If you want to see an example on how to load EMC see [example_client.json](https://github.com/Moudoux/EMC/example_client.json)
+Then in the `minecraftArguments` field append `--tweakClass me.deftware.launch.Launcher` at the end. If you want to see an example on how to load EMC see [example_client.json](https://github.com/Moudoux/EMC/blob/master/example_client.json)
 
 Making client mods with EMC 
 -------------------
