@@ -3,6 +3,7 @@
 !/src
 !/gradle
 !/README.md
+!/example_client.json
 !/build.gradle.forge
 !/build.gradle
 !/maven
