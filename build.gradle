@@ -20,9 +20,15 @@ buildscript {
     }
 }
 
+def forgeBuild = true
+
 apply plugin: 'maven'
 apply plugin: 'java'
-apply plugin: 'net.minecraftforge.gradle.tweaker-client'
+if (forgeBuild) {
+	apply plugin: 'net.minecraftforge.gradle.forge'
+} else {
+	apply plugin: 'net.minecraftforge.gradle.tweaker-client'
+}
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: "com.github.johnrengelman.shadow"
 
@@ -35,13 +41,14 @@ compileJava {
 }
 
 minecraft {
-    version = '1.12.2'
+    version = forgeBuild ? "1.12.2-14.23.2.2611" : '1.12.2'
     runDir = 'run'
-    tweakClass = 'me.deftware.launch.Launcher'
     mappings = 'snapshot_20170906'
     useDepAts = true
-
     makeObfSourceJar = true
+    if (!forgeBuild) {
+    	tweakClass = 'me.deftware.launch.Launcher'
+    }
 }
 
 repositories {
@@ -60,10 +67,6 @@ configurations {
 }
 
 dependencies {
-    compile('org.reflections:reflections:0.9.11') {
-        exclude module: 'google-collections'
-        exclude module: 'guava'
-    }
     compile('org.spongepowered:mixin:0.6.10-SNAPSHOT') {
         exclude module: 'launchwrapper'
         exclude module: 'guava'
@@ -73,7 +76,7 @@ dependencies {
 }
 
 mixin {
-    defaultObfuscationEnv notch
+    defaultObfuscationEnv forgeBuild ? searge : notch
     add sourceSets.main, "mixins.client.refmap.json"
 }
 
@@ -82,9 +85,6 @@ shadowJar {
         include(dependency('org.spongepowered:mixin'))
         include(dependency('org.reflections:reflections'))
     }
-
-    exclude 'dummyThing'
-    exclude 'LICENSE.txt'
     classifier = 'full'
 }
 
@@ -100,18 +100,42 @@ task createPom << {
 
 task copyBuilds(type: Copy) {
     from "$rootDir/build/libs"
+    into "$rootDir/maven/me/deftware/" + (forgeBuild ? "EMC-Forge" : "EMC") + "/${version}/"
+    if (forgeBuild) {
+    	rename { String fileName ->
+		    fileName.replace("EMC", "EMC-Forge")
+		}
+    }
+}
+
+task copyBuildsForge(type: Copy) {
+    from "$rootDir/build/libs"
     into "$rootDir/maven/me/deftware/EMC/${version}/"
 }
 
 reobf {
     shadowJar {
-        mappingType = 'NOTCH'
+        mappingType = forgeBuild ? 'SEARGE' : 'NOTCH'
         classpath = sourceSets.main.compileClasspath
     }
+}
+
+if (forgeBuild) {
+	println "Building for Forge..."
+	jar {
+	    manifest.attributes(
+	            "MixinConfigs": 'mixins.client.json',
+	            "tweakClass": 'org.spongepowered.asm.launch.MixinTweaker',
+	            "TweakOrder": 0,
+	            "FMLCorePluginContainsFMLMod": 'me.deftware.forge.MixinLoader',
+	            "Manifest-Version": 1.0
+	    )
+	}
+} else {
+	println "Building for Minecraft..."
 }
 
 delete "$rootDir/build/libs"
 build.dependsOn(shadowJar)
 build.dependsOn(createPom)
 build.dependsOn(copyBuilds)
-
