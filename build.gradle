@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        mavenCentral()
         maven {
             name = 'forge'
             url = 'http://files.minecraftforge.net/maven'
@@ -28,7 +27,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: "com.github.johnrengelman.shadow"
 
 group 'me.deftware'
-version '13.1.3'
+version '13.1.4'
 
 sourceCompatibility = targetCompatibility = 1.8
 compileJava {
@@ -47,16 +46,10 @@ minecraft {
 
 repositories {
     mavenCentral()
-
     maven {
         name = 'spongepowered-repo'
         url = 'http://repo.spongepowered.org/maven/'
     }
-    maven {
-        name = 'jitpack'
-        url = 'https://jitpack.io'
-    }
-
 }
 
 configurations {
@@ -65,7 +58,6 @@ configurations {
         extendsFrom deps
     }
 }
-
 
 dependencies {
     compile('org.reflections:reflections:0.9.11') {
@@ -118,6 +110,7 @@ reobf {
     }
 }
 
+delete "$rootDir/build/libs"
 build.dependsOn(shadowJar)
 build.dependsOn(createPom)
 build.dependsOn(copyBuilds)
