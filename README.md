@@ -56,6 +56,11 @@ Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To
 
 Then in the `minecraftArguments` field append `--tweakClass me.deftware.launch.Launcher` at the end. If you want to see an example on how to load EMC see [example_client.json](https://github.com/Moudoux/EMC/blob/master/example_client.json)
 
+Stacking on top of Forge
+-------------------
+
+EMC can be stacked on top of Forge to run EMC mods in conjunction with EMC mods. To build EMC for Forge load the `build.gradle.forge` file instead of the regular build.gradle, build then drop the EMC jar into your Forge mods folder, that's it.
+
 Making client mods with EMC 
 -------------------
 
