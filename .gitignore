@@ -3,6 +3,7 @@
 !/src
 !/gradle
 !/README.md
+!/build.gradle.forge
 !/build.gradle
 !/maven
 !/.travis.yml
