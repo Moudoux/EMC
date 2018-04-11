@@ -23,6 +23,7 @@ import me.deftware.client.framework.event.events.EventSetFPS;
 import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.mixin.imp.IMixinMinecraft;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.settings.GameSettings;
@@ -68,6 +69,16 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 	private GuiScreen displayGuiScreenModifier(GuiScreen screen) {
 		EventGuiScreenDisplay event = new EventGuiScreenDisplay(screen).send();
 		return event.isCanceled() ? null : event.getScreen();
+	}
+
+	@Inject(method = "runTick", at = @At("HEAD"))
+	private void runTick(CallbackInfo cb) {
+		if (Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu) {
+			EventGuiScreenDisplay event = new EventGuiScreenDisplay(Minecraft.getMinecraft().currentScreen).send();
+			if (!(event.getScreen() instanceof GuiMainMenu)) {
+				displayGuiScreen(event.getScreen());
+			}
+		}
 	}
 
 	@Override

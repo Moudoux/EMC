@@ -20,7 +20,7 @@ buildscript {
     }
 }
 
-def forgeBuild = true
+def forgeBuild = false
 
 apply plugin: 'maven'
 apply plugin: 'java'
