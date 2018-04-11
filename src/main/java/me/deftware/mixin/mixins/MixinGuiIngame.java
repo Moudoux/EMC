@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import me.deftware.client.framework.event.events.EventPostHotbar;
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 
 @Mixin(GuiIngame.class)
@@ -21,8 +22,8 @@ public class MixinGuiIngame {
 		}
 	}
 
-	@Inject(method = "renderGameOverlay", at = @At(value = "INVOKE", target = "net/minecraft/client/renderer/GlStateManager.color(FFFF)V", ordinal = 0))
-	private void postHotbarEvent(CallbackInfo ci) {
+	@Inject(method = "renderHotbar", at = @At("HEAD"))
+	private void postHotbarEvent(ScaledResolution sr, float partialTicks, CallbackInfo ci) {
 		new EventPostHotbar().send();
 	}
 
