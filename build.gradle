@@ -33,7 +33,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: "com.github.johnrengelman.shadow"
 
 group 'me.deftware'
-version '13.1.4'
+version '13.1.5'
 
 sourceCompatibility = targetCompatibility = 1.8
 compileJava {

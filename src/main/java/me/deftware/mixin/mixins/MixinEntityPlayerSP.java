@@ -32,8 +32,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 @Mixin(EntityPlayerSP.class)
 public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinEntityPlayerSP {
 
-	EventUpdate event;
-
 	@Shadow
 	private boolean prevOnGround;
 
@@ -106,7 +104,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
 	@Inject(method = "onUpdate", at = @At("HEAD"), cancellable = true)
 	private void onUpdate(CallbackInfo ci) {
-		event = new EventUpdate(posX, posY, posZ, rotationYaw, rotationPitch, onGround).send();
+		EventUpdate event = new EventUpdate(posX, posY, posZ, rotationYaw, rotationPitch, onGround).send();
 		if (event.isCanceled()) {
 			ci.cancel();
 		}
@@ -160,8 +158,9 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 	 */
 	@Overwrite
 	private void onUpdateWalkingPlayer() {
-		EventPlayerWalking e = new EventPlayerWalking().send();
-		if (e.isCanceled()) {
+		EventPlayerWalking event = new EventPlayerWalking(posX, posY, posZ, rotationYaw, rotationPitch, onGround)
+				.send();
+		if (event.isCanceled()) {
 			return;
 		}
 		boolean flag = isSprinting();
