@@ -29,10 +29,11 @@ public abstract class MixinBlockModelRenderer {
 
 	@Inject(method = "renderModel(Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/client/renderer/block/model/IBakedModel;Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/client/renderer/BufferBuilder;Z)Z", at = @At("HEAD"), cancellable = true)
 	private void renderModel(IBlockAccess blockAccessIn, IBakedModel modelIn, IBlockState blockStateIn,
-			BlockPos blockPosIn, BufferBuilder buffer, boolean checkSides, CallbackInfoReturnable ci) {
+			BlockPos blockPosIn, BufferBuilder buffer, boolean checkSides, CallbackInfoReturnable<Boolean> ci) {
 		if (SettingsMap.isOverrideMode()) {
-			ci.setReturnValue(
-					(boolean) SettingsMap.getValue(Block.getIdFromBlock(blockStateIn.getBlock()), "render", false));
+			if (!(boolean) SettingsMap.getValue(Block.getIdFromBlock(blockStateIn.getBlock()), "render", false)) {
+				ci.setReturnValue(false);
+			}
 		}
 	}
 

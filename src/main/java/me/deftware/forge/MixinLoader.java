@@ -6,7 +6,7 @@ import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
 
-public class MixinLoader { // implements IFMLLoadingPlugin {
+public class MixinLoader {
 
 	public MixinLoader() {
 		MixinBootstrap.init();

@@ -1,5 +1,12 @@
 package me.deftware.mixin.mixins;
 
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 import me.deftware.client.framework.event.events.EventBlockhardness;
 import me.deftware.client.framework.event.events.EventCollideCheck;
 import me.deftware.client.framework.maps.SettingsMap;
@@ -13,12 +20,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Block.class)
 public abstract class MixinBlock {
@@ -35,13 +36,16 @@ public abstract class MixinBlock {
 
 	@Inject(method = "getLightValue", at = @At("HEAD"), cancellable = true)
 	private void getLightValue(IBlockState state, CallbackInfoReturnable<Integer> callback) {
-		callback.setReturnValue((int) SettingsMap.getValue(Block.getIdFromBlock(state.getBlock()), "lightValue", lightValue));
+		callback.setReturnValue(
+				(int) SettingsMap.getValue(Block.getIdFromBlock(state.getBlock()), "lightValue", lightValue));
 	}
 
 	@Inject(method = "shouldSideBeRendered", at = @At("HEAD"), cancellable = true)
-	private void shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side, CallbackInfoReturnable<Boolean> callback) {
+	private void shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side,
+			CallbackInfoReturnable<Boolean> callback) {
 		if (SettingsMap.isOverrideMode()) {
-			callback.setReturnValue((boolean) SettingsMap.getValue(Block.getIdFromBlock(blockState.getBlock()), "render", false));
+			callback.setReturnValue(
+					(boolean) SettingsMap.getValue(Block.getIdFromBlock(blockState.getBlock()), "render", false));
 		}
 	}
 
@@ -52,7 +56,8 @@ public abstract class MixinBlock {
 	}
 
 	@Inject(method = "getPlayerRelativeBlockHardness", at = @At("HEAD"), cancellable = true)
-	private void getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World worldIn, BlockPos pos, CallbackInfoReturnable<Float> ci) {
+	private void getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World worldIn, BlockPos pos,
+			CallbackInfoReturnable<Float> ci) {
 		float f = state.getBlockHardness(worldIn, pos);
 		EventBlockhardness event = new EventBlockhardness().send();
 		if (f < 0.0F) {
@@ -66,7 +71,7 @@ public abstract class MixinBlock {
 	@Inject(method = "getBlockLayer", at = @At("HEAD"), cancellable = true)
 	private void getBlockLayer(CallbackInfoReturnable<BlockRenderLayer> ci) {
 		if (SettingsMap.isOverrideMode()) {
-			if ((boolean) SettingsMap.getValue(Block.getIdFromBlock(blockState.getBlock()), "translucent", false)) {
+			if ((boolean) SettingsMap.getValue(Block.getIdFromBlock(blockState.getBlock()), "translucent", true)) {
 				ci.setReturnValue(BlockRenderLayer.TRANSLUCENT);
 			}
 		}
