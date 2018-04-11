@@ -16,6 +16,7 @@ import me.deftware.client.framework.event.events.EventPlayerWalking;
 import me.deftware.client.framework.event.events.EventSlowdown;
 import me.deftware.client.framework.event.events.EventUpdate;
 import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.ChatProcessor;
 import me.deftware.mixin.imp.IMixinEntityPlayerSP;
 import net.minecraft.client.Minecraft;
@@ -120,7 +121,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 		if (!trigger.equals("")) {
 			if (message.startsWith(trigger + "say")) {
 				if (!message.contains(" ")) {
-					ChatProcessor.printClientMessage("Invalid syntax, please use: §b" + trigger + "say <Message>");
+					ChatProcessor.printClientMessage(
+							"Invalid syntax, please use: " + ChatColor.AQUA + trigger + "say <Message>");
 					return;
 				}
 				connection.sendPacket(new CPacketChatMessage(message.substring((trigger + "say ").length())));
@@ -135,7 +137,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 				message = message.substring(1);
 			}
 			if (message.equals("")) {
-				ChatProcessor.printClientMessage("Invalid syntax, please use: §b# <Message>");
+				ChatProcessor.printClientMessage("Invalid syntax, please use: " + ChatColor.AQUA + "# <Message>");
 				return;
 			}
 			new EventIRCMessage(message).send();
