@@ -54,6 +54,11 @@ public class IItemStack {
 		}
 	}
 
+	public static IItemStack cloneWithoutEffects(IItemStack stack) {
+		return new IItemStack(new ItemStack(Item.getItemById(Item.getIdFromItem(stack.getStack().getItem())),
+				Integer.valueOf(stack.getStack().toString().split("x")[0])));
+	}
+
 	public void setStackDisplayName(String name) {
 		stack.setStackDisplayName(name);
 	}

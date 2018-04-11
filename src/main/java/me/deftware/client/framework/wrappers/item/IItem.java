@@ -39,7 +39,7 @@ public class IItem {
 	}
 
 	public int getID() {
-		return item.getIdFromItem(item);
+		return Item.getIdFromItem(item);
 	}
 
 	public boolean isValidItem() {
