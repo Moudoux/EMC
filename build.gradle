@@ -94,7 +94,7 @@ task createPom << {
         project {
             groupId "me.deftware"
             artifactId "EMC"
-            version version
+            version "${version}-${minecraftVersion}"
         }
     }.writeTo("maven/me/deftware/EMC/${version}-${minecraftVersion}/EMC-${version}-${minecraftVersion}.pom")
 }
