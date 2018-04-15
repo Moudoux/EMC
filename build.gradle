@@ -20,6 +20,9 @@ buildscript {
     }
 }
 
+version '13.1.6'
+def minecraftVersion = "1.12.2";
+def forgeVersion = "-14.23.2.2611";
 def forgeBuild = true
 
 apply plugin: 'maven'
@@ -33,7 +36,6 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: "com.github.johnrengelman.shadow"
 
 group 'me.deftware'
-version '13.1.6'
 
 sourceCompatibility = targetCompatibility = 1.8
 compileJava {
@@ -41,7 +43,7 @@ compileJava {
 }
 
 minecraft {
-    version = forgeBuild ? "1.12.2-14.23.2.2611" : '1.12.2'
+    version = forgeBuild ? minecraftVersion + forgeVersion : minecraftVersion
     runDir = 'run'
     mappings = 'snapshot_20170906'
     useDepAts = true
@@ -94,22 +96,20 @@ task createPom << {
             artifactId "EMC"
             version version
         }
-    }.writeTo("maven/me/deftware/EMC/${version}/EMC-${version}.pom")
+    }.writeTo("maven/me/deftware/EMC/${version}-${minecraftVersion}/EMC-${version}-${minecraftVersion}.pom")
 }
 
 task copyBuilds(type: Copy) {
     from "$rootDir/build/libs"
-    into "$rootDir/maven/me/deftware/" + (forgeBuild ? "EMC-Forge" : "EMC") + "/${version}/"
+    into "$rootDir/maven/me/deftware/" + (forgeBuild ? "EMC-Forge" : "EMC") + "/${version}-${minecraftVersion}/"
     if (forgeBuild) {
     	rename { String fileName ->
 		    fileName.replace("EMC", "EMC-Forge")
 		}
     }
-}
-
-task copyBuildsForge(type: Copy) {
-    from "$rootDir/build/libs"
-    into "$rootDir/maven/me/deftware/EMC/${version}/"
+    rename { String fileName ->
+		fileName.replace(version, "${version}-${minecraftVersion}")
+	}
 }
 
 reobf {
@@ -135,9 +135,11 @@ if (forgeBuild) {
 }
 
 delete "$rootDir/build/libs"
-delete "$rootDir/build/libs/EMC-${version}-full.jar"
+delete "$rootDir/maven/me/deftware/" + (forgeBuild ? "EMC-Forge" : "EMC") + "/${version}-${minecraftVersion}"
 build.dependsOn(shadowJar)
-build.dependsOn(createPom)
+if (!forgeBuild) {
+	build.dependsOn(createPom)
+}
 build.dependsOn(copyBuilds)
 
 tasks.build.doLast(){
