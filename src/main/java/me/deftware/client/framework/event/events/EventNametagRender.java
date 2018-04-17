@@ -4,14 +4,13 @@ import me.deftware.client.framework.event.Event;
 
 public class EventNametagRender extends Event {
 
-	private String name;
+	private boolean isPlayer = false;
 
-	public EventNametagRender(String name) {
-		this.name = name;
+	public EventNametagRender(boolean isPlayer) {
+		this.isPlayer = isPlayer;
 	}
 
-	public String getName() {
-		return name;
+	public boolean isPlayer() {
+		return isPlayer;
 	}
-
 }

@@ -5,11 +5,11 @@ import me.deftware.client.framework.event.Event;
 public class EventUpdate extends Event {
 
 	private double posX, posY, posZ;
-	public float rotationYaw, rotationPitch;
+	private float rotationYaw, rotationPitch;
 	private boolean onGround;
 
 	public EventUpdate(double posX, double posY, double posZ, float rotationYaw, float rotationPitch,
-					   boolean onGround) {
+			boolean onGround) {
 		this.posX = posX;
 		this.posY = posY;
 		this.posZ = posZ;

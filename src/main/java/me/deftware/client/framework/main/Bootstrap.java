@@ -1,14 +1,5 @@
 package me.deftware.client.framework.main;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import me.deftware.client.framework.FrameworkConstants;
-import me.deftware.client.framework.apis.marketplace.MarketplaceAPI;
-import me.deftware.client.framework.fonts.Fonts;
-import net.minecraft.client.Minecraft;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
@@ -21,32 +12,39 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public enum Bootstrap {
-	INSTANCE;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import me.deftware.client.framework.FrameworkConstants;
+import me.deftware.client.framework.apis.marketplace.MarketplaceAPI;
+import me.deftware.client.framework.fonts.Fonts;
+import me.deftware.client.framework.utils.OSUtils;
+import net.minecraft.client.Minecraft;
+
+public class Bootstrap {
 
 	public static ArrayList<String> commandTriggers = new ArrayList<>();
 	public static Logger logger = LogManager.getLogger();
-	private static URLClassLoader clientLoader;
+	private static URLClassLoader modClassLoader;
 	public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
 	private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
 
-	public void init() {
+	public static void init() {
 		try {
 			Bootstrap.logger.info("Loading EMC...");
 
 			Bootstrap.registerCommandTrigger(".");
-
-			// Initialize framework stuff
 			Fonts.loadFonts();
 
-			File minecraft = new File(Minecraft.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-			File mods = new File(minecraft.getParent() + File.separator + "mods");
-
-			if (!mods.exists()) {
-				mods.mkdir();
+			File emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator);
+			if (!emc_root.exists()) {
+				emc_root.mkdir();
 			}
 
-			for (File fileEntry : mods.listFiles()) {
+			for (File fileEntry : emc_root.listFiles()) {
 				if (fileEntry.isDirectory()) {
 					continue;
 				}
@@ -57,28 +55,19 @@ public enum Bootstrap {
 							new File(fileEntry.getAbsolutePath() + ".delete").delete();
 							fileEntry.delete();
 						} else {
+							File udpateJar = new File(emc_root.getAbsolutePath() + File.separator
+									+ fileEntry.getName().substring(0, fileEntry.getName().length() - ".jar".length())
+									+ "_update.jar");
+							if (udpateJar.exists()) {
+								fileEntry.delete();
+								udpateJar.renameTo(fileEntry);
+							}
 							Bootstrap.loadMod(fileEntry);
 						}
 					} catch (Exception ex) {
-						Bootstrap.logger.warn("Failed to load some EMC mod: " + fileEntry.getName());
+						Bootstrap.logger.warn("Failed to load EMC mod: " + fileEntry.getName());
 						ex.printStackTrace();
 					}
-				}
-			}
-
-			if (new File(minecraft.getParent() + File.separator + "Client_update.jar").exists()) {
-				new File(minecraft.getParent() + File.separator + "Client.jar").delete();
-				new File(minecraft.getParent() + File.separator + "Client_update.jar")
-						.renameTo(new File(minecraft.getParent() + File.separator + "Client.jar"));
-			}
-
-			File clientFile = new File(minecraft.getParent() + File.separator + "Client.jar");
-			if (clientFile.exists()) {
-				try {
-					Bootstrap.loadMod(clientFile);
-				} catch (Exception ex) {
-					Bootstrap.logger.warn("Failed to load main client mod");
-					ex.printStackTrace();
 				}
 			}
 
@@ -99,14 +88,14 @@ public enum Bootstrap {
 		// Load client
 
 		JarFile jarFile = new JarFile(clientJar);
-		Enumeration e = jarFile.entries();
+		Enumeration<?> e = jarFile.entries();
 
 		URL jarfile = new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/");
-		Bootstrap.clientLoader = URLClassLoader.newInstance(new URL[]{jarfile});
+		Bootstrap.modClassLoader = URLClassLoader.newInstance(new URL[] { jarfile }, Bootstrap.class.getClassLoader());
 
 		// Read client.json
 
-		InputStream in = Bootstrap.clientLoader.getResourceAsStream("client.json");
+		InputStream in = Bootstrap.modClassLoader.getResourceAsStream("client.json");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		StringBuilder result = new StringBuilder("");
 
@@ -128,15 +117,15 @@ public enum Bootstrap {
 			return;
 		}
 
-		Bootstrap.mods.put(jsonObject.get("name").getAsString(),
-				(EMCMod) Bootstrap.clientLoader.loadClass(jsonObject.get("main").getAsString()).newInstance());
+		Class<?> c = Bootstrap.modClassLoader.loadClass(jsonObject.get("main").getAsString());
+		Bootstrap.mods.put(jsonObject.get("name").getAsString(), (EMCMod) c.newInstance());
 
 		for (JarEntry je = (JarEntry) e.nextElement(); e.hasMoreElements(); je = (JarEntry) e.nextElement()) {
 			if (je.isDirectory() || !je.getName().endsWith(".class")) {
 				continue;
 			}
 			String className = je.getName().replace(".class", "").replace('/', '.');
-			Bootstrap.logger.info("Loaded class " + Bootstrap.clientLoader.loadClass(className).getName());
+			Bootstrap.logger.info("Loaded class " + Bootstrap.modClassLoader.loadClass(className).getName());
 		}
 
 		jarFile.close();
@@ -145,7 +134,6 @@ public enum Bootstrap {
 
 		Bootstrap.logger.info("Loaded mod");
 	}
-
 
 	public static void callMethod(String mod, String method, String caller) {
 		if (Bootstrap.mods.containsKey(mod)) {
@@ -165,7 +153,7 @@ public enum Bootstrap {
 	}
 
 	/*
-		Command triggers
+	 * Command triggers
 	 */
 
 	public static void registerCommandTrigger(String trigger) {

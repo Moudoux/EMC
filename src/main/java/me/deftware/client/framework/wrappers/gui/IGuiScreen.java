@@ -1,5 +1,14 @@
 package me.deftware.client.framework.wrappers.gui;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -7,14 +16,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
-
-import java.awt.*;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class IGuiScreen extends GuiScreen {
 

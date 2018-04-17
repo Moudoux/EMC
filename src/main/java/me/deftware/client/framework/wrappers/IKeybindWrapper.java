@@ -1,14 +1,15 @@
 package me.deftware.client.framework.wrappers;
 
+import org.lwjgl.input.Keyboard;
+
 import me.deftware.mixin.imp.IMixinKeyBinding;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import org.lwjgl.input.Keyboard;
 
 public class IKeybindWrapper {
 
 	public static boolean isPressed(IKeybind bind) {
-		return bind.bind.isPressed();
+		return bind.bind.isKeyDown();
 	}
 
 	public static void setPressed(IKeybind bind, boolean state) {
@@ -23,15 +24,15 @@ public class IKeybindWrapper {
 
 		SNEAK(Minecraft.getMinecraft().gameSettings.keyBindSneak), USEITEM(
 				Minecraft.getMinecraft().gameSettings.keyBindUseItem), JUMP(
-				Minecraft.getMinecraft().gameSettings.keyBindJump), SPRINT(
-				Minecraft.getMinecraft().gameSettings.keyBindSprint), FORWARD(
-				Minecraft.getMinecraft().gameSettings.keyBindForward), BACK(
-				Minecraft.getMinecraft().gameSettings.keyBindBack), LEFT(
-				Minecraft.getMinecraft().gameSettings.keyBindLeft), RIGHT(
-				Minecraft
-						.getMinecraft().gameSettings.keyBindRight), ATTACK(
-				Minecraft
-						.getMinecraft().gameSettings.keyBindAttack);
+						Minecraft.getMinecraft().gameSettings.keyBindJump), SPRINT(
+								Minecraft.getMinecraft().gameSettings.keyBindSprint), FORWARD(
+										Minecraft.getMinecraft().gameSettings.keyBindForward), BACK(
+												Minecraft.getMinecraft().gameSettings.keyBindBack), LEFT(
+														Minecraft.getMinecraft().gameSettings.keyBindLeft), RIGHT(
+																Minecraft
+																		.getMinecraft().gameSettings.keyBindRight), ATTACK(
+																				Minecraft
+																						.getMinecraft().gameSettings.keyBindAttack);
 
 		KeyBinding bind;
 
