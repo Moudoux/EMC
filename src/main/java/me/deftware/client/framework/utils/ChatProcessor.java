@@ -1,13 +1,13 @@
 package me.deftware.client.framework.utils;
 
+import java.util.regex.Pattern;
+
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.mixin.imp.IMixinGuiNewChat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
-
-import java.util.regex.Pattern;
 
 public class ChatProcessor {
 
@@ -116,11 +116,15 @@ public class ChatProcessor {
 	}
 
 	public static void printClientMessage(String chatMessage) {
-		ChatProcessor.printChatMessage("§b§l" + FrameworkConstants.FRAMEWORK_NAME + " §r§7» " + ChatColor.GRAY + chatMessage);
+		ChatProcessor.printChatMessage(TextFormatting.AQUA.toString() + TextFormatting.BOLD.toString()
+				+ FrameworkConstants.FRAMEWORK_NAME + " " + TextFormatting.RESET.toString()
+				+ TextFormatting.GRAY.toString() + "> " + ChatColor.GRAY + chatMessage);
 	}
 
 	public static void printFrameworkMessage(String msg) {
-		ChatProcessor.printChatMessage("§b§l" + FrameworkConstants.FRAMEWORK_NAME + " §r§7» " + ChatColor.GRAY + msg);
+		ChatProcessor.printChatMessage(TextFormatting.AQUA.toString() + TextFormatting.BOLD.toString()
+				+ FrameworkConstants.FRAMEWORK_NAME + " " + TextFormatting.RESET.toString()
+				+ TextFormatting.GRAY.toString() + "> " + ChatColor.GRAY + msg);
 	}
 
 	public static void printClientMessage(String chatMessage, boolean prefix) {
@@ -155,33 +159,33 @@ public class ChatProcessor {
 
 	private static Style formatChatStyle(Style chatStyle, char formattingChar) {
 		switch (formattingChar) {
-			case 'k':
-				chatStyle.setObfuscated(Boolean.valueOf(true));
-				break;
-			case 'm':
-				chatStyle.setStrikethrough(Boolean.valueOf(true));
-				break;
-			case 'l':
-				chatStyle.setBold(Boolean.valueOf(true));
-				break;
-			case 'n':
-				chatStyle.setUnderlined(Boolean.valueOf(true));
-				break;
-			case 'o':
-				chatStyle.setItalic(Boolean.valueOf(true));
-				break;
-			case 'r':
-				chatStyle.setObfuscated(Boolean.valueOf(false));
-				chatStyle.setStrikethrough(Boolean.valueOf(false));
-				chatStyle.setBold(Boolean.valueOf(false));
-				chatStyle.setUnderlined(Boolean.valueOf(false));
-				chatStyle.setItalic(Boolean.valueOf(false));
-				chatStyle.setColor(TextFormatting.RESET);
-				break;
-			case 'p':
-			case 'q':
-			default:
-				chatStyle.setColor(ChatProcessor.getTextFormattingByValue(formattingChar));
+		case 'k':
+			chatStyle.setObfuscated(Boolean.valueOf(true));
+			break;
+		case 'm':
+			chatStyle.setStrikethrough(Boolean.valueOf(true));
+			break;
+		case 'l':
+			chatStyle.setBold(Boolean.valueOf(true));
+			break;
+		case 'n':
+			chatStyle.setUnderlined(Boolean.valueOf(true));
+			break;
+		case 'o':
+			chatStyle.setItalic(Boolean.valueOf(true));
+			break;
+		case 'r':
+			chatStyle.setObfuscated(Boolean.valueOf(false));
+			chatStyle.setStrikethrough(Boolean.valueOf(false));
+			chatStyle.setBold(Boolean.valueOf(false));
+			chatStyle.setUnderlined(Boolean.valueOf(false));
+			chatStyle.setItalic(Boolean.valueOf(false));
+			chatStyle.setColor(TextFormatting.RESET);
+			break;
+		case 'p':
+		case 'q':
+		default:
+			chatStyle.setColor(ChatProcessor.getTextFormattingByValue(formattingChar));
 		}
 
 		return chatStyle;

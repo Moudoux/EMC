@@ -7,7 +7,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
-import net.minecraft.item.*;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 
 public class IItemStack {
@@ -39,15 +43,20 @@ public class IItemStack {
 	}
 
 	public void enchantAll(int level) {
-		for (Enchantment enchantment : Enchantment.REGISTRY) {
+		for (Object enchantment : Enchantment.REGISTRY) {
 			try {
 				if (enchantment != Enchantments.SILK_TOUCH && enchantment != Enchantments.BINDING_CURSE
 						&& enchantment != Enchantments.VANISHING_CURSE) {
-					stack.addEnchantment(enchantment, 127);
+					stack.addEnchantment((Enchantment) enchantment, 127);
 				}
 			} catch (Exception ex) {
 			}
 		}
+	}
+
+	public static IItemStack cloneWithoutEffects(IItemStack stack) {
+		return new IItemStack(new ItemStack(Item.getItemById(Item.getIdFromItem(stack.getStack().getItem())),
+				Integer.valueOf(stack.getStack().toString().split("x")[0])));
 	}
 
 	public void setStackDisplayName(String name) {

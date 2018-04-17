@@ -1,7 +1,22 @@
 package me.deftware.mixin.mixins;
 
-import me.deftware.client.framework.event.events.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import me.deftware.client.framework.event.events.EventChatSend;
+import me.deftware.client.framework.event.events.EventClientCommand;
+import me.deftware.client.framework.event.events.EventIRCMessage;
+import me.deftware.client.framework.event.events.EventPlayerWalking;
+import me.deftware.client.framework.event.events.EventSlowdown;
+import me.deftware.client.framework.event.events.EventUpdate;
 import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.ChatProcessor;
 import me.deftware.mixin.imp.IMixinEntityPlayerSP;
 import net.minecraft.client.Minecraft;
@@ -14,19 +29,9 @@ import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.math.AxisAlignedBB;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityPlayerSP.class)
 public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinEntityPlayerSP {
-
-	EventUpdate event;
 
 	@Shadow
 	private boolean prevOnGround;
@@ -100,8 +105,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
 	@Inject(method = "onUpdate", at = @At("HEAD"), cancellable = true)
 	private void onUpdate(CallbackInfo ci) {
-		event = new EventUpdate(posX, posY, posZ, rotationYaw, rotationPitch,
-				onGround);
+		EventUpdate event = new EventUpdate(posX, posY, posZ, rotationYaw, rotationPitch, onGround).send();
 		if (event.isCanceled()) {
 			ci.cancel();
 		}
@@ -117,7 +121,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 		if (!trigger.equals("")) {
 			if (message.startsWith(trigger + "say")) {
 				if (!message.contains(" ")) {
-					ChatProcessor.printClientMessage("Invalid syntax, please use: §b" + trigger + "say <Message>");
+					ChatProcessor.printClientMessage(
+							"Invalid syntax, please use: " + ChatColor.AQUA + trigger + "say <Message>");
 					return;
 				}
 				connection.sendPacket(new CPacketChatMessage(message.substring((trigger + "say ").length())));
@@ -132,13 +137,13 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 				message = message.substring(1);
 			}
 			if (message.equals("")) {
-				ChatProcessor.printClientMessage("Invalid syntax, please use: §b# <Message>");
+				ChatProcessor.printClientMessage("Invalid syntax, please use: " + ChatColor.AQUA + "# <Message>");
 				return;
 			}
 			new EventIRCMessage(message).send();
 			return;
 		}
-		EventChatSend event = new EventChatSend(message);
+		EventChatSend event = new EventChatSend(message).send();
 		if (!event.isCanceled()) {
 			connection.sendPacket(new CPacketChatMessage(event.getMessage()));
 		}
@@ -148,24 +153,27 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 	public void setHorseJumpPower(float height) {
 		horseJumpPower = height;
 	}
-	
+
 	/**
 	 * @Author Deftware
 	 * @reason
 	 */
 	@Overwrite
 	private void onUpdateWalkingPlayer() {
-		EventPlayerWalking e = new EventPlayerWalking().send();
-		if (e.isCanceled()) {
+		EventPlayerWalking event = new EventPlayerWalking(posX, posY, posZ, rotationYaw, rotationPitch, onGround)
+				.send();
+		if (event.isCanceled()) {
 			return;
 		}
 		boolean flag = isSprinting();
 
 		if (flag != serverSprintState) {
 			if (flag) {
-				connection.sendPacket(new CPacketEntityAction((EntityPlayerSP) (Object) this, CPacketEntityAction.Action.START_SPRINTING));
+				connection.sendPacket(new CPacketEntityAction((EntityPlayerSP) (Object) this,
+						CPacketEntityAction.Action.START_SPRINTING));
 			} else {
-				connection.sendPacket(new CPacketEntityAction((EntityPlayerSP) (Object) this, CPacketEntityAction.Action.STOP_SPRINTING));
+				connection.sendPacket(new CPacketEntityAction((EntityPlayerSP) (Object) this,
+						CPacketEntityAction.Action.STOP_SPRINTING));
 			}
 
 			serverSprintState = flag;
@@ -175,9 +183,11 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
 		if (flag1 != serverSneakState) {
 			if (flag1) {
-				connection.sendPacket(new CPacketEntityAction((EntityPlayerSP) (Object) this, CPacketEntityAction.Action.START_SNEAKING));
+				connection.sendPacket(new CPacketEntityAction((EntityPlayerSP) (Object) this,
+						CPacketEntityAction.Action.START_SNEAKING));
 			} else {
-				connection.sendPacket(new CPacketEntityAction((EntityPlayerSP) (Object) this, CPacketEntityAction.Action.STOP_SNEAKING));
+				connection.sendPacket(new CPacketEntityAction((EntityPlayerSP) (Object) this,
+						CPacketEntityAction.Action.STOP_SNEAKING));
 			}
 
 			serverSneakState = flag1;
@@ -202,8 +212,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 				connection.sendPacket(new CPacketPlayer.PositionRotation(posX, event.getPosY(), posZ,
 						event.getRotationYaw(), event.getRotationPitch(), event.isOnGround()));
 			} else if (flag2) {
-				connection.sendPacket(
-						new CPacketPlayer.Position(posX, event.getPosY(), posZ, event.isOnGround()));
+				connection.sendPacket(new CPacketPlayer.Position(posX, event.getPosY(), posZ, event.isOnGround()));
 			} else if (flag3) {
 				connection.sendPacket(new CPacketPlayer.Rotation(event.getRotationYaw(), event.getRotationPitch(),
 						event.isOnGround()));
