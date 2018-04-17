@@ -49,8 +49,8 @@ Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To
 
 ```
 {
-	"name": "me.deftware:EMC:13.1.0",
-	"url": "https://github.com/Moudoux/EMC/raw/master/maven/"
+	"name": "com.github.Moudoux:EMC:13.1.0",
+	"url": "https://jitpack.io/"
 }
 ```
 

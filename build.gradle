@@ -9,7 +9,7 @@ buildscript {
             url = 'http://repo.spongepowered.org/maven'
         }
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url = "https://plugins.gradle.org/m2/"
         }
     }
 
@@ -20,9 +20,9 @@ buildscript {
     }
 }
 
-version '13.1.6'
-def minecraftVersion = "1.12.2";
-def forgeVersion = "-14.23.2.2611";
+version = '13.1.6'
+def minecraftVersion = "1.12.2"
+def forgeVersion = "-14.23.2.2611"
 def forgeBuild = true
 
 apply plugin: 'maven'
@@ -35,7 +35,7 @@ if (forgeBuild) {
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: "com.github.johnrengelman.shadow"
 
-group 'me.deftware'
+group = 'me.deftware'
 
 sourceCompatibility = targetCompatibility = 1.8
 compileJava {
@@ -49,7 +49,7 @@ minecraft {
     useDepAts = true
     makeObfSourceJar = true
     if (!forgeBuild) {
-    	tweakClass = 'me.deftware.launch.Launcher'
+        tweakClass = 'me.deftware.launch.Launcher'
     }
 }
 
@@ -78,7 +78,7 @@ dependencies {
 }
 
 mixin {
-    defaultObfuscationEnv forgeBuild ? searge : notch
+    defaultObfuscationEnv = forgeBuild ? searge : notch
     add sourceSets.main, "mixins.client.refmap.json"
 }
 
@@ -86,30 +86,14 @@ shadowJar {
     dependencies {
         include(dependency('org.spongepowered:mixin'))
     }
-    classifier = 'full'
-}
-
-task createPom << {
-    pom {
-        project {
-            groupId "me.deftware"
-            artifactId "EMC"
-            version "${version}-${minecraftVersion}"
-        }
-    }.writeTo("maven/me/deftware/EMC/${version}-${minecraftVersion}/EMC-${version}-${minecraftVersion}.pom")
-}
-
-task copyBuilds(type: Copy) {
-    from "$rootDir/build/libs"
-    into "$rootDir/maven/me/deftware/" + (forgeBuild ? "EMC-Forge" : "EMC") + "/${version}-${minecraftVersion}/"
-    if (forgeBuild) {
-    	rename { String fileName ->
-		    fileName.replace("EMC", "EMC-Forge")
-		}
+    manifest {
+        attributes 'Implementation-Title':   'EMC'
+        attributes 'Implementation-Version': version
     }
-    rename { String fileName ->
-		fileName.replace(version, "${version}-${minecraftVersion}")
-	}
+
+    exclude 'dummyThing'
+    exclude 'LICENSE.txt'
+    classifier = 'full'
 }
 
 reobf {
@@ -134,13 +118,8 @@ if (forgeBuild) {
 	println "Building for Minecraft..."
 }
 
-delete "$rootDir/build/libs"
-delete "$rootDir/maven/me/deftware/" + (forgeBuild ? "EMC-Forge" : "EMC") + "/${version}-${minecraftVersion}"
 build.dependsOn(shadowJar)
-if (!forgeBuild) {
-	build.dependsOn(createPom)
-}
-build.dependsOn(copyBuilds)
+compileTestJava.dependsOn(shadowJar)
 
 tasks.build.doLast(){
 	if (forgeBuild) {
