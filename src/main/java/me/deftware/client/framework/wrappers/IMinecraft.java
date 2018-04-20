@@ -76,7 +76,7 @@ public class IMinecraft {
 	}
 
 	public static void leaveServer() {
-		Minecraft.getMinecraft().player.connection.sendPacket(new CPacketChatMessage("§"));
+		Minecraft.getMinecraft().player.connection.sendPacket(new CPacketChatMessage(new char[] { 167 }.toString()));
 	}
 
 	public static IBlockPos getBlockOver() {

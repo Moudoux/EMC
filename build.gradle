@@ -9,7 +9,7 @@ buildscript {
             url = 'http://repo.spongepowered.org/maven'
         }
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url = "https://plugins.gradle.org/m2/"
         }
     }
 
@@ -20,9 +20,10 @@ buildscript {
     }
 }
 
-version '13.1.6'
-def minecraftVersion = "1.12.2";
-def forgeVersion = "-14.23.2.2611";
+version = '13.1.6'
+def minecraftVersion = "1.12.2"
+def forgeVersion = "-14.23.2.2611"
+def mappings = 'snapshot_20170906'
 def forgeBuild = true
 
 apply plugin: 'maven'
@@ -35,7 +36,7 @@ if (forgeBuild) {
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: "com.github.johnrengelman.shadow"
 
-group 'me.deftware'
+group = 'me.deftware'
 
 sourceCompatibility = targetCompatibility = 1.8
 compileJava {
@@ -45,11 +46,11 @@ compileJava {
 minecraft {
     version = forgeBuild ? minecraftVersion + forgeVersion : minecraftVersion
     runDir = 'run'
-    mappings = 'snapshot_20170906'
+    mappings = mappings
     useDepAts = true
     makeObfSourceJar = true
     if (!forgeBuild) {
-    	tweakClass = 'me.deftware.launch.Launcher'
+		tweakClass = 'me.deftware.launch.Launcher'
     }
 }
 
