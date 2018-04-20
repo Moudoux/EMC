@@ -23,7 +23,7 @@ buildscript {
 version = '13.1.6'
 def minecraftVersion = "1.12.2"
 def forgeVersion = "-14.23.2.2611"
-def mappings = 'snapshot_20170906'
+def mappingsVer = 'snapshot_20170906'
 def forgeBuild = true
 
 apply plugin: 'maven'
@@ -46,7 +46,7 @@ compileJava {
 minecraft {
     version = forgeBuild ? minecraftVersion + forgeVersion : minecraftVersion
     runDir = 'run'
-    mappings = mappings
+    mappings = mappingsVer
     useDepAts = true
     makeObfSourceJar = true
     if (!forgeBuild) {
