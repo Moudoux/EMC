@@ -124,6 +124,7 @@ if (forgeBuild) {
 	println "Building for Forge..."
 	jar {
 	    manifest.attributes(
+                "EMC-Version": version,
 	            "MixinConfigs": 'mixins.client.json',
 	            "tweakClass": 'org.spongepowered.asm.launch.MixinTweaker',
 	            "TweakOrder": 0,
@@ -133,6 +134,12 @@ if (forgeBuild) {
 	}
 } else {
 	println "Building for Minecraft..."
+    jar {
+        manifest.attributes(
+                "EMC-Version": version,
+                "Manifest-Version": 1.0
+        )
+    }
 }
 
 delete "$rootDir/build/libs"

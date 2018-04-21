@@ -1,16 +1,15 @@
 package me.deftware.client.framework.main;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +23,8 @@ import me.deftware.client.framework.fonts.Fonts;
 import me.deftware.client.framework.utils.OSUtils;
 import net.minecraft.client.Minecraft;
 
+import javax.print.attribute.Attribute;
+
 public class Bootstrap {
 
 	public static ArrayList<String> commandTriggers = new ArrayList<>();
@@ -35,6 +36,29 @@ public class Bootstrap {
 	public static void init() {
 		try {
 			Bootstrap.logger.info("Loading EMC...");
+
+			try {
+				Enumeration<URL> resources = Bootstrap.class.getClassLoader()
+						.getResources("META-INF/MANIFEST.MF");
+				while (resources.hasMoreElements()) {
+					try {
+						Manifest manifest = new Manifest(resources.nextElement().openStream());
+						for (Object o : manifest.getMainAttributes().keySet()) {
+							if (o.toString().equals("EMC-Version")) {
+								String EMC_VERSION = String.valueOf(manifest.getMainAttributes().getValue("EMC-Version"));
+								FrameworkConstants.VERSION = Double.valueOf(EMC_VERSION.substring(0, EMC_VERSION.length() - EMC_VERSION.split("\\.")[2].length() - 1));
+								FrameworkConstants.PATCH = Integer.valueOf(EMC_VERSION.split("\\.")[2]);
+								Bootstrap.logger.info("EMC version: " + FrameworkConstants.VERSION + " patch " + FrameworkConstants.PATCH);
+								break;
+							}
+						}
+					} catch (IOException E) {
+						E.printStackTrace();
+					}
+				}
+			} catch (IOException E) {
+				E.printStackTrace();
+			}
 
 			Bootstrap.registerCommandTrigger(".");
 			Fonts.loadFonts();
