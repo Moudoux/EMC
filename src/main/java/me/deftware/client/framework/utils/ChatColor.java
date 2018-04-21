@@ -30,7 +30,7 @@ public enum ChatColor {
 	private static final Map<Character, ChatColor> BY_CHAR;
 
 	static {
-		STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + new char[] { 167 }.toString() + "[0-9A-FK-OR]");
+		STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + new String(new char[] { 167 }) + "[0-9A-FK-OR]");
 		STRIP_COLOR_PATTERN2 = Pattern.compile("(?i)&[0-9A-FK-OR]");
 		BY_ID = Maps.newHashMap();
 		BY_CHAR = Maps.newHashMap();

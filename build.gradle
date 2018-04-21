@@ -20,7 +20,7 @@ buildscript {
     }
 }
 
-version = '13.1.6'
+version = '13.1.7'
 def minecraftVersion = "1.12.2"
 def forgeVersion = "-14.23.2.2611"
 def mappingsVer = 'snapshot_20170906'
