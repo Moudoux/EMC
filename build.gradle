@@ -24,7 +24,7 @@ version = '13.1.7'
 def minecraftVersion = "1.12.2"
 def forgeVersion = "-14.23.2.2611"
 def mappingsVer = 'snapshot_20170906'
-def forgeBuild = true
+def forgeBuild = project.hasProperty('forgebuild') ? project.property('forgebuild').toBoolean() : false
 
 apply plugin: 'maven'
 apply plugin: 'java'

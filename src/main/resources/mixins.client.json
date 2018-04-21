@@ -45,6 +45,7 @@
     "MixinKeyBinding",
     "MixinGuiEditSign",
     "MixinRenderPlayer",
-    "MixinRender"
+    "MixinRender",
+    "MixinBlockCactus"
   ]
 }
