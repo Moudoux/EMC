@@ -14,17 +14,16 @@ buildscript {
     }
 
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'org.spongepowered:mixingradle:0.5-SNAPSHOT'
+        classpath "net.minecraftforge.gradle:ForgeGradle:${project.forgeGradleVersion}"
+        classpath "org.spongepowered:mixingradle:${project.mixinGradleVersion}"
         classpath "com.github.jengelman.gradle.plugins:shadow:2.0.0"
     }
 }
 
-version = '13.1.8'
-def minecraftVersion = "1.12.2"
-def forgeVersion = "-14.23.2.2611"
-def mappingsVer = 'snapshot_20170906'
 def forgeBuild = project.hasProperty('forgebuild') ? project.property('forgebuild').toBoolean() : false
+
+group = 'me.deftware'
+version = project.version
 
 apply plugin: 'maven'
 apply plugin: 'java'
@@ -36,17 +35,15 @@ if (forgeBuild) {
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: "com.github.johnrengelman.shadow"
 
-group = 'me.deftware'
-
 sourceCompatibility = targetCompatibility = 1.8
 compileJava {
     sourceCompatibility = targetCompatibility = 1.8
 }
 
 minecraft {
-    version = forgeBuild ? minecraftVersion + forgeVersion : minecraftVersion
+    version = forgeBuild ? project.minecraftVersion + project.forgeVersion : project.minecraftVersion
     runDir = 'run'
-    mappings = mappingsVer
+    mappings = project.mappingsVer
     useDepAts = true
     makeObfSourceJar = true
     if (!forgeBuild) {
@@ -95,21 +92,21 @@ task createPom << {
         project {
             groupId "me.deftware"
             artifactId "EMC"
-            version "${version}-${minecraftVersion}"
+            version "${version}-${project.minecraftVersion}"
         }
-    }.writeTo("maven/me/deftware/EMC/${version}-${minecraftVersion}/EMC-${version}-${minecraftVersion}.pom")
+    }.writeTo("maven/me/deftware/EMC/${version}-${project.minecraftVersion}/EMC-${version}-${project.minecraftVersion}.pom")
 }
 
 task copyBuilds(type: Copy) {
     from "$rootDir/build/libs"
-    into "$rootDir/maven/me/deftware/" + (forgeBuild ? "EMC-Forge" : "EMC") + "/${version}-${minecraftVersion}/"
+    into "$rootDir/maven/me/deftware/" + (forgeBuild ? "EMC-Forge" : "EMC") + "/${version}-${project.minecraftVersion}/"
     if (forgeBuild) {
     	rename { String fileName ->
 		    fileName.replace("EMC", "EMC-Forge")
 		}
     }
     rename { String fileName ->
-		fileName.replace(version, "${version}-${minecraftVersion}")
+		fileName.replace(version, "${version}-${project.minecraftVersion}")
 	}
 }
 
@@ -119,6 +116,8 @@ reobf {
         classpath = sourceSets.main.compileClasspath
     }
 }
+
+println "EMC ${version}"
 
 if (forgeBuild) {
 	println "Building for Forge..."
@@ -143,7 +142,7 @@ if (forgeBuild) {
 }
 
 delete "$rootDir/build/libs"
-delete "$rootDir/maven/me/deftware/" + (forgeBuild ? "EMC-Forge" : "EMC") + "/${version}-${minecraftVersion}"
+delete "$rootDir/maven/me/deftware/" + (forgeBuild ? "EMC-Forge" : "EMC") + "/${version}-${project.minecraftVersion}"
 build.dependsOn(shadowJar)
 if (!forgeBuild) {
 	build.dependsOn(createPom)

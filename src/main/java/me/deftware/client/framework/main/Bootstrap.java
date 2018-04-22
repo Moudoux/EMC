@@ -170,9 +170,7 @@ public class Bootstrap {
 	}
 
 	public static void ejectClients() {
-		Bootstrap.mods.forEach((key, mod) -> {
-			mod.onUnload();
-		});
+		Bootstrap.mods.forEach((key, mod) -> mod.onUnload());
 		Bootstrap.mods.clear();
 	}
 

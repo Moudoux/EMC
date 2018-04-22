@@ -13,7 +13,7 @@
             "name": "net.minecraft:launchwrapper:1.12"
         },
         {
-            "name": "me.deftware:EMC:13.1.0",
+            "name": "me.deftware:EMC:13.1.7-1.12.2",
             "url": "https://github.com/Moudoux/EMC/raw/master/maven/"
         },
         {

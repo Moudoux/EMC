@@ -37,10 +37,8 @@ That's it. It is as easy as that. The IEntityPlayer.setWalkspeed then calls the 
 Minecraft versions currently supported
 -------------------
 
+* 1.13 (Coming soon)
 * 1.12.2
-* 1.12.1
-* 1.12
-* 1.11.2
 
 Maven repo/Loading EMC
 -------------------
@@ -49,7 +47,7 @@ Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To
 
 ```
 {
-	"name": "me.deftware:EMC:13.1.0",
+	"name": "me.deftware:EMC:13.1.7-1.12.2",
 	"url": "https://github.com/Moudoux/EMC/raw/master/maven/"
 }
 ```
@@ -59,7 +57,7 @@ Then in the `minecraftArguments` field append `--tweakClass me.deftware.launch.L
 Stacking on top of Forge
 -------------------
 
-EMC can be stacked on top of Forge to run EMC mods in conjunction with EMC mods. To build EMC for Forge load the `build.gradle.forge` file instead of the regular build.gradle, build then drop the EMC jar into your Forge mods folder, that's it.
+EMC can be stacked on top of Forge to run EMC mods in conjunction with EMC mods. To build EMC for Forge simply run the gradle build task with the `-Pforgebuild="true"` argument. 
 
 Making client mods with EMC 
 -------------------
@@ -76,6 +74,7 @@ Why use EMC?
 -------------------
 
 * Easy to use (You don't have to think about Minecraft obfuscation)
+* Suitable for large client rewrite style mods
 * Completely compliant with the Minecraft EULA (You don't have to worry about DMCA takedown requests)
 * Write once, use on multiple Minecraft versions
 * Less code (This requires less code than writing your client with Minecraft)

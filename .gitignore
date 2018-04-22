@@ -10,3 +10,4 @@
 !/.travis.yml
 !/versions.json
 !/build.bat
+!/gradle.properties

@@ -20,6 +20,10 @@ public class MixinBlockCactus {
 	@Final
 	private static AxisAlignedBB CACTUS_COLLISION_AABB;
 
+	/**
+	 * @Author Deftware
+	 * @reason
+	 */
 	@Overwrite
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
 		if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "custom_cactus_aabb", false)) {
