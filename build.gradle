@@ -98,6 +98,7 @@ task createPom << {
 }
 
 task copyBuilds(type: Copy) {
+    //delete "$rootDir/maven/me/deftware/" + (forgeBuild ? "EMC-Forge" : "EMC") + "/${version}-${project.minecraftVersion}"
     from "$rootDir/build/libs"
     into "$rootDir/maven/me/deftware/" + (forgeBuild ? "EMC-Forge" : "EMC") + "/${version}-${project.minecraftVersion}/"
     if (forgeBuild) {
@@ -117,10 +118,7 @@ reobf {
     }
 }
 
-println "EMC ${version}"
-
 if (forgeBuild) {
-	println "Building for Forge..."
 	jar {
 	    manifest.attributes(
                 "EMC-Version": version,
@@ -132,7 +130,6 @@ if (forgeBuild) {
 	    )
 	}
 } else {
-	println "Building for Minecraft..."
     jar {
         manifest.attributes(
                 "EMC-Version": version,
@@ -141,8 +138,7 @@ if (forgeBuild) {
     }
 }
 
-delete "$rootDir/build/libs"
-delete "$rootDir/maven/me/deftware/" + (forgeBuild ? "EMC-Forge" : "EMC") + "/${version}-${project.minecraftVersion}"
+println "Building EMC ${version} for " + (forgeBuild ? "Forge" : "vanilla Minecraft") + "..."
 build.dependsOn(shadowJar)
 if (!forgeBuild) {
 	build.dependsOn(createPom)

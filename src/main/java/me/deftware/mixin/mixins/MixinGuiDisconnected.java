@@ -24,7 +24,7 @@ public class MixinGuiDisconnected {
 	}
 
 	public void updateScreen() {
-		new EventGuiScreenUpdate();
+		new EventGuiScreenUpdate().send();
 	}
 
 }
