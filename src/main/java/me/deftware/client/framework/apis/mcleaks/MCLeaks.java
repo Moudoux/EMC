@@ -13,6 +13,14 @@ public class MCLeaks {
 	public static MCLeaksSession session = null;
 	private static Session original = null;
 
+	/**
+	 * Called internally to override the default Minecraft join call
+	 *
+	 * @param session
+	 * @param serverHash
+	 * @param server
+	 * @return boolean
+	 */
 	public static boolean joinServer(MCLeaksSession session, String serverHash, String server) {
 		if (session != null) {
 			try {
@@ -27,6 +35,11 @@ public class MCLeaks {
 		return false;
 	}
 
+	/**
+	 * If the original session before MCLeaks has been stored
+	 *
+	 * @return boolean
+	 */
 	public static boolean isOriginalSessionSet() {
 		if (MCLeaks.original == null) {
 			return false;
@@ -34,17 +47,26 @@ public class MCLeaks {
 		return true;
 	}
 
+	/**
+	 * Backs up the current session so the user can go back to their original account after using MCLeaks
+	 */
 	public static void backupSession() {
 		if (MCLeaks.original == null) {
 			MCLeaks.original = Minecraft.getMinecraft().getSession();
 		}
 	}
 
+	/**
+	 * Removes the MCLeaks session
+	 */
 	public static void clearMCLeaksSession() {
 		MCLeaks.original = null;
 		MCLeaks.session = null;
 	}
 
+	/**
+	 * Restores the default Minecraft session used before using MCLeaks
+	 */
 	public static void restoreSession() {
 		((IMixinMinecraft) Minecraft.getMinecraft()).setSession(MCLeaks.original);
 		MCLeaks.clearMCLeaksSession();

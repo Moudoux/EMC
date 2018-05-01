@@ -7,6 +7,9 @@ import net.minecraft.network.login.client.CPacketLoginStart;
 
 import java.net.InetAddress;
 
+/**
+ * API to authenticate with https://mc-oauth.net/
+ */
 public class OAuth {
 
 	private static final String ip = "srv.mc-oauth.net";
@@ -30,6 +33,13 @@ public class OAuth {
 	@FunctionalInterface
 	public interface OAuthCallback {
 
+		/**
+		 * Called after oAuth attempt
+		 *
+		 * @param success If the user successfully authenticated
+		 * @param code The users oAuth code
+		 * @param time How long before the oAuth code expires
+		 */
 		void callback(boolean success, String code, String time);
 
 	}

@@ -18,6 +18,10 @@ public class OSUtils {
 		return (OSUtils.OS.indexOf("nux") >= 0);
 	}
 
+	/**
+	 * Returns the .minecraft directory, on all supported OSes
+	 * @return
+	 */
 	public static String getMCDir() {
 		String minecraft = "";
 		if (OSUtils.isWindows()) {

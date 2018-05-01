@@ -139,6 +139,7 @@ if (forgeBuild) {
 }
 
 println "Building EMC ${version} for " + (forgeBuild ? "Forge" : "vanilla Minecraft") + "..."
+delete "$rootDir/build/libs"
 build.dependsOn(shadowJar)
 if (!forgeBuild) {
 	build.dependsOn(createPom)

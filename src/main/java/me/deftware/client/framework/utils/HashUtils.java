@@ -10,7 +10,6 @@ import java.security.MessageDigest;
 
 public class HashUtils {
 
-
 	public static String getSHA(String string) throws Exception {
 		MessageDigest sha1 = MessageDigest.getInstance("SHA-512");
 		sha1.update(string.getBytes());

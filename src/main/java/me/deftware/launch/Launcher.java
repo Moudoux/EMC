@@ -19,6 +19,9 @@ import org.spongepowered.tools.obfuscation.mcp.ObfuscationServiceMCP;
 import net.minecraft.launchwrapper.ITweaker;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 
+/**
+ * Used to inject EMC into Minecraft using Minecraft's launcherwrapper and ITweaker
+ */
 public class Launcher implements ITweaker {
 
 	protected ArrayList<String> list = new ArrayList<>();

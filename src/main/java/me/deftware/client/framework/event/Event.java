@@ -35,25 +35,25 @@ public class Event {
 				} else if (((EventClientCommand) this).getCommand().equals(".unload")) {
 					if (((EventClientCommand) this).getArgs().isEmpty()) {
 						// Unload all
-						Bootstrap.ejectClients();
+						Bootstrap.ejectMods();
 						Display.setTitle("Minecraft " + RealmsSharedConstants.VERSION_STRING);
 						Minecraft.getMinecraft().gameSettings.gammaSetting = 0.5F;
 						ChatProcessor.printFrameworkMessage("Unloaded mods, Minecraft is now running as vanilla");
 					} else {
-						if (Bootstrap.getClients().containsKey(((EventClientCommand) this).getArgs())) {
-							Bootstrap.getClients().get(((EventClientCommand) this).getArgs()).onUnload();
-							Bootstrap.getClients().remove(((EventClientCommand) this).getArgs());
+						if (Bootstrap.getMods().containsKey(((EventClientCommand) this).getArgs())) {
+							Bootstrap.getMods().get(((EventClientCommand) this).getArgs()).onUnload();
+							Bootstrap.getMods().remove(((EventClientCommand) this).getArgs());
 							ChatProcessor.printFrameworkMessage("Unloaded " + ((EventClientCommand) this).getArgs());
 						}
 					}
 					return (T) this;
 				} else if (((EventClientCommand) this).getCommand().equals(".cinfo")) {
-					if (Bootstrap.modsInfo == null || Bootstrap.getClients().isEmpty()) {
+					if (Bootstrap.modsInfo == null || Bootstrap.getMods().isEmpty()) {
 						ChatProcessor.printFrameworkMessage("You are running vanilla Minecraft, no mods are loaded");
 						return (T) this;
 					}
 					ChatProcessor.printFrameworkMessage("== Loaded mods ==");
-					for (EMCMod client : Bootstrap.getClients().values()) {
+					for (EMCMod client : Bootstrap.getMods().values()) {
 						String name = client.clientInfo.get("name").getAsString();
 						int version = client.clientInfo.get("version").getAsInt();
 						String author = client.clientInfo.get("author").getAsString();
@@ -63,8 +63,8 @@ public class Event {
 				}
 			}
 			long start = System.currentTimeMillis();
-			if (Bootstrap.getClients() != null) {
-				Bootstrap.getClients().forEach((key, mod) -> {
+			if (Bootstrap.getMods() != null) {
+				Bootstrap.getMods().forEach((key, mod) -> {
 					mod.onEvent(this);
 				});
 				long delay = System.currentTimeMillis() - start;
@@ -76,7 +76,7 @@ public class Event {
 				return (T) this;
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			Bootstrap.logger.warn("Failed to send event {}", this, ex);
 		}
 		return (T) this;
 	}

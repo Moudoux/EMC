@@ -10,7 +10,11 @@ import java.net.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Various web utils for reading data of websites
+ */
 public class WebUtils {
+
 	private static CookieManager lastCookies = new CookieManager();
 	private static final String COOKIES_HEADER = "Set-Cookie";
 

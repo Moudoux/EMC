@@ -4,12 +4,14 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,8 +25,6 @@ import me.deftware.client.framework.fonts.Fonts;
 import me.deftware.client.framework.utils.OSUtils;
 import net.minecraft.client.Minecraft;
 
-import javax.print.attribute.Attribute;
-
 public class Bootstrap {
 
 	public static ArrayList<String> commandTriggers = new ArrayList<>();
@@ -37,113 +37,97 @@ public class Bootstrap {
 		try {
 			Bootstrap.logger.info("Loading EMC...");
 
-			try {
-				Enumeration<URL> resources = Bootstrap.class.getClassLoader()
-						.getResources("META-INF/MANIFEST.MF");
-				while (resources.hasMoreElements()) {
-					try {
-						Manifest manifest = new Manifest(resources.nextElement().openStream());
-						for (Object o : manifest.getMainAttributes().keySet()) {
-							if (o.toString().equals("EMC-Version")) {
-								String EMC_VERSION = String.valueOf(manifest.getMainAttributes().getValue("EMC-Version"));
-								FrameworkConstants.VERSION = Double.valueOf(EMC_VERSION.substring(0, EMC_VERSION.length() - EMC_VERSION.split("\\.")[2].length() - 1));
-								FrameworkConstants.PATCH = Integer.valueOf(EMC_VERSION.split("\\.")[2]);
-								Bootstrap.logger.info("EMC version: " + FrameworkConstants.VERSION + " patch " + FrameworkConstants.PATCH);
-								break;
-							}
+			// Get EMC version from Manifest
+			Collections.list(Bootstrap.class.getClassLoader()
+					.getResources("META-INF/MANIFEST.MF")).forEach((element) -> {
+				try {
+					Manifest manifest = new Manifest(element.openStream());
+					manifest.getMainAttributes().keySet().forEach((key) -> {
+						if (key.toString().equals("EMC-Version")) {
+							String EMC_VERSION = String.valueOf(manifest.getMainAttributes().getValue("EMC-Version"));
+							FrameworkConstants.VERSION = Double.valueOf(EMC_VERSION.substring(0, EMC_VERSION.length() - EMC_VERSION.split("\\.")[2].length() - 1));
+							FrameworkConstants.PATCH = Integer.valueOf(EMC_VERSION.split("\\.")[2]);
+							Bootstrap.logger.info("EMC version: " + FrameworkConstants.VERSION + " patch " + FrameworkConstants.PATCH);
 						}
-					} catch (IOException E) {
-						E.printStackTrace();
-					}
+					});
+				} catch (Exception ex) {
+					Bootstrap.logger.error("Failed to read Manifest", ex);
 				}
-			} catch (IOException E) {
-				E.printStackTrace();
-			}
+			});
 
+			// Register command trigger for default EMC commands (.cinfo and .unload)
 			Bootstrap.registerCommandTrigger(".");
-			Fonts.loadFonts();
 
+			// Initialize font rendering
+			Fonts.initialize();
+
+			// EMC mods are stored in .minecraft/libraries/EMC
 			File emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator);
 			if (!emc_root.exists()) {
 				emc_root.mkdir();
 			}
 
-			for (File fileEntry : emc_root.listFiles()) {
-				if (fileEntry.isDirectory()) {
-					continue;
-				}
-				if (fileEntry.getName().endsWith(".jar")) {
+			// Load all EMC mods
+			Arrays.stream(emc_root.listFiles()).forEach((file) -> {
+				if (!file.isDirectory() && file.getName().endsWith(".jar")) {
 					try {
-						if (new File(fileEntry.getAbsolutePath() + ".delete").exists()) {
-							Bootstrap.logger.info("Deleting mod " + fileEntry.getName() + "...");
-							new File(fileEntry.getAbsolutePath() + ".delete").delete();
-							fileEntry.delete();
+						if (new File(file.getAbsolutePath() + ".delete").exists()) {
+							Bootstrap.logger.info("Deleting mod %s...", file.getName());
+							new File(file.getAbsolutePath() + ".delete").delete();
 						} else {
+							// Update check
 							File udpateJar = new File(emc_root.getAbsolutePath() + File.separator
-									+ fileEntry.getName().substring(0, fileEntry.getName().length() - ".jar".length())
+									+ file.getName().substring(0, file.getName().length() - ".jar".length())
 									+ "_update.jar");
 							if (udpateJar.exists()) {
-								fileEntry.delete();
-								udpateJar.renameTo(fileEntry);
+								file.delete();
+								udpateJar.renameTo(file);
 							}
-							Bootstrap.loadMod(fileEntry);
+							// Load the mod
+							Bootstrap.loadMod(file);
 						}
 					} catch (Exception ex) {
-						Bootstrap.logger.warn("Failed to load EMC mod: " + fileEntry.getName());
+						Bootstrap.logger.warn("Failed to load EMC mod: " + file.getName());
 						ex.printStackTrace();
 					}
 				}
-			}
+			});
 
+			// Initialize the EMC marketplace API
 			MarketplaceAPI.init((status) -> Bootstrap.mods.forEach((name, mod) -> mod.onMarketplaceAuth(status)));
 		} catch (Exception ex) {
-			Bootstrap.logger.warn("Failed to load EMC");
-			ex.printStackTrace();
+			Bootstrap.logger.warn("Failed to load EMC", ex);
 		}
 	}
 
+	/**
+	 * Loads an EMC mod
+	 *
+	 * @param clientJar
+	 * @throws Exception
+	 */
 	public static void loadMod(File clientJar) throws Exception {
-		// Find the client jar
-
-		if (!clientJar.exists()) {
-			throw new Exception("Specified mod jar not found");
-		}
-
-		// Load client
-
 		JarFile jarFile = new JarFile(clientJar);
-		Enumeration<?> e = jarFile.entries();
-
-		URL jarfile = new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/");
-		Bootstrap.modClassLoader = URLClassLoader.newInstance(new URL[] { jarfile }, Bootstrap.class.getClassLoader());
+		Bootstrap.modClassLoader = URLClassLoader.newInstance(new URL[] { new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/") }, Bootstrap.class.getClassLoader());
 
 		// Read client.json
+		BufferedReader buffer = new BufferedReader(new InputStreamReader(Bootstrap.modClassLoader.getResourceAsStream("client.json")));
+		JsonObject jsonObject = new Gson().fromJson(buffer.lines().collect(Collectors.joining("\n")), JsonObject.class);
 
-		InputStream in = Bootstrap.modClassLoader.getResourceAsStream("client.json");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-		StringBuilder result = new StringBuilder("");
-
-		String line;
-		while ((line = reader.readLine()) != null) {
-			result.append(line);
-		}
-		in.close();
-
-		JsonObject jsonObject = new Gson().fromJson(result.toString(), JsonObject.class);
 		Bootstrap.modsInfo.add(jsonObject);
-
 		Bootstrap.logger.info("Loading mod: " + jsonObject.get("name").getAsString() + " by "
 				+ jsonObject.get("author").getAsString());
 
+		// Version check
 		if (jsonObject.get("minversion").getAsDouble() > FrameworkConstants.VERSION) {
 			Minecraft.getMinecraft().displayGuiScreen(new GuiUpdateLoader(jsonObject));
 			jarFile.close();
 			return;
 		}
 
-		Class<?> c = Bootstrap.modClassLoader.loadClass(jsonObject.get("main").getAsString());
-		Bootstrap.mods.put(jsonObject.get("name").getAsString(), (EMCMod) c.newInstance());
-
+		// Load classes
+		Bootstrap.mods.put(jsonObject.get("name").getAsString(), (EMCMod) Bootstrap.modClassLoader.loadClass(jsonObject.get("main").getAsString()).newInstance());
+		Enumeration<?> e = jarFile.entries();
 		for (JarEntry je = (JarEntry) e.nextElement(); e.hasMoreElements(); je = (JarEntry) e.nextElement()) {
 			if (je.isDirectory() || !je.getName().endsWith(".class")) {
 				continue;
@@ -153,23 +137,36 @@ public class Bootstrap {
 		}
 
 		jarFile.close();
-
 		Bootstrap.mods.get(jsonObject.get("name").getAsString()).init(jsonObject);
-
 		Bootstrap.logger.info("Loaded mod");
 	}
 
+	/**
+	 *	Call a function in another EMC mod from your mod, using this you can call functions across EMC mods
+	 *
+	 * @param mod The name of the mod you want to talk with
+	 * @param method The method name you want to call
+	 * @param caller The name of your mod
+	 */
 	public static void callMethod(String mod, String method, String caller) {
 		if (Bootstrap.mods.containsKey(mod)) {
 			Bootstrap.mods.get(mod).callMethod(method, caller);
+		} else {
+
 		}
 	}
 
-	public static ConcurrentHashMap<String, EMCMod> getClients() {
+	/**
+	 * Returns a list of all loaded EMC mods
+	 */
+	public static ConcurrentHashMap<String, EMCMod> getMods() {
 		return Bootstrap.mods;
 	}
 
-	public static void ejectClients() {
+	/**
+	 * Unloads all loaded EMC mods
+	 */
+	public static void ejectMods() {
 		Bootstrap.mods.forEach((key, mod) -> mod.onUnload());
 		Bootstrap.mods.clear();
 	}

@@ -18,7 +18,7 @@ public enum ChatColor {
 											"MAGIC", 16, 'k', 16, true), BOLD("BOLD", 17, 'l', 17, true), STRIKETHROUGH(
 													"STRIKETHROUGH", 18, 'm', 18,
 													true), UNDERLINE("UNDERLINE", 19, 'n', 19, true), ITALIC("ITALIC",
-															20, 'o', 20, true), RESET("RESET", 21, 'r', 21);
+															20, 'o', 20, true), RESET("RESET", 21, 'r', 21, true);
 
 	public static final char COLOR_CHAR = 167;
 	private static final Pattern STRIP_COLOR_PATTERN, STRIP_COLOR_PATTERN2;
@@ -30,7 +30,7 @@ public enum ChatColor {
 	private static final Map<Character, ChatColor> BY_CHAR;
 
 	static {
-		STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + new String(new char[] { 167 }) + "[0-9A-FK-OR]");
+		STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + Character.toString(COLOR_CHAR) + "[0-9A-FK-OR]");
 		STRIP_COLOR_PATTERN2 = Pattern.compile("(?i)&[0-9A-FK-OR]");
 		BY_ID = Maps.newHashMap();
 		BY_CHAR = Maps.newHashMap();
@@ -106,7 +106,7 @@ public enum ChatColor {
 		int length = input.length();
 		for (int index = length - 1; index > -1; index--) {
 			char section = input.charAt(index);
-			if ((section == 167) && (index < length - 1)) {
+			if ((section == (int) COLOR_CHAR) && (index < length - 1)) {
 				char c = input.charAt(index + 1);
 				ChatColor color = ChatColor.getByChar(c);
 				if (color != null) {

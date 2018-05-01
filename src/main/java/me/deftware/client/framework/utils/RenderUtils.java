@@ -23,6 +23,9 @@ import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
+/**
+ * Common functions used for rendering
+ */
 public class RenderUtils {
 
 	public static void glColor(Color color) {

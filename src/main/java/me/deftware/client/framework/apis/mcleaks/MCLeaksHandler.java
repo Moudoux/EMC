@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.WebUtils;
 import me.deftware.mixin.imp.IMixinMinecraft;
 import net.minecraft.client.Minecraft;
@@ -17,8 +18,17 @@ import javax.crypto.SecretKey;
 import java.math.BigInteger;
 import java.security.PublicKey;
 
+/**
+ * API for using an MCLeaks account
+ */
 public class MCLeaksHandler {
 
+	/**
+	 * Replaces the Minecraft session with an MCLeaks session
+	 *
+	 * @param token The token retrieved from mcleaks.net
+	 * @return {@link MCLeaksLoginStatus}
+	 */
 	public static MCLeaksLoginStatus login(String token) {
 		MCLeaksLoginStatus status = new MCLeaksLoginStatus(false, "");
 		try {
@@ -30,32 +40,32 @@ public class MCLeaksHandler {
 
 			if (jsonObject.get("success").getAsString().trim().toLowerCase().equals("true")) {
 				jsonObject = jsonObject.get("result").getAsJsonObject();
-
 				String username = jsonObject.get("mcname").getAsString();
 				String session = jsonObject.get("session").getAsString();
 
-				MCLeaks.MCLeaksSession s = new MCLeaks.MCLeaksSession(username, session);
-
+				MCLeaks.MCLeaksSession s = MCLeaks.session = new MCLeaks.MCLeaksSession(username, session);
 				MCLeaks.backupSession();
 
-				MCLeaks.session = s;
+				((IMixinMinecraft) Minecraft.getMinecraft()).setSession(new Session(username, MCLeaksHandler.getCustomuserUUID(username), token, "legacy"));
 
-				Session session2 = new Session(username, MCLeaksHandler.getCustomuserUUID(username), token, "legacy");
-
-				((IMixinMinecraft) Minecraft.getMinecraft()).setSession(session2);
-
-				status.setMessage("�aSuccess");
+				status.setMessage(ChatColor.GREEN + "Success");
 				status.setStatus(true);
 			} else {
-				status.setMessage("�c" + jsonObject.get("errorMessage").getAsString());
+				status.setMessage(ChatColor.RED + jsonObject.get("errorMessage").getAsString());
 			}
 		} catch (Exception ex) {
-			status.setMessage("�cAn error occurred, please try again");
+			status.setMessage(ChatColor.RED + "An error occurred, please try again");
 			ex.printStackTrace();
 		}
 		return status;
 	}
 
+	/**
+	 * Used internally, replaces the default Minecraft encryption request
+	 *
+	 * @param packetIn
+	 * @param networkManager
+	 */
 	public static void handleEncryptionRequest(SPacketEncryptionRequest packetIn, NetworkManager networkManager) {
 		SecretKey secretkey = CryptManager.createNewSharedKey();
 		String s = packetIn.getServerId();
@@ -71,19 +81,20 @@ public class MCLeaksHandler {
 				});
 	}
 
-	public static String getCustomuserUUID(String username) {
-		try {
-			String uuidjson = WebUtils.get("https://api.mojang.com/users/profiles/minecraft/" + username);
-
-			JsonObject jsonObject = new Gson().fromJson(uuidjson, JsonObject.class);
-
-			return jsonObject.get("id").getAsString();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return "";
+	/**
+	 * Returns the UUID of any Minecraft username from the Mojang API
+	 *
+	 * @param username
+	 * @return
+	 */
+	public static String getCustomuserUUID(String username) throws Exception {
+			return  new Gson().fromJson(WebUtils.get("https://api.mojang.com/users/profiles/minecraft/" + username)
+					, JsonObject.class).get("id").getAsString();
 	}
 
+	/**
+	 * MCLeaks session object
+	 */
 	public static class MCLeaksLoginStatus {
 
 		private boolean status;
@@ -94,10 +105,20 @@ public class MCLeaksHandler {
 			this.message = message;
 		}
 
+		/**
+		 * If the session is valid
+		 *
+		 * @return
+		 */
 		public boolean isStatus() {
 			return status;
 		}
 
+		/**
+		 * Any error message if the connection failed
+		 *
+		 * @return
+		 */
 		public String getMessage() {
 			return message;
 		}

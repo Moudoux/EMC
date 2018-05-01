@@ -11,7 +11,11 @@ import java.net.CookieManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * API used to talk with the EMC marketplace API
+ */
 public class MarketplaceAPI {
+
 	private static final String APIDomain = "https://emc-api.sky-net.me";
 	private static CookieManager cookies;
 	private static boolean initialized = false;
@@ -45,7 +49,7 @@ public class MarketplaceAPI {
 		});
 	}
 
-	public static interface LoginCallback {
+	public interface LoginCallback {
 		void cb(boolean success);
 	}
 
@@ -56,7 +60,7 @@ public class MarketplaceAPI {
 	 * @return {@link MarketplaceResponse} with licensed status in
 	 * {@link MarketplaceResponse#success}
 	 */
-	public static MarketplaceResponse checkLicensed(EMCMod.EMCClientInfo clientInfo) {
+	public static MarketplaceResponse checkLicensed(EMCMod.EMCModInfo clientInfo) {
 		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getCheckLicensedURL(clientInfo.getClientName())));
 	}
 
@@ -74,7 +78,7 @@ public class MarketplaceAPI {
 	 * {@link MarketplaceResponse#success} and the encrypted {@code secret}
 	 * in {@link MarketplaceResponse#data}
 	 */
-	public static MarketplaceResponse checkLicensedSecure(EMCMod.EMCClientInfo clientInfo, String secret) {
+	public static MarketplaceResponse checkLicensedSecure(EMCMod.EMCModInfo clientInfo, String secret) {
 		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getCheckLicensedURL(clientInfo.getClientName(), secret)));
 	}
 
@@ -85,7 +89,7 @@ public class MarketplaceAPI {
 	 * @return {@link MarketplaceResponse} with the key in
 	 * {@link MarketplaceResponse#data}
 	 */
-	public static MarketplaceResponse getKey(EMCMod.EMCClientInfo clientInfo) {
+	public static MarketplaceResponse getKey(EMCMod.EMCModInfo clientInfo) {
 		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getKeyURL(clientInfo.getClientName())));
 	}
 

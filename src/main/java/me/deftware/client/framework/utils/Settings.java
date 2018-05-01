@@ -12,6 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+/**
+ * Config handler for mods
+ */
 public class Settings {
 
 	private File configFile;

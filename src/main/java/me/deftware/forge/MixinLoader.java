@@ -6,6 +6,9 @@ import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
 
+/**
+ * Used to inject EMC into Forge
+ */
 public class MixinLoader {
 
 	public MixinLoader() {

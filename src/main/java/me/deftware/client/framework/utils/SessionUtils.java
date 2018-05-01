@@ -15,9 +15,15 @@ import java.util.UUID;
 
 public class SessionUtils {
 
+	/**
+	 * Log into a Minecraft account
+	 *
+	 * @param username Email address for mojang account and username for legacy Minecraft account
+	 * @param password
+	 * @return
+	 */
 	public static boolean loginWithPassword(String username, String password) {
 		Session session = null;
-
 		UserAuthentication auth = new YggdrasilUserAuthentication(
 				new YggdrasilAuthenticationService(Proxy.NO_PROXY, UUID.randomUUID().toString()), Agent.MINECRAFT);
 		auth.setUsername(username);
@@ -40,6 +46,11 @@ public class SessionUtils {
 		return false;
 	}
 
+	/**
+	 * Set your Minecraft username, non premium
+	 *
+	 * @param username
+	 */
 	public static void loginWithoutPassword(String username) {
 		((IMixinMinecraft) Minecraft.getMinecraft()).setSession(new Session(username, "", "0", "legacy"));
 		MCLeaks.clearMCLeaksSession();
