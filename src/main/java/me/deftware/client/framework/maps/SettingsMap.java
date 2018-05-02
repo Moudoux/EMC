@@ -58,6 +58,7 @@ public class SettingsMap {
 		 * translucent = true | false
 		 * liquid_aabb_solid = true | false
 		 * custom_cactus_aabb = true | false
+		 * render_barrier_blocks = true | false
 		 */
 		public static final int BLOCKS = 1;
 

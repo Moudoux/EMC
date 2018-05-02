@@ -46,6 +46,7 @@
     "MixinGuiEditSign",
     "MixinRenderPlayer",
     "MixinRender",
-    "MixinBlockCactus"
+    "MixinBlockCactus",
+    "MixinWorldClient"
   ]
 }

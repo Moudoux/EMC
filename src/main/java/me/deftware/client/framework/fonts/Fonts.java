@@ -13,7 +13,6 @@ public class Fonts {
 	 * Loads some common fonts
 	 */
 	public static void initialize() {
-		if (!fontCache.isEmpty()) { return; }
 		registerFont("segoe15", "Arial",30);
 		registerFont("segoe18", "Arial",36);
 		registerFont("inherit110", "Arial",200);
@@ -30,7 +29,7 @@ public class Fonts {
 	}
 
 	public static IFontRendererObject getFont(CommonFonts fontType) {
-		return getFont(fontType.name());
+		return getFont(fontType.name().toLowerCase());
 	}
 
 	/**
@@ -42,7 +41,7 @@ public class Fonts {
 	 */
 	public static void registerFont(String name, String internalName, int internalSize) {
 		if (!fontCache.containsKey(name)) {
-			fontCache.put(internalName, new IFontRendererObject(new Font(name, Font.PLAIN, internalSize), true, 8));
+			fontCache.put(name, new IFontRendererObject(new Font(name, Font.PLAIN, internalSize), true, 8));
 		}
 	}
 
