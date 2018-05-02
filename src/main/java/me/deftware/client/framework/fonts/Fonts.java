@@ -9,8 +9,6 @@ public class Fonts {
 
 	public static HashMap<String, IFontRendererObject> fontCache = new HashMap<>();
 
-	public static IFontRendererObject segoe18 = null, segoe15 = null, inherit110 = null;
-
 	/**
 	 * Loads some common fonts
 	 */
