@@ -94,7 +94,7 @@ public class IEntity {
 	public IMob getIMob() {
 		return new IMob(entity);
 	}
-	
+
 	public IPlayer getIPlayer() {
 		return new IPlayer((EntityPlayer) entity);
 	}
