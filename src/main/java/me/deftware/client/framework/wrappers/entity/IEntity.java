@@ -87,6 +87,14 @@ public class IEntity {
 		return entity instanceof EntityItem;
 	}
 
+	public IItemEntity getIItemEntity() {
+		return new IItemEntity(entity);
+	}
+
+	public IMob getIMob() {
+		return new IMob(entity);
+	}
+	
 	public IPlayer getIPlayer() {
 		return new IPlayer((EntityPlayer) entity);
 	}
