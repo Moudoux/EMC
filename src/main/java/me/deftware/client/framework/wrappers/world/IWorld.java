@@ -24,136 +24,37 @@ import java.util.ArrayList;
 
 public class IWorld {
 
-	private static final ICachedList iPlayerCacheArray = new ICachedList() {
+	private static final ICachedList ILoadedEntityList = new ICachedList() {
 		@Override
 		public void execute() {
-			new Thread() {
-				@Override
-				public void run() {
-					ArrayList<IPlayer> result = new ArrayList<>();
-					try {
-						for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
-								.getMinecraft().world.loadedEntityList).clone()) {
-							if (e instanceof EntityPlayer) {
-								result.add(new IPlayer((EntityPlayer) e));
-							}
-						}
-					} catch (Exception ex) {
-						result.clear();
-					}
-					list = result;
-				}
-			}.start();
-		}
-	};
-
-	private static final ICachedList iMobCacheArray = new ICachedList() {
-		@Override
-		public void execute() {
-			new Thread() {
-				@Override
-				public void run() {
-					ArrayList<IMob> result = new ArrayList<>();
-					try {
-						for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
-								.getMinecraft().world.loadedEntityList).clone()) {
-							if ((e instanceof EntityMob || e instanceof EntityLiving) && !(e instanceof EntityPlayer)
-									&& !(e instanceof EntityItem)) {
-								result.add(new IMob(e));
-							}
-						}
-					} catch (Exception ex) {
-						result.clear();
-					}
-					list = result;
-				}
-			}.start();
-		}
-	};
-
-	private static final ICachedList iItemCacheArray = new ICachedList() {
-		@Override
-		public void execute() {
-			new Thread() {
-				@Override
-				public void run() {
-					ArrayList<IItemEntity> result = new ArrayList<>();
-					try {
-						for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
-								.getMinecraft().world.loadedEntityList).clone()) {
-							if (e instanceof EntityItem) {
-								result.add(new IItemEntity(e));
-							}
-						}
-					} catch (Exception ex) {
-						result.clear();
-					}
-					list = result;
-				}
-			}.start();
-		}
-	};
-
-	private static final ICachedList iEntityCacheArray = new ICachedList() {
-		@Override
-		public void execute() {
-			new Thread() {
-				@Override
-				public void run() {
-					ArrayList<IEntity> result = new ArrayList<>();
-					try {
-						for (Entity e : (ArrayList<Entity>) ((ArrayList<Entity>) Minecraft
-								.getMinecraft().world.loadedEntityList).clone()) {
-							result.add(new IEntity(e));
-						}
-					} catch (Exception ex) {
-						result.clear();
-					}
-					list = result;
-				}
-			}.start();
+			new Thread(() -> {
+				ArrayList<IEntity> entities = new ArrayList<>();
+				new ArrayList<>(Minecraft.getMinecraft().world.loadedEntityList).forEach((entity) -> {
+					entities.add(new IEntity(entity));
+				});
+				list = entities;
+			}).start();
 		}
 	};
 
 	private static final ICachedList iChestArray = new ICachedList() {
 		@Override
 		public void execute() {
-			new Thread() {
-				@Override
-				public void run() {
-					ArrayList<IChest> result = new ArrayList<>();
-					if (Minecraft.getMinecraft().world == null) {
-						list = result;
-						return;
+			new Thread(() -> {
+				ArrayList<IChest> chests = new ArrayList<>();
+				new ArrayList<>(Minecraft.getMinecraft().world.loadedTileEntityList).forEach((entity) -> {
+					IChestType type = entity instanceof TileEntityChest ?
+							((TileEntityChest) entity).getChestType() == BlockChest.Type.TRAP ? IChestType.TRAPPED_CHEST : IChestType.CHEST :
+							entity instanceof TileEntityEnderChest ? IChestType.ENDER_CHEST : entity instanceof TileEntityShulkerBox ? IChestType.SHULKER_BOX : null;
+					if (type != null) {
+						BlockPos p = ((TileEntity) entity).getPos();
+						Color color = type.equals(IChestType.TRAPPED_CHEST) ? Color.RED : type.equals(IChestType.CHEST) ? Color.ORANGE : type.equals(IChestType.ENDER_CHEST) ? Color.BLUE : Color.PINK;
+						chests.add(new IChest(type,
+								new IBlockPos(p.getX(), p.getY(), p.getZ()), color));
 					}
-					try {
-						for (Object o : (ArrayList<TileEntity>) ((ArrayList<TileEntity>) Minecraft
-								.getMinecraft().world.loadedTileEntityList).clone()) {
-							if (o instanceof TileEntityChest) {
-								BlockPos p = ((TileEntityChest) o).getPos();
-								if (((TileEntityChest) o).getChestType() == BlockChest.Type.TRAP) {
-									result.add(new IChest(IChestType.TRAPPED_CHEST,
-											new IBlockPos(p.getX(), p.getY(), p.getZ()), Color.RED));
-								} else {
-									result.add(new IChest(IChestType.CHEST, new IBlockPos(p.getX(), p.getY(), p.getZ()),
-											Color.ORANGE));
-								}
-							} else if (o instanceof TileEntityEnderChest) {
-								BlockPos p = ((TileEntityEnderChest) o).getPos();
-								result.add(new IChest(IChestType.ENDER_CHEST,
-										new IBlockPos(p.getX(), p.getY(), p.getZ()), Color.BLUE));
-							} else if (o instanceof TileEntityShulkerBox) {
-								BlockPos p = ((TileEntityShulkerBox) o).getPos();
-								result.add(new IChest(IChestType.SHULKER_BOX,
-										new IBlockPos(p.getX(), p.getY(), p.getZ()), Color.PINK));
-							}
-						}
-					} catch (Exception ex) {
-						result.clear();
-					}
-					list = result;
-				}
-			}.start();
+				});
+				list = chests;
+			}).start();
 		}
 	};
 
@@ -184,24 +85,9 @@ public class IWorld {
 		return (ArrayList<IChest>) IWorld.iChestArray.getList();
 	}
 
-	public static ArrayList<IEntity> getIEntity() {
-		IWorld.iEntityCacheArray.execute();
-		return (ArrayList<IEntity>) IWorld.iEntityCacheArray.getList();
-	}
-
-	public static ArrayList<IPlayer> getIEntityPlayers() {
-		IWorld.iPlayerCacheArray.execute();
-		return (ArrayList<IPlayer>) IWorld.iPlayerCacheArray.getList();
-	}
-
-	public static ArrayList<IMob> getIEntityMobs() {
-		IWorld.iMobCacheArray.execute();
-		return (ArrayList<IMob>) IWorld.iMobCacheArray.getList();
-	}
-
-	public static ArrayList<IItemEntity> getIEntityItems() {
-		IWorld.iItemCacheArray.execute();
-		return (ArrayList<IItemEntity>) IWorld.iItemCacheArray.getList();
+	public static ArrayList<IEntity> getILoadedEntityList() {
+		IWorld.ILoadedEntityList.execute();
+		return (ArrayList<IEntity>) IWorld.ILoadedEntityList.getList();
 	}
 
 	public static IBlock getBlockFromPos(IBlockPos pos) {
@@ -238,8 +124,8 @@ public class IWorld {
 
 	}
 
-	public static enum IChestType {
-		TRAPPED_CHEST, CHEST, ENDER_CHEST, SHULKER_BOX, MINECART_CHEST
+	public enum IChestType {
+		TRAPPED_CHEST, CHEST, ENDER_CHEST, SHULKER_BOX
 	}
 
 }

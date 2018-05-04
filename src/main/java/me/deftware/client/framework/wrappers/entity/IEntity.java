@@ -6,6 +6,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.*;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -72,6 +73,22 @@ public class IEntity {
 
 	public boolean isDead() {
 		return entity.isDead;
+	}
+
+	public boolean isMod() {
+		return (entity instanceof EntityMob || entity instanceof EntityLiving) && !(entity instanceof EntityPlayer) && !(entity instanceof EntityItem);
+	}
+
+	public boolean isPlayer() {
+		return entity instanceof EntityPlayer;
+	}
+
+	public boolean isItem() {
+		return entity instanceof EntityItem;
+	}
+
+	public IPlayer getIPlayer() {
+		return new IPlayer((EntityPlayer) entity);
 	}
 
 	public float getHealth() {
@@ -175,6 +192,8 @@ public class IEntity {
 			return entity instanceof EntityLivingBase;
 		} else if (e.equals(EntityType.ENTITY_LIVING)) {
 			return entity instanceof EntityLiving;
+		} else if (e.equals(EntityType.ENTITY_ITEM)) {
+			return entity instanceof EntityItem;
 		}
 		// Mobs
 		if (e.equals(EntityType.ENTITY_WOLF)) {
@@ -206,7 +225,7 @@ public class IEntity {
 	}
 
 	public static enum EntityType {
-		ENTITY_PLAYER_SP, EntityOtherPlayerMP, ENTITY_PLAYER, EntitySlime, EntityGolem, EntityFlying, EntityMob, EntityWaterMob, ENTITY_WOLF, ENTITY_LIVING_BASE, ENTITY_LIVING, Entity_Ageable, EntityAmbientCreature,
+		ENTITY_PLAYER_SP, EntityOtherPlayerMP, ENTITY_PLAYER, EntitySlime, EntityGolem, EntityFlying, EntityMob, EntityWaterMob, ENTITY_WOLF, ENTITY_LIVING_BASE, ENTITY_LIVING, Entity_Ageable, EntityAmbientCreature, ENTITY_ITEM,
 		/*
 		 * Hostile mobs
 		 */

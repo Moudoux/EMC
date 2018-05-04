@@ -27,57 +27,58 @@ public class Event {
 
 	public <T extends Event> T send() {
 		try {
+
+			// Internal EMC events
+
 			if (this instanceof EventClientCommand) {
-				if (((EventClientCommand) this).getCommand().equals(".version")) {
-					ChatProcessor.printFrameworkMessage("You are running " + FrameworkConstants.FRAMEWORK_NAME
-							+ " version " + FrameworkConstants.VERSION + " built by " + FrameworkConstants.AUTHOR);
-					return (T) this;
-				} else if (((EventClientCommand) this).getCommand().equals(".unload")) {
-					if (((EventClientCommand) this).getArgs().isEmpty()) {
-						// Unload all
-						Bootstrap.ejectMods();
-						Display.setTitle("Minecraft " + RealmsSharedConstants.VERSION_STRING);
-						Minecraft.getMinecraft().gameSettings.gammaSetting = 0.5F;
-						ChatProcessor.printFrameworkMessage("Unloaded mods, Minecraft is now running as vanilla");
-					} else {
-						if (Bootstrap.getMods().containsKey(((EventClientCommand) this).getArgs())) {
-							Bootstrap.getMods().get(((EventClientCommand) this).getArgs()).onUnload();
-							Bootstrap.getMods().remove(((EventClientCommand) this).getArgs());
-							ChatProcessor.printFrameworkMessage("Unloaded " + ((EventClientCommand) this).getArgs());
-						}
-					}
-					return (T) this;
-				} else if (((EventClientCommand) this).getCommand().equals(".cinfo")) {
-					if (Bootstrap.modsInfo == null || Bootstrap.getMods().isEmpty()) {
-						ChatProcessor.printFrameworkMessage("You are running vanilla Minecraft, no mods are loaded");
+				EventClientCommand event = (EventClientCommand) this;
+				switch (event.getCommand()) {
+					case ".version":
+						ChatProcessor.printFrameworkMessage("You are running " + FrameworkConstants.FRAMEWORK_NAME
+								+ " version " + FrameworkConstants.VERSION + " built by " + FrameworkConstants.AUTHOR);
 						return (T) this;
-					}
-					ChatProcessor.printFrameworkMessage("== Loaded mods ==");
-					for (EMCMod client : Bootstrap.getMods().values()) {
-						String name = client.clientInfo.get("name").getAsString();
-						int version = client.clientInfo.get("version").getAsInt();
-						String author = client.clientInfo.get("author").getAsString();
-						ChatProcessor.printFrameworkMessage(name + " version " + version + " made by " + author);
-					}
-					return (T) this;
+					case ".unload":
+						// Unload EMC mods
+						if (event.getArgs().isEmpty()) {
+							// Unload all mods
+							Bootstrap.ejectMods();
+							Display.setTitle("Minecraft " + RealmsSharedConstants.VERSION_STRING);
+							Minecraft.getMinecraft().gameSettings.gammaSetting = 0.5F;
+							ChatProcessor.printFrameworkMessage("Unloaded all EMC mods, Minecraft is now running as vanilla");
+						} else {
+							// Unload specific EMC mod
+							if (Bootstrap.getMods().containsKey(event.getArgs())) {
+								Bootstrap.getMods().get(event.getArgs()).onUnload();
+								Bootstrap.getMods().remove(event.getArgs());
+								ChatProcessor.printFrameworkMessage("Unloaded " + event.getArgs());
+							} else {
+								ChatProcessor.printFrameworkMessage("Could not find mod " + event.getArgs());
+							}
+						}
+						return (T) this;
+					case ".mods":
+						if (Bootstrap.modsInfo == null || Bootstrap.getMods().isEmpty()) {
+							ChatProcessor.printFrameworkMessage("No EMC mods are loaded");
+						} else {
+							ChatProcessor.printFrameworkMessage("== Loaded EMC mods ==");
+							Bootstrap.getMods().values().forEach((mod) -> {
+								String name = mod.clientInfo.get("name").getAsString();
+								int version = mod.clientInfo.get("version").getAsInt();
+								String author = mod.clientInfo.get("author").getAsString();
+								ChatProcessor.printFrameworkMessage(name + " version " + version + " made by " + author);
+							});
+						}
+						return (T) this;
 				}
 			}
-			long start = System.currentTimeMillis();
-			if (Bootstrap.getMods() != null) {
-				Bootstrap.getMods().forEach((key, mod) -> {
-					mod.onEvent(this);
-				});
-				long delay = System.currentTimeMillis() - start;
-				if (delay > 1 && !(this instanceof EventRender2D) && !(this instanceof EventRender3D)) {
-					// Debugging
-					// System.out.println(">> Execution Time: " + delay + " >
-					// Type: " + event.getClass().getSimpleName());
-				}
-				return (T) this;
-			}
+
+			// Send event to all mods
+			Bootstrap.getMods().forEach((key, mod) -> mod.onEvent(this));
+
 		} catch (Exception ex) {
 			Bootstrap.logger.warn("Failed to send event {}", this, ex);
 		}
+
 		return (T) this;
 	}
 
