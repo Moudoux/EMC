@@ -1,5 +1,12 @@
 package me.deftware.client.framework.event;
 
+import net.minecraft.block.BlockShulkerBox;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemShulkerBox;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityShulkerBox;
 import org.lwjgl.opengl.Display;
 
 import me.deftware.client.framework.FrameworkConstants;
@@ -11,6 +18,9 @@ import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.utils.ChatProcessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.realms.RealmsSharedConstants;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Event {
 
@@ -55,6 +65,11 @@ public class Event {
 								ChatProcessor.printFrameworkMessage("Could not find mod " + event.getArgs());
 							}
 						}
+						return (T) this;
+					case ".shulker":
+						ChatProcessor.printClientMessage("Running shulker test");
+						List<String> items = Minecraft.getMinecraft().player.getHeldItemMainhand().getTooltip(Minecraft.getMinecraft().player, ITooltipFlag.TooltipFlags.ADVANCED);
+						items.forEach((tip) -> ChatProcessor.printClientMessage(tip));
 						return (T) this;
 					case ".mods":
 						if (Bootstrap.modsInfo == null || Bootstrap.getMods().isEmpty()) {

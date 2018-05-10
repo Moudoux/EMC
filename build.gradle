@@ -122,6 +122,7 @@ if (forgeBuild) {
 	jar {
 	    manifest.attributes(
                 "EMC-Version": version,
+                "EMC-ForgeBuild": forgeBuild,
 	            "MixinConfigs": 'mixins.client.json',
 	            "tweakClass": 'org.spongepowered.asm.launch.MixinTweaker',
 	            "TweakOrder": 0,
@@ -133,6 +134,7 @@ if (forgeBuild) {
     jar {
         manifest.attributes(
                 "EMC-Version": version,
+                "EMC-ForgeBuild": forgeBuild,
                 "Manifest-Version": 1.0
         )
     }

@@ -47,6 +47,7 @@ public class Bootstrap {
 							String EMC_VERSION = String.valueOf(manifest.getMainAttributes().getValue("EMC-Version"));
 							FrameworkConstants.VERSION = Double.valueOf(EMC_VERSION.substring(0, EMC_VERSION.length() - EMC_VERSION.split("\\.")[2].length() - 1));
 							FrameworkConstants.PATCH = Integer.valueOf(EMC_VERSION.split("\\.")[2]);
+							FrameworkConstants.FORGE_MODE = Boolean.valueOf(manifest.getMainAttributes().getValue("EMC-ForgeBuild"));
 							Bootstrap.logger.info("EMC version: " + FrameworkConstants.VERSION + " patch " + FrameworkConstants.PATCH);
 						}
 					});
