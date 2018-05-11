@@ -1,6 +1,8 @@
 package me.deftware.client.framework.wrappers.item;
 
 import me.deftware.mixin.imp.IMixinItemTool;
+import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBow;
@@ -17,6 +19,8 @@ import net.minecraft.item.ItemSplashPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionUtils;
 
 public class IItem {
 
@@ -68,6 +72,8 @@ public class IItem {
 			return item instanceof ItemFishingRod;
 		} else if (type.equals(IItemType.ItemPotion)) {
 			return item instanceof ItemPotion;
+		} else if (type.equals(IItemType.SplashPotion)) {
+			return item == Items.SPLASH_POTION;
 		} else if (type.equals(IItemType.ItemFood)) {
 			return item instanceof ItemFood;
 		} else if (type.equals(IItemType.ItemSword)) {
@@ -84,8 +90,8 @@ public class IItem {
 		return false;
 	}
 
-	public static enum IItemType {
-		ItemPotion, ItemFishingRod, ItemFood, ItemSword, ItemTool, ItemNameTag, ItemBlock, ItemHoe
+	public enum IItemType {
+		ItemPotion, ItemFishingRod, ItemFood, ItemSword, ItemTool, ItemNameTag, ItemBlock, ItemHoe, SplashPotion
 	}
 
 }

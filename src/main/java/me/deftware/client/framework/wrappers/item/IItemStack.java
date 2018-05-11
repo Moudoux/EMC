@@ -7,12 +7,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionUtils;
 
 public class IItemStack {
 
@@ -93,6 +97,28 @@ public class IItemStack {
 		}
 		return new IItem(stack.getItem());
 	}
+
+	public boolean hasEffect(IEffects ieffect) {
+		for(PotionEffect effect : PotionUtils.getEffectsFromStack(stack)) {
+			if (effect.getPotion() == ieffect.getEffect()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public enum IEffects {
+		InstantHelth(MobEffects.INSTANT_HEALTH);
+
+		private Potion effect;
+
+		IEffects(Potion effect) {
+			this.effect = effect;
+		}
+
+		public Potion getEffect() { return effect; }
+	}
+
 
 	public int getRarity() {
 		if (stack.getRarity() == EnumRarity.COMMON) {
