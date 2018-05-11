@@ -2,6 +2,7 @@ package me.deftware.client.framework.wrappers.entity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.ClickType;
+import net.minecraft.util.EnumHand;
 
 public class IPlayerController {
 
@@ -22,7 +23,11 @@ public class IPlayerController {
 				Minecraft.getMinecraft().player);
 	}
 
-	public static enum IClickType {
+	public static void processRightClick(boolean offhand) {
+		Minecraft.getMinecraft().playerController.processRightClick(Minecraft.getMinecraft().player, Minecraft.getMinecraft().world, offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+	}
+
+	public enum IClickType {
 		THROW, QUICK_MOVE
 	}
 
