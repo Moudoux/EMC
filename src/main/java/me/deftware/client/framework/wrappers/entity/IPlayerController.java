@@ -16,6 +16,8 @@ public class IPlayerController {
 			t = ClickType.THROW;
 		} else if (type.equals(IClickType.QUICK_MOVE)) {
 			t = ClickType.QUICK_MOVE;
+		} else if (type.equals(IClickType.PICKUP)) {
+			t = ClickType.PICKUP;
 		} else {
 			return;
 		}
@@ -28,7 +30,7 @@ public class IPlayerController {
 	}
 
 	public enum IClickType {
-		THROW, QUICK_MOVE
+		THROW, QUICK_MOVE, PICKUP
 	}
 
 }
