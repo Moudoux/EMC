@@ -3,22 +3,7 @@ package me.deftware.client.framework.wrappers.item;
 import me.deftware.mixin.imp.IMixinItemTool;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemEgg;
-import net.minecraft.item.ItemEnderPearl;
-import net.minecraft.item.ItemFishingRod;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemLingeringPotion;
-import net.minecraft.item.ItemNameTag;
-import net.minecraft.item.ItemPotion;
-import net.minecraft.item.ItemSnowball;
-import net.minecraft.item.ItemSplashPotion;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtils;
 
@@ -84,6 +69,8 @@ public class IItem {
 			return item instanceof ItemNameTag;
 		} else if (type.equals(IItemType.ItemBlock)) {
 			return item instanceof ItemBlock;
+		} else if (type.equals(type.ItemSoup)) {
+			return item instanceof ItemSoup;
 		} else if (type.equals(IItemType.ItemHoe)) {
 			return item instanceof ItemHoe;
 		}
@@ -91,7 +78,7 @@ public class IItem {
 	}
 
 	public enum IItemType {
-		ItemPotion, ItemFishingRod, ItemFood, ItemSword, ItemTool, ItemNameTag, ItemBlock, ItemHoe, SplashPotion
+		ItemPotion, ItemFishingRod, ItemFood, ItemSword, ItemTool, ItemNameTag, ItemBlock, ItemHoe, SplashPotion, ItemSoup
 	}
 
 }
