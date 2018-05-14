@@ -2,6 +2,7 @@ package me.deftware.client.framework.wrappers.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockContainer;
 
 public class IBlock {
 
@@ -45,6 +46,17 @@ public class IBlock {
 
 	public static boolean isValidBlock(String id) {
 		return Block.getBlockFromName(id) != null;
+	}
+
+	public boolean instanceOf(IBlockTypes type) {
+		if (type.equals(IBlockTypes.BlockContainer)) {
+			return block instanceof BlockContainer;
+		}
+		return false;
+	}
+
+	public enum IBlockTypes {
+		BlockContainer
 	}
 
 }
