@@ -9,7 +9,7 @@ This framework also allows you to write a mod once, then use it on Minecraft 1.8
 Discord
 -------------------
 
-We now have an official Discord server for EMC related development, feel free to join us, [EMC Discord](discord.gg/jcPDsGT).
+We now have an official Discord server for EMC related development, feel free to join us, [EMC Discord](https://discord.gg/jcPDsGT).
 
 
 How it works
@@ -47,12 +47,12 @@ Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To
 
 ```
 {
-	"name": "me.deftware:EMC:13.2.7-1.12.2",
-	"url": "https://github.com/Moudoux/EMC/raw/master/maven/"
+	"name": "me.deftware:EMC:13.2.9-1.12.2",
+	"url": "https://gitlab.com/EMC-Framework/EMC/raw/master/maven/"
 }
 ```
 
-Then in the `minecraftArguments` field append `--tweakClass me.deftware.launch.Launcher` at the end. If you want to see an example on how to load EMC see [example_client.json](https://github.com/Moudoux/EMC/blob/master/example_client.json)
+Then in the `minecraftArguments` field append `--tweakClass me.deftware.launch.Launcher` at the end. If you want to see an example on how to load EMC see [example_client.json](https://gitlab.com/EMC-Framework/EMC/blob/master/example_client.json)
 
 Stacking on top of Forge
 -------------------
@@ -62,7 +62,7 @@ EMC can be stacked on top of Forge to run EMC mods in conjunction with EMC mods.
 Making client mods with EMC 
 -------------------
 
-Check out the [EMC Development Kit](https://github.com/Moudoux/EDK)
+Check out the [EMC Development Kit](https://gitlab.com/EMC-Framework/EDK)
 
 Built in commands
 -------------------

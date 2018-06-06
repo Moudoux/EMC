@@ -14,7 +14,7 @@
         },
         {
             "name": "me.deftware:EMC:13.2.9-1.12.2",
-            "url": "https://github.com/Moudoux/EMC/raw/master/maven/"
+            "url": "https://gitlab.com/EMC-Framework/EMC/raw/master/maven/"
         },
         {
             "name": "org.spongepowered:mixin:0.7.1-SNAPSHOT",
