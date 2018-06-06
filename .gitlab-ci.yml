@@ -1,0 +1,6 @@
+before_script:
+  - apt-get update && apt-get install -y default-jdk gradle maven wget
+
+ebuild:
+  script:
+    - gradle build -Pforgebuild="false"
