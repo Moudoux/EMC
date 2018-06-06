@@ -38,7 +38,7 @@ public class GuiUpdateLoader extends GuiScreen {
 	protected void actionPerformed(GuiButton clickedButton) throws IOException {
 		if (clickedButton.id == 0) {
 			try {
-				String link = "https://github.com/Moudoux/EMC-Installer/releases";
+				String link = "https://gitlab.com/EMC-Framework/EMC-Installer/tags";
 				if (clientInfo.get("updateLinkOverride").getAsBoolean()) {
 					link = clientInfo.get("website").getAsString();
 				}
