@@ -1,6 +1,14 @@
 The EMC (Easy Minecraft Client) Framework
 ===================
 
+Moved to GitLab
+-------------------
+
+EMC has moved to GitLab, at [https://gitlab.com/EMC-Framework/EMC](https://gitlab.com/EMC-Framework/EMC)
+
+About
+-------------------
+
 EMC (Easy Minecraft Client) is a framework for modifying Minecraft code without having to think about
 obfuscation as the framework will act as a middle man handling your calls to Minecraft.
 
