@@ -4,7 +4,7 @@
     "time": "2017-09-18T03:41:11-05:00",
     "releaseTime": "2017-09-18T03:39:46-05:00",
     "type": "release",
-    "minecraftArguments": "--username ${auth_player_name} --version ${version_name} --gameDir ${game_directory} --assetsDir ${assets_root} --assetIndex ${assets_index_name} --uuid ${auth_uuid} --accessToken ${auth_access_token} --userType ${user_type} --tweakClass me.deftware.launch.Launcher",
+    "minecraftArguments": "--tweakClass me.deftware.launch.Launcher --username ${auth_player_name} --version ${version_name} --gameDir ${game_directory} --assetsDir ${assets_root} --assetIndex ${assets_index_name} --uuid ${auth_uuid} --accessToken ${auth_access_token} --userType ${user_type}",
     "mainClass": "net.minecraft.launchwrapper.Launch",
     "minimumLauncherVersion": 0,
     "jar": "1.12.2",
@@ -13,7 +13,7 @@
             "name": "net.minecraft:launchwrapper:1.12"
         },
         {
-            "name": "me.deftware:EMC:13.2.7-1.12.2",
+            "name": "me.deftware:EMC:13.2.9-1.12.2",
             "url": "https://github.com/Moudoux/EMC/raw/master/maven/"
         },
         {
