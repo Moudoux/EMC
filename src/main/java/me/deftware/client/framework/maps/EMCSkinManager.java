@@ -10,14 +10,14 @@ public class EMCSkinManager {
 
 	public static void putCape(String name, String url, boolean hashed) {
 		try {
-			capes.putIfAbsent(translateUsername(name), url);
+			capes.putIfAbsent(hashed ? name.toLowerCase() : translateUsername(name).toLowerCase(), url);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
 	public static String getCape(String name) throws Exception {
-		return capes.getOrDefault(translateUsername(name), "");
+		return capes.getOrDefault(translateUsername(name).toLowerCase(), "");
 	}
 
 	private static String translateUsername(String username) throws Exception {
