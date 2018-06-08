@@ -23,10 +23,13 @@ public abstract class MixinSkinManager {
 	@Inject(method = "loadProfileTextures", at = @At("HEAD"))
 	public void loadProfileTextures(final GameProfile profile, final SkinManager.SkinAvailableCallback skinAvailableCallback, final boolean requireSecure, CallbackInfo cb) {
 		Minecraft.getMinecraft().addScheduledTask(new Thread(() -> {
-			System.out.println("SKIN MANAGER");
-			String url = EMCSkinManager.getCape(profile.getName());
-			if (!url.isEmpty()) {
-				loadSkin(new MinecraftProfileTexture(url, null), MinecraftProfileTexture.Type.CAPE, skinAvailableCallback);
+			try {
+				String url = EMCSkinManager.getCape(profile.getName());
+				if (!url.isEmpty()) {
+					loadSkin(new MinecraftProfileTexture(url, null), MinecraftProfileTexture.Type.CAPE, skinAvailableCallback);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
 		}));
 	}

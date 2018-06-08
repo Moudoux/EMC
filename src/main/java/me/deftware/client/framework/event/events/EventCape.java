@@ -7,6 +7,7 @@ import me.deftware.client.framework.event.Event;
 
 import java.util.Map;
 
+@Deprecated
 public class EventCape extends Event {
 
 	private Map<Type, MinecraftProfileTexture> map;
