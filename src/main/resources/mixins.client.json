@@ -48,6 +48,7 @@
     "MixinRenderPlayer",
     "MixinRender",
     "MixinBlockCactus",
-    "MixinWorldClient"
+    "MixinWorldClient",
+    "MixinSkinManager"
   ]
 }
