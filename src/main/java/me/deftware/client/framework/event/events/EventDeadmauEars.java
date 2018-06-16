@@ -2,6 +2,7 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 
+@Deprecated
 public class EventDeadmauEars extends Event {
 
 	private String name;

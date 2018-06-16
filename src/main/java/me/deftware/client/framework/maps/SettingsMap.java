@@ -70,6 +70,11 @@ public class SettingsMap {
 		 */
 		public static final int RENDER = 2;
 
+		/**
+		 * DEADMAU_EARS
+		 */
+		public static final int MISC = 3;
+
 	}
 
 }

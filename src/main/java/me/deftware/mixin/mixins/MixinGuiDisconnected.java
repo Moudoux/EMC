@@ -23,8 +23,4 @@ public class MixinGuiDisconnected {
 		new EventGuiScreenDraw((GuiScreen) (Object) this).send();
 	}
 
-	public void updateScreen() {
-		new EventGuiScreenUpdate().send();
-	}
-
 }

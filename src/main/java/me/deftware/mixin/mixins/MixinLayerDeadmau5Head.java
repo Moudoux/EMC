@@ -1,6 +1,6 @@
 package me.deftware.mixin.mixins;
 
-import me.deftware.client.framework.event.events.EventDeadmauEars;
+import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -23,8 +23,17 @@ public class MixinLayerDeadmau5Head {
 	 */
 	@Overwrite
 	public void doRenderLayer(AbstractClientPlayer entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		EventDeadmauEars event = new EventDeadmauEars("deadmau5").send();
-		if (event.getName().equals(entitylivingbaseIn.getName()) && entitylivingbaseIn.hasSkin() && !entitylivingbaseIn.isInvisible()) {
+		String usernames = (String) SettingsMap.getValue(SettingsMap.MapKeys.MISC, "DEADMAU_EARS", "");
+		boolean flag = entitylivingbaseIn.getName().equalsIgnoreCase(usernames);
+		if (usernames.contains(",")) {
+			for (String username : usernames.split(",")) {
+				if (username.equalsIgnoreCase(entitylivingbaseIn.getName())) {
+					flag = true;
+					break;
+				}
+			}
+		}
+		if (entitylivingbaseIn.hasSkin() && !entitylivingbaseIn.isInvisible() && flag) {
 			playerRenderer.bindTexture(entitylivingbaseIn.getLocationSkin());
 			for (int i = 0; i < 2; ++i) {
 				float f = entitylivingbaseIn.prevRotationYaw + (entitylivingbaseIn.rotationYaw - entitylivingbaseIn.prevRotationYaw) * partialTicks - (entitylivingbaseIn.prevRenderYawOffset + (entitylivingbaseIn.renderYawOffset - entitylivingbaseIn.prevRenderYawOffset) * partialTicks);
