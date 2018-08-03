@@ -86,7 +86,7 @@ public abstract class IGuiScreen extends GuiScreen {
 		return true;
 	}
 
-	protected void addEventListener(IGuiEventListener listener) {
+	public void addEventListener(IGuiEventListener listener) {
 		this.field_195124_j.add(listener);
 	}
 
