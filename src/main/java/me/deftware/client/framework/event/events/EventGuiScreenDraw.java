@@ -1,5 +1,6 @@
 package me.deftware.client.framework.event.events;
 
+
 import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.wrappers.gui.IGuiButton;
 import me.deftware.mixin.imp.IMixinGuiScreen;
@@ -49,8 +50,9 @@ public class EventGuiScreenDraw extends Event {
 		return screen.height;
 	}
 
-	public static enum CommonScreenTypes {
+	public enum CommonScreenTypes {
 		GuiDisconnected, GuiIngameMenu
 	}
 
 }
+

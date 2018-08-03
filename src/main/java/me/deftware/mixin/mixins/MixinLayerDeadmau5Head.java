@@ -24,10 +24,11 @@ public class MixinLayerDeadmau5Head {
 	@Overwrite
 	public void doRenderLayer(AbstractClientPlayer entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		String usernames = (String) SettingsMap.getValue(SettingsMap.MapKeys.MISC, "DEADMAU_EARS", "");
-		boolean flag = entitylivingbaseIn.getName().equalsIgnoreCase(usernames);
+		boolean flag = entitylivingbaseIn.getGameProfile().getName().equalsIgnoreCase(usernames);
 		if (usernames.contains(",")) {
 			for (String username : usernames.split(",")) {
-				if (username.equalsIgnoreCase(entitylivingbaseIn.getName())) {
+				if (username.equalsIgnoreCase(entitylivingbaseIn.getGameProfile()
+						.getName())) {
 					flag = true;
 					break;
 				}

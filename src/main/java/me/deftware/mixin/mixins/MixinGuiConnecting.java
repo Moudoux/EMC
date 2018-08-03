@@ -2,7 +2,7 @@ package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.IServerData;
-import net.minecraft.client.multiplayer.GuiConnecting;
+import net.minecraft.client.gui.GuiConnecting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

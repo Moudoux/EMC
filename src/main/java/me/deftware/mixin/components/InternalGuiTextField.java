@@ -20,8 +20,8 @@ public class InternalGuiTextField extends GuiTextField {
 	}
 
 	@Override
-	public void drawTextBox() {
-		super.drawTextBox();
+	public void func_195608_a(int mouseX, int mouseY, float partialTicks) {
+		super.func_195608_a(mouseX, mouseY, partialTicks);
 		String currentText = getText();
 		if (Bootstrap.isTrigger(currentText).equals("") && !currentText.startsWith("#") && !currentText.equals("")
 				|| currentText.contains(" ")) {
@@ -34,8 +34,8 @@ public class InternalGuiTextField extends GuiTextField {
 	}
 
 	@Override
-	public boolean textboxKeyTyped(char typedChar, int keyCode) {
-		boolean state = super.textboxKeyTyped(typedChar, keyCode);
+	public boolean charTyped(char typedChar, int keyCode) {
+		boolean state = super.charTyped(typedChar, keyCode);
 		if (state) {
 			EventChatboxType event = new EventChatboxType(getText(), overlay).send();
 			overlay = event.getOverlay();

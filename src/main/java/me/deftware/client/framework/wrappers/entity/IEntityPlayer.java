@@ -9,8 +9,7 @@ import me.deftware.client.framework.wrappers.world.IEnumFacing;
 import me.deftware.mixin.imp.IMixinEntity;
 import me.deftware.mixin.imp.IMixinEntityPlayerSP;
 import net.minecraft.block.BlockAir;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.BlockFlowingFluid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -20,8 +19,10 @@ import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.scoreboard.ScorePlayerTeam;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameType;
 
@@ -121,7 +122,7 @@ public class IEntityPlayer {
 	}
 
 	public static boolean isCollidedHorizontally() {
-		return Minecraft.getMinecraft().player.isCollidedHorizontally;
+		return Minecraft.getMinecraft().player.collidedHorizontally;
 	}
 
 	public static boolean isRidingEntityInWater() {
@@ -588,7 +589,7 @@ public class IEntityPlayer {
 		if (IEntityPlayer.isNull()) {
 			return;
 		}
-		Minecraft.getMinecraft().player.capabilities.setFlySpeed(speed);
+		Minecraft.getMinecraft().player.capabilities.func_195931_a(speed);
 	}
 
 	public static float getFlySpeed() {
@@ -616,7 +617,7 @@ public class IEntityPlayer {
 		if (IEntityPlayer.isNull()) {
 			return "";
 		}
-		return Minecraft.getMinecraft().player.getName();
+		return Minecraft.getMinecraft().player.getGameProfile().getName();
 	}
 
 	public static boolean isOnGround() {
@@ -651,7 +652,7 @@ public class IEntityPlayer {
 		return false;
 	}
 
-	public static enum HandItem {
+	public enum HandItem {
 		ItemBow
 	}
 
@@ -660,7 +661,7 @@ public class IEntityPlayer {
 	}
 
 	public static boolean isInAir() {
-		return Minecraft.getMinecraft().player.isInsideOfMaterial(Material.AIR);
+		return Minecraft.getMinecraft().player.isInFluid(new FluidTags.Wrapper(new ResourceLocation("air")));
 	}
 
 	public static boolean isTouchingLiquid() {
@@ -672,7 +673,7 @@ public class IEntityPlayer {
 					+ 1; z++) {
 				net.minecraft.block.Block block = mc.world.getBlockState(new BlockPos(x, y, z)).getBlock();
 				if ((block != null) && (!(block instanceof BlockAir))) {
-					if (!(block instanceof BlockLiquid)) {
+					if (!(block instanceof BlockFlowingFluid)) {
 						return false;
 					}
 					inLiquid = true;

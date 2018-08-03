@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
-
 public class IGuiPasswordTextField extends IGuiTextField {
 
 	private int enabledColor = 14737632;
@@ -18,7 +17,7 @@ public class IGuiPasswordTextField extends IGuiTextField {
 	}
 
 	@Override
-	public void drawTextBox() {
+	public void func_195608_a(int p_195608_1_, int p_195608_2_, float p_195608_3_) {
 		if (getVisible()) {
 			if (getEnableBackgroundDrawing()) {
 				Gui.drawRect(x - 1, y - 1, x + getWidth() + 1,

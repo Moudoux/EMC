@@ -1,16 +1,18 @@
 package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class EventNametagRender extends Event {
 
-	private boolean isPlayer = false;
+	private Entity entity;
 
-	public EventNametagRender(boolean isPlayer) {
-		this.isPlayer = isPlayer;
+	public EventNametagRender(Entity entity) {
+		this.entity = entity;
 	}
 
 	public boolean isPlayer() {
-		return isPlayer;
+		return entity instanceof EntityPlayer;
 	}
 }

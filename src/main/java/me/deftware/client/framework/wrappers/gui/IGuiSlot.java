@@ -2,6 +2,7 @@ package me.deftware.client.framework.wrappers.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiSlot;
+import org.lwjgl.glfw.GLFW;
 
 public abstract class IGuiSlot extends GuiSlot {
 
@@ -17,18 +18,14 @@ public abstract class IGuiSlot extends GuiSlot {
 	}
 
 	@Override
-	protected void elementClicked(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
-		selectedSlot = slotIndex;
+	protected boolean func_195078_a(int index, int p_195078_2_, double p_195078_3_, double p_195078_5_) {
+		selectedSlot = index;
+		return true;
 	}
 
 	@Override
 	protected boolean isSelected(int slotIndex) {
 		return selectedSlot == slotIndex;
-	}
-
-	@Override
-	protected void drawBackground() {
-
 	}
 
 	@Override
@@ -44,20 +41,12 @@ public abstract class IGuiSlot extends GuiSlot {
 		return selectedSlot;
 	}
 
-	public void onMouseInput() {
-		handleMouseInput();
-	}
-
 	public void doDraw(int mouseX, int mouseY, float partialTicks) {
 		drawScreen(mouseX, mouseY, partialTicks);
 	}
 
-	public void registerScrollbars(int scrollUpButtonIDIn, int scrollDownButtonIDIn) {
-		registerScrollButtons(scrollUpButtonIDIn, scrollDownButtonIDIn);
-	}
-
 	public void clickElement(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
-		elementClicked(slotIndex, isDoubleClick, mouseX, mouseY);
+		func_195078_a(slotIndex, GLFW.GLFW_MOUSE_BUTTON_LEFT, mouseX, mouseY);
 	}
 
 }

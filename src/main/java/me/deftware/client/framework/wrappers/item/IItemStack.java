@@ -34,12 +34,12 @@ public class IItemStack {
 		stack = new ItemStack(item.getItem());
 	}
 
-	public IItemStack(IItem item, int amount, int metadata) {
-		stack = new ItemStack(item.getItem(), amount, metadata);
+	public IItemStack(IItem item, int amount) {
+		stack = new ItemStack(item.getItem(), amount);
 	}
 
 	public IItemStack(String name) {
-		stack = new ItemStack(Item.getByNameOrId(name));
+		stack = new ItemStack(IItem.getByNameOrId(name));
 	}
 
 	public void setNBT(String nbt) throws Exception {
@@ -64,11 +64,11 @@ public class IItemStack {
 	}
 
 	public void setStackDisplayName(String name) {
-		stack.setStackDisplayName(name);
+		stack.getOrCreateSubCompound("display").setString("Name", name);
 	}
 
 	public static boolean validName(String name) {
-		return Item.getByNameOrId(name) != null;
+		return IItem.getByNameOrId(name) != null;
 	}
 
 	public ItemStack getStack() {
@@ -76,7 +76,7 @@ public class IItemStack {
 	}
 
 	public String getDisplayName() {
-		return stack.getDisplayName();
+		return stack.func_200301_q().getUnformattedComponentText();
 	}
 
 	public int getItemID() {
@@ -84,7 +84,7 @@ public class IItemStack {
 	}
 
 	public float getStrVsBlock(IBlockPos pos) {
-		return stack.getStrVsBlock(Minecraft.getMinecraft().world.getBlockState(pos.getPos()));
+		return stack.getDestroySpeed(Minecraft.getMinecraft().world.getBlockState(pos.getPos()));
 	}
 
 	public boolean isEmpty() {
@@ -99,7 +99,7 @@ public class IItemStack {
 	}
 
 	public boolean hasEffect(IEffects ieffect) {
-		for(PotionEffect effect : PotionUtils.getEffectsFromStack(stack)) {
+		for (PotionEffect effect : PotionUtils.getEffectsFromStack(stack)) {
 			if (effect.getPotion() == ieffect.getEffect()) {
 				return true;
 			}
@@ -116,9 +116,10 @@ public class IItemStack {
 			this.effect = effect;
 		}
 
-		public Potion getEffect() { return effect; }
+		public Potion getEffect() {
+			return effect;
+		}
 	}
-
 
 	public int getRarity() {
 		if (stack.getRarity() == EnumRarity.COMMON) {

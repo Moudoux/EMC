@@ -2,11 +2,11 @@ package me.deftware.client.framework.wrappers.render;
 
 import me.deftware.client.framework.wrappers.item.IItemStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.ItemRenderer;
 
 public class IRenderItem {
 
-	private static RenderItem getRenderItem() {
+	private static ItemRenderer getRenderItem() {
 		return Minecraft.getMinecraft().getRenderItem();
 	}
 

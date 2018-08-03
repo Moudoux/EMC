@@ -8,14 +8,12 @@
     "MixinMinecraft",
     "MixinRenderManager",
     "MixinBlock",
-    "MixinBlockLiquid",
     "MixinGuiScreen",
     "MixinCPacketPlayer",
     "MixinGuiNewChat",
     "MixinBlockSoulSand",
     "MixinTimer",
     "MixinMovementInputFromOptions",
-    "MixinTileEntityNote",
     "MixinNetworkManager",
     "MixinEntityLivingBase",
     "MixinEntity",
@@ -41,7 +39,6 @@
     "MixinGuiChat",
     "MixinEntityPlayerSP",
     "MixinGuiMainMenu",
-    "MixinItemStack",
     "MixinItemTool",
     "MixinKeyBinding",
     "MixinGuiEditSign",
@@ -49,6 +46,8 @@
     "MixinRender",
     "MixinBlockCactus",
     "MixinWorldClient",
-    "MixinSkinManager"
+    "MixinSkinManager",
+    "MixinKeyboardListener",
+    "MixinMouseHelper"
   ]
 }

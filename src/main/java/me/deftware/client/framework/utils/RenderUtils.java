@@ -1,6 +1,5 @@
 package me.deftware.client.framework.utils;
 
-
 import me.deftware.client.framework.wrappers.entity.*;
 import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
@@ -352,7 +351,7 @@ public class RenderUtils {
 	public static void drawAltFace(String name, int x, int y, int w, int h, boolean selected) {
 		try {
 			AbstractClientPlayer.getDownloadImageSkin(AbstractClientPlayer.getLocationSkin(name), name)
-					.loadTexture(Minecraft.getMinecraft().getResourceManager());
+					.func_195413_a(Minecraft.getMinecraft().getResourceManager());
 			Minecraft.getMinecraft().getTextureManager().bindTexture(AbstractClientPlayer.getLocationSkin(name));
 			glEnable(GL_BLEND);
 			glColor4f(0.9F, 0.9F, 0.9F, 1.0F);
@@ -444,8 +443,8 @@ public class RenderUtils {
 		GL11.glDisable(2929);
 		GL11.glDepthMask(false);
 		if (mode == 0) {
-			GL11.glColor4d(1.0F - Minecraft.getMinecraft().player.getDistanceToEntity(entity) / 40.0F,
-					Minecraft.getMinecraft().player.getDistanceToEntity(entity) / 40.0F, 0.0D, 0.5D);
+			GL11.glColor4d(1.0F - Minecraft.getMinecraft().player.getDistance(entity) / 40.0F,
+					Minecraft.getMinecraft().player.getDistance(entity) / 40.0F, 0.0D, 0.5D);
 		} else if (mode == 1) {
 			GL11.glColor4d(0.0D, 0.0D, 1.0D, 0.5D);
 		} else if (mode == 2) {
@@ -506,7 +505,7 @@ public class RenderUtils {
 		GL11.glEnable(3042);
 		GL11.glLineWidth(1.0F);
 		float sinus = 1.0F - MathHelper
-				.abs(MathHelper.sin(Minecraft.getSystemTime() % 10000L / 10000.0F * 3.1415927F * 4.0F) * 1.0F);
+				.abs(MathHelper.sin((System.currentTimeMillis() % 1000) % 10000L / 10000.0F * 3.1415927F * 4.0F) * 1.0F);
 		GL11.glDisable(3553);
 		GL11.glDisable(2929);
 		GL11.glDepthMask(false);
@@ -622,8 +621,8 @@ public class RenderUtils {
 		GL11.glDisable(2929);
 		GL11.glDepthMask(false);
 		if (mode == 0) {
-			GL11.glColor4d(1.0F - Minecraft.getMinecraft().player.getDistanceToEntity(entity) / 40.0F,
-					Minecraft.getMinecraft().player.getDistanceToEntity(entity) / 40.0F, 0.0D, 0.5D);
+			GL11.glColor4d(1.0F - Minecraft.getMinecraft().player.getDistance(entity) / 40.0F,
+					Minecraft.getMinecraft().player.getDistance(entity) / 40.0F, 0.0D, 0.5D);
 		} else if (mode == 1) {
 			GL11.glColor4d(0.0D, 0.0D, 1.0D, 0.5D);
 		} else if (mode == 2) {

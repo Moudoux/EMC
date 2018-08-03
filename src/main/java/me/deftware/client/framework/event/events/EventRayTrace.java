@@ -4,6 +4,7 @@ import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.wrappers.entity.IEntity;
 
 @Deprecated
+// TODO
 public class EventRayTrace extends Event {
 
 	private IEntity entity;

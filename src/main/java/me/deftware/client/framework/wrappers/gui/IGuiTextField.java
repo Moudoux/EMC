@@ -2,6 +2,7 @@ package me.deftware.client.framework.wrappers.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiTextField;
+import org.lwjgl.glfw.GLFW;
 
 public class IGuiTextField extends GuiTextField {
 
@@ -29,16 +30,23 @@ public class IGuiTextField extends GuiTextField {
 		setFocused(state);
 	}
 
-	public void onKeyTyped(char typedChar, int keyCode) {
-		textboxKeyTyped(typedChar, keyCode);
+	/**
+	 * @see GLFW#GLFW_RELEASE
+	 * @see GLFW#GLFW_PRESS
+	 * @see GLFW#GLFW_REPEAT
+	 *
+	 * @see GLFW#GLFW_MOD_SHIFT
+	 */
+	public void onKeyPressed(int keyCode, int action, int modifiers) {
+		keyPressed(keyCode, action, modifiers);
 	}
 
 	public void onMouseClicked(int mouseX, int mouseY, int mouseButton) {
 		mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
-	public void onDraw() {
-		drawTextBox();
+	public void onDraw(int mouseX, int mouseY, float partialTicks) {
+		func_195608_a(mouseX, mouseY, partialTicks);
 	}
 
 	public void doCursorTick() {

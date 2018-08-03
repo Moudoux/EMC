@@ -1,9 +1,6 @@
 buildscript {
     repositories {
-        maven {
-            name = 'forge'
-            url = 'http://files.minecraftforge.net/maven'
-        }
+        maven { url 'https://www.dimdev.org/maven/' }
         maven {
             name = 'SpongePowered'
             url = 'http://repo.spongepowered.org/maven'
@@ -14,7 +11,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:${project.forgeGradleVersion}"
+        classpath "org.dimdev:ForgeGradle:${project.forgeGradleVersion}"
         classpath "org.spongepowered:mixingradle:${project.mixinGradleVersion}"
         classpath "com.github.jengelman.gradle.plugins:shadow:2.0.0"
     }
@@ -36,15 +33,11 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: "com.github.johnrengelman.shadow"
 
 sourceCompatibility = targetCompatibility = 1.8
-compileJava {
-    sourceCompatibility = targetCompatibility = 1.8
-}
 
 minecraft {
     version = forgeBuild ? project.minecraftVersion + project.forgeVersion : project.minecraftVersion
     runDir = 'run'
     mappings = project.mappingsVer
-    useDepAts = true
     makeObfSourceJar = true
     if (!forgeBuild) {
 		tweakClass = 'me.deftware.launch.Launcher'
@@ -57,7 +50,8 @@ repositories {
         name = 'spongepowered-repo'
         url = 'http://repo.spongepowered.org/maven/'
     }
-    maven { url 'https://jitpack.io' }
+    maven { url 'https://libraries.minecraft.net/' }
+    maven { url 'https://www.dimdev.org/maven/' }
 }
 
 configurations {
@@ -68,13 +62,9 @@ configurations {
 }
 
 dependencies {
-    compile('org.spongepowered:mixin:0.7.5-SNAPSHOT') {
-        exclude module: 'launchwrapper'
-        exclude module: 'guava'
-        exclude module: 'gson'
-        exclude module: 'commons-io'
-    }
-    compile 'com.github.vbauer:yandex-translate-api:1.3.3'
+    implementation('org.dimdev:mixin:0.7.11-SNAPSHOT') { transitive = false }
+    implementation('net.minecraft:launchwrapper:1.11')
+    implementation('com.google.code.gson:gson:2.8.5')
 }
 
 mixin {
@@ -84,8 +74,7 @@ mixin {
 
 shadowJar {
     dependencies {
-        include(dependency('org.spongepowered:mixin'))
-        include(dependency('com.github.vbauer:yandex-translate-api'))
+        include(dependency('org.dimdev:mixin'))
     }
     classifier = 'full'
 }

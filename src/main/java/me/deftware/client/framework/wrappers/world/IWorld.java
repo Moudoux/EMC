@@ -1,26 +1,24 @@
 package me.deftware.client.framework.wrappers.world;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import com.google.common.collect.Lists;
+
 import me.deftware.client.framework.utils.ICachedList;
 import me.deftware.client.framework.wrappers.entity.IEntity;
-import me.deftware.client.framework.wrappers.entity.IItemEntity;
-import me.deftware.client.framework.wrappers.entity.IMob;
-import me.deftware.client.framework.wrappers.entity.IPlayer;
-import net.minecraft.block.BlockChest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityEnderChest;
 import net.minecraft.tileentity.TileEntityShulkerBox;
+import net.minecraft.tileentity.TileEntityTrappedChest;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-
-import java.awt.*;
-import java.util.ArrayList;
 
 public class IWorld {
 
@@ -43,14 +41,16 @@ public class IWorld {
 			new Thread(() -> {
 				ArrayList<IChest> chests = new ArrayList<>();
 				new ArrayList<>(Minecraft.getMinecraft().world.loadedTileEntityList).forEach((entity) -> {
-					IChestType type = entity instanceof TileEntityChest ?
-							((TileEntityChest) entity).getChestType() == BlockChest.Type.TRAP ? IChestType.TRAPPED_CHEST : IChestType.CHEST :
-							entity instanceof TileEntityEnderChest ? IChestType.ENDER_CHEST : entity instanceof TileEntityShulkerBox ? IChestType.SHULKER_BOX : null;
+					IChestType type = entity instanceof TileEntityChest
+							? entity instanceof TileEntityTrappedChest ? IChestType.TRAPPED_CHEST : IChestType.CHEST
+							: entity instanceof TileEntityEnderChest ? IChestType.ENDER_CHEST
+							: entity instanceof TileEntityShulkerBox ? IChestType.SHULKER_BOX : null;
 					if (type != null) {
-						BlockPos p = ((TileEntity) entity).getPos();
-						Color color = type.equals(IChestType.TRAPPED_CHEST) ? Color.RED : type.equals(IChestType.CHEST) ? Color.ORANGE : type.equals(IChestType.ENDER_CHEST) ? Color.BLUE : Color.PINK;
-						chests.add(new IChest(type,
-								new IBlockPos(p.getX(), p.getY(), p.getZ()), color));
+						BlockPos p = entity.getPos();
+						Color color = type.equals(IChestType.TRAPPED_CHEST) ? Color.RED
+								: type.equals(IChestType.CHEST) ? Color.ORANGE
+								: type.equals(IChestType.ENDER_CHEST) ? Color.BLUE : Color.PINK;
+						chests.add(new IChest(type, new IBlockPos(p.getX(), p.getY(), p.getZ()), color));
 					}
 				});
 				list = chests;
@@ -62,7 +62,7 @@ public class IWorld {
 		for (Entity entity : Minecraft.getMinecraft().world.loadedEntityList) {
 			if (entity instanceof EntityOtherPlayerMP) {
 				EntityOtherPlayerMP player = (EntityOtherPlayerMP) entity;
-				if (player.getName().toLowerCase().equals(username.toLowerCase())) {
+				if (player.getGameProfile().getName().toLowerCase().equals(username.toLowerCase())) {
 					return new IEntity(player);
 				}
 			}
@@ -126,6 +126,39 @@ public class IWorld {
 
 	public enum IChestType {
 		TRAPPED_CHEST, CHEST, ENDER_CHEST, SHULKER_BOX
+	}
+
+	/*
+	 * Collision
+	 */
+
+	public static List<AxisAlignedBB> getCollisionBoxes(@Nullable Entity entityIn, AxisAlignedBB aabb) {
+		List<AxisAlignedBB> list = Lists.<AxisAlignedBB>newArrayList();
+
+		if (entityIn != null) {
+			List<Entity> list1 = Minecraft.getMinecraft().world.getEntitiesWithinAABBExcludingEntity(entityIn,
+					aabb.grow(0.25D));
+
+			for (int i = 0; i < list1.size(); ++i) {
+				Entity entity = list1.get(i);
+
+				if (!entityIn.isRidingSameEntity(entity)) {
+					AxisAlignedBB axisalignedbb = entity.getCollisionBoundingBox();
+
+					if (axisalignedbb != null && axisalignedbb.intersects(aabb)) {
+						list.add(axisalignedbb);
+					}
+
+					axisalignedbb = entityIn.getCollisionBox(entity);
+
+					if (axisalignedbb != null && axisalignedbb.intersects(aabb)) {
+						list.add(axisalignedbb);
+					}
+				}
+			}
+		}
+
+		return list;
 	}
 
 }

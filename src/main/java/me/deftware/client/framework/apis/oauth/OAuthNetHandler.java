@@ -1,6 +1,5 @@
 package me.deftware.client.framework.apis.oauth;
 
-
 import me.deftware.mixin.imp.IMixinNetHandlerLoginClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -16,7 +15,7 @@ public class OAuthNetHandler extends NetHandlerLoginClient {
 
 	public OAuthNetHandler(NetworkManager networkManagerIn, Minecraft mcIn, GuiScreen previousScreenIn,
 						   OAuth.OAuthCallback callback) {
-		super(networkManagerIn, mcIn, previousScreenIn);
+		super(networkManagerIn, mcIn, previousScreenIn, null);
 		this.callback = callback;
 	}
 

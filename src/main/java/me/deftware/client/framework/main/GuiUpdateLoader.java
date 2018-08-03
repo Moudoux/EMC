@@ -1,6 +1,7 @@
 package me.deftware.client.framework.main;
 
 import com.google.gson.JsonObject;
+import me.deftware.client.framework.wrappers.gui.IGuiButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -28,27 +29,28 @@ public class GuiUpdateLoader extends GuiScreen {
 	@Override
 	public void initGui() {
 		buttonList.clear();
-		buttonList.add(new GuiButton(0, width / 2 - 100, height / 4 + 120 + 12 - 30,
+		buttonList.add(new IGuiButton(0, width / 2 - 100, height / 4 + 120 + 12 - 30,
 				"Update " + (clientInfo.get("updateLinkOverride").getAsBoolean() ? clientInfo.get("name").getAsString()
-						: "EMC")));
-		buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 144 + 12 - 30, "Cancel (Mod won't load)"));
-	}
-
-	@Override
-	protected void actionPerformed(GuiButton clickedButton) throws IOException {
-		if (clickedButton.id == 0) {
-			try {
-				String link = "https://gitlab.com/EMC-Framework/EMC-Installer/tags";
-				if (clientInfo.get("updateLinkOverride").getAsBoolean()) {
-					link = clientInfo.get("website").getAsString();
+						: "EMC")) {
+			@Override
+			public void onClick(double mouseX, double mouseY) {
+				try {
+					String link = "https://gitlab.com/EMC-Framework/EMC-Installer/tags";
+					if (clientInfo.get("updateLinkOverride").getAsBoolean()) {
+						link = clientInfo.get("website").getAsString();
+					}
+					Desktop.getDesktop().browse(new URL(link).toURI());
+				} catch (Exception e) {
 				}
-				Desktop.getDesktop().browse(new URL(link).toURI());
-			} catch (Exception e) {
+				Minecraft.getMinecraft().shutdown();
 			}
-			Minecraft.getMinecraft().shutdown();
-		}
-		Minecraft.getMinecraft().displayGuiScreen(null);
-		super.actionPerformed(clickedButton);
+		});
+		buttonList.add(new IGuiButton(1, width / 2 - 100, height / 4 + 144 + 12 - 30, "Cancel (Mod won't load)") {
+			@Override
+			public void onClick(double mouseX, double mouseY) {
+				Minecraft.getMinecraft().displayGuiScreen(null);
+			}
+		});
 	}
 
 	@Override

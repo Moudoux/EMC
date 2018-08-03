@@ -13,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.awt.*;
 
-
 public class IEntity {
 
 	private Entity entity;
@@ -61,12 +60,12 @@ public class IEntity {
 	}
 
 	public float getDistanceToPlayer() {
-		return entity.getDistanceToEntity(Minecraft.getMinecraft().player);
+		return entity.getDistance(Minecraft.getMinecraft().player);
 	}
 
 	public String getName() {
 		if (entity instanceof EntityPlayer) {
-			return ((EntityPlayer) entity).getName();
+			return ((EntityPlayer) entity).getGameProfile().getName();
 		}
 		return "";
 	}
@@ -232,7 +231,7 @@ public class IEntity {
 		return false;
 	}
 
-	public static enum EntityType {
+	public enum EntityType {
 		ENTITY_PLAYER_SP, EntityOtherPlayerMP, ENTITY_PLAYER, EntitySlime, EntityGolem, EntityFlying, EntityMob, EntityWaterMob, ENTITY_WOLF, ENTITY_LIVING_BASE, ENTITY_LIVING, Entity_Ageable, EntityAmbientCreature, ENTITY_ITEM,
 		/*
 		 * Hostile mobs

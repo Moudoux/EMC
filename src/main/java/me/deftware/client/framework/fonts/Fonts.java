@@ -1,5 +1,6 @@
 package me.deftware.client.framework.fonts;
 
+import me.deftware.client.framework.fonts.cfont.CFont;
 import me.deftware.client.framework.main.EMCMod;
 
 import java.awt.*;
@@ -7,7 +8,7 @@ import java.util.HashMap;
 
 public class Fonts {
 
-	public static HashMap<String, IFontRendererObject> fontCache = new HashMap<>();
+	public static HashMap<String, CFont> fontCache = new HashMap<>();
 
 	/**
 	 * Loads some common fonts
@@ -24,11 +25,11 @@ public class Fonts {
 	 * @param fontType Format for the font key is [font name][font size], example: segoe15
 	 * @return IFontRendererObject
 	 */
-	public static IFontRendererObject getFont(String fontType) {
+	public static CFont getFont(String fontType) {
 		return fontCache.get(fontType);
 	}
 
-	public static IFontRendererObject getFont(CommonFonts fontType) {
+	public static CFont getFont(CommonFonts fontType) {
 		return getFont(fontType.name().toLowerCase());
 	}
 
@@ -41,7 +42,9 @@ public class Fonts {
 	 */
 	public static void registerFont(String name, String internalName, int internalSize) {
 		if (!fontCache.containsKey(name)) {
-			fontCache.put(name, new IFontRendererObject(new Font(name, Font.PLAIN, internalSize), true, 8));
+			CFont fontRenderer = new CFont();
+			fontRenderer.setFont(new Font(internalName, Font.TRUETYPE_FONT, internalSize), true);
+			fontCache.put(name, fontRenderer);
 		}
 	}
 

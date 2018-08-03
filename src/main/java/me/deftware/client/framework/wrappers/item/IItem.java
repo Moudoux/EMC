@@ -1,18 +1,48 @@
 package me.deftware.client.framework.wrappers.item;
 
+import javax.annotation.Nullable;
+
 import me.deftware.mixin.imp.IMixinItemTool;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.item.*;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtils;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemEgg;
+import net.minecraft.item.ItemEnderPearl;
+import net.minecraft.item.ItemFishingRod;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemHoe;
+import net.minecraft.item.ItemLingeringPotion;
+import net.minecraft.item.ItemNameTag;
+import net.minecraft.item.ItemPotion;
+import net.minecraft.item.ItemSnowball;
+import net.minecraft.item.ItemSoup;
+import net.minecraft.item.ItemSplashPotion;
+import net.minecraft.item.ItemSword;
+import net.minecraft.item.ItemTool;
+import net.minecraft.util.ResourceLocation;
 
 public class IItem {
 
 	private Item item;
 
 	public IItem(String name) {
-		item = Item.getByNameOrId(name);
+		item = getByNameOrId(name);
+	}
+
+	@Nullable
+	public static Item getByNameOrId(String id) {
+		Item item = Item.REGISTRY.getObject(new ResourceLocation(id));
+
+		if (item == null) {
+			try {
+				return Item.getItemById(Integer.parseInt(id));
+			} catch (NumberFormatException var3) {
+				;
+			}
+		}
+
+		return item;
 	}
 
 	public IItem(Item item) {
@@ -24,7 +54,7 @@ public class IItem {
 	}
 
 	public String getName() {
-		return item.getItemStackDisplayName(new ItemStack(item));
+		return item.getName().getUnformattedComponentText();
 	}
 
 	public int getID() {
@@ -36,11 +66,11 @@ public class IItem {
 	}
 
 	public float getAttackDamage() {
-		return ((ItemSword) item).getDamageVsEntity() + 3.0F;
+		return ((ItemSword) item).func_200894_d() + 3.0F;
 	}
 
 	public float getDamageVsEntity() {
-		return ((IMixinItemTool) item).getDamageVsEntity();
+		return ((IMixinItemTool) item).getAttackDamage();
 	}
 
 	public boolean isThrowable() {
@@ -78,7 +108,8 @@ public class IItem {
 	}
 
 	public enum IItemType {
-		ItemPotion, ItemFishingRod, ItemFood, ItemSword, ItemTool, ItemNameTag, ItemBlock, ItemHoe, SplashPotion, ItemSoup
+		ItemPotion, ItemFishingRod, ItemFood, ItemSword, ItemTool, ItemNameTag, ItemBlock, ItemHoe, SplashPotion,
+		ItemSoup
 	}
 
 }

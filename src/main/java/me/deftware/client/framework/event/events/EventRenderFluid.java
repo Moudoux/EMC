@@ -5,14 +5,18 @@ import me.deftware.client.framework.wrappers.world.IBlock;
 
 public class EventRenderFluid extends Event {
 
-	private IBlock block;
+	FluidType fluid = FluidType.WATER;
 
-	public EventRenderFluid(IBlock block) {
-		this.block = block;
+	public EventRenderFluid(FluidType fluid) {
+		this.fluid = fluid;
 	}
 
-	public IBlock getBlock() {
-		return block;
+	public FluidType getFluid() {
+		return fluid;
+	}
+
+	public static enum FluidType {
+		WATER, LAVA
 	}
 
 }

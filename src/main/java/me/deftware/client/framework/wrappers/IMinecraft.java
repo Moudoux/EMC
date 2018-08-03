@@ -3,7 +3,6 @@ package me.deftware.client.framework.wrappers;
 import java.io.File;
 import java.net.URISyntaxException;
 
-import org.lwjgl.opengl.Display;
 
 import me.deftware.client.framework.wrappers.entity.IEntity;
 import me.deftware.client.framework.wrappers.entity.IEntity.EntityType;
@@ -15,12 +14,12 @@ import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.mixin.imp.IMixinMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.GuiConnecting;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.main.Main;
-import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -130,10 +129,6 @@ public class IMinecraft {
 		return Minecraft.getMinecraft().gameSettings.thirdPersonView;
 	}
 
-	public static void setTitle(String title) {
-		Display.setTitle(title);
-	}
-
 	public static int getGuiScale() {
 		return Minecraft.getMinecraft().gameSettings.guiScale;
 	}
@@ -167,11 +162,11 @@ public class IMinecraft {
 		Minecraft.getMinecraft().shutdown();
 	}
 
-	public static void setGamma(float value) {
+	public static void setGamma(double value) {
 		Minecraft.getMinecraft().gameSettings.gammaSetting = value;
 	}
 
-	public static float getGamma() {
+	public static double getGamma() {
 		return Minecraft.getMinecraft().gameSettings.gammaSetting;
 	}
 

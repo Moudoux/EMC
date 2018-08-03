@@ -7,10 +7,10 @@ import me.deftware.client.framework.utils.Settings;
 public abstract class EMCMod {
 
 	private Settings settings;
-	public JsonObject clientInfo;
+	public JsonObject modInfo;
 
 	protected void init(JsonObject json) {
-		clientInfo = json;
+		modInfo = json;
 		settings = new Settings();
 		settings.initialize(json);
 		initialize();
@@ -45,7 +45,7 @@ public abstract class EMCMod {
 	 * Unloads your mod from EMC
 	 */
 	protected void disable() {
-		Bootstrap.getMods().remove(clientInfo.get("name").getAsString());
+		Bootstrap.getMods().remove(modInfo.get("name").getAsString());
 	}
 
 	/**
@@ -62,19 +62,19 @@ public abstract class EMCMod {
 	 */
 	public static class EMCModInfo {
 
-		private String clientName, clientVersion;
+		private String modName, modVersion;
 
-		public EMCModInfo(String clientName, String clientVersion) {
-			this.clientName = clientName;
-			this.clientVersion = clientVersion;
+		public EMCModInfo(String modName, String modVersion) {
+			this.modName = modName;
+			this.modVersion = modVersion;
 		}
 
-		public String getClientName() {
-			return clientName;
+		public String getModName() {
+			return modName;
 		}
 
-		public String getClientVersion() {
-			return clientVersion;
+		public String getModVersion() {
+			return modVersion;
 		}
 
 	}

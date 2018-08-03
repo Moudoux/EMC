@@ -56,8 +56,7 @@ public class SettingsMap {
 		 * lightValue = 0 - 10
 		 * render = true | false
 		 * translucent = true | false
-		 * liquid_aabb_solid = true | false
-		 * custom_cactus_aabb = true | false
+		 * custom_cactus_voxel = true | false
 		 * render_barrier_blocks = true | false
 		 */
 		public static final int BLOCKS = 1;
@@ -74,6 +73,13 @@ public class SettingsMap {
 		 * DEADMAU_EARS
 		 */
 		public static final int MISC = 3;
+
+		/**
+		 * JUMP_HEIGHT
+		 * BLOCK_REACH_DISTANCE
+		 * EXTENDED_REACH
+		 */
+		public static final int ENTITY_SETTINGS = 4;
 
 	}
 

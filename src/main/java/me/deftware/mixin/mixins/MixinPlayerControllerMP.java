@@ -1,7 +1,6 @@
 package me.deftware.mixin.mixins;
 
-import me.deftware.client.framework.event.events.EventExtendedReach;
-import me.deftware.client.framework.event.events.EventGetReachDistance;
+import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.world.GameType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,8 +19,7 @@ public class MixinPlayerControllerMP {
 	 */
 	@Overwrite
 	public float getBlockReachDistance() {
-		EventGetReachDistance event = new EventGetReachDistance(currentGameType.isCreative() ? 5.0F : 4.5F).send();
-		return event.getDistance();
+		return (float) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "BLOCK_REACH_DISTANCE", currentGameType.isCreative() ? 5.0F : 4.5F);
 	}
 
 	/**
@@ -30,8 +28,7 @@ public class MixinPlayerControllerMP {
 	 */
 	@Overwrite
 	public boolean extendedReach() {
-		EventExtendedReach event = new EventExtendedReach(currentGameType.isCreative()).send();
-		return event.isState();
+		return (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "EXTENDED_REACH", currentGameType.isCreative());
 	}
 
 }

@@ -1,10 +1,9 @@
 package me.deftware.client.framework.wrappers.gui;
 
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
-public class IGuiButton extends GuiButton {
+public abstract class IGuiButton extends GuiButton {
 
 	public IGuiButton(int buttonId, int x, int y, String buttonText) {
 		super(buttonId, x, y, 200, 20, buttonText);
@@ -23,15 +22,22 @@ public class IGuiButton extends GuiButton {
 	}
 
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+	public void func_194828_a(int mouseX, int mouseY, float partialTicks) {
 		if (onDraw(mouseX, mouseY) == 0) {
-			super.drawButton(mc, mouseX, mouseY, partialTicks);
+			super.func_194828_a(mouseX, mouseY, partialTicks);
 		}
 	}
 
 	public void drawCenteredString(String text, int x, int y, int color) {
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, x - Minecraft.getMinecraft().fontRenderer.getStringWidth(text) / 2, y, color);
 	}
+
+	@Override
+	public void mouseClicked(double p_194829_1_, double p_194829_3_) {
+		onClick(p_194829_1_, p_194829_3_);
+	}
+
+	public abstract void onClick(double mouseX, double mouseY);
 
 	protected int onDraw(int mouseX, int mouseY) {
 		return 0;
@@ -52,7 +58,6 @@ public class IGuiButton extends GuiButton {
 	public boolean isEnabled() {
 		return enabled;
 	}
-
 
 	protected int getX() {
 		return x;

@@ -37,6 +37,11 @@ public class Bootstrap {
 		try {
 			Bootstrap.logger.info("Loading EMC...");
 
+			File emc_configs = new File(OSUtils.getMCDir() + "EMC_Configs" + File.separator);
+			if (!emc_configs.exists()) {
+				emc_configs.mkdirs();
+			}
+
 			// Get EMC version from Manifest
 			Collections.list(Bootstrap.class.getClassLoader()
 					.getResources("META-INF/MANIFEST.MF")).forEach((element) -> {

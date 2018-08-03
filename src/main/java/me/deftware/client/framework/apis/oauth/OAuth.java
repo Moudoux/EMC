@@ -2,7 +2,7 @@ package me.deftware.client.framework.apis.oauth;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.EnumConnectionState;
-import net.minecraft.network.handshake.client.C00Handshake;
+import net.minecraft.network.handshake.client.CPacketHandshake;
 import net.minecraft.network.login.client.CPacketLoginStart;
 
 import java.net.InetAddress;
@@ -22,7 +22,7 @@ public class OAuth {
 				OAuthNetworkManager manager = OAuthNetworkManager.createNetworkManagerAndConnect(inetaddress, OAuth.port,
 						Minecraft.getMinecraft().gameSettings.isUsingNativeTransport(), callback);
 				manager.setNetHandler(new OAuthNetHandler(manager, Minecraft.getMinecraft(), null, callback));
-				manager.sendPacket(new C00Handshake(OAuth.ip, OAuth.port, EnumConnectionState.LOGIN));
+				manager.sendPacket(new CPacketHandshake(OAuth.ip, OAuth.port, EnumConnectionState.LOGIN));
 				manager.sendPacket(new CPacketLoginStart(Minecraft.getMinecraft().getSession().getProfile()));
 			} catch (Exception ex) {
 				callback.callback(false, "", "");

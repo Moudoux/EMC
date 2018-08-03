@@ -1,10 +1,9 @@
 package me.deftware.client.framework.wrappers;
 
-import org.lwjgl.input.Keyboard;
-
 import me.deftware.mixin.imp.IMixinKeyBinding;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.util.InputMappings;
 
 public class IKeybindWrapper {
 
@@ -17,7 +16,15 @@ public class IKeybindWrapper {
 	}
 
 	public static boolean isKeyDown(IKeybind bind) {
-		return Keyboard.isKeyDown(bind.bind.getKeyCode());
+		return InputMappings.isKeyDown(((IMixinKeyBinding) bind.bind).getInput().getKeyCode());
+	}
+
+	public static String getKeyName(int key) {
+		return String.valueOf((char) key);
+	}
+
+	public static boolean isKeyDown(int key) {
+		return InputMappings.isKeyDown(key);
 	}
 
 	public static enum IKeybind {

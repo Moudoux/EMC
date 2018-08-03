@@ -20,14 +20,13 @@ public class EventChatReceive extends Event {
 		this.itc = itc;
 	}
 
-
 	public void setColorCodes() {
 		itc = ChatProcessor.getITextComponent(
 				ChatProcessor.convertColorCodes(itc.getFormattedText()));
 	}
 
 	public String getMessage() {
-		return itc.getUnformattedText();
+		return itc.getUnformattedComponentText();
 	}
 
 	public void replace(String original, String _new) {

@@ -6,6 +6,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class EMCSkinManager {
 
+	/**
+	 * All names are SHA512 hashed
+	 */
 	private static final ConcurrentHashMap<String, String> capes = new ConcurrentHashMap<>();
 
 	public static void putCape(String name, String url, boolean hashed) {

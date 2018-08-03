@@ -2,6 +2,7 @@ package me.deftware.mixin.mixins;
 
 import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
 
+import me.deftware.client.framework.utils.ChatProcessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,6 +38,7 @@ public class MixinEntityRenderer {
 
 	@Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/GuiIngame.renderGameOverlay(F)V"))
 	private void onRender2D(CallbackInfo cb) {
+		ChatProcessor.sendMessages();
 		new EventRender2D(0f).send();
 	}
 
@@ -63,13 +65,13 @@ public class MixinEntityRenderer {
 		}
 	}
 
-	@Inject(method = "renderWorldPass", at = @At("HEAD"))
-	private void renderWorldPass(int pass, float partialTicks, long finishTimeNano, CallbackInfo ci) {
+	@Inject(method = "updateCameraAndRender", at = @At("HEAD"))
+	private void updateCameraAndRender(float partialTicks, long finishTimeNano, CallbackInfo ci) {
 		this.partialTicks = partialTicks;
 	}
 
-	@Redirect(method = "renderWorldPass", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/EntityRenderer;renderHand:Z", opcode = GETFIELD))
-	private boolean renderWorldPass_renderHand(EntityRenderer self) {
+	@Redirect(method = "updateCameraAndRender", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/EntityRenderer;renderHand:Z", opcode = GETFIELD))
+	private boolean updateCameraAndRender_renderHand(EntityRenderer self) {
 		new EventRender3D(partialTicks).send();
 		return renderHand;
 	}

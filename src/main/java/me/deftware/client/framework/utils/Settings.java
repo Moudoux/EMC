@@ -20,18 +20,18 @@ public class Settings {
 	private File configFile;
 	private JsonObject config;
 
-	public synchronized void initialize(JsonObject clientInfo) {
+	public synchronized void initialize(JsonObject modInfo) {
 		try {
-			String clientName = "EMC";
+			String modName = "EMC";
 			if (Bootstrap.modsInfo != null) {
-				clientName = clientInfo.get("name").getAsString();
+				modName = modInfo.get("name").getAsString();
 			}
-			String file = OSUtils.getMCDir() + clientName + "_Config.json";
+			String file = OSUtils.getMCDir() + "EMC_Configs" + File.separator + modName + "_config.json";
 			configFile = new File(file);
 			if (!configFile.exists()) {
 				configFile.createNewFile();
 				config = new Gson().fromJson("{}", JsonObject.class);
-				addNode("version", "2.0");
+				addNode("version", "3.0");
 				saveConfig();
 			} else {
 				config = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
@@ -45,7 +45,7 @@ public class Settings {
 					configFile.delete();
 				}
 			}
-			initialize(clientInfo);
+			initialize(modInfo);
 		}
 	}
 

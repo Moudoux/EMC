@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class MarketplaceAPI {
 
-	private static final String APIDomain = "https://emc-api.sky-net.me";
+	private static final String APIDomain = "https://emc-api.aristois.net";
 	private static CookieManager cookies;
 	private static boolean initialized = false;
 
@@ -61,7 +61,7 @@ public class MarketplaceAPI {
 	 * {@link MarketplaceResponse#success}
 	 */
 	public static MarketplaceResponse checkLicensed(EMCMod.EMCModInfo clientInfo) {
-		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getCheckLicensedURL(clientInfo.getClientName())));
+		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getCheckLicensedURL(clientInfo.getModName())));
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class MarketplaceAPI {
 	 * in {@link MarketplaceResponse#data}
 	 */
 	public static MarketplaceResponse checkLicensedSecure(EMCMod.EMCModInfo clientInfo, String secret) {
-		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getCheckLicensedURL(clientInfo.getClientName(), secret)));
+		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getCheckLicensedURL(clientInfo.getModName(), secret)));
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class MarketplaceAPI {
 	 * {@link MarketplaceResponse#data}
 	 */
 	public static MarketplaceResponse getKey(EMCMod.EMCModInfo clientInfo) {
-		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getKeyURL(clientInfo.getClientName())));
+		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getKeyURL(clientInfo.getModName())));
 	}
 
 	/**

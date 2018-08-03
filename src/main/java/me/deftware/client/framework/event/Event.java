@@ -1,26 +1,11 @@
 package me.deftware.client.framework.event;
 
-import net.minecraft.block.BlockShulkerBox;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemShulkerBox;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityShulkerBox;
-import org.lwjgl.opengl.Display;
 
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.event.events.EventClientCommand;
-import me.deftware.client.framework.event.events.EventRender2D;
-import me.deftware.client.framework.event.events.EventRender3D;
 import me.deftware.client.framework.main.Bootstrap;
-import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.utils.ChatProcessor;
 import net.minecraft.client.Minecraft;
-import net.minecraft.realms.RealmsSharedConstants;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class Event {
 
@@ -52,7 +37,6 @@ public class Event {
 						if (event.getArgs().isEmpty()) {
 							// Unload all mods
 							Bootstrap.ejectMods();
-							Display.setTitle("Minecraft " + RealmsSharedConstants.VERSION_STRING);
 							Minecraft.getMinecraft().gameSettings.gammaSetting = 0.5F;
 							ChatProcessor.printFrameworkMessage("Unloaded all EMC mods, Minecraft is now running as vanilla");
 						} else {
@@ -66,20 +50,15 @@ public class Event {
 							}
 						}
 						return (T) this;
-					case ".shulker":
-						ChatProcessor.printClientMessage("Running shulker test");
-						List<String> items = Minecraft.getMinecraft().player.getHeldItemMainhand().getTooltip(Minecraft.getMinecraft().player, ITooltipFlag.TooltipFlags.ADVANCED);
-						items.forEach((tip) -> ChatProcessor.printClientMessage(tip));
-						return (T) this;
 					case ".mods":
 						if (Bootstrap.modsInfo == null || Bootstrap.getMods().isEmpty()) {
 							ChatProcessor.printFrameworkMessage("No EMC mods are loaded");
 						} else {
 							ChatProcessor.printFrameworkMessage("== Loaded EMC mods ==");
 							Bootstrap.getMods().values().forEach((mod) -> {
-								String name = mod.clientInfo.get("name").getAsString();
-								int version = mod.clientInfo.get("version").getAsInt();
-								String author = mod.clientInfo.get("author").getAsString();
+								String name = mod.modInfo.get("name").getAsString();
+								int version = mod.modInfo.get("version").getAsInt();
+								String author = mod.modInfo.get("author").getAsString();
 								ChatProcessor.printFrameworkMessage(name + " version " + version + " made by " + author);
 							});
 						}

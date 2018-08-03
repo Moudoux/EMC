@@ -55,7 +55,7 @@ public class IClassHandler {
 		}
 
 		public String getText(int line) {
-			return ((IMixinGuiEditSign) screen).getTileSign().signText[line].getUnformattedText();
+			return ((IMixinGuiEditSign) screen).getTileSign().signText[line].getUnformattedComponentText();
 		}
 
 		public void setText(String text, int line) {

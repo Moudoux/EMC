@@ -1,5 +1,8 @@
 package me.deftware.mixin.mixins;
 
+import net.minecraft.state.StateContainer;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.chunk.BlockStateContainer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -12,13 +15,11 @@ import me.deftware.client.framework.event.events.EventCollideCheck;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.world.IBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 @Mixin(Block.class)
@@ -26,7 +27,7 @@ public abstract class MixinBlock {
 
 	@Shadow
 	@Final
-	private BlockStateContainer blockState;
+	protected StateContainer<Block, IBlockState> blockState;
 
 	@Shadow
 	private int lightValue;
@@ -37,20 +38,20 @@ public abstract class MixinBlock {
 	@Inject(method = "getLightValue", at = @At("HEAD"), cancellable = true)
 	private void getLightValue(IBlockState state, CallbackInfoReturnable<Integer> callback) {
 		callback.setReturnValue(
-				(int) SettingsMap.getValue(Block.getIdFromBlock(state.getBlock()), "lightValue", lightValue));
+				(int) SettingsMap.getValue(Block.REGISTRY.getIDForObject(state.getBlock()), "lightValue", lightValue));
 	}
 
 	@Inject(method = "shouldSideBeRendered", at = @At("HEAD"), cancellable = true)
-	private void shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side,
-			CallbackInfoReturnable<Boolean> callback) {
+	private void shouldSideBeRendered(IBlockState blockState, IBlockReader blockReader, BlockPos pos, EnumFacing side,
+									  CallbackInfoReturnable<Boolean> callback) {
 		if (SettingsMap.isOverrideMode()) {
 			callback.setReturnValue(
-					(boolean) SettingsMap.getValue(Block.getIdFromBlock(blockState.getBlock()), "render", false));
+					(boolean) SettingsMap.getValue(Block.REGISTRY.getIDForObject(blockState.getBlock()), "render", false));
 		}
 	}
 
-	@Inject(method = "canCollideCheck", at = @At("HEAD"), cancellable = true)
-	private void canCollideCheck(IBlockState state, boolean hitIfLiquid, CallbackInfoReturnable<Boolean> ci) {
+	@Inject(method = "isCollidable", at = @At("HEAD"), cancellable = true)
+	private void isCollidable(IBlockState state, CallbackInfoReturnable<Boolean> ci) {
 		EventCollideCheck event = new EventCollideCheck(new IBlock(state.getBlock()), isCollidable()).send();
 		ci.setReturnValue(event.isCollidable());
 	}
@@ -68,10 +69,10 @@ public abstract class MixinBlock {
 		}
 	}
 
-	@Inject(method = "getBlockLayer", at = @At("HEAD"), cancellable = true)
-	private void getBlockLayer(CallbackInfoReturnable<BlockRenderLayer> ci) {
+	@Inject(method = "getRenderLayer", at = @At("HEAD"), cancellable = true)
+	private void getRenderLayer(CallbackInfoReturnable<BlockRenderLayer> ci) {
 		if (SettingsMap.isOverrideMode()) {
-			if ((boolean) SettingsMap.getValue(Block.getIdFromBlock(blockState.getBlock()), "translucent", true)) {
+			if ((boolean) SettingsMap.getValue(Block.REGISTRY.getIDForObject(blockState.getBlock()), "translucent", true)) {
 				ci.setReturnValue(BlockRenderLayer.TRANSLUCENT);
 			}
 		}

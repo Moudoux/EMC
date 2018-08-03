@@ -1,9 +1,10 @@
 package me.deftware.client.framework.wrappers.render;
 
-import net.minecraft.client.renderer.GlStateManager;
+import java.nio.FloatBuffer;
+
 import org.lwjgl.opengl.GL11;
 
-import java.nio.FloatBuffer;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class IGlStateManager {
 

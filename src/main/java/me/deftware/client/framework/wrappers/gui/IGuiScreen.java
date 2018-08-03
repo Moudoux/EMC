@@ -1,20 +1,22 @@
 package me.deftware.client.framework.wrappers.gui;
 
-import java.awt.Desktop;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
+import net.minecraft.client.gui.IGuiEventListener;
+import net.minecraft.util.StringUtils;
 
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 
 public abstract class IGuiScreen extends GuiScreen {
@@ -34,30 +36,6 @@ public abstract class IGuiScreen extends GuiScreen {
 		onDraw(mouseX, mouseY, partialTicks);
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		onPostDraw(mouseX, mouseY, partialTicks);
-	}
-
-	@Override
-	public void handleMouseInput() throws IOException {
-		onMouseInput();
-		super.handleMouseInput();
-	}
-
-	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		super.keyTyped(typedChar, keyCode);
-		onKeyTyped(typedChar, keyCode);
-	}
-
-	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		super.mouseClicked(mouseX, mouseY, mouseButton);
-		onMouseClicked(mouseX, mouseY, mouseButton);
-	}
-
-	@Override
-	protected void mouseReleased(int mouseX, int mouseY, int state) {
-		super.mouseReleased(mouseX, mouseY, state);
-		onMouseReleased(mouseX, mouseY, state);
 	}
 
 	@Override
@@ -84,15 +62,13 @@ public abstract class IGuiScreen extends GuiScreen {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) throws IOException {
-		super.actionPerformed(button);
-		onActionPerformed(button.id, button.enabled);
-	}
-
-	@Override
 	public void onGuiClosed() {
 		onGuiClose();
 		super.onGuiClosed();
+	}
+
+	protected void addEventListener(IGuiEventListener listener) {
+		this.field_195124_j.add(listener);
 	}
 
 	protected void drawIDefaultBackground() {
@@ -125,12 +101,42 @@ public abstract class IGuiScreen extends GuiScreen {
 		buttonList.clear();
 	}
 
-	protected String getClipboard() {
-		return GuiScreen.getClipboardString();
+	/**
+	 * Returns a string stored in the system clipboard.
+	 */
+	public static String getClipboardString() {
+		try {
+			Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents((Object) null);
+
+			if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+				return (String) transferable.getTransferData(DataFlavor.stringFlavor);
+			}
+		} catch (Exception var1) {
+			;
+		}
+
+		return "";
 	}
 
-	protected void setClipboard(String clipboard) {
-		GuiScreen.setClipboardString(clipboard);
+	/**
+	 * Stores the given string in the system clipboard
+	 */
+	public static void setClipboardString(String copyText) {
+		if (!StringUtils.isNullOrEmpty(copyText)) {
+			try {
+				StringSelection stringselection = new StringSelection(copyText);
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, (ClipboardOwner) null);
+			} catch (Exception var2) {
+				;
+			}
+		}
+	}
+
+	public static void openLink(String url) {
+		try {
+			Desktop.getDesktop().browse(new URL(url).toURI());
+		} catch (Exception e) {
+		}
 	}
 
 	public void drawCenteredString(String text, int x, int y, int color) {
@@ -142,60 +148,26 @@ public abstract class IGuiScreen extends GuiScreen {
 		pause = state;
 	}
 
-	public static boolean isCtrlKeyDown() {
-		return Minecraft.IS_RUNNING_ON_MAC ? Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220)
-				: Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157);
-	}
-
-	public static boolean isShiftKeyDown() {
-		return Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54);
-	}
-
-	public static void openLink(String url) {
-		try {
-			Desktop.getDesktop().browse(new URL(url).toURI());
-		} catch (Exception e) {
-		}
-	}
-
-	public static boolean isAltKeyDown() {
-		return Keyboard.isKeyDown(56) || Keyboard.isKeyDown(184);
-	}
-
-	public static boolean isKeyDown(int id) {
-		return Keyboard.isKeyDown(id);
-	}
-
 	protected void drawTexture(IResourceLocation texture, int x, int y, int width, int height) {
 		mc.getTextureManager().bindTexture(texture);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		GuiScreen.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
 	}
 
-	public int getIGuiScreenWidth() {
-		return width;
-	}
-
-	public int getIGuiScreenHeight() {
-		return height;
-	}
-
-	protected int getDisplayScreenWidth() {
-		return Display.getWidth();
-	}
-
-	protected int getDisplayScreenHeight() {
-		return Display.getHeight();
-	}
-
 	public static int getScaledHeight() {
-		ScaledResolution r = new ScaledResolution(Minecraft.getMinecraft());
-		return r.getScaledHeight();
+		return Minecraft.getMinecraft().mainWindow.getScaledHeight();
 	}
 
 	public static int getScaledWidth() {
-		ScaledResolution r = new ScaledResolution(Minecraft.getMinecraft());
-		return r.getScaledWidth();
+		return Minecraft.getMinecraft().mainWindow.getScaledWidth();
+	}
+
+	public static int getDisplayHeight() {
+		return Minecraft.getMinecraft().mainWindow.getHeight();
+	}
+
+	public static int getDisplayWidth() {
+		return Minecraft.getMinecraft().mainWindow.getWidth();
 	}
 
 	public void drawITintBackground(int tint) {
@@ -226,9 +198,5 @@ public abstract class IGuiScreen extends GuiScreen {
 	protected abstract void onMouseClicked(int mouseX, int mouseY, int mouseButton);
 
 	protected abstract void onGuiResize(int w, int h);
-
-	public void onTick() {
-
-	}
 
 }

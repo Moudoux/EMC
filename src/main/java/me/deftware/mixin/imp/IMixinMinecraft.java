@@ -2,6 +2,7 @@ package me.deftware.mixin.imp;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.client.MainWindow;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.Session;
 import net.minecraft.util.Timer;
@@ -14,11 +15,15 @@ public interface IMixinMinecraft {
 
 	Timer getTimer();
 
+	MainWindow getMainWindow();
+
 	void displayGuiScreen(@Nullable GuiScreen guiScreenIn);
 
 	void doRightClickMouse();
 
 	void doClickMouse();
+
+	void doMiddleClickMouse();
 
 	void setRightClickDelayTimer(int delay);
 

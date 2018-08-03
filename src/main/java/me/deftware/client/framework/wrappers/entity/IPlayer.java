@@ -25,7 +25,7 @@ public class IPlayer {
 	}
 
 	public String getName() {
-		return player.getName();
+		return player.getGameProfile().getName();
 	}
 
 	public String getFormattedDisplayName() {
@@ -33,8 +33,8 @@ public class IPlayer {
 	}
 
 	public float getNametagSize() {
-		return Minecraft.getMinecraft().player.getDistanceToEntity(player) / 2.5F <= 1.5F ? 2.0F
-				: Minecraft.getMinecraft().player.getDistanceToEntity(player) / 2.5F;
+		return Minecraft.getMinecraft().player.getDistance(player) / 2.5F <= 1.5F ? 2.0F
+				: Minecraft.getMinecraft().player.getDistance(player) / 2.5F;
 	}
 
 	public boolean isSelf() {

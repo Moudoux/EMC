@@ -13,7 +13,7 @@ public class MixinTextureManager {
 	@ModifyVariable(method = "bindTexture", at = @At("HEAD"))
 	private ResourceLocation bindTexture(ResourceLocation resource) {
 		if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "RAINBOW_ITEM_GLINT", false)) {
-			if (resource.getResourcePath().contains("enchanted_item_glint")) {
+			if (resource.getPath().contains("enchanted_item_glint")) {
 				resource = new ResourceLocation(
 						"emc/enchanted_item_glint_rainbow.png");
 			}
