@@ -27,7 +27,7 @@ public class MixinMouseHelper {
 	}
 
 	@Inject(method = "onScroll", at = @At("HEAD"))
-	private void onScroll(long windowPointer, double xoffset, double yoffset) {
+	private void onScroll(long windowPointer, double xoffset, double yoffset, CallbackInfo ci) {
 		if (windowPointer != mc.mainWindow.getWindowPointer()) {
 			return;
 		}

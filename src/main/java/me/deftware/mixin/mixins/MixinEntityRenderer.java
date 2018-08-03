@@ -66,7 +66,7 @@ public class MixinEntityRenderer {
 	}
 
 	@Inject(method = "updateCameraAndRender", at = @At("HEAD"))
-	private void updateCameraAndRender(float partialTicks, long finishTimeNano, CallbackInfo ci) {
+	private void updateCameraAndRender(float partialTicks, long finishTimeNano, boolean p_updateCameraAndRender_4_, CallbackInfo ci) {
 		this.partialTicks = partialTicks;
 	}
 

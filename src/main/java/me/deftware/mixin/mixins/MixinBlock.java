@@ -42,7 +42,7 @@ public abstract class MixinBlock {
 	}
 
 	@Inject(method = "shouldSideBeRendered", at = @At("HEAD"), cancellable = true)
-	private void shouldSideBeRendered(IBlockState blockState, IBlockReader blockReader, BlockPos pos, EnumFacing side,
+	private static void shouldSideBeRendered(IBlockState blockState, IBlockReader blockReader, BlockPos pos, EnumFacing side,
 									  CallbackInfoReturnable<Boolean> callback) {
 		if (SettingsMap.isOverrideMode()) {
 			callback.setReturnValue(
@@ -57,9 +57,9 @@ public abstract class MixinBlock {
 	}
 
 	@Inject(method = "getPlayerRelativeBlockHardness", at = @At("HEAD"), cancellable = true)
-	private void getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World worldIn, BlockPos pos,
+	public void getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, IBlockReader reader, BlockPos pos,
 			CallbackInfoReturnable<Float> ci) {
-		float f = state.getBlockHardness(worldIn, pos);
+		float f = state.getBlockHardness(reader, pos);
 		EventBlockhardness event = new EventBlockhardness().send();
 		if (f < 0.0F) {
 			ci.setReturnValue(0.0F);
