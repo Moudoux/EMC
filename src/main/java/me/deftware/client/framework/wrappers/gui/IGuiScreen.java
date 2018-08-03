@@ -18,6 +18,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.glfw.GLFW;
 
 public abstract class IGuiScreen extends GuiScreen {
 
@@ -65,6 +66,24 @@ public abstract class IGuiScreen extends GuiScreen {
 	public void onGuiClosed() {
 		onGuiClose();
 		super.onGuiClosed();
+	}
+
+	@Override
+	public boolean keyPressed(int keyCode, int action, int modifiers) {
+		onKeyPressed(keyCode, action, modifiers);
+		return true;
+	}
+
+	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		onMouseReleased((int) mouseX, (int) mouseY,button);
+		return true;
+	}
+
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		onMouseClicked((int) mouseX, (int) mouseY,button);
+		return true;
 	}
 
 	protected void addEventListener(IGuiEventListener listener) {
@@ -154,6 +173,14 @@ public abstract class IGuiScreen extends GuiScreen {
 		GuiScreen.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
 	}
 
+	public int getIGuiScreenWidth() {
+		return width;
+	}
+
+	public int getIGuiScreenHeight() {
+		return height;
+	}
+
 	public static int getScaledHeight() {
 		return Minecraft.getMinecraft().mainWindow.getScaledHeight();
 	}
@@ -177,9 +204,6 @@ public abstract class IGuiScreen extends GuiScreen {
 	protected void onGuiClose() {
 	}
 
-	protected void onMouseInput() {
-	}
-
 	protected abstract void onInitGui();
 
 	protected void onPostDraw(int mouseX, int mouseY, float partialTicks) {
@@ -189,9 +213,12 @@ public abstract class IGuiScreen extends GuiScreen {
 
 	protected abstract void onUpdate();
 
-	protected abstract void onActionPerformed(int buttonID, boolean enabled);
-
-	protected abstract void onKeyTyped(char typedChar, int keyCode);
+	/**
+	 * @see GLFW#GLFW_RELEASE
+	 * @see GLFW#GLFW_PRESS
+	 * @see GLFW#GLFW_REPEAT
+	 */
+	protected abstract void onKeyPressed(int keyCode, int action, int modifiers);
 
 	protected abstract void onMouseReleased(int mouseX, int mouseY, int mouseButton);
 

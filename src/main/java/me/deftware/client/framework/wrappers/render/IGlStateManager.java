@@ -29,7 +29,7 @@ public class IGlStateManager {
 	}
 
 	public static void multMatrix(FloatBuffer matrix) {
-		GL11.glMultMatrix(matrix);
+		GL11.glMultMatrixf(matrix);
 	}
 
 	public static void color(float colorRed, float colorGreen, float colorBlue) {

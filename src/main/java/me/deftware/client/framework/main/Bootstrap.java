@@ -13,6 +13,7 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
+import me.deftware.client.framework.wrappers.IMinecraft;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,6 +25,7 @@ import me.deftware.client.framework.apis.marketplace.MarketplaceAPI;
 import me.deftware.client.framework.fonts.Fonts;
 import me.deftware.client.framework.utils.OSUtils;
 import net.minecraft.client.Minecraft;
+import tests.GuiScreenTest;
 
 public class Bootstrap {
 
