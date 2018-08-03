@@ -26,6 +26,17 @@ public class IMouse {
 		}
 	}
 
+	public static boolean isButtonDown(int button) {
+		if (button == 0) {
+			return GLFW.glfwGetMouseButton(Minecraft.getMinecraft().mainWindow.getWindowPointer(),
+					GLFW.GLFW_MOUSE_BUTTON_1) == 1 ? true : false;
+		} else if (button == 1) {
+			return GLFW.glfwGetMouseButton(Minecraft.getMinecraft().mainWindow.getWindowPointer(),
+					GLFW.GLFW_MOUSE_BUTTON_2) == 1 ? true : false;
+		}
+		return false;
+	}
+
 	public static void registerScrollHook(MouseScrollCallback cb) {
 		scrollCallbacks.add(cb);
 	}
