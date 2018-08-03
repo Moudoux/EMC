@@ -20,7 +20,7 @@ public class MixinServerListEntryNormal {
 	private ServerData server;
 
 	@Inject(method = "func_194999_a", at = @At("HEAD"))
-	private void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected, float partialTicks, CallbackInfo ci) {
+	private void drawEntry(int p_194999_1_, int p_194999_2_, int p_194999_3_, int p_194999_4_, boolean p_194999_5_, float p_194999_6_, CallbackInfo ci) {
 		if (server.pingToServer > 1 && !sentEvent) {
 			sentEvent = true;
 			EventServerPinged event = new EventServerPinged(server.serverMOTD, server.playerList,

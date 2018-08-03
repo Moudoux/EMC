@@ -30,7 +30,7 @@ public class Event {
 				switch (event.getCommand()) {
 					case ".version":
 						ChatProcessor.printFrameworkMessage("You are running " + FrameworkConstants.FRAMEWORK_NAME
-								+ " version " + FrameworkConstants.VERSION + " built by " + FrameworkConstants.AUTHOR);
+								+ " version " + FrameworkConstants.VERSION + "." + FrameworkConstants.PATCH + " built by " + FrameworkConstants.AUTHOR);
 						return (T) this;
 					case ".unload":
 						// Unload EMC mods

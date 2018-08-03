@@ -39,7 +39,6 @@ public class MixinEntityRenderer {
 	@Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/GuiIngame.renderGameOverlay(F)V"))
 	private void onRender2D(CallbackInfo cb) {
 		ChatProcessor.sendMessages();
-		new EventRender2D(0f).send();
 	}
 
 	@Inject(method = "addRainParticles", at = @At("HEAD"), cancellable = true)

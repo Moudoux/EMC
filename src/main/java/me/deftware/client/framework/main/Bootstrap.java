@@ -13,7 +13,7 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
-import me.deftware.client.framework.wrappers.IMinecraft;
+import net.minecraft.realms.RealmsSharedConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,7 +22,6 @@ import com.google.gson.JsonObject;
 
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.apis.marketplace.MarketplaceAPI;
-import me.deftware.client.framework.fonts.Fonts;
 import me.deftware.client.framework.utils.OSUtils;
 import net.minecraft.client.Minecraft;
 import tests.GuiScreenTest;
@@ -66,11 +65,8 @@ public class Bootstrap {
 			// Register command trigger for default EMC commands (.cinfo and .unload)
 			Bootstrap.registerCommandTrigger(".");
 
-			// Initialize font rendering
-			Fonts.initialize();
-
 			// EMC mods are stored in .minecraft/libraries/EMC
-			File emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator);
+			File emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + RealmsSharedConstants.VERSION_STRING + File.separator);
 			if (!emc_root.exists()) {
 				emc_root.mkdir();
 			}

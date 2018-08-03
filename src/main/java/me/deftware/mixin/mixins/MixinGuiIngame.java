@@ -1,5 +1,6 @@
 package me.deftware.mixin.mixins;
 
+import me.deftware.client.framework.event.events.EventRender2D;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,6 +20,11 @@ public class MixinGuiIngame {
 			GlStateManager.enableAlpha();
 			ci.cancel();
 		}
+	}
+
+	@Inject(method = "renderGameOverlay", at = @At("RETURN"))
+	private void onRenderGameOverlay(float ticks, CallbackInfo callbackInfo) {
+		new EventRender2D(ticks).send();
 	}
 
 	@Inject(method = "renderHotbar", at = @At("HEAD"))

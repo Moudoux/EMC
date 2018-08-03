@@ -1,5 +1,7 @@
 package me.deftware.mixin.mixins;
 
+import me.deftware.client.framework.wrappers.gui.IGuiTextField;
+import me.deftware.mixin.components.InternalGuiTextField;
 import me.deftware.mixin.imp.IMixinGuiScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
@@ -14,7 +16,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.List;
 
 @Mixin(GuiChat.class)
-public abstract class MixinGuiChat extends GuiChat {
+public abstract class MixinGuiChat extends GuiScreen {
 
 	@Shadow
 	protected GuiTextField inputField;
@@ -42,7 +44,7 @@ public abstract class MixinGuiChat extends GuiChat {
 	public void initGui() {
 		Minecraft.getMinecraft().keyboardListener.enableRepeatEvents(true);
 		this.sentHistoryCursor = Minecraft.getMinecraft().ingameGUI.getChatGUI().getSentMessages().size();
-		this.inputField = new GuiTextField(0, ((IMixinGuiScreen) this).getFontRenderer(), 4, ((GuiScreen) (Object) this).height - 12, ((GuiScreen) (Object) this).width - 4, 12);
+		this.inputField = new InternalGuiTextField(0, ((IMixinGuiScreen) this).getFontRenderer(), 4, ((GuiScreen) (Object) this).height - 12, ((GuiScreen) (Object) this).width - 4, 12);
 		this.inputField.setMaxStringLength(256);
 		this.inputField.setEnableBackgroundDrawing(false);
 		this.inputField.setFocused(true);
