@@ -37,7 +37,7 @@ That's it. It is as easy as that. The IEntityPlayer.setWalkspeed then calls the 
 Minecraft versions currently supported
 -------------------
 
-* 1.13 (Coming soon)
+* 1.13
 * 1.12.2
 
 Maven repo/Loading EMC
@@ -47,12 +47,12 @@ Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To
 
 ```
 {
-	"name": "me.deftware:EMC:13.2.9-1.12.2",
+	"name": "me.deftware:EMC:13.4.9-1.13",
 	"url": "https://gitlab.com/EMC-Framework/EMC/raw/master/maven/"
 }
 ```
 
-Then in the `minecraftArguments` field append `--tweakClass me.deftware.launch.Launcher` at the end. If you want to see an example on how to load EMC see [example_client.json](https://gitlab.com/EMC-Framework/EMC/blob/master/example_client.json)
+Then in the `arguments->game` array add `"--tweakClass", "me.deftware.launch.Launcher"` at the end. If you want to see an example on how to load EMC see [example_client.json](https://gitlab.com/EMC-Framework/EMC/blob/master/example_client.json)
 
 Stacking on top of Forge
 -------------------
@@ -67,8 +67,8 @@ Check out the [EMC Development Kit](https://gitlab.com/EMC-Framework/EDK)
 Built in commands
 -------------------
 
-You can type `.version` to check what EMC version you are running, you can type `.cinfo` to see what client is loaded.
-You can also type `.unload` to eject mods running in your client.
+You can type `.version` to check what EMC version you are running, you can type `.mods` to see all loaded mods.
+You can also type `.unload [mod name]` to eject loaded mods.
 
 Why use EMC?
 -------------------

@@ -18,7 +18,6 @@ public class MixinGuiIngame {
 	private void crosshairEvent(float partialTicks, CallbackInfo ci) {
 		System.out.println((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "CROSSHAIR", true));
 		if (!((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "CROSSHAIR", true))) {
-			System.out.println("STOP");
 			GlStateManager.enableAlpha();
 			ci.cancel();
 		}

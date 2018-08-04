@@ -65,14 +65,12 @@ public abstract class IGuiScreen extends GuiScreen {
 
 			@Override
 			public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-				System.out.println("Mouse clicked");
 				onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
 				return false;
 			}
 
 			@Override
 			public boolean mouseReleased(double mouseX, double mouseY, int mouseButton) {
-				System.out.println("Mouse released");
 				onMouseReleased((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
 				return false;
 			}

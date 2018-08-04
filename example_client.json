@@ -1,28 +1,35 @@
 {
-    "inheritsFrom": "1.12.2",
-    "id": "1.12.2-EMC",
-    "time": "2017-09-18T03:41:11-05:00",
-    "releaseTime": "2017-09-18T03:39:46-05:00",
+    "inheritsFrom": "1.13",
+    "id": "1.13-EMC",
+    "time": "2018-07-12T08:51:45-05:00",
+    "releaseTime": "2018-07-12T08:51:45-05:00",
     "type": "release",
-    "minecraftArguments": "--tweakClass me.deftware.launch.Launcher --username ${auth_player_name} --version ${version_name} --gameDir ${game_directory} --assetsDir ${assets_root} --assetIndex ${assets_index_name} --uuid ${auth_uuid} --accessToken ${auth_access_token} --userType ${user_type}",
+    "arguments": {
+        "game": [
+            "--tweakClass",
+            "me.deftware.launch.Launcher"
+        ]
+    },
     "mainClass": "net.minecraft.launchwrapper.Launch",
-    "minimumLauncherVersion": 0,
-    "jar": "1.12.2",
-    "downloads": {},
-    "libraries": [{
+    "libraries": [
+        {
             "name": "net.minecraft:launchwrapper:1.12"
         },
         {
-            "name": "me.deftware:EMC:13.2.9-1.12.2",
+            "name": "me.deftware:EMC:13.4.9-1.13",
             "url": "https://gitlab.com/EMC-Framework/EMC/raw/master/maven/"
         },
         {
-            "name": "org.spongepowered:mixin:0.7.1-SNAPSHOT",
-            "url": "http://dl.liteloader.com/versions/"
+            "name": "org.dimdev:mixin:0.7.11-SNAPSHOT",
+            "url": "https://www.dimdev.org/maven/"
         },
         {
             "name": "net.jodah:typetools:0.5.0",
             "url": "https://repo.maven.apache.org/maven2/"
+        },
+        {
+            "name": "com.github.vbauer:yandex-translate-api:1.3.3",
+            "url": "https://jitpack.io/"
         }
     ]
 }
