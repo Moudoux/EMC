@@ -48,6 +48,7 @@
     "MixinWorldClient",
     "MixinSkinManager",
     "MixinKeyboardListener",
-    "MixinMouseHelper"
+    "MixinMouseHelper",
+    "MixinGuiEventHandler"
   ]
 }

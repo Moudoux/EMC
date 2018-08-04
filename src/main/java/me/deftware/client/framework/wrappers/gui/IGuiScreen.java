@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.util.StringUtils;
 
@@ -64,12 +65,14 @@ public abstract class IGuiScreen extends GuiScreen {
 
 			@Override
 			public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+				System.out.println("Mouse clicked");
 				onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
 				return false;
 			}
 
 			@Override
 			public boolean mouseReleased(double mouseX, double mouseY, int mouseButton) {
+				System.out.println("Mouse released");
 				onMouseReleased((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
 				return false;
 			}
@@ -86,6 +89,9 @@ public abstract class IGuiScreen extends GuiScreen {
 	@Override
 	public boolean keyPressed(int keyCode, int action, int modifiers) {
 		onKeyPressed(keyCode, action, modifiers);
+		if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+			IMinecraft.setGuiScreen(null);
+		}
 		return true;
 	}
 

@@ -16,15 +16,12 @@ public class MixinGuiIngame {
 
 	@Inject(method = "renderAttackIndicator", at = @At(value = "INVOKE", target = "net/minecraft/client/renderer/GlStateManager.enableAlpha()V"), cancellable = true)
 	private void crosshairEvent(float partialTicks, CallbackInfo ci) {
+		System.out.println((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "CROSSHAIR", true));
 		if (!((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "CROSSHAIR", true))) {
+			System.out.println("STOP");
 			GlStateManager.enableAlpha();
 			ci.cancel();
 		}
-	}
-
-	@Inject(method = "renderGameOverlay", at = @At("RETURN"))
-	private void onRenderGameOverlay(float ticks, CallbackInfo callbackInfo) {
-		new EventRender2D(ticks).send();
 	}
 
 	@Inject(method = "renderHotbar", at = @At("HEAD"))
