@@ -3,7 +3,7 @@ package me.deftware.client.framework.wrappers.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
-public abstract class IGuiButton extends GuiButton {
+public abstract class IGuiButton extends GuiButton implements CustomIGuiEventListener {
 
 	public IGuiButton(int buttonId, int x, int y, String buttonText) {
 		super(buttonId, x, y, 200, 20, buttonText);

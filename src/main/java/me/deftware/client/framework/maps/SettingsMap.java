@@ -81,6 +81,11 @@ public class SettingsMap {
 		 */
 		public static final int ENTITY_SETTINGS = 4;
 
+		/**
+		 * MAX_FPS
+		 */
+		public static final int GAME_SETTINGS = 5;
+
 	}
 
 }

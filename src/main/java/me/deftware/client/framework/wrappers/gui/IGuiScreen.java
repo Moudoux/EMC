@@ -60,6 +60,21 @@ public abstract class IGuiScreen extends GuiScreen {
 	public void initGui() {
 		super.initGui();
 		onInitGui();
+		field_195124_j.add(new IGuiEventListener() {
+
+			@Override
+			public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+				onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
+				return false;
+			}
+
+			@Override
+			public boolean mouseReleased(double mouseX, double mouseY, int mouseButton) {
+				onMouseReleased((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
+				return false;
+			}
+
+		});
 	}
 
 	@Override
@@ -74,19 +89,7 @@ public abstract class IGuiScreen extends GuiScreen {
 		return true;
 	}
 
-	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		onMouseReleased((int) mouseX, (int) mouseY,button);
-		return true;
-	}
-
-	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		onMouseClicked((int) mouseX, (int) mouseY,button);
-		return true;
-	}
-
-	public void addEventListener(IGuiEventListener listener) {
+	public void addEventListener(CustomIGuiEventListener listener) {
 		this.field_195124_j.add(listener);
 	}
 
@@ -104,6 +107,7 @@ public abstract class IGuiScreen extends GuiScreen {
 
 	protected void addButton(IGuiButton button) {
 		buttonList.add(button);
+		field_195124_j.add(button);
 	}
 
 	protected ArrayList<IGuiButton> getIButtonList() {
