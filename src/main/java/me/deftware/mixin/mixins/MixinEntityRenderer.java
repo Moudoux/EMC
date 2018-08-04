@@ -65,12 +65,12 @@ public class MixinEntityRenderer {
 		}
 	}
 
-	@Inject(method = "updateCameraAndRender", at = @At("HEAD"))
-	private void updateCameraAndRender(float partialTicks, long finishTimeNano, boolean p_updateCameraAndRender_4_, CallbackInfo ci) {
+	@Inject(method = "updateCameraAndRender(FJ)V", at = @At("HEAD"))
+	private void updateCameraAndRender(float partialTicks, long finishTimeNano, CallbackInfo ci) {
 		this.partialTicks = partialTicks;
 	}
 
-	@Redirect(method = "updateCameraAndRender", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/EntityRenderer;renderHand:Z", opcode = GETFIELD))
+	@Redirect(method = "updateCameraAndRender(FJ)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/EntityRenderer;renderHand:Z", opcode = GETFIELD))
 	private boolean updateCameraAndRender_renderHand(EntityRenderer self) {
 		new EventRender3D(partialTicks).send();
 		return renderHand;
