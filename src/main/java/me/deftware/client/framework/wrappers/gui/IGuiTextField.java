@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiTextField;
 import org.lwjgl.glfw.GLFW;
 
-public class IGuiTextField extends GuiTextField {
+public class IGuiTextField extends GuiTextField implements CustomIGuiEventListener {
 
 	public IGuiTextField(int componentId, int x, int y, int width, int height) {
 		super(componentId, Minecraft.getMinecraft().fontRenderer, x, y, width, height);

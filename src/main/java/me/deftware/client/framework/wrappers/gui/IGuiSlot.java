@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiSlot;
 import org.lwjgl.glfw.GLFW;
 
-public abstract class IGuiSlot extends GuiSlot {
+public abstract class IGuiSlot extends GuiSlot implements CustomIGuiEventListener {
 
 	private int selectedSlot;
 
