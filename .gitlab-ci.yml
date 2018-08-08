@@ -1,5 +1,5 @@
 before_script:
-  - apt-get update && apt-get install -y default-jdk gradle maven wget
+  - apt-get update && apt-get install -y default-jdk && chmod +x gradlew
 
 ebuild:
   script:
