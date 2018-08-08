@@ -2,6 +2,7 @@ package me.deftware.client.framework.main;
 
 import com.google.gson.JsonObject;
 import me.deftware.client.framework.wrappers.gui.IGuiButton;
+import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -34,14 +35,11 @@ public class GuiUpdateLoader extends GuiScreen {
 						: "EMC")) {
 			@Override
 			public void onClick(double mouseX, double mouseY) {
-				try {
-					String link = "https://gitlab.com/EMC-Framework/EMC-Installer/tags";
-					if (clientInfo.get("updateLinkOverride").getAsBoolean()) {
-						link = clientInfo.get("website").getAsString();
-					}
-					Desktop.getDesktop().browse(new URL(link).toURI());
-				} catch (Exception e) {
+				String link = "https://gitlab.com/EMC-Framework/EMC-Installer/tags";
+				if (clientInfo.get("updateLinkOverride").getAsBoolean()) {
+					link = clientInfo.get("website").getAsString();
 				}
+				IGuiScreen.openLink(link);
 				Minecraft.getMinecraft().shutdown();
 			}
 		});

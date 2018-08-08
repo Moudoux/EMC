@@ -19,6 +19,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.Util;
 import org.lwjgl.glfw.GLFW;
 
 public abstract class IGuiScreen extends GuiScreen {
@@ -65,13 +66,21 @@ public abstract class IGuiScreen extends GuiScreen {
 
 			@Override
 			public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-				onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
+				try {
+					onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 				return false;
 			}
 
 			@Override
 			public boolean mouseReleased(double mouseX, double mouseY, int mouseButton) {
-				onMouseReleased((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
+				try {
+					onMouseReleased((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 				return false;
 			}
 
@@ -160,10 +169,7 @@ public abstract class IGuiScreen extends GuiScreen {
 	}
 
 	public static void openLink(String url) {
-		try {
-			Desktop.getDesktop().browse(new URL(url).toURI());
-		} catch (Exception e) {
-		}
+		Util.getOSType().openUri(url);
 	}
 
 	public void drawCenteredString(String text, int x, int y, int color) {
