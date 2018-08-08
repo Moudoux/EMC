@@ -3,4 +3,4 @@ before_script:
 
 ebuild:
   script:
-    - gradle build -Pforgebuild="false"
+    - ./gradlew build -Pforgebuild="false
