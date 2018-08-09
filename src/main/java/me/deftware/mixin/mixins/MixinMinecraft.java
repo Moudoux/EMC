@@ -2,6 +2,7 @@ package me.deftware.mixin.mixins;
 
 import javax.annotation.Nullable;
 
+import me.deftware.client.framework.event.events.EventShutdown;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.MainWindow;
 import org.spongepowered.asm.mixin.Final;
@@ -61,7 +62,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 	}
 
 	@Inject(method = "runTick", at = @At("HEAD"))
-	private void runTick(CallbackInfo cb) {
+	private void runTick(CallbackInfo ci) {
 		if (Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu) {
 			EventGuiScreenDisplay event = new EventGuiScreenDisplay(Minecraft.getMinecraft().currentScreen).send();
 			if (!(event.getScreen() instanceof GuiMainMenu)) {
@@ -71,7 +72,8 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 	}
 
 	@Inject(method = "shutdownMinecraftApplet", at = @At("HEAD"))
-	public void shutdownMinecraftApplet() {
+	public void shutdownMinecraftApplet(CallbackInfo ci) {
+		new EventShutdown().send();
 		Bootstrap.isRunning = false;
 	}
 
