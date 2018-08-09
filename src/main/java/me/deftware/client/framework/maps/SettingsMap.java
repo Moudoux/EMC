@@ -58,6 +58,7 @@ public class SettingsMap {
 		 * translucent = true | false
 		 * custom_cactus_voxel = true | false
 		 * render_barrier_blocks = true | false
+		 * LIQUID_VOXEL_FULL = true | false
 		 */
 		public static final int BLOCKS = 1;
 

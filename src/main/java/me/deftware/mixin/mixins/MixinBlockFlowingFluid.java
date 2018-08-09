@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 public class MixinBlockFlowingFluid {
 
     public VoxelShape getShapeForCollision(IBlockState p_getShapeForCollision_1_, IBlockReader p_getShapeForCollision_2_, BlockPos p_getShapeForCollision_3_) {
-        return (boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "liquid_aabb_solid", false)
+        return (boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "LIQUID_VOXEL_FULL", false)
                 ? ShapeUtils.fullCube()
                 : ShapeUtils.emptyShape();
     }
