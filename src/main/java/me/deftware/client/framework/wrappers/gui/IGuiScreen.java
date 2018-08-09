@@ -66,21 +66,13 @@ public abstract class IGuiScreen extends GuiScreen {
 
 			@Override
 			public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-				try {
-					onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
+				onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
 				return false;
 			}
 
 			@Override
 			public boolean mouseReleased(double mouseX, double mouseY, int mouseButton) {
-				try {
-					onMouseReleased((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
+				onMouseReleased((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
 				return false;
 			}
 

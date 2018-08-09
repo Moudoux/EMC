@@ -49,7 +49,6 @@
     "MixinSkinManager",
     "MixinKeyboardListener",
     "MixinMouseHelper",
-    "MixinGuiEventHandler",
-    "MixinBlockFlowingFluid"
+    "MixinGuiEventHandler"
   ]
 }

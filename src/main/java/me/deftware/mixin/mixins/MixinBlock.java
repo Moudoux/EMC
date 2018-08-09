@@ -1,6 +1,9 @@
 package me.deftware.mixin.mixins;
 
+import net.minecraft.block.BlockFlowingFluid;
 import net.minecraft.state.StateContainer;
+import net.minecraft.util.math.shapes.ShapeUtils;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.chunk.BlockStateContainer;
 import org.spongepowered.asm.mixin.Final;
@@ -75,6 +78,15 @@ public abstract class MixinBlock {
 			if ((boolean) SettingsMap.getValue(Block.REGISTRY.getIDForObject(blockState.getBlock()), "translucent", true)) {
 				ci.setReturnValue(BlockRenderLayer.TRANSLUCENT);
 			}
+		}
+	}
+
+	@Inject(method = "getShapeForCollision", at = @At("HEAD"), cancellable = true)
+	public void getShapeForCollision(IBlockState p_getShapeForCollision_1_, IBlockReader p_getShapeForCollision_2_, BlockPos p_getShapeForCollision_3_, CallbackInfoReturnable<VoxelShape> ci) {
+		if ((Object) this instanceof BlockFlowingFluid) {
+			ci.setReturnValue((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "LIQUID_VOXEL_FULL", false)
+					? ShapeUtils.fullCube()
+					: ShapeUtils.emptyShape());
 		}
 	}
 
