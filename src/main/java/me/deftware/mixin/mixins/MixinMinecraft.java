@@ -70,6 +70,11 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 		}
 	}
 
+	@Inject(method = "shutdownMinecraftApplet", at = @At("HEAD"))
+	public void shutdownMinecraftApplet() {
+		Bootstrap.isRunning = false;
+	}
+
 	@Override
 	public void setRightClickDelayTimer(int delay) {
 		this.rightClickDelayTimer = delay;

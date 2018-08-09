@@ -33,6 +33,7 @@ public class Bootstrap {
 	private static URLClassLoader modClassLoader;
 	public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
 	private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
+	public static boolean isRunning = true;
 
 	public static void init() {
 		try {
