@@ -2,6 +2,7 @@ package me.deftware.client.framework.event;
 
 
 import me.deftware.client.framework.FrameworkConstants;
+import me.deftware.client.framework.apis.oauth.OAuth;
 import me.deftware.client.framework.event.events.EventClientCommand;
 import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.utils.ChatProcessor;
