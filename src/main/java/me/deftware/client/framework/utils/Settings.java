@@ -2,6 +2,7 @@ package me.deftware.client.framework.utils;
 
 import com.google.gson.*;
 import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.wrappers.IMinecraft;
 
 import java.awt.*;
 import java.io.File;
@@ -26,12 +27,12 @@ public class Settings {
 			if (Bootstrap.modsInfo != null) {
 				modName = modInfo.get("name").getAsString();
 			}
-			String file = OSUtils.getMCDir() + "EMC_Configs" + File.separator + modName + "_config.json";
+			String file = OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator + "configs" + File.separator + modName + "_config.json";
 			configFile = new File(file);
 			if (!configFile.exists()) {
 				configFile.createNewFile();
 				config = new Gson().fromJson("{}", JsonObject.class);
-				addNode("version", "3.0");
+				addNode("version", "3.1");
 				saveConfig();
 			} else {
 				config = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
@@ -45,6 +46,7 @@ public class Settings {
 					configFile.delete();
 				}
 			}
+			System.exit(0);
 			initialize(modInfo);
 		}
 	}

@@ -14,6 +14,7 @@ import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
 import me.deftware.client.framework.utils.SessionUtils;
+import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.realms.RealmsSharedConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,7 +41,7 @@ public class Bootstrap {
 		try {
 			Bootstrap.logger.info("Loading EMC...");
 
-			File emc_configs = new File(OSUtils.getMCDir() + "EMC_Configs" + File.separator);
+			File emc_configs = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator + "configs" + File.separator);
 			if (!emc_configs.exists()) {
 				emc_configs.mkdirs();
 			}
