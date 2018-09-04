@@ -1,8 +1,10 @@
 {
     "1.13": {
-        "version": "13.5.8"
+        "version": "13.5.8",
+        "forge": false
     },
     "1.12.2": {
-        "version": "13.5.6"
+        "version": "13.5.6",
+        "forge": true
     }
 }
