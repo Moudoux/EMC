@@ -1,13 +1,8 @@
 buildscript {
     repositories {
         maven { url 'https://www.dimdev.org/maven/' }
-        maven {
-            name = 'SpongePowered'
-            url = 'http://repo.spongepowered.org/maven'
-        }
-        maven {
-            url = "https://plugins.gradle.org/m2/"
-        }
+        maven { url = 'http://repo.spongepowered.org/maven' }
+        maven { url = 'https://plugins.gradle.org/m2/' }
     }
 
     dependencies {
@@ -46,10 +41,7 @@ minecraft {
 
 repositories {
     mavenCentral()
-    maven {
-        name = 'spongepowered-repo'
-        url = 'http://repo.spongepowered.org/maven/'
-    }
+    maven { url = 'http://repo.spongepowered.org/maven/' }
     maven { url 'https://libraries.minecraft.net/' }
     maven { url 'https://www.dimdev.org/maven/' }
 }
@@ -64,7 +56,9 @@ configurations {
 dependencies {
     implementation('org.dimdev:mixin:0.7.11-SNAPSHOT') { transitive = false }
     implementation('net.minecraft:launchwrapper:1.12') { transitive = false }
-    implementation('com.google.code.gson:gson:2.8.5')
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'org.ow2.asm:asm:6.2'
+    implementation 'org.ow2.asm:asm-commons:6.2'
 }
 
 mixin {
@@ -74,7 +68,7 @@ mixin {
 
 shadowJar {
     dependencies {
-        include(dependency('org.dimdev:mixin'))
+        include('org.dimdev:mixin')
     }
     classifier = 'full'
 }

@@ -111,12 +111,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 		}
 	}
 
-	/**
-	 * @Author Deftware
-	 * @reason
-	 */
-	@Overwrite
-	public void sendChatMessage(String message) {
+	@Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
+	public void sendChatMessage(String message, CallbackInfo ci) {
 		String trigger = Bootstrap.isTrigger(message);
 		if (!trigger.equals("")) {
 			if (message.startsWith(trigger + "say")) {
@@ -126,9 +122,11 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 					return;
 				}
 				connection.sendPacket(new CPacketChatMessage(message.substring((trigger + "say ").length())));
+				ci.cancel();
 				return;
 			}
 			new EventClientCommand(message, trigger).send();
+			ci.cancel();
 			return;
 		} else if (message.startsWith("#")) {
 			if (message.startsWith("# ")) {
@@ -138,16 +136,19 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 			}
 			if (message.equals("")) {
 				ChatProcessor.printClientMessage("Invalid syntax, please use: " + ChatColor.AQUA + "# <Message>");
+				ci.cancel();
 				return;
 			}
 			new EventIRCMessage(message).send();
+			ci.cancel();
 			return;
 		}
 		EventChatSend event = new EventChatSend(message).send();
-		if (!event.isCanceled()) {
-			connection.sendPacket(new CPacketChatMessage(event.getMessage()));
+		if (event.isCanceled()) {
+			ci.cancel();
 		}
 	}
+
 
 	@Override
 	public void setHorseJumpPower(float height) {

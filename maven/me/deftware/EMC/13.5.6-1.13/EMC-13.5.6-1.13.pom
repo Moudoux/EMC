@@ -36,5 +36,17 @@
       <version>2.8.5</version>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>6.2</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm-commons</artifactId>
+      <version>6.2</version>
+      <scope>runtime</scope>
+    </dependency>
   </dependencies>
 </project>

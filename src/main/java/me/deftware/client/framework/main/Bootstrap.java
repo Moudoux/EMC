@@ -13,7 +13,6 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
-import me.deftware.client.framework.utils.SessionUtils;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.realms.RealmsSharedConstants;
 import org.apache.logging.log4j.LogManager;
@@ -26,15 +25,15 @@ import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.apis.marketplace.MarketplaceAPI;
 import me.deftware.client.framework.utils.OSUtils;
 import net.minecraft.client.Minecraft;
-import tests.GuiScreenTest;
 
 public class Bootstrap {
 
-	public static ArrayList<String> commandTriggers = new ArrayList<>();
+	private static ArrayList<String> commandTriggers = new ArrayList<>();
 	public static Logger logger = LogManager.getLogger();
 	private static URLClassLoader modClassLoader;
 	public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
 	private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
+	public static ArrayList<String> internalModClassNames = new ArrayList<>();
 	public static boolean isRunning = true;
 
 	public static void init() {
@@ -159,7 +158,7 @@ public class Bootstrap {
 		if (Bootstrap.mods.containsKey(mod)) {
 			Bootstrap.mods.get(mod).callMethod(method, caller);
 		} else {
-
+			Bootstrap.logger.error(String.format("EMC mod %s tried to call method %s in mod %s", caller, method, mod));
 		}
 	}
 
