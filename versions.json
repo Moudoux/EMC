@@ -1,13 +1,7 @@
 {
     "1.13": {
         "version": "13.5.6-1.13",
-        "extraLibs": {
-            "protocolhack":{
-                "name": "me.deftware:protocolhack:1.6-1.13",
-                "url": "https://gitlab.com/EMC-Framework/protocolhack/raw/master/maven/",
-                "tweaker": "me.deftware.protocolhack.launch.LauncherOther"
-            }
-        },
+        "extraLibs": {},
         "forge": false
     },
     "1.12.2": {
