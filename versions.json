@@ -1,12 +1,20 @@
 {
+    "1.13.1": {
+        "version": "13.5.6-1.13.1",
+        "tweaker": "me.deftware.inject.EMCTweaker",
+        "extraLibs": {},
+        "forge": false
+    },
     "1.13": {
         "version": "13.5.6-1.13",
         "extraLibs": {},
+        "tweaker": "me.deftware.launch.Launcher",
         "forge": false
     },
     "1.12.2": {
         "version": "13.5.6-1.12.2",
         "extraLibs": {},
+        "tweaker": "me.deftware.launch.Launcher",
         "forge": true
     }
 }
