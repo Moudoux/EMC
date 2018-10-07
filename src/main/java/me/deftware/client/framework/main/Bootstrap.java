@@ -13,13 +13,11 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
+import com.google.gson.*;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.realms.RealmsSharedConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.apis.marketplace.MarketplaceAPI;
