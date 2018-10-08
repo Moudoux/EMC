@@ -21,6 +21,7 @@ import net.minecraft.item.ItemSplashPotion;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.IRegistry;
 
 public class IItem {
 
@@ -32,17 +33,15 @@ public class IItem {
 
 	@Nullable
 	public static Item getByNameOrId(String id) {
-		Item item = Item.REGISTRY.getObject(new ResourceLocation(id));
-
-		if (item == null) {
-			try {
-				return Item.getItemById(Integer.parseInt(id));
-			} catch (NumberFormatException var3) {
-				;
+		try {
+			return Item.getItemById(Integer.parseInt(id));
+		} catch (NumberFormatException var3) {
+			ResourceLocation resourceLocation = new ResourceLocation(id);
+			if (Item.REGISTRY.containsKey(resourceLocation)) {
+				return Item.REGISTRY.getObject(resourceLocation);
 			}
+			return null;
 		}
-
-		return item;
 	}
 
 	public IItem(Item item) {

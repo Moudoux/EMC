@@ -146,6 +146,9 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 		EventChatSend event = new EventChatSend(message).send();
 		if (event.isCanceled()) {
 			ci.cancel();
+		} else if (!event.getMessage().equals(message)) {
+			connection.sendPacket(new CPacketChatMessage(event.getMessage()));
+			ci.cancel();
 		}
 	}
 

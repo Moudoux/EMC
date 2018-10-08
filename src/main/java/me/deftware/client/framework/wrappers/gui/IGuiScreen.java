@@ -179,6 +179,10 @@ public abstract class IGuiScreen extends GuiScreen {
 		GuiScreen.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
 	}
 
+	public static boolean isCtrlPressed() {
+		return isCtrlKeyDown();
+	}
+
 	public int getIGuiScreenWidth() {
 		return width;
 	}
@@ -205,6 +209,10 @@ public abstract class IGuiScreen extends GuiScreen {
 
 	public void drawITintBackground(int tint) {
 		drawBackground(tint);
+	}
+
+	public void setFocusedComponent(CustomIGuiEventListener listener) {
+		this.func_195073_a(listener);
 	}
 
 	protected void onGuiClose() {
