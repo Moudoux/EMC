@@ -1,12 +1,12 @@
 {
     "1.13.1": {
-        "version": "13.5.7-1.13.1",
+        "version": "13.5.9-1.13.1",
         "tweaker": "me.deftware.inject.EMCTweaker",
         "extraLibs": {},
         "forge": false
     },
     "1.13": {
-        "version": "13.5.7-1.13",
+        "version": "13.5.9-1.13",
         "extraLibs": {},
         "tweaker": "me.deftware.launch.Launcher",
         "forge": false
