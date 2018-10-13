@@ -38,7 +38,10 @@ public class Settings {
 			} else {
 				config = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
 			}
-			Runtime.getRuntime().addShutdownHook(new Thread(() -> saveConfig()));
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+				System.out.println("EMC: Saving mod config");
+				saveConfig();
+			}));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.out.println("Failed to load mod config, resetting it..");

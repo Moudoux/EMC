@@ -1,5 +1,6 @@
 package me.deftware.mixin.mixins;
 
+import me.deftware.client.framework.command.CommandRegister;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -125,6 +126,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 				ci.cancel();
 				return;
 			}
+			CommandRegister.dispatchCommand(message.substring(trigger.length()));
 			new EventClientCommand(message, trigger).send();
 			ci.cancel();
 			return;
