@@ -227,6 +227,8 @@ public class IEntity {
 			return entity instanceof EntityZombie;
 		} else if (e.equals(EntityType.ENTITY_ENDERMAN)) {
 			return entity instanceof EntityEnderman;
+		} else if (e.equals(EntityType.ENTITY_WITHER_SKELETON)) {
+		    return entity instanceof EntityWitherSkeleton;
 		}
 		return false;
 	}
@@ -236,7 +238,7 @@ public class IEntity {
 		/*
 		 * Hostile mobs
 		 */
-		ENTITY_ENDERMAN, ENTITY_ZOMBIE_PIGMAN, ENTITY_SPIDER
+		ENTITY_ENDERMAN, ENTITY_ZOMBIE_PIGMAN, ENTITY_SPIDER, ENTITY_WITHER_SKELETON
 	}
 
 }
