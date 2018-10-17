@@ -196,7 +196,17 @@ public class IEntity {
 		} else if (e.equals(EntityType.ENTITY_PROJECTILE)) {
 			return entity instanceof IProjectile;
 		}
-		// Mobs
+		// Passives
+		if (e.equals(EntityType.ENTITY_BAT)) {
+			return entity instanceof EntityBat;
+		} else if (e.equals(EntityType.ENTITY_CHICKEN)) {
+			return entity instanceof EntityChicken;
+		} else if (e.equals(EntityType.ENTITY_COW)) {
+			return entity instanceof EntityCow;
+		} else if (e.equals(EntityType.ENTITY_FISH)) {
+			return entity instanceof AbstractFish;
+		}
+		// Hostiles
 		if (e.equals(EntityType.ENTITY_WOLF)) {
 			return entity instanceof EntityWolf;
 		} else if (e.equals(EntityType.Entity_Ageable)) {
@@ -270,19 +280,29 @@ public class IEntity {
 		} else if (e.equals(EntityType.ENTITY_CAVE_SPIDER)) {
 			return entity instanceof EntityCaveSpider;
 		}
+		// Neutrals
 		return false;
 	}
 
 	public enum EntityType {
-		ENTITY_PLAYER_SP, EntityOtherPlayerMP, ENTITY_PLAYER, EntitySlime, EntityGolem, EntityFlying, EntityMob, EntityWaterMob, ENTITY_WOLF,
+		ENTITY_PLAYER_SP, EntityOtherPlayerMP, ENTITY_PLAYER, EntitySlime, EntityGolem, EntityFlying, EntityMob, EntityWaterMob,
 		ENTITY_LIVING_BASE, ENTITY_LIVING, Entity_Ageable, EntityAmbientCreature, ENTITY_ITEM, ENTITY_PROJECTILE,
+		/*
+		 * Passive mobs
+		 */
+		ENTITY_BAT, ENTITY_CHICKEN, ENTITY_COW, ENTITY_FISH, ENTITY_MOOSHROOM, ENTITY_OCELOT, ENTITY_PIG, ENTITY_POLAR_BEAR,
+		ENTITY_RABBIT, ENTITY_SHEEP, ENTITY_SQUID, ENTITY_TURTLE, ENTITY_VILLAGER,
 		/*
 		 * Hostile mobs
 		 */
 		ENTITY_ENDERMAN, ENTITY_ZOMBIE_PIGMAN, ENTITY_SPIDER, ENTITY_WITHER_SKELETON, ENTITY_WITHER, ENTITY_DRAGON, ENTITY_PHANTOM, ENTITY_DROWNED,
 		ENTITY_EVOKER, ENTITY_STRAY, ENTITY_ELDER_GUARDIAN, ENTITY_CREEPER, ENTITY_VINDICATOR, ENTITY_ILLUSIONER, ENTITY_ZOMBIE, ENTITY_HUSK,
 		ENTITY_SKELETON, ENTITY_SHULKER, ENTITY_SLIME, ENTITY_GUARDIAN, ENTITY_VEX, ENTITY_SILVERFISH, ENTITY_WITCH, ENTITY_GIANT, ENTITY_BLAZE,
-		ENTITY_ENDERMITE, ENTITY_GHAST, ENTITY_MAGMA_CUBE, ENTITY_CAVE_SPIDER
+		ENTITY_ENDERMITE, ENTITY_GHAST, ENTITY_MAGMA_CUBE, ENTITY_CAVE_SPIDER,
+		/*
+		 * Neutral mobs
+		 */
+		ENTITY_WOLF,
 	}
 
 }
