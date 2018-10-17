@@ -169,15 +169,7 @@ public class IEntity {
 	}
 
 	public boolean isHostile() {
-		if (entity instanceof EntityBlaze || entity instanceof EntityCreeper || entity instanceof EntityElderGuardian
-				|| entity instanceof EntityEndermite || entity instanceof EntityEvoker || entity instanceof EntityGhast
-				|| entity instanceof EntityGuardian || entity instanceof EntityHusk || entity instanceof EntityMagmaCube
-				|| entity instanceof EntityShulker || entity instanceof EntitySilverfish
-				|| entity instanceof EntitySkeleton || entity instanceof EntitySlime || entity instanceof EntitySpider
-				|| entity instanceof EntityStray || entity instanceof EntityVex || entity instanceof EntityVindicator
-				|| entity instanceof EntityWitch || entity instanceof EntityWitherSkeleton
-				|| entity instanceof EntityZombie || entity instanceof EntityZombieVillager
-				|| entity instanceof EntityWither) {
+		if (entity instanceof net.minecraft.entity.monster.IMob) {
 			return true;
 		} else if (entity instanceof EntityChicken) {
 			if (((EntityChicken) entity).chickenJockey) {
