@@ -15,4 +15,9 @@ public class EventNametagRender extends Event {
 	public boolean isPlayer() {
 		return entity instanceof EntityPlayer;
 	}
+
+	public String getName() {
+		return entity.getName().getFormattedText();
+	}
+
 }

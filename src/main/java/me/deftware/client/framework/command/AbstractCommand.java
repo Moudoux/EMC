@@ -12,7 +12,7 @@ public abstract class AbstractCommand {
 
 	protected abstract LiteralArgumentBuilder<Object> getCommandStructure();
 
-	abstract int execute(CommandContext command, int args);
+	protected abstract int execute(CommandContext command, int args);
 
 	/**
 	 * Using this method you can register another command structure and provide auto completion

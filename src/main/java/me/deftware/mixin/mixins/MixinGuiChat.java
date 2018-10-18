@@ -1,19 +1,14 @@
 package me.deftware.mixin.mixins;
 
-import me.deftware.client.framework.wrappers.gui.IGuiTextField;
 import me.deftware.mixin.components.InternalGuiTextField;
 import me.deftware.mixin.imp.IMixinGuiScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.IGuiEventListener;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-
-import java.util.List;
 
 @Mixin(GuiChat.class)
 public abstract class MixinGuiChat extends GuiScreen {

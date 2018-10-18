@@ -3,10 +3,12 @@ package me.deftware.client.framework.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.context.StringRange;
+import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.tree.CommandNode;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Handles custom EMC commands
@@ -60,6 +62,11 @@ public class CommandRegister {
 			lastNode = entry.getKey();
 		}
 		return dispatcher.getAllUsage(lastNode, CommandRegister.class, false);
+	}
+
+	public static CompletableFuture<Suggestions> getSuggestions(String input) {
+		final ParseResults<Object> parse = dispatcher.parse(input, CommandRegister.class);
+		return dispatcher.getCompletionSuggestions(parse);
 	}
 
 
