@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.*;
-import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.boss.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.*;
@@ -74,8 +73,12 @@ public class IEntity {
 		return entity.isDead;
 	}
 
+	public boolean hasIMob() {
+		return (entity instanceof EntityMob || entity instanceof EntityLiving);
+	}
+
 	public boolean isMod() {
-		return (entity instanceof EntityMob || entity instanceof EntityLiving) && !(entity instanceof EntityPlayer) && !(entity instanceof EntityItem);
+		return hasIMob();
 	}
 
 	public boolean isPlayer() {
@@ -195,20 +198,6 @@ public class IEntity {
 			return entity instanceof EntityItem;
 		} else if (e.equals(EntityType.ENTITY_PROJECTILE)) {
 			return entity instanceof IProjectile;
-		}
-		// Passives
-		if (e.equals(EntityType.ENTITY_BAT)) {
-			return entity instanceof EntityBat;
-		} else if (e.equals(EntityType.ENTITY_CHICKEN)) {
-			return entity instanceof EntityChicken;
-		} else if (e.equals(EntityType.ENTITY_COW)) {
-			return entity instanceof EntityCow;
-		} else if (e.equals(EntityType.ENTITY_FISH)) {
-			return entity instanceof AbstractFish;
-		}
-		// Hostiles
-		if (e.equals(EntityType.ENTITY_WOLF)) {
-			return entity instanceof EntityWolf;
 		} else if (e.equals(EntityType.Entity_Ageable)) {
 			return entity instanceof EntityAgeable;
 		} else if (e.equals(EntityType.EntityAmbientCreature)) {
@@ -217,7 +206,47 @@ public class IEntity {
 			return entity instanceof EntityWaterMob;
 		} else if (e.equals(EntityType.EntityMob)) {
 			return entity instanceof EntityMob;
-		} else if (e.equals(EntityType.EntitySlime) || e.equals(EntityType.ENTITY_SLIME)) {
+		}
+		// Passives
+		  else if (e.equals(EntityType.ENTITY_BAT)) {
+			return entity instanceof EntityBat;
+		} else if (e.equals(EntityType.ENTITY_CHICKEN)) {
+			return entity instanceof EntityChicken;
+		} else if (e.equals(EntityType.ENTITY_COW)) {
+			return entity instanceof EntityCow;
+		} else if (e.equals(EntityType.ENTITY_FISH)) {
+			return entity instanceof AbstractFish;
+		} else if (e.equals(EntityType.ENTITY_MOOSHROOM)) {
+			return entity instanceof EntityMooshroom;
+		} else if (e.equals(EntityType.ENTITY_OCELOT)) {
+			return entity instanceof EntityOcelot;
+		} else if (e.equals(EntityType.ENTITY_PIG)) {
+			return entity instanceof EntityPig;
+		} else if (e.equals(EntityType.ENTITY_POLAR_BEAR)) {
+			return entity instanceof EntityPolarBear;
+		} else if (e.equals(EntityType.ENTITY_RABBIT)) {
+			return entity instanceof EntityRabbit;
+		} else if (e.equals(EntityType.ENTITY_SHEEP)) {
+			return entity instanceof EntitySheep;
+		} else if (e.equals(EntityType.ENTITY_SQUID)) {
+			return entity instanceof EntitySquid;
+		} else if (e.equals(EntityType.ENTITY_TURTLE)) {
+			return entity instanceof EntityTurtle;
+		} else if (e.equals(EntityType.ENTITY_VILLAGER)) {
+			return entity instanceof EntityVillager;
+		} else if (e.equals(EntityType.ENTITY_DOLPHIN)) {
+			return entity instanceof EntityDolphin;
+		} else if (e.equals(EntityType.ENTITY_DONKEY)) {
+			return entity instanceof EntityDonkey;
+		} else if (e.equals(EntityType.ENTITY_MULE)) {
+			return entity instanceof EntityMule;
+		} else if (e.equals(EntityType.ENTITY_HORSE)) {
+			return entity instanceof EntityHorse;
+		} else if (e.equals(EntityType.ENTITY_PARROT)) {
+			return entity instanceof EntityParrot;
+		}
+		// Hostiles
+		  else if (e.equals(EntityType.EntitySlime) || e.equals(EntityType.ENTITY_SLIME)) {
 			return entity instanceof EntitySlime;
 		} else if (e.equals(EntityType.EntityFlying)) {
 			return entity instanceof EntityFlying;
@@ -281,6 +310,17 @@ public class IEntity {
 			return entity instanceof EntityCaveSpider;
 		}
 		// Neutrals
+		  else if (e.equals(EntityType.ENTITY_WOLF)) {
+			return entity instanceof EntityWolf;
+		} else if (e.equals(EntityType.ENTITY_LLAMA)) {
+			return entity instanceof EntityLlama;
+		} else if (e.equals(EntityType.ENTITY_IRON_GOLEM)) {
+		  	return entity instanceof EntityIronGolem;
+		} else if (e.equals(EntityType.ENTITY_SNOW_GOLEM)) {
+		  	return entity instanceof EntitySnowman;
+		} else if (e.equals(EntityType.ENTITY_PUFFERFISH)) {
+		  	return entity instanceof EntityPufferFish;
+		}
 		return false;
 	}
 
@@ -291,7 +331,8 @@ public class IEntity {
 		 * Passive mobs
 		 */
 		ENTITY_BAT, ENTITY_CHICKEN, ENTITY_COW, ENTITY_FISH, ENTITY_MOOSHROOM, ENTITY_OCELOT, ENTITY_PIG, ENTITY_POLAR_BEAR,
-		ENTITY_RABBIT, ENTITY_SHEEP, ENTITY_SQUID, ENTITY_TURTLE, ENTITY_VILLAGER,
+		ENTITY_RABBIT, ENTITY_SHEEP, ENTITY_SQUID, ENTITY_TURTLE, ENTITY_VILLAGER, ENTITY_DOLPHIN, ENTITY_DONKEY, ENTITY_HORSE,
+		ENTITY_MULE, ENTITY_PARROT,
 		/*
 		 * Hostile mobs
 		 */
@@ -302,7 +343,7 @@ public class IEntity {
 		/*
 		 * Neutral mobs
 		 */
-		ENTITY_WOLF,
+		ENTITY_WOLF, ENTITY_LLAMA, ENTITY_IRON_GOLEM, ENTITY_SNOW_GOLEM, ENTITY_PUFFERFISH
 	}
 
 }
