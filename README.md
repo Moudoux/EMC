@@ -37,6 +37,7 @@ That's it. It is as easy as that. The IEntityPlayer.setWalkspeed then calls the 
 Minecraft versions currently supported
 -------------------
 
+* 1.13.2
 * 1.13.1
 * 1.13
 * 1.12.2
@@ -48,8 +49,8 @@ Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To
 
 ```
 {
-	"name": "me.deftware:EMC:13.5.7-1.13",
-	"url": "https://gitlab.com/EMC-Framework/EMC/raw/master/maven/"
+	"name": "me.deftware:EMC:13.5.9-1.13",
+	"url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
 }
 ```
 
