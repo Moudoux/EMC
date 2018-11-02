@@ -94,8 +94,7 @@ Developing EMC (Not making client mods, the actual framework)
 1. Clone this repository with `git clone git@gitlab.com:EMC-Framework/EMC.git`
 2. Run the `setupDecompWrokspace` task
 3. If you are using IDEA run the `genIntellijRuns` task, otherwise skip this point
-4. Refresh the gradle project
-5. Import sources into your IDE as a gradle project
+4. Import sources into your IDE as a gradle project
 
 You can now start modifying EMC.
 
