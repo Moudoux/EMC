@@ -9,7 +9,6 @@ import me.deftware.client.framework.wrappers.IMinecraft;
  */
 public class EventDisconnected extends Event {
 
-
 	public String getIP() {
 		return IMinecraft.lastServer.getIIP().contains(":") ? IMinecraft.lastServer.getIIP().split(":")[0]
 				: IMinecraft.lastServer.getIIP();

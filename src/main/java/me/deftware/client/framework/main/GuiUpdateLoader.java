@@ -1,6 +1,6 @@
 package me.deftware.client.framework.main;
 
-import com.google.gson.J:sonObject;
+import com.google.gson.JsonObject;
 import me.deftware.client.framework.wrappers.gui.IGuiButton;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import net.minecraft.client.Minecraft;
