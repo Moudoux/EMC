@@ -6,6 +6,9 @@ import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiScreen;
 
+/**
+ * Triggered every time a game gui is displayed
+ */
 public class EventGuiScreenDisplay extends Event {
 
 	private GuiScreen screen;

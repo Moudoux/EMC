@@ -3,9 +3,11 @@ package me.deftware.client.framework.event.events;
 import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.wrappers.IMinecraft;
 
-
+/**
+ * Triggered when user disconnects from a server.
+ * Can return IP and Port of that server
+ */
 public class EventDisconnected extends Event {
-
 
 	public String getIP() {
 		return IMinecraft.lastServer.getIIP().contains(":") ? IMinecraft.lastServer.getIIP().split(":")[0]

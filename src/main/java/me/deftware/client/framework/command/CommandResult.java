@@ -16,22 +16,26 @@ public class CommandResult {
 	}
 
 	/**
-	 * @return if the command successfully executed
+	 * Checks if command successfully executed
+	 * @return {@link Boolean}
 	 */
 	public boolean isSuccess() {
 		return success;
 	}
 
 	/**
-	 * @return integer returned by the command executed
+	 * Returns integer returned by the command executed
+	 * @return {@link Integer}
 	 */
 	public int getOutput() {
 		return output;
 	}
 
 	/**
-	 * @return the error if a command failed. This is also used to describe why the command failed
+	 * Returns the error if a command failed. This is also used to describe why the command failed
 	 * e.g if theres an argument missing
+	 *
+	 * @return {@link String}
 	 */
 	public String getError() {
 		return error;

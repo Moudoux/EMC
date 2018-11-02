@@ -20,6 +20,11 @@ public class MarketplaceAPI {
 	private static CookieManager cookies;
 	private static boolean initialized = false;
 
+	/**
+	 * Initializes Marketplace API or does nothing if already initialized
+	 * Prints out status to the System.out
+	 *
+	 */
 	public static void init(LoginCallback callback) {
 		if (MarketplaceAPI.initialized) {
 			return;
@@ -31,7 +36,10 @@ public class MarketplaceAPI {
 			callback.cb(status);
 		});
 	}
-
+	/**
+	 * Handles login response
+	 *
+	 */
 	private static void login(LoginCallback callback) {
 		OAuth.oAuth((boolean success, String token, String time) -> {
 			if (success) {

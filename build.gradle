@@ -97,6 +97,13 @@ task copyBuilds(type: Copy) {
 	}
 }
 
+task generateApiDocumentation(type: Javadoc) {
+  source = ['src/main/java/me/deftware/client']
+  title = "EMC Framework Documentation"
+  destinationDir = file("docs")
+  failOnError false
+}
+
 reobf {
     shadowJar {
         mappingType = forgeBuild ? 'SEARGE' : 'NOTCH'

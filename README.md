@@ -49,7 +49,7 @@ Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To
 
 ```
 {
-	"name": "me.deftware:EMC:13.5.9-1.13",
+	"name": "me.deftware:EMC:13.5.9.1-1.13.2",
 	"url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
 }
 ```
@@ -91,12 +91,12 @@ Minecraft source code, only EMC wrapper calls.
 Developing EMC (Not making client mods, the actual framework)
 -------------------
 
-1. Clone this git
-2. Import it into your IDE as a gradle project
-3. Run the `setupDecompWrokspace` task
-4. Refresh the gradle project
+1. Clone this repository with `git clone git@gitlab.com:EMC-Framework/EMC.git`
+2. Run the `setupDecompWorkspace` task
+3. If you are using IDEA run the `genIntellijRuns` task, otherwise skip this point
+4. Import sources into your IDE as a gradle project
 
-You can now start modifying EMC, if you are using IDEA run the `genIntellijRuns` task as well.
+You can now start modifying EMC.
 
 License
 -------------------

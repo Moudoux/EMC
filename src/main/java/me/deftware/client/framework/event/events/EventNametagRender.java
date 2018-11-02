@@ -4,6 +4,9 @@ import me.deftware.client.framework.event.Event;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
+/**
+ * Triggered when entity (including player) nametag is being rendered
+ */
 public class EventNametagRender extends Event {
 
 	private Entity entity;
