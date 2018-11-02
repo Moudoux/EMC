@@ -2,6 +2,10 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 
+/**
+ * Triggered by Minecraft player entity when client command is executed.
+ * Watch out! This event is deprecated and might not be available in the future 
+ */
 @Deprecated
 public class EventClientCommand extends Event {
 

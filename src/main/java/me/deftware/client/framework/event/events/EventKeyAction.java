@@ -3,6 +3,9 @@ package me.deftware.client.framework.event.events;
 import me.deftware.client.framework.event.Event;
 import org.lwjgl.glfw.GLFW;
 
+/**
+ * Triggered when some keyboard activity is received
+ */
 public class EventKeyAction extends Event {
 
 	private int keyCode, action, modifiers;

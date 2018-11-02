@@ -1,6 +1,6 @@
 package me.deftware.client.framework.main;
 
-import com.google.gson.JsonObject;
+import com.google.gson.J:sonObject;
 import me.deftware.client.framework.wrappers.gui.IGuiButton;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import net.minecraft.client.Minecraft;
@@ -10,6 +10,11 @@ import net.minecraft.client.gui.GuiScreen;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+
+/**
+ * This class describes the gui shown by the EMC freamwork when 
+ * installed version is too low and update is necessary 
+ */
 
 public class GuiUpdateLoader extends GuiScreen {
 

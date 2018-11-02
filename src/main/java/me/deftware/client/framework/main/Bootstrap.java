@@ -24,6 +24,11 @@ import me.deftware.client.framework.apis.marketplace.MarketplaceAPI;
 import me.deftware.client.framework.utils.OSUtils;
 import net.minecraft.client.Minecraft;
 
+/**
+ * This class is responsible for bootstrapping (initialization) process of EMC freamwork
+ * it handles loading all of the mods, connecting with event listeners and checking
+ * for available updates 
+ */
 public class Bootstrap {
 
 	private static ArrayList<String> commandTriggers = new ArrayList<>();

@@ -4,6 +4,10 @@ import com.google.gson.JsonObject;
 import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.utils.Settings;
 
+/**
+ * This is a parent class for all of the mods loaded by EMC.
+ * Your mod must extend this class
+ */
 public abstract class EMCMod {
 
 	private Settings settings;

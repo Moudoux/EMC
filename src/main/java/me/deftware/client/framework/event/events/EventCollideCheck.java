@@ -3,6 +3,9 @@ package me.deftware.client.framework.event.events;
 import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.wrappers.world.IBlock;
 
+/**
+ * Triggered by Minecraft block when checking collision
+ */
 public class EventCollideCheck extends Event {
 
 	private IBlock block;

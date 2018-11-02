@@ -4,6 +4,9 @@ import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.utils.ChatProcessor;
 import net.minecraft.util.text.ITextComponent;
 
+/**
+ * Triggered by Minecraft chat listener at the moment the message is drawn to screen
+ */
 public class EventChatReceive extends Event {
 
 	private ITextComponent itc;
