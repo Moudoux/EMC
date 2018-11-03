@@ -2,6 +2,9 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 
+/**
+ * Triggered by Minecraft keyboard listener
+ */
 public class EventCharacter extends Event {
 
 	private int modifiers;

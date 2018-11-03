@@ -19,7 +19,7 @@ public class CommandRegister {
 	private static ArrayList<AbstractCommand> commands = new ArrayList<>();
 
 	/**
-	 * @return the Brigadier dispatcher object
+	 * @return Brigadier dispatcher object
 	 */
 	public static CommandDispatcher<Object> getDispatcher() {
 		return dispatcher;
@@ -37,7 +37,7 @@ public class CommandRegister {
 	/**
 	 * Takes a string as a command and dispatches it to all registered commands
 	 * @param input
-	 * @return
+	 * @return {@link CommandResult}
 	 */
 	public static CommandResult dispatchCommand(String input) {
 		final ParseResults<Object> parse = dispatcher.parse(input, CommandRegister.class);
@@ -53,7 +53,7 @@ public class CommandRegister {
 	 * possible outcomes
 	 *
 	 * @param input
-	 * @return
+	 * @return Array of {@link String}
 	 */
 	public static String[] getCommandCompletion(String input) {
 		final ParseResults<Object> parse = dispatcher.parse(input, CommandRegister.class);

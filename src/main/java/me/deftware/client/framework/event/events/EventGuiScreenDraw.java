@@ -11,6 +11,10 @@ import net.minecraft.client.gui.GuiScreen;
 
 import java.util.ArrayList;
 
+/**
+ * Triggered every time a gui is drawn on screen.
+ * This event also contains a list of buttons that will be drawn in that particular gui
+ */
 public class EventGuiScreenDraw extends Event {
 
 	private GuiScreen screen;
