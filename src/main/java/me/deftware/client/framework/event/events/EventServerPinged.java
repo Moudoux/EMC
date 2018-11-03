@@ -2,6 +2,10 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 
+/**
+ * Triggered by Minecraft server list gui when server is being pinged.
+ * This event includes the info about server like: MOTD, IP address, Servers' game varsion, Servers' population info and ping delay
+ */
 public class EventServerPinged extends Event {
 
 	private String serverMOTD, playerList, gameVersion, populationInfo;

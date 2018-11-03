@@ -11,6 +11,11 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * This class describes the gui shown by the EMC freamwork when 
+ * installed version is too low and update is necessary 
+ */
+
 public class GuiUpdateLoader extends GuiScreen {
 
 	private JsonObject clientInfo;

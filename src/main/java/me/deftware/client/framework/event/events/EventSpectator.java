@@ -2,6 +2,9 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 
+/**
+ * Triggered when player becomes spectator
+ */
 public class EventSpectator extends Event {
 
 	private boolean spectator;

@@ -17,10 +17,14 @@ public abstract class AbstractCommand {
 	/**
 	 * Using this method you can register another command structure and provide auto completion
 	 *
-	 * @return
+	 * @return List of {@link LiteralArgumentBuilder}
 	 */
 	protected List<LiteralArgumentBuilder> registerOptionalCompletions() { return new ArrayList<>(); }
-
+	/**
+	 * Checks if command has arguments
+	 *
+	 * @return {@link Boolean}
+	 */
 	protected boolean hasArgument(CommandContext context, String name, Class clazz) {
 		try {
 			context.getArgument(name, clazz);

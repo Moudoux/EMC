@@ -2,6 +2,9 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 
+/**
+ * Triggered when player moves (walking or flying)
+ */
 public class EventPlayerWalking extends Event {
 
 	private double posX, posY, posZ;

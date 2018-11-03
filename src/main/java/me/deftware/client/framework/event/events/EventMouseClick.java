@@ -3,6 +3,9 @@ package me.deftware.client.framework.event.events;
 import me.deftware.client.framework.event.Event;
 import org.lwjgl.glfw.GLFW;
 
+/**
+ * Triggered when the mouse button is pressed
+ */
 public class EventMouseClick extends Event {
 
 	private int button, action, modifiers;

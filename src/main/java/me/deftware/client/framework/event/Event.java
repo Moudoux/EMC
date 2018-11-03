@@ -8,19 +8,34 @@ import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.utils.ChatProcessor;
 import net.minecraft.client.Minecraft;
 
+/**
+ * This class describes the way events are defined in EMC freamwork and handles the process of
+ * delivering events to all of the loaded mods
+ */
 public class Event {
 
 	private boolean canceled = false;
 
+	/**
+	 * Checks if event was canceled
+	 *
+	 * @return {@link Boolean}
+	 */
 	public boolean isCanceled() {
 		return canceled;
 	}
 
+	/**
+	 * Sets event as canceled
+	 */
 	public <T extends Event> T setCanceled(boolean canceled) {
 		this.canceled = canceled;
 		return (T) this;
 	}
 
+	/**
+	 * Sends an event to all of the child-events and then to the loaded mods
+	 */
 	public <T extends Event> T send() {
 		try {
 
