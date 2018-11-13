@@ -143,6 +143,13 @@ public class Texture {
         this.dynamicTexture.updateDynamicTexture();
     }
 
+    public int update(){
+        int errorCode = 0;
+        errorCode += this.updateTexture();
+        this.refreshParameters();
+        errorCode += this.updatePixels();
+        return errorCode;
+    }
     
     public void bind(){
         this.bind(GL_ONE);
