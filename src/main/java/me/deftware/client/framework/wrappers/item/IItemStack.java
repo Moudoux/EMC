@@ -14,9 +14,12 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 
 public class IItemStack {
 
@@ -64,7 +67,8 @@ public class IItemStack {
 	}
 
 	public void setStackDisplayName(String name) {
-		stack.getOrCreateSubCompound("display").setString("Name", name);
+		NBTTagCompound nbttagcompound = stack.getOrCreateSubCompound("display");
+		nbttagcompound.setString("Name", ITextComponent.Serializer.componentToJson(new TextComponentString(name)));
 	}
 
 	public static boolean validName(String name) {
