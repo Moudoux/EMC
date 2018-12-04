@@ -13,6 +13,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Texture {
 
+/*
     int width;
     int height;
     DynamicTexture dynamicTexture;
@@ -180,6 +181,6 @@ public class Texture {
         dynamicTexture.close();
         dynamicTexture = null;
     }
-
+*/
 }
 
