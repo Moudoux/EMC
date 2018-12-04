@@ -11,6 +11,13 @@ import java.util.zip.ZipFile;
 
 public class ResourceUtils {
 
+    /*
+     * Returns a byte stream of a target resource
+     * @param modName Native name of the mod the resource corresponds to (name from client.json
+     * @param resourcePath Path to the resource, no slash at the begining is required
+     *
+     * @return InputStream  
+     */	
     public static InputStream getStreamFromModResources(String modName, String resourcePath) {
         String jarName = "";
         for (int mods = 0; mods < Bootstrap.modsInfo.size(); mods++) {
@@ -38,6 +45,12 @@ public class ResourceUtils {
         return in;
     }
 
+    /*
+     * Returns a byte stream of a target resource from .minecraft folder
+     * @param resourcePath Path to the resource, no slash at the begining is required
+     *
+     * @return InputStream  
+     */	
     public static InputStream getStreamFromMinecraftResources(String resourcePath) {
         InputStream resource;
         try {
@@ -50,6 +63,12 @@ public class ResourceUtils {
         return resource;
     }
 
+    /*
+     * Returns a byte stream of a target resource from users home folder
+     * @param resourcePath Path to the resource, no slash at the begining is required
+     *
+     * @return InputStream  
+     */	
     public static InputStream getStreamFromUserspace(String resourcePath) {
         InputStream resource;
         try {
