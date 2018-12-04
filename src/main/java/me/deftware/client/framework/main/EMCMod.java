@@ -64,6 +64,7 @@ public abstract class EMCMod {
 	/**
 	 * Stores all info about an EMC mod
 	 */
+	@Deprecated
 	public static class EMCModInfo {
 
 		private String modName, modVersion;
