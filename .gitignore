@@ -4,7 +4,6 @@
 !/gradlew.bat
 !/.gitignore
 !/src
-!/docs
 !/gradle
 !/README.md
 !/example_client.json
