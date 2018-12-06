@@ -9,7 +9,6 @@
 !/example_client.json
 !/build.gradle.forge
 !/build.gradle
-!/maven
 !/.gitlab-ci.yml
 !/versions.json
 !/build.bat
