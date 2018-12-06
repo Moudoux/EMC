@@ -39,6 +39,8 @@ public class Bootstrap {
 	public static ArrayList<String> internalModClassNames = new ArrayList<>();
 	public static boolean isRunning = true;
 
+	public static String JSON_JARNAME_NOTE = "DYNAMIC_jarname";
+
 	public static void init() {
 		try {
 			Bootstrap.logger.info("Loading EMC...");
@@ -117,15 +119,24 @@ public class Bootstrap {
 	 */
 	public static void loadMod(File clientJar) throws Exception {
 		JarFile jarFile = new JarFile(clientJar);
-		Bootstrap.modClassLoader = URLClassLoader.newInstance(new URL[] { new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/") }, Bootstrap.class.getClassLoader());
+		Bootstrap.modClassLoader = URLClassLoader.newInstance(
+				new URL[] { new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/") },
+				Bootstrap.class.getClassLoader());
 
 		// Read client.json
-		BufferedReader buffer = new BufferedReader(new InputStreamReader(Bootstrap.modClassLoader.getResourceAsStream("client.json")));
+		BufferedReader buffer = new BufferedReader(
+				new InputStreamReader(Bootstrap.modClassLoader.getResourceAsStream("client.json")));
 		JsonObject jsonObject = new Gson().fromJson(buffer.lines().collect(Collectors.joining("\n")), JsonObject.class);
 
+		//Add the name of Jar file to the corresponding jsonObject
+		jsonObject.addProperty(JSON_JARNAME_NOTE, clientJar.getName());
+
 		Bootstrap.modsInfo.add(jsonObject);
-		Bootstrap.logger.info("Loading mod: " + jsonObject.get("name").getAsString() + " by "
-				+ jsonObject.get("author").getAsString());
+
+		//Inform about the mod being loaded
+		Bootstrap.logger.info("Loading mod: " + jsonObject.get("name").getAsString()
+				+ " [ver. " + jsonObject.get("version").getAsString() + "] " +
+				"by " + jsonObject.get("author").getAsString());
 
 		// Version check
 		if (jsonObject.get("minversion").getAsDouble() > FrameworkConstants.VERSION) {
@@ -135,7 +146,8 @@ public class Bootstrap {
 		}
 
 		// Load classes
-		Bootstrap.mods.put(jsonObject.get("name").getAsString(), (EMCMod) Bootstrap.modClassLoader.loadClass(jsonObject.get("main").getAsString()).newInstance());
+		Bootstrap.mods.put(jsonObject.get("name").getAsString(),
+				(EMCMod) Bootstrap.modClassLoader.loadClass(jsonObject.get("main").getAsString()).newInstance());
 		Enumeration<?> e = jarFile.entries();
 		for (JarEntry je = (JarEntry) e.nextElement(); e.hasMoreElements(); je = (JarEntry) e.nextElement()) {
 			if (je.isDirectory() || !je.getName().endsWith(".class")) {
