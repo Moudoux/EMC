@@ -67,6 +67,7 @@ public class SettingsMap {
 		 * WORLD_DEPTH = true | false
 		 * FLIP_USERNAMES = String,String...
 		 * CROSSHAIR = true | false
+		 * FLUIDS = true | false
 		 */
 		public static final int RENDER = 2;
 

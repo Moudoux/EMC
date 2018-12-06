@@ -1,11 +1,14 @@
 package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
-import me.deftware.client.framework.wrappers.world.IBlock;
 
 /**
  * Triggered when water or lava is being rendered
+ * This event has been deprecated and is no longer in use,
+ * @see me.deftware.client.framework.maps.SettingsMap#update(int, String, Object)
+ * with key MapKeys.RENDER with and second key "FLUIDS"
  */
+@Deprecated
 public class EventRenderFluid extends Event {
 
 	FluidType fluid = FluidType.WATER;
