@@ -49,7 +49,7 @@ Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To
 
 ```
 {
-	"name": "me.deftware:EMC:13.5.9.1-1.13.2",
+	"name": "me.deftware:EMC:13.6.0-1.13.2",
 	"url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
 }
 ```
@@ -65,6 +65,7 @@ Making client mods with EMC
 -------------------
 
 Check out the [EMC Development Kit](https://gitlab.com/EMC-Framework/EDK)
+You can find documentation at the [EMC website](https://emc-framework.gitlab.io/)
 
 Built in commands
 -------------------
