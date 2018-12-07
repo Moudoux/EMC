@@ -37,7 +37,6 @@ public class ICamera {
 		return ICamera.getRenderViewEntity().getDistance(x, y, z);
 	}
 
-
 	public static void setPosX(double pos) {
 		ICamera.getRenderViewEntity().posX = pos;
 	}

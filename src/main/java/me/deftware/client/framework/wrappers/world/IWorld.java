@@ -27,9 +27,7 @@ public class IWorld {
 		public void execute() {
 			new Thread(() -> {
 				ArrayList<IEntity> entities = new ArrayList<>();
-				new ArrayList<>(Minecraft.getMinecraft().world.loadedEntityList).forEach((entity) -> {
-					entities.add(new IEntity(entity));
-				});
+				new ArrayList<>(Minecraft.getMinecraft().world.loadedEntityList).forEach((entity) -> entities.add(new IEntity(entity)));
 				list = entities;
 			}).start();
 		}
@@ -88,6 +86,10 @@ public class IWorld {
 	public static ArrayList<IEntity> getILoadedEntityList() {
 		IWorld.ILoadedEntityList.execute();
 		return (ArrayList<IEntity>) IWorld.ILoadedEntityList.getList();
+	}
+
+	public static void updateLists() {
+
 	}
 
 	public static IBlock getBlockFromPos(IBlockPos pos) {

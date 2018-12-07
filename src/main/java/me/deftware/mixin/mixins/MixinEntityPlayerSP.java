@@ -1,6 +1,7 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.command.CommandRegister;
+import me.deftware.client.framework.wrappers.IChat;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -115,21 +116,25 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 	@Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
 	public void sendChatMessage(String message, CallbackInfo ci) {
 		String trigger = Bootstrap.isTrigger(message);
-		if (!trigger.equals("")) {
-			if (message.startsWith(trigger + "say")) {
-				if (!message.contains(" ")) {
-					ChatProcessor.printClientMessage(
-							"Invalid syntax, please use: " + ChatColor.AQUA + trigger + "say <Message>");
+		if (message.startsWith(trigger)) {
+			try {
+				if (message.startsWith(trigger + "say")) {
+					if (!message.contains(" ")) {
+						ChatProcessor.printClientMessage(
+								"Invalid syntax, please use: " + ChatColor.AQUA + trigger + "say <Message>");
+						return;
+					}
+					connection.sendPacket(new CPacketChatMessage(message.substring((trigger + "say ").length())));
+					ci.cancel();
 					return;
 				}
-				connection.sendPacket(new CPacketChatMessage(message.substring((trigger + "say ").length())));
-				ci.cancel();
-				return;
+				new EventClientCommand(message, trigger).send();
+				CommandRegister.getDispatcher().execute(message.substring(1), Minecraft.getMinecraft().player.connection.func_195513_b());
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				IChat.sendClientMessage(ex.getMessage());
 			}
-			CommandRegister.dispatchCommand(message.substring(trigger.length()));
-			new EventClientCommand(message, trigger).send();
 			ci.cancel();
-			return;
 		} else if (message.startsWith("#")) {
 			if (message.startsWith("# ")) {
 				message = message.substring(2);
@@ -144,13 +149,14 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 			new EventIRCMessage(message).send();
 			ci.cancel();
 			return;
-		}
-		EventChatSend event = new EventChatSend(message).send();
-		if (event.isCanceled()) {
-			ci.cancel();
-		} else if (!event.getMessage().equals(message)) {
-			connection.sendPacket(new CPacketChatMessage(event.getMessage()));
-			ci.cancel();
+		} else {
+			EventChatSend event = new EventChatSend(message).send();
+			if (event.isCanceled()) {
+				ci.cancel();
+			} else if (!event.getMessage().equals(message)) {
+				connection.sendPacket(new CPacketChatMessage(event.getMessage()));
+				ci.cancel();
+			}
 		}
 	}
 
