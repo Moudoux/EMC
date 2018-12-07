@@ -1,35 +1,22 @@
 package me.deftware.mixin.mixins;
 
 import com.google.common.collect.Lists;
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.ParseResults;
-import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import me.deftware.client.framework.command.CommandRegister;
-import me.deftware.mixin.components.InternalGuiTextField;
-import me.deftware.mixin.imp.IMixinGuiScreen;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -71,25 +58,6 @@ public abstract class MixinGuiChat extends GuiScreen {
 	@Shadow
 	public abstract void func_195129_h();
 
-	/**
-	 * @Author Deftware
-	 * @reason
-	 */
-	@Overwrite
-	public void initGui() {
-		Minecraft.getMinecraft().keyboardListener.enableRepeatEvents(true);
-		this.sentHistoryCursor = Minecraft.getMinecraft().ingameGUI.getChatGUI().getSentMessages().size();
-		this.inputField = new InternalGuiTextField(0, ((IMixinGuiScreen) this).getFontRenderer(), 4, ((GuiScreen) (Object) this).height - 12, ((GuiScreen) (Object) this).width - 4, 12);
-		this.inputField.setMaxStringLength(256);
-		this.inputField.setEnableBackgroundDrawing(false);
-		this.inputField.setFocused(true);
-		this.inputField.setText(this.defaultInputFieldText);
-		this.inputField.setCanLoseFocus(false);
-		this.inputField.func_195607_a(this::func_195130_a);
-		this.inputField.func_195609_a(this::func_195128_a);
-		this.field_195124_j.add(this.inputField);
-		this.func_195129_h();
-	}
 
 	/**
 	 * @Author Deftware

@@ -2,12 +2,11 @@ package me.deftware.client.framework.command;
 
 import com.mojang.brigadier.arguments.*;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
-import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
+import net.minecraft.command.arguments.EntityArgument;
 
 @SuppressWarnings("ALL")
-public class CommandBuilder {
+public class CommandBuilder<T> {
 
 	private LiteralArgumentBuilder builder;
 
@@ -27,6 +26,10 @@ public class CommandBuilder {
 		return this;
 	}
 
+	public ArgumentType<T> getEntityArgumentType() {
+		return (ArgumentType<T>) EntityArgument.func_197094_d();
+	}
+
 	public LiteralArgumentBuilder build() {
 		return builder;
 	}
@@ -35,36 +38,6 @@ public class CommandBuilder {
 	public interface CommandExecution {
 
 		void onExecute(CommandResult result);
-
-	}
-
-	public class CommandResult {
-
-		private CommandContext<CommandSource> context;
-
-		public CommandResult(CommandContext<CommandSource> context) {
-			this.context = context;
-		}
-
-		public String getString(String node) {
-			return StringArgumentType.getString(context, node);
-		}
-
-		public int getInteger(String node) {
-			return IntegerArgumentType.getInteger(context, node);
-		}
-
-		public float getFloat(String node) {
-			return FloatArgumentType.getFloat(context, node);
-		}
-
-		public double getDouble(String node) {
-			return DoubleArgumentType.getDouble(context, node);
-		}
-
-		public boolean getBoolean(String node) {
-			return BoolArgumentType.getBool(context, node);
-		}
 
 	}
 

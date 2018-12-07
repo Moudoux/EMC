@@ -18,6 +18,7 @@ import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.commands.CommandMods;
 import me.deftware.client.framework.command.commands.CommandUnload;
 import me.deftware.client.framework.command.commands.CommandVersion;
+import me.deftware.client.framework.command.commands.TestCommand;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.realms.RealmsSharedConstants;
 import org.apache.logging.log4j.LogManager;

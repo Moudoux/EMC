@@ -116,7 +116,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 	@Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
 	public void sendChatMessage(String message, CallbackInfo ci) {
 		String trigger = Bootstrap.isTrigger(message);
-		if (message.startsWith(trigger)) {
+		if (message.startsWith(trigger) && !trigger.equals("")) {
 			try {
 				if (message.startsWith(trigger + "say")) {
 					if (!message.contains(" ")) {
@@ -129,7 +129,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 					return;
 				}
 				new EventClientCommand(message, trigger).send();
-				CommandRegister.getDispatcher().execute(message.substring(1), Minecraft.getMinecraft().player.connection.func_195513_b());
+				CommandRegister.getDispatcher().execute(message.substring(1), Minecraft.getMinecraft().player.func_195051_bN());
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				IChat.sendClientMessage(ex.getMessage());
@@ -149,14 +149,13 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 			new EventIRCMessage(message).send();
 			ci.cancel();
 			return;
-		} else {
-			EventChatSend event = new EventChatSend(message).send();
-			if (event.isCanceled()) {
-				ci.cancel();
-			} else if (!event.getMessage().equals(message)) {
-				connection.sendPacket(new CPacketChatMessage(event.getMessage()));
-				ci.cancel();
-			}
+		}
+		EventChatSend event = new EventChatSend(message).send();
+		if (event.isCanceled()) {
+			ci.cancel();
+		} else if (!event.getMessage().equals(message)) {
+			connection.sendPacket(new CPacketChatMessage(event.getMessage()));
+			ci.cancel();
 		}
 	}
 
