@@ -17,6 +17,8 @@ import com.google.gson.*;
 import com.mojang.brigadier.Command;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.commands.*;
+import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.utils.Settings;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.realms.RealmsSharedConstants;
 import org.apache.logging.log4j.LogManager;
@@ -40,6 +42,7 @@ public class Bootstrap {
 	private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
 	public static ArrayList<String> internalModClassNames = new ArrayList<>();
 	public static boolean isRunning = true;
+	public static Settings EMCSettings;
 
 	public static String JSON_JARNAME_NOTE = "DYNAMIC_jarname";
 
@@ -103,6 +106,9 @@ public class Bootstrap {
 				}
 			});
 
+			EMCSettings = new Settings();
+			EMCSettings.initialize(null);
+
 			// Register default EMC commands
 			CommandRegister.registerCommand(new CommandMods());
 			CommandRegister.registerCommand(new CommandUnload());
@@ -110,6 +116,8 @@ public class Bootstrap {
 			CommandRegister.registerCommand(new CommandHelp());
 			CommandRegister.registerCommand(new CommandOAuth());
 			CommandRegister.registerCommand(new CommandTrigger());
+
+			SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
 
 			// Initialize the EMC marketplace API
 			MarketplaceAPI.init((status) -> Bootstrap.mods.forEach((name, mod) -> mod.onMarketplaceAuth(status)));
