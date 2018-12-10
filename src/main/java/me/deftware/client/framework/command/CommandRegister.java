@@ -31,12 +31,20 @@ public class CommandRegister {
 	 * Registers a commandbuilder
 	 * @param command
 	 */
-	public static void registerCommand(CommandBuilder command) {
+	public static synchronized void registerCommand(CommandBuilder command) {
 		CommandNode<?> node = dispatcher.register(command.build());
 		for (Object alias : command.getAliases()) {
 			LiteralArgumentBuilder argumentBuilder = LiteralArgumentBuilder.literal((String) alias);
 			dispatcher.register((LiteralArgumentBuilder) argumentBuilder.redirect(node));
 		}
+	}
+
+	/**
+	 * Registers a EMCModCommand
+	 * @param command
+	 */
+	public static void registerCommand(EMCModCommand modCommand) {
+		registerCommand(modCommand.getCommandBuilder());
 	}
 
 	/**
@@ -71,14 +79,6 @@ public class CommandRegister {
 	 */
 	public static Map<CommandNode<ISuggestionProvider>, String> getSmartUsage() {
 		return dispatcher.getSmartUsage(dispatcher.getRoot(), Minecraft.getMinecraft().player.func_195051_bN());
-	}
-
-	/**
-	 * Registers a EMCModCommand
-	 * @param command
-	 */
-	public static void registerCommand(EMCModCommand modCommand) {
-		registerCommand(modCommand.getCommandBuilder());
 	}
 
 	/**
