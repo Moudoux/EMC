@@ -1,5 +1,7 @@
 package me.deftware.client.framework.event.events;
 
+import me.deftware.client.framework.command.CommandBuilder;
+import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import net.minecraft.client.gui.GuiIngameMenu;

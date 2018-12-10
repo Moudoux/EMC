@@ -3,6 +3,7 @@ package me.deftware.client.framework.command.commands;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+
 import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.CommandResult;
 import me.deftware.client.framework.command.EMCModCommand;
@@ -16,8 +17,7 @@ public class TestCommand extends EMCModCommand {
 
 	@Override
 	public CommandBuilder getCommandBuilder() {
-		CommandBuilder builder = new CommandBuilder();
-		builder.then((LiteralArgumentBuilder) LiteralArgumentBuilder.literal("friends")
+		return new CommandBuilder().set((LiteralArgumentBuilder) LiteralArgumentBuilder.literal("friends")
 				.then(
 						LiteralArgumentBuilder.literal("add")
 								.then(
@@ -45,8 +45,7 @@ public class TestCommand extends EMCModCommand {
 									return 1;
 								})
 				)
-		);
-		return builder;
+		).registerAlias("f");
 	}
 
 	public void onExecute(boolean add, CommandResult result) {

@@ -9,8 +9,7 @@ public class CommandMods extends EMCModCommand {
 
 	@Override
 	public CommandBuilder getCommandBuilder() {
-		CommandBuilder builder = new CommandBuilder();
-		builder.addCommand("mods", result -> {
+		return new CommandBuilder().addCommand("mods", result -> {
 			if (Bootstrap.modsInfo == null || Bootstrap.getMods().isEmpty()) {
 				ChatProcessor.printFrameworkMessage("No EMC mods are loaded");
 			} else {
@@ -23,7 +22,6 @@ public class CommandMods extends EMCModCommand {
 				});
 			}
 		});
-		return builder;
 	}
 
 }

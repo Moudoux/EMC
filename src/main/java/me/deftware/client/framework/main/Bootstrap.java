@@ -14,11 +14,9 @@ import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
 import com.google.gson.*;
+import com.mojang.brigadier.Command;
 import me.deftware.client.framework.command.CommandRegister;
-import me.deftware.client.framework.command.commands.CommandMods;
-import me.deftware.client.framework.command.commands.CommandUnload;
-import me.deftware.client.framework.command.commands.CommandVersion;
-import me.deftware.client.framework.command.commands.TestCommand;
+import me.deftware.client.framework.command.commands.*;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.realms.RealmsSharedConstants;
 import org.apache.logging.log4j.LogManager;
@@ -113,6 +111,8 @@ public class Bootstrap {
 			CommandRegister.registerCommand(new CommandMods());
 			CommandRegister.registerCommand(new CommandUnload());
 			CommandRegister.registerCommand(new CommandVersion());
+			CommandRegister.registerCommand(new CommandHelp());
+			CommandRegister.registerCommand(new CommandOAuth());
 
 			// Initialize the EMC marketplace API
 			MarketplaceAPI.init((status) -> Bootstrap.mods.forEach((name, mod) -> mod.onMarketplaceAuth(status)));
