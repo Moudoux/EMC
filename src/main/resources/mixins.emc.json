@@ -2,7 +2,7 @@
 {
   "required": true,
   "package": "me.deftware.mixin.mixins",
-  "refmap": "mixins.client.refmap.json",
+  "refmap": "mixins.emc.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinMinecraft",

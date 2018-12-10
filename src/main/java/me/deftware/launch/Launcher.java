@@ -19,9 +19,6 @@ import org.spongepowered.tools.obfuscation.mcp.ObfuscationServiceMCP;
 import net.minecraft.launchwrapper.ITweaker;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 
-/**
- * Used to inject EMC into Minecraft using Minecraft's launcherwrapper and ITweaker
- */
 public class Launcher implements ITweaker {
 
 	protected ArrayList<String> list = new ArrayList<>();
@@ -46,7 +43,7 @@ public class Launcher implements ITweaker {
 	@Override
 	public void injectIntoClassLoader(LaunchClassLoader classLoader) {
 		MixinBootstrap.init();
-		Mixins.addConfiguration("mixins.client.json");
+		Mixins.addConfiguration("mixins.emc.json");
 		MixinEnvironment.getDefaultEnvironment().setSide(MixinEnvironment.Side.CLIENT);
 		MixinEnvironment.getDefaultEnvironment().setObfuscationContext(ObfuscationServiceMCP.NOTCH);
 	}
@@ -60,4 +57,5 @@ public class Launcher implements ITweaker {
 	public String[] getLaunchArguments() {
 		return list.toArray(new String[list.size()]);
 	}
+
 }

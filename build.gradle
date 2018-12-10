@@ -55,7 +55,7 @@ dependencies {
 
 mixin {
     defaultObfuscationEnv notch
-    add sourceSets.main, "mixins.client.refmap.json"
+    add sourceSets.main, "mixins.emc.refmap.json"
 }
 
 shadowJar {
