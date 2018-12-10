@@ -34,7 +34,6 @@ import net.minecraft.client.Minecraft;
  */
 public class Bootstrap {
 
-	private static ArrayList<String> commandTriggers = new ArrayList<>();
 	public static Logger logger = LogManager.getLogger();
 	private static URLClassLoader modClassLoader;
 	public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
@@ -71,9 +70,6 @@ public class Bootstrap {
 					Bootstrap.logger.error("Failed to read Manifest", ex);
 				}
 			});
-
-			// Register command trigger for default EMC commands (.cinfo and .unload)
-			Bootstrap.registerCommandTrigger(".");
 
 			// EMC mods are stored in .minecraft/libraries/EMC
 			File emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + RealmsSharedConstants.VERSION_STRING + File.separator);
@@ -113,6 +109,7 @@ public class Bootstrap {
 			CommandRegister.registerCommand(new CommandVersion());
 			CommandRegister.registerCommand(new CommandHelp());
 			CommandRegister.registerCommand(new CommandOAuth());
+			CommandRegister.registerCommand(new CommandTrigger());
 
 			// Initialize the EMC marketplace API
 			MarketplaceAPI.init((status) -> Bootstrap.mods.forEach((name, mod) -> mod.onMarketplaceAuth(status)));
@@ -200,32 +197,6 @@ public class Bootstrap {
 	public static void ejectMods() {
 		Bootstrap.mods.forEach((key, mod) -> mod.onUnload());
 		Bootstrap.mods.clear();
-	}
-
-	/*
-	 * Command triggers
-	 */
-
-	public static void registerCommandTrigger(String trigger) {
-		Bootstrap.logger.info("Registering EMC command trigger: " + trigger);
-		if (!Bootstrap.commandTriggers.contains(trigger)) {
-			Bootstrap.commandTriggers.add(trigger);
-		}
-	}
-
-	public static void unregisterCommandTrigger(String trigger) {
-		if (Bootstrap.commandTriggers.contains(trigger)) {
-			Bootstrap.commandTriggers.remove(trigger);
-		}
-	}
-
-	public static String isTrigger(String message) {
-		for (String trigger : Bootstrap.commandTriggers) {
-			if (message.startsWith(trigger)) {
-				return trigger;
-			}
-		}
-		return "";
 	}
 
 }

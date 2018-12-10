@@ -5,6 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.suggestion.Suggestions;
 import me.deftware.client.framework.command.CommandRegister;
+import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -65,8 +66,7 @@ public abstract class MixinGuiChat extends GuiScreen {
 	 */
 	@Overwrite
 	private boolean func_208601_i() {
-		// TODO: Replace . with command trigger
-		return this.inputField.getText().startsWith("/") || this.inputField.getText().startsWith(".");
+		return this.inputField.getText().startsWith("/") || this.inputField.getText().startsWith((String) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", "."));
 	}
 
 	/**
@@ -75,9 +75,8 @@ public abstract class MixinGuiChat extends GuiScreen {
 	 */
 	@Overwrite
 	private static String func_208602_b(String p_208602_0_, String p_208602_1_) {
-		// TODO: Replace . with command trigger
-		if (p_208602_0_.startsWith(".")) {
-			p_208602_1_ = "." + p_208602_1_.substring(1);
+		if (p_208602_0_.startsWith((String) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", "."))) {
+			p_208602_1_ = (String) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".") + p_208602_1_.substring(1);
 		}
 		String output = p_208602_1_.startsWith(p_208602_0_) ? p_208602_1_.substring(p_208602_0_.length()) : null;
 		return output;
@@ -89,8 +88,8 @@ public abstract class MixinGuiChat extends GuiScreen {
 	 */
 	@Overwrite
 	private void func_208604_b(String p_208604_1_) {
-		if (inputField.getText().startsWith(".") && p_208604_1_.startsWith("/")) {
-			p_208604_1_ = "." + p_208604_1_.substring(1);
+		if (inputField.getText().startsWith((String) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".")) && p_208604_1_.startsWith("/")) {
+			p_208604_1_ = (String) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".") + p_208604_1_.substring(1);
 		}
 		this.field_195141_x = p_208604_1_;
 		this.inputField.setText(p_208604_1_);
@@ -98,8 +97,7 @@ public abstract class MixinGuiChat extends GuiScreen {
 
 	@Inject(method = "func_195129_h", at = @At("RETURN"), cancellable = true)
 	private void chatFunction(CallbackInfo ci) {
-		// TODO: Replace . with command trigger
-		if (this.inputField.getText().startsWith(".")) {
+		if (this.inputField.getText().startsWith((String) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", "."))) {
 			CommandDispatcher<ISuggestionProvider> lvt_1_1_ = CommandRegister.getDispatcher();
 			String lvt_2_1_ = this.inputField.getText().substring(1);
 			this.field_195135_u = lvt_1_1_.parse(lvt_2_1_, this.mc.player.connection.func_195513_b());

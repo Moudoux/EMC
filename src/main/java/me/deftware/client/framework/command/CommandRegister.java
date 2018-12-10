@@ -5,6 +5,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
 
+import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ISuggestionProvider;
 
@@ -78,6 +79,14 @@ public class CommandRegister {
 	 */
 	public static void registerCommand(EMCModCommand modCommand) {
 		registerCommand(modCommand.getCommandBuilder());
+	}
+
+	/**
+	 * Returns the command trigger used to trigger commands, default is a .
+	 * @return
+	 */
+	public static String getCommandTrigger() {
+		return (String) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".");
 	}
 
 }

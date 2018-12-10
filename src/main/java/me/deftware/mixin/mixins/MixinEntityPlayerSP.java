@@ -1,6 +1,7 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.command.CommandRegister;
+import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.IChat;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -114,7 +115,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
 	@Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
 	public void sendChatMessage(String message, CallbackInfo ci) {
-		String trigger = Bootstrap.isTrigger(message);
+		String trigger = (String) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".");
 		if (message.startsWith(trigger) && !trigger.equals("")) {
 			try {
 				if (message.startsWith(trigger + "say")) {

@@ -88,6 +88,11 @@ public class SettingsMap {
 		 */
 		public static final int GAME_SETTINGS = 5;
 
+		/**
+		 * COMMAND_TRIGGER
+		 */
+		public static final int EMC_SETTINGS =   6;
+
 	}
 
 }
