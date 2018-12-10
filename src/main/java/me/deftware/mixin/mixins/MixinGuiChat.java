@@ -6,6 +6,9 @@ import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.suggestion.Suggestions;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.mixin.components.InternalGuiTextField;
+import me.deftware.mixin.imp.IMixinGuiScreen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -58,6 +61,26 @@ public abstract class MixinGuiChat extends GuiScreen {
 
 	@Shadow
 	public abstract void func_195129_h();
+
+	/**
+	 * @Author Deftware
+	 * @reason
+	 */
+	@Overwrite
+	public void initGui() {
+		Minecraft.getMinecraft().keyboardListener.enableRepeatEvents(true);
+		this.sentHistoryCursor = Minecraft.getMinecraft().ingameGUI.getChatGUI().getSentMessages().size();
+		this.inputField = new InternalGuiTextField(0, ((IMixinGuiScreen) this).getFontRenderer(), 4, ((GuiScreen) (Object) this).height - 12, ((GuiScreen) (Object) this).width - 4, 12);
+		this.inputField.setMaxStringLength(256);
+		this.inputField.setEnableBackgroundDrawing(false);
+		this.inputField.setFocused(true);
+		this.inputField.setText(this.defaultInputFieldText);
+		this.inputField.setCanLoseFocus(false);
+		this.inputField.func_195607_a(this::func_195130_a);
+		this.inputField.func_195609_a(this::func_195128_a);
+		this.field_195124_j.add(this.inputField);
+		this.func_195129_h();
+	}
 
 
 	/**
