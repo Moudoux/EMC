@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import me.deftware.client.framework.event.events.EventChatSend;
-import me.deftware.client.framework.event.events.EventClientCommand;
 import me.deftware.client.framework.event.events.EventIRCMessage;
 import me.deftware.client.framework.event.events.EventPlayerWalking;
 import me.deftware.client.framework.event.events.EventSlowdown;
@@ -128,7 +127,6 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 					ci.cancel();
 					return;
 				}
-				new EventClientCommand(message, trigger).send();
 				CommandRegister.getDispatcher().execute(message.substring(1), Minecraft.getMinecraft().player.func_195051_bN());
 			} catch (Exception ex) {
 				ex.printStackTrace();
