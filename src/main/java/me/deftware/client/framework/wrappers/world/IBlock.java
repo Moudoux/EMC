@@ -5,10 +5,15 @@ import net.minecraft.init.Blocks;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.client.resources.I18n;
 
+/**
+ * NOTE: ID's have changed for all blocks in Minecraft 1.13 and up, using block ids is discouraged
+ * @return
+ */
 public class IBlock {
 
 	private Block block;
 
+	@Deprecated
 	public IBlock(int id) {
 		block = Block.getBlockById(id);
 	}
@@ -33,6 +38,7 @@ public class IBlock {
 		return block;
 	}
 
+	@Deprecated
 	public int getID() {
 		return Block.REGISTRY.getIDForObject(block);
 	}
@@ -41,6 +47,7 @@ public class IBlock {
 		return block.getNameTextComponent().getUnformattedComponentText();
 	}
 
+	@Deprecated
 	public static boolean isValidBlock(int id) {
 		return Block.getBlockById(id) != null;
 	}
