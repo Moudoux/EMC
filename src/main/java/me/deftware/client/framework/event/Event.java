@@ -33,7 +33,12 @@ public class Event {
 	 */
 	public <T extends Event> T send() {
 		try {
+			long startTime = System.currentTimeMillis();
 			Bootstrap.getMods().forEach((key, mod) -> mod.onEvent(this));
+			long stopTime = System.currentTimeMillis() - startTime;
+			if (stopTime > 1) {
+				System.out.println(this.getClass().getName() + " " + stopTime + "ms");
+			}
 		} catch (Exception ex) {
 			Bootstrap.logger.warn("Failed to send event {}", this, ex);
 		}

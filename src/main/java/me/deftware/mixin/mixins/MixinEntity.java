@@ -2,6 +2,7 @@ package me.deftware.mixin.mixins;
 
 import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
 
+import me.deftware.client.framework.maps.SettingsMap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -95,8 +96,8 @@ public abstract class MixinEntity implements IMixinEntity {
 
 	@Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;noClip:Z", opcode = GETFIELD))
 	private boolean noClipCheck(Entity self) {
-		EventNoClip event = new EventNoClip(noClip).send();
-		return noClip || event.isNoclip() && self instanceof EntityPlayerSP;
+		boolean noClipCheck = (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "NOCLIP", false);
+		return noClip || noClipCheck && self instanceof EntityPlayerSP;
 	}
 
 	@Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;isInWeb:Z", opcode = GETFIELD))

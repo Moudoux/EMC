@@ -4,8 +4,8 @@ import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.wrappers.entity.IEntity;
 
 /**
- * Triggered by EMC freamwork when ray trace is being calculated.
- *
+ * Triggered by EMC framework when ray trace is being calculated.
+ * <p>
  * Watch out! This event is deprecated and might not be available in the future
  */
 @Deprecated

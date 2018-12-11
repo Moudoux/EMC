@@ -50,7 +50,6 @@ public class IBlockPos {
 		this.z = z;
 	}
 
-
 	public IBlockPos add(int x, int y, int z) {
 		return x == 0 && y == 0 && z == 0 ? this : new IBlockPos(getX() + x, getY() + y, getZ() + z);
 	}

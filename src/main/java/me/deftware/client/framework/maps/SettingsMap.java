@@ -80,6 +80,7 @@ public class SettingsMap {
 		 * JUMP_HEIGHT
 		 * BLOCK_REACH_DISTANCE
 		 * EXTENDED_REACH
+		 * NOCLIP
 		 */
 		public static final int ENTITY_SETTINGS = 4;
 
