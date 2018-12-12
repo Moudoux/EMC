@@ -7,7 +7,7 @@ import org.lwjgl.glfw.GLFW;
 public class IGuiTextField extends GuiTextField implements CustomIGuiEventListener {
 
 	public IGuiTextField(int componentId, int x, int y, int width, int height) {
-		super(componentId, Minecraft.getMinecraft().fontRenderer, x, y, width, height);
+		super(componentId, Minecraft.getInstance().fontRenderer, x, y, width, height);
 	}
 
 	public String getTextboxText() {
@@ -46,11 +46,11 @@ public class IGuiTextField extends GuiTextField implements CustomIGuiEventListen
 	}
 
 	public void onDraw(int mouseX, int mouseY, float partialTicks) {
-		func_195608_a(mouseX, mouseY, partialTicks);
+		drawTextField(mouseX, mouseY, partialTicks);
 	}
 
 	public void doCursorTick() {
-		updateCursorCounter();
+		tick();
 	}
 
 	public void setTextboxEnabled(boolean state) {

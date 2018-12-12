@@ -18,20 +18,20 @@ public class IMouse {
 	 */
 	public static void clickMouse(int button) {
 		if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
-			((IMixinMinecraft) Minecraft.getMinecraft()).doClickMouse();
+			((IMixinMinecraft) Minecraft.getInstance()).doClickMouse();
 		} else if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
-			((IMixinMinecraft) Minecraft.getMinecraft()).doRightClickMouse();
+			((IMixinMinecraft) Minecraft.getInstance()).doRightClickMouse();
 		} else	if (button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE) {
-			((IMixinMinecraft) Minecraft.getMinecraft()).doMiddleClickMouse();
+			((IMixinMinecraft) Minecraft.getInstance()).doMiddleClickMouse();
 		}
 	}
 
 	public static boolean isButtonDown(int button) {
 		if (button == 0) {
-			return GLFW.glfwGetMouseButton(Minecraft.getMinecraft().mainWindow.getWindowPointer(),
+			return GLFW.glfwGetMouseButton(Minecraft.getInstance().mainWindow.getHandle(),
 					GLFW.GLFW_MOUSE_BUTTON_1) == 1 ? true : false;
 		} else if (button == 1) {
-			return GLFW.glfwGetMouseButton(Minecraft.getMinecraft().mainWindow.getWindowPointer(),
+			return GLFW.glfwGetMouseButton(Minecraft.getInstance().mainWindow.getHandle(),
 					GLFW.GLFW_MOUSE_BUTTON_2) == 1 ? true : false;
 		}
 		return false;

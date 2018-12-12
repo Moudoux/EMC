@@ -86,10 +86,10 @@ public abstract class MixinEntity implements IMixinEntity {
 	public abstract boolean isSprinting();
 
 	@Shadow
-	public abstract boolean isRiding();
+	public abstract boolean isPassenger();
 
 	@Shadow
-	public abstract AxisAlignedBB getEntityBoundingBox();
+	public abstract AxisAlignedBB getBoundingBox();
 
 	@Shadow
 	public abstract boolean getFlag(int flag);

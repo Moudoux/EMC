@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.GlStateManager;
 public class TexUtil {
 
     public static void bindTexture(IResourceLocation texture) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+        Minecraft.getInstance().getTextureManager().bindTexture(texture);
     }
 
     public static void drawModalRectWithCustomSizedTexture(int x, int y, float u, float v, int width, int height,

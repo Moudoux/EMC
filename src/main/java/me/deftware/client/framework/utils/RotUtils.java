@@ -16,7 +16,7 @@ public class RotUtils {
 		Vec3d eyesPos = RotUtils.getEyesPos();
 		Vec3d lookVec = RotUtils.getServerLookVec();
 
-		AxisAlignedBB bb = entity.getEntity().getEntityBoundingBox();
+		AxisAlignedBB bb = entity.getEntity().getBoundingBox();
 		if (RotUtils.faceVectorPacket(bb.getCenter())) {
 			return true;
 		}
@@ -28,7 +28,7 @@ public class RotUtils {
 		Vec3d eyesPos = RotUtils.getEyesPos();
 		Vec3d lookVec = RotUtils.getServerLookVec();
 
-		AxisAlignedBB bb = entity.getEntity().getEntityBoundingBox();
+		AxisAlignedBB bb = entity.getEntity().getBoundingBox();
 		if (RotUtils.faceVectorClient(bb.getCenter())) {
 			return true;
 		}
@@ -38,23 +38,23 @@ public class RotUtils {
 
 	public static boolean faceVectorClient(Vec3d vec) {
 		float[] rotations = RotUtils.getRotations(vec);
-		float oldYaw = Minecraft.getMinecraft().player.prevRotationYaw;
-		float oldPitch = Minecraft.getMinecraft().player.prevRotationPitch;
-		Minecraft.getMinecraft().player.rotationYaw = RotUtils.limitAngleChange(oldYaw, rotations[0], 30);
-		Minecraft.getMinecraft().player.rotationPitch = rotations[1];
+		float oldYaw = Minecraft.getInstance().player.prevRotationYaw;
+		float oldPitch = Minecraft.getInstance().player.prevRotationPitch;
+		Minecraft.getInstance().player.rotationYaw = RotUtils.limitAngleChange(oldYaw, rotations[0], 30);
+		Minecraft.getInstance().player.rotationPitch = rotations[1];
 		return Math.abs(oldYaw - rotations[0]) + Math.abs(oldPitch - rotations[1]) < 1F;
 	}
 
 	public static float getAngleToClientRotation(IEntity entity) {
-		float[] needed = RotUtils.getRotations(entity.getEntity().getEntityBoundingBox().getCenter());
-		float diffYaw = MathHelper.wrapDegrees(Minecraft.getMinecraft().player.rotationYaw) - needed[0];
-		float diffPitch = MathHelper.wrapDegrees(Minecraft.getMinecraft().player.rotationPitch) - needed[1];
+		float[] needed = RotUtils.getRotations(entity.getEntity().getBoundingBox().getCenter());
+		float diffYaw = MathHelper.wrapDegrees(Minecraft.getInstance().player.rotationYaw) - needed[0];
+		float diffPitch = MathHelper.wrapDegrees(Minecraft.getInstance().player.rotationPitch) - needed[1];
 		float angle = MathHelper.sqrt(diffYaw * diffYaw + diffPitch * diffPitch);
 		return angle;
 	}
 
 	public static float getAngleToServerRotation(IEntity entity) {
-		float[] needed = RotUtils.getRotations(entity.getEntity().getEntityBoundingBox().getCenter());
+		float[] needed = RotUtils.getRotations(entity.getEntity().getBoundingBox().getCenter());
 		float diffYaw = RotUtils.serverYaw - needed[0];
 		float diffPitch = RotUtils.serverPitch - needed[1];
 		float angle = MathHelper.sqrt(diffYaw * diffYaw + diffPitch * diffPitch);
@@ -95,9 +95,9 @@ public class RotUtils {
 	}
 
 	private static Vec3d getEyesPos() {
-		return new Vec3d(Minecraft.getMinecraft().player.posX,
-				Minecraft.getMinecraft().player.posY + Minecraft.getMinecraft().player.getEyeHeight(),
-				Minecraft.getMinecraft().player.posZ);
+		return new Vec3d(Minecraft.getInstance().player.posX,
+				Minecraft.getInstance().player.posY + Minecraft.getInstance().player.getEyeHeight(),
+				Minecraft.getInstance().player.posZ);
 	}
 
 }

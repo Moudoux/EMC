@@ -9,7 +9,7 @@ public abstract class IGuiSlot extends GuiSlot implements CustomIGuiEventListene
 	private int selectedSlot;
 
 	public IGuiSlot(int width, int height, int topIn, int bottomIn, int slotHeightIn) {
-		super(Minecraft.getMinecraft(), width, height, topIn, bottomIn, slotHeightIn);
+		super(Minecraft.getInstance(), width, height, topIn, bottomIn, slotHeightIn);
 	}
 
 	@Override
@@ -18,7 +18,7 @@ public abstract class IGuiSlot extends GuiSlot implements CustomIGuiEventListene
 	}
 
 	@Override
-	protected boolean func_195078_a(int index, int p_195078_2_, double p_195078_3_, double p_195078_5_) {
+	protected boolean mouseClicked(int index, int p_195078_2_, double p_195078_3_, double p_195078_5_) {
 		selectedSlot = index;
 		return true;
 	}
@@ -51,7 +51,7 @@ public abstract class IGuiSlot extends GuiSlot implements CustomIGuiEventListene
 	}
 
 	public void clickElement(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
-		func_195078_a(slotIndex, GLFW.GLFW_MOUSE_BUTTON_LEFT, mouseX, mouseY);
+		mouseClicked(slotIndex, GLFW.GLFW_MOUSE_BUTTON_LEFT, mouseX, mouseY);
 	}
 
 }

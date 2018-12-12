@@ -17,8 +17,8 @@ public class MixinGuiDisconnected {
 		new EventDisconnected().send();
 	}
 
-	@Inject(method = "drawScreen", at = @At("RETURN"))
-	public void drawScreen(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
+	@Inject(method = "render", at = @At("RETURN"))
+	public void render(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
 		new EventGuiScreenDraw((GuiScreen) (Object) this).send();
 	}
 

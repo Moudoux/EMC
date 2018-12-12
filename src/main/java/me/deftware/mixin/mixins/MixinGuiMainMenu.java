@@ -12,9 +12,9 @@ import net.minecraft.client.gui.GuiMainMenu;
 @Mixin(GuiMainMenu.class)
 public class MixinGuiMainMenu {
 
-	@Inject(method = "drawScreen", at = @At("RETURN"))
-	public void drawScreen(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(
+	@Inject(method = "render", at = @At("RETURN"))
+	public void render(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
+		Minecraft.getInstance().fontRenderer.drawStringWithShadow(
 				FrameworkConstants.FRAMEWORK_NAME + " v" + FrameworkConstants.VERSION, 2, 2, 0xFFFFFF);
 	}
 

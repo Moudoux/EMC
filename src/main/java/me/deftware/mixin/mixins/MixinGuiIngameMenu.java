@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(GuiIngameMenu.class)
 public class MixinGuiIngameMenu {
 
-	@Inject(method = "drawScreen", at = @At("RETURN"))
-	private void drawScreen(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
+	@Inject(method = "render", at = @At("RETURN"))
+	private void render(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
 		new EventGuiScreenDraw((GuiScreen) (Object) this).send();
 	}
 

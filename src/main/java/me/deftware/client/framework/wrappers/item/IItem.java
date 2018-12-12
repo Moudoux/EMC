@@ -37,8 +37,8 @@ public class IItem {
 			return Item.getItemById(Integer.parseInt(id));
 		} catch (NumberFormatException var3) {
 			ResourceLocation resourceLocation = new ResourceLocation(id);
-			if (Item.REGISTRY.containsKey(resourceLocation)) {
-				return Item.REGISTRY.getObject(resourceLocation);
+			if (IRegistry.ITEM.containsKey(resourceLocation)) {
+				return IRegistry.ITEM.getOrDefault(resourceLocation);
 			}
 			return null;
 		}
@@ -65,7 +65,7 @@ public class IItem {
 	}
 
 	public float getAttackDamage() {
-		return ((ItemSword) item).func_200894_d() + 3.0F;
+		return ((ItemSword) item).getAttackDamage() + 3.0F;
 	}
 
 	public float getDamageVsEntity() {

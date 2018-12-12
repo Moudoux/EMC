@@ -27,7 +27,7 @@ public class IWorld {
 		public void execute() {
 			new Thread(() -> {
 				ArrayList<IEntity> entities = new ArrayList<>();
-				new ArrayList<>(Minecraft.getMinecraft().world.loadedEntityList).forEach((entity) -> entities.add(new IEntity(entity)));
+				new ArrayList<>(Minecraft.getInstance().world.loadedEntityList).forEach((entity) -> entities.add(new IEntity(entity)));
 				list = entities;
 			}).start();
 		}
@@ -38,7 +38,7 @@ public class IWorld {
 		public void execute() {
 			new Thread(() -> {
 				ArrayList<IChest> chests = new ArrayList<>();
-				new ArrayList<>(Minecraft.getMinecraft().world.loadedTileEntityList).forEach((entity) -> {
+				new ArrayList<>(Minecraft.getInstance().world.loadedTileEntityList).forEach((entity) -> {
 					IChestType type = entity instanceof TileEntityChest
 							? entity instanceof TileEntityTrappedChest ? IChestType.TRAPPED_CHEST : IChestType.CHEST
 							: entity instanceof TileEntityEnderChest ? IChestType.ENDER_CHEST
@@ -57,7 +57,7 @@ public class IWorld {
 	};
 
 	public static IEntity getEntityFromName(String username) {
-		for (Entity entity : Minecraft.getMinecraft().world.loadedEntityList) {
+		for (Entity entity : Minecraft.getInstance().world.loadedEntityList) {
 			if (entity instanceof EntityOtherPlayerMP) {
 				EntityOtherPlayerMP player = (EntityOtherPlayerMP) entity;
 				if (player.getGameProfile().getName().toLowerCase().equals(username.toLowerCase())) {
@@ -69,13 +69,13 @@ public class IWorld {
 	}
 
 	public static void sendQuittingPacket() {
-		if (Minecraft.getMinecraft().world != null) {
-			Minecraft.getMinecraft().world.sendQuittingDisconnectingPacket();
+		if (Minecraft.getInstance().world != null) {
+			Minecraft.getInstance().world.sendQuittingDisconnectingPacket();
 		}
 	}
 
 	public static void leaveWorld() {
-		Minecraft.getMinecraft().loadWorld(null);
+		Minecraft.getInstance().loadWorld(null);
 	}
 
 	public static ArrayList<IChest> getIChests() {
@@ -93,7 +93,7 @@ public class IWorld {
 	}
 
 	public static IBlock getBlockFromPos(IBlockPos pos) {
-		return new IBlock(Minecraft.getMinecraft().world.getBlockState(pos.getPos()).getBlock());
+		return new IBlock(Minecraft.getInstance().world.getBlockState(pos.getPos()).getBlock());
 	}
 
 	public static class IChest {
@@ -138,7 +138,7 @@ public class IWorld {
 		List<AxisAlignedBB> list = Lists.<AxisAlignedBB>newArrayList();
 
 		if (entityIn != null) {
-			List<Entity> list1 = Minecraft.getMinecraft().world.getEntitiesWithinAABBExcludingEntity(entityIn,
+			List<Entity> list1 = Minecraft.getInstance().world.getEntitiesWithinAABBExcludingEntity(entityIn,
 					aabb.grow(0.25D));
 
 			for (int i = 0; i < list1.size(); ++i) {

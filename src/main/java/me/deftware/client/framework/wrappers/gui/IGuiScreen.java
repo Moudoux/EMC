@@ -35,9 +35,9 @@ public abstract class IGuiScreen extends GuiScreen {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+	public void render(int mouseX, int mouseY, float partialTicks) {
 		onDraw(mouseX, mouseY, partialTicks);
-		super.drawScreen(mouseX, mouseY, partialTicks);
+		super.render(mouseX, mouseY, partialTicks);
 		onPostDraw(mouseX, mouseY, partialTicks);
 	}
 
@@ -53,8 +53,8 @@ public abstract class IGuiScreen extends GuiScreen {
 	}
 
 	@Override
-	public void updateScreen() {
-		super.updateScreen();
+	public void tick() {
+		super.tick();
 		onUpdate();
 	}
 
@@ -62,7 +62,7 @@ public abstract class IGuiScreen extends GuiScreen {
 	public void initGui() {
 		super.initGui();
 		onInitGui();
-		field_195124_j.add(new IGuiEventListener() {
+		children.add(new IGuiEventListener() {
 
 			@Override
 			public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
@@ -95,7 +95,7 @@ public abstract class IGuiScreen extends GuiScreen {
 	}
 
 	public void addEventListener(CustomIGuiEventListener listener) {
-		this.field_195124_j.add(listener);
+		this.children.add(listener);
 	}
 
 	protected void drawIDefaultBackground() {
@@ -107,17 +107,17 @@ public abstract class IGuiScreen extends GuiScreen {
 	}
 
 	protected List<GuiButton> getButtonList() {
-		return buttonList;
+		return buttons;
 	}
 
 	protected void addButton(IGuiButton button) {
-		buttonList.add(button);
-		field_195124_j.add(button);
+		children.add(button);
+		buttons.add(button);
 	}
 
 	protected ArrayList<IGuiButton> getIButtonList() {
 		ArrayList<IGuiButton> list = new ArrayList<>();
-		for (GuiButton b : buttonList) {
+		for (GuiButton b : buttons) {
 			if (b instanceof IGuiButton) {
 				list.add((IGuiButton) b);
 			}
@@ -126,7 +126,7 @@ public abstract class IGuiScreen extends GuiScreen {
 	}
 
 	protected void clearButtons() {
-		buttonList.clear();
+		buttons.clear();
 	}
 
 	/**
@@ -161,12 +161,12 @@ public abstract class IGuiScreen extends GuiScreen {
 	}
 
 	public static void openLink(String url) {
-		Util.getOSType().openUri(url);
+		Util.getOSType().openURI(url);
 	}
 
 	public void drawCenteredString(String text, int x, int y, int color) {
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text,
-				x - Minecraft.getMinecraft().fontRenderer.getStringWidth(text) / 2, y, color);
+		Minecraft.getInstance().fontRenderer.drawStringWithShadow(text,
+				x - Minecraft.getInstance().fontRenderer.getStringWidth(text) / 2, y, color);
 	}
 
 	public void setDoesGuiPauseGame(boolean state) {
@@ -175,7 +175,7 @@ public abstract class IGuiScreen extends GuiScreen {
 
 	protected void drawTexture(IResourceLocation texture, int x, int y, int width, int height) {
 		mc.getTextureManager().bindTexture(texture);
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GuiScreen.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
 	}
 
@@ -192,19 +192,19 @@ public abstract class IGuiScreen extends GuiScreen {
 	}
 
 	public static int getScaledHeight() {
-		return Minecraft.getMinecraft().mainWindow.getScaledHeight();
+		return Minecraft.getInstance().mainWindow.getScaledHeight();
 	}
 
 	public static int getScaledWidth() {
-		return Minecraft.getMinecraft().mainWindow.getScaledWidth();
+		return Minecraft.getInstance().mainWindow.getScaledWidth();
 	}
 
 	public static int getDisplayHeight() {
-		return Minecraft.getMinecraft().mainWindow.getHeight();
+		return Minecraft.getInstance().mainWindow.getHeight();
 	}
 
 	public static int getDisplayWidth() {
-		return Minecraft.getMinecraft().mainWindow.getWidth();
+		return Minecraft.getInstance().mainWindow.getWidth();
 	}
 
 	public void drawITintBackground(int tint) {
@@ -212,7 +212,7 @@ public abstract class IGuiScreen extends GuiScreen {
 	}
 
 	public void setFocusedComponent(CustomIGuiEventListener listener) {
-		this.func_195073_a(listener);
+		this.setFocused(listener);
 	}
 
 	protected void onGuiClose() {

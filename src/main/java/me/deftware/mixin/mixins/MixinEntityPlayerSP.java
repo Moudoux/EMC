@@ -17,7 +17,6 @@ import me.deftware.client.framework.event.events.EventIRCMessage;
 import me.deftware.client.framework.event.events.EventPlayerWalking;
 import me.deftware.client.framework.event.events.EventSlowdown;
 import me.deftware.client.framework.event.events.EventUpdate;
-import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.ChatProcessor;
 import me.deftware.mixin.imp.IMixinEntityPlayerSP;
@@ -78,7 +77,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 	@Final
 	public NetHandlerPlayClient connection;
 
-	@Redirect(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "net/minecraft/client/entity/EntityPlayerSP.isHandActive()Z", ordinal = 0))
+	@Redirect(method = "livingTick", at = @At(value = "INVOKE", target = "net/minecraft/client/entity/EntityPlayerSP.isHandActive()Z", ordinal = 0))
 	private boolean itemUseSlowdownEvent(EntityPlayerSP self) {
 		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Item_Use).send();
 		if (event.isCanceled()) {
@@ -87,7 +86,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 		return isHandActive();
 	}
 
-	@Redirect(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "net/minecraft/util/FoodStats.getFoodLevel()I"))
+	@Redirect(method = "livingTick", at = @At(value = "INVOKE", target = "net/minecraft/util/FoodStats.getFoodLevel()I"))
 	private int hungerSlowdownEvent(FoodStats self) {
 		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Hunger).send();
 		if (event.isCanceled()) {
@@ -96,7 +95,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 		return self.getFoodLevel();
 	}
 
-	@Redirect(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "net/minecraft/entity/EntityLivingBase.isPotionActive(Lnet/minecraft/potion/Potion;)Z"))
+	@Redirect(method = "livingTick", at = @At(value = "INVOKE", target = "net/minecraft/entity/EntityLivingBase.isPotionActive(Lnet/minecraft/potion/Potion;)Z"))
 	private boolean blindlessSlowdownEvent(EntityLivingBase self) {
 		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Blindness).send();
 		if (event.isCanceled()) {
@@ -105,8 +104,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 		return self.isPotionActive(MobEffects.BLINDNESS);
 	}
 
-	@Inject(method = "onUpdate", at = @At("HEAD"), cancellable = true)
-	private void onUpdate(CallbackInfo ci) {
+	@Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+	private void tick(CallbackInfo ci) {
 		EventUpdate event = new EventUpdate(posX, posY, posZ, rotationYaw, rotationPitch, onGround).send();
 		if (event.isCanceled()) {
 			ci.cancel();
@@ -128,7 +127,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 					ci.cancel();
 					return;
 				}
-				CommandRegister.getDispatcher().execute(message.substring(1), Minecraft.getMinecraft().player.func_195051_bN());
+				CommandRegister.getDispatcher().execute(message.substring(1), Minecraft.getInstance().player.getCommandSource());
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				IChat.sendClientMessage(ex.getMessage());
@@ -204,7 +203,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 		}
 
 		if (isCurrentViewEntity()) {
-			AxisAlignedBB axisalignedbb = getEntityBoundingBox();
+			AxisAlignedBB axisalignedbb = getBoundingBox();
 			double d0 = posX - lastReportedPosX;
 			double d1 = event.getPosY() - lastReportedPosY;
 			double d2 = posZ - lastReportedPosZ;
@@ -214,7 +213,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 			boolean flag2 = d0 * d0 + d1 * d1 + d2 * d2 > 9.0E-4D || positionUpdateTicks >= 20;
 			boolean flag3 = d3 != 0.0D || d4 != 0.0D;
 
-			if (isRiding()) {
+			if (isPassenger()) {
 				connection.sendPacket(new CPacketPlayer.PositionRotation(motionX, -999.0D, motionZ,
 						event.getRotationYaw(), event.getRotationPitch(), event.isOnGround()));
 				flag2 = false;
@@ -243,7 +242,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 			}
 
 			prevOnGround = onGround;
-			autoJumpEnabled = Minecraft.getMinecraft().gameSettings.autoJump;
+			autoJumpEnabled = Minecraft.getInstance().gameSettings.autoJump;
 		}
 	}
 

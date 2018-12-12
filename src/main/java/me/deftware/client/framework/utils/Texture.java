@@ -13,7 +13,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Texture {
 
-/*
+
     int width;
     int height;
     DynamicTexture dynamicTexture;
@@ -125,7 +125,7 @@ public class Texture {
 
     
     public byte getAlpha(int x, int y){
-        return this.nativeImage.getPixelAlpha(x, y);
+        return this.nativeImage.getPixelLuminanceOrAlpha(x, y);
     }
 
     
@@ -140,8 +140,14 @@ public class Texture {
     }
 
     
-    public void updateTexture(){
-        this.dynamicTexture.updateDynamicTexture();
+    public int updateTexture(){
+		try {
+			this.dynamicTexture.updateDynamicTexture();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 1;
+		}
+        return 0;
     }
 
     public int update(){
@@ -181,6 +187,6 @@ public class Texture {
         dynamicTexture.close();
         dynamicTexture = null;
     }
-*/
+
 }
 

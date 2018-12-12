@@ -22,7 +22,7 @@ public abstract class MixinAbstractClientPlayer {
 	 */
 	@Overwrite
 	public boolean isSpectator() {
-		NetworkPlayerInfo networkplayerinfo = Minecraft.getMinecraft().getConnection()
+		NetworkPlayerInfo networkplayerinfo = Minecraft.getInstance().getConnection()
 				.getPlayerInfo(((EntityPlayer) (Object) this).getGameProfile().getId());
 		EventSpectator event = new EventSpectator(
 				networkplayerinfo != null && networkplayerinfo.getGameType() == GameType.SPECTATOR).send();
@@ -37,17 +37,17 @@ public abstract class MixinAbstractClientPlayer {
 	public float getFovModifier() {
 		float f = 1.0F;
 
-		if (((AbstractClientPlayer) (Object) this).capabilities.isFlying) {
+		if (((AbstractClientPlayer) (Object) this).abilities.isFlying) {
 			f *= 1.1F;
 		}
 
 		EventFovModifier event = new EventFovModifier(f).send();
 		f = event.getFov();
 
-		IAttributeInstance iattributeinstance = ((AbstractClientPlayer) (Object) this).getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-		f = (float) ((double) f * ((iattributeinstance.getAttributeValue() / (double) ((AbstractClientPlayer) (Object) this).capabilities.getWalkSpeed() + 1.0D) / 2.0D));
+		IAttributeInstance iattributeinstance = ((AbstractClientPlayer) (Object) this).getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+		f = (float) ((double) f * ((iattributeinstance.getValue() / (double) ((AbstractClientPlayer) (Object) this).abilities.getWalkSpeed() + 1.0D) / 2.0D));
 
-		if (((AbstractClientPlayer) (Object) this).capabilities.getWalkSpeed() == 0.0F || Float.isNaN(f) || Float.isInfinite(f)) {
+		if (((AbstractClientPlayer) (Object) this).abilities.getWalkSpeed() == 0.0F || Float.isNaN(f) || Float.isInfinite(f)) {
 			f = 1.0F;
 		}
 

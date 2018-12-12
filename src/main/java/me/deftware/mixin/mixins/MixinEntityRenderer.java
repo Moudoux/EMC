@@ -3,6 +3,7 @@ package me.deftware.mixin.mixins;
 import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
 
 import me.deftware.client.framework.utils.ChatProcessor;
+import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,10 +16,10 @@ import me.deftware.client.framework.event.events.EventRender2D;
 import me.deftware.client.framework.event.events.EventRender3D;
 import me.deftware.client.framework.event.events.EventWeather;
 import me.deftware.client.framework.maps.SettingsMap;
-import net.minecraft.client.renderer.EntityRenderer;
+
 import net.minecraft.client.renderer.GlStateManager;
 
-@Mixin(EntityRenderer.class)
+@Mixin(GameRenderer.class)
 public class MixinEntityRenderer {
 
 	// TODO: Override RayTraceResult, line 462, FIELD: flag
@@ -58,10 +59,10 @@ public class MixinEntityRenderer {
 		}
 	}
 
-	@Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "net/minecraft/client/renderer/GlStateManager.enableAlpha()V"))
+	@Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "net/minecraft/client/renderer/GlStateManager.enableDepthTest()V"))
 	private void renderWorld(CallbackInfo ci) {
 		if (!((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "WORLD_DEPTH", true))) {
-			GlStateManager.disableDepth();
+			GlStateManager.disableDepthTest();
 		}
 	}
 
@@ -70,8 +71,8 @@ public class MixinEntityRenderer {
 		this.partialTicks = partialTicks;
 	}
 
-	@Redirect(method = "updateCameraAndRender(FJ)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/EntityRenderer;renderHand:Z", opcode = GETFIELD))
-	private boolean updateCameraAndRender_renderHand(EntityRenderer self) {
+	@Redirect(method = "updateCameraAndRender(FJ)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/GameRenderer;renderHand:Z", opcode = GETFIELD))
+	private boolean updateCameraAndRender_renderHand(GameRenderer self) {
 		new EventRender3D(partialTicks).send();
 		return renderHand;
 	}

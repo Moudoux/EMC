@@ -34,7 +34,7 @@ public class GuiUpdateLoader extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		buttonList.clear();
+		buttons.clear();
 		addButton(new IGuiButton(0, width / 2 - 100, height / 4 + 120 + 12 - 30,
 				"Update " + (clientInfo.get("updateLinkOverride").getAsBoolean() ? clientInfo.get("name").getAsString()
 						: "EMC")) {
@@ -45,20 +45,20 @@ public class GuiUpdateLoader extends GuiScreen {
 					link = clientInfo.get("website").getAsString();
 				}
 				IGuiScreen.openLink(link);
-				Minecraft.getMinecraft().shutdown();
+				Minecraft.getInstance().shutdown();
 			}
 		});
 		addButton(new IGuiButton(1, width / 2 - 100, height / 4 + 144 + 12 - 30, "Cancel (Mod won't load)") {
 			@Override
 			public void onClick(double mouseX, double mouseY) {
-				Minecraft.getMinecraft().displayGuiScreen(null);
+				Minecraft.getInstance().displayGuiScreen(null);
 			}
 		});
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		super.drawScreen(mouseX, mouseY, partialTicks);
+	public void render(int mouseX, int mouseY, float partialTicks) {
+		super.render(mouseX, mouseY, partialTicks);
 		drawDefaultBackground();
 
 		drawCenteredString(fontRenderer, "EMC update required", width / 2, 21, 16777215);
@@ -79,7 +79,7 @@ public class GuiUpdateLoader extends GuiScreen {
 		drawCenteredString(fontRenderer, "Your EMC version is too low.", width / 2 + 70, 90,
 				16777215);
 
-		super.drawScreen(mouseX, mouseY, partialTicks);
+		super.render(mouseX, mouseY, partialTicks);
 	}
 
 }

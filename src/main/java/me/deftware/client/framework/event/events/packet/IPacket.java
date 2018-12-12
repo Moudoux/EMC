@@ -20,7 +20,7 @@ public class IPacket {
 
 
 	public void sendPacket() {
-		Minecraft.getMinecraft().player.connection.sendPacket(packet);
+		Minecraft.getInstance().player.connection.sendPacket(packet);
 	}
 
 }

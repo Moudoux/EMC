@@ -63,8 +63,8 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 
 	@Inject(method = "runTick", at = @At("HEAD"))
 	private void runTick(CallbackInfo ci) {
-		if (Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu) {
-			EventGuiScreenDisplay event = new EventGuiScreenDisplay(Minecraft.getMinecraft().currentScreen).send();
+		if (Minecraft.getInstance().currentScreen instanceof GuiMainMenu) {
+			EventGuiScreenDisplay event = new EventGuiScreenDisplay(Minecraft.getInstance().currentScreen).send();
 			if (!(event.getScreen() instanceof GuiMainMenu)) {
 				displayGuiScreen(event.getScreen());
 			}
@@ -119,7 +119,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 
 	@Override
 	public MainWindow getMainWindow() {
-		return Minecraft.getMinecraft().mainWindow;
+		return Minecraft.getInstance().mainWindow;
 	}
 
 }

@@ -14,11 +14,11 @@ import java.util.List;
 public abstract class MixinGuiEventHandler {
 
     @Shadow
-    protected abstract List<? extends IGuiEventListener> getEventListeners();
+    protected abstract List<? extends IGuiEventListener> getChildren();
 
     @Inject(method = "mouseReleased", at = @At("HEAD"))
     public void mouseReleased(double p_mouseReleased_1_, double p_mouseReleased_3_, int p_mouseReleased_5_, CallbackInfoReturnable<Boolean> ci) {
-        this.getEventListeners().forEach(
+        this.getChildren().forEach(
                 (listener) -> listener.mouseReleased(p_mouseReleased_1_, p_mouseReleased_3_, p_mouseReleased_5_));
     }
 

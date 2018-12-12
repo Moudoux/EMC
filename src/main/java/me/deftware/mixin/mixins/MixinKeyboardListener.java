@@ -14,18 +14,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(KeyboardListener.class)
 public class MixinKeyboardListener {
 
-	@Shadow
-	@Final
-	private Minecraft minecraft;
-
-	@Inject(method = "onKeyPressed", at = @At(value = "INVOKE", target = "net/minecraft/client/util/InputMappings.isKeyDown(I)Z", ordinal = 4))
-	private void onKeyPressed(long windowPointer, int keyCode, int scanCode, int action, int modifiers, CallbackInfo ci) {
+	@Inject(method = "onKeyEvent", at = @At(value = "INVOKE", target = "net/minecraft/client/util/InputMappings.isKeyDown(I)Z", ordinal = 4))
+	private void onKeyEvent(long windowPointer, int keyCode, int scanCode, int action, int modifiers, CallbackInfo ci) {
 		new EventKeyAction(keyCode, action, modifiers).send();
 	}
 
 	@Inject(method = "onCharEvent", at = @At("HEAD"))
 	private void onCharEvent(long windowPointer, int codePoint, int modifiers, CallbackInfo ci) {
-		if (windowPointer != minecraft.mainWindow.getWindowPointer() || minecraft.currentScreen != null) {
+		if (windowPointer != Minecraft.getInstance().mainWindow.getHandle() || Minecraft.getInstance().currentScreen != null) {
 			return;
 		} else {
 			if (Character.charCount(codePoint) == 1) {

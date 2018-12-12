@@ -5,19 +5,19 @@ import net.minecraft.client.Minecraft;
 public class ISession {
 
 	public static String getISessionID() {
-		return Minecraft.getMinecraft().getSession().getSessionID();
+		return Minecraft.getInstance().getSession().getSessionID();
 	}
 
 	public static String getIPlayerID() {
-		return Minecraft.getMinecraft().getSession().getPlayerID();
+		return Minecraft.getInstance().getSession().getPlayerID();
 	}
 
 	public static String getIUsername() {
-		return Minecraft.getMinecraft().getSession().getUsername();
+		return Minecraft.getInstance().getSession().getUsername();
 	}
 
 	public static String getIToken() {
-		return Minecraft.getMinecraft().getSession().getToken();
+		return Minecraft.getInstance().getSession().getToken();
 	}
 
 }

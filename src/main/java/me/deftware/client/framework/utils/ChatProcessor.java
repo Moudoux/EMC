@@ -8,6 +8,7 @@ import me.deftware.mixin.imp.IMixinGuiNewChat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextFormatting;
 
 public class ChatProcessor {
 
@@ -94,8 +95,8 @@ public class ChatProcessor {
 			return;
 		}
 		ITextComponent textComponent = getITextComponent(chatMessage);
-		((IMixinGuiNewChat) Minecraft.getMinecraft().ingameGUI.getChatGUI()).setTheChatLine(textComponent, 0,
-				Minecraft.getMinecraft().ingameGUI.getUpdateCounter(), false);
+		((IMixinGuiNewChat) Minecraft.getInstance().ingameGUI.getChatGUI()).setTheChatLine(textComponent, 0,
+				Minecraft.getInstance().ingameGUI.getTicks(), false);
 	}
 
 	public static void printClientMessage(String chatMessage) {
@@ -118,7 +119,6 @@ public class ChatProcessor {
 		}
 	}
 
-	/*
 	private static TextFormatting getTextFormattingByValue(char value) {
 		int index = 0;
 		for (ChatColor color : ChatColor.values()) {
@@ -134,7 +134,6 @@ public class ChatProcessor {
 		}
 		return null;
 	}
-	*/
 
 	private static Style formatChatStyle(Style chatStyle, char formattingChar) {
 		switch (formattingChar) {
@@ -159,12 +158,12 @@ public class ChatProcessor {
 			chatStyle.setBold(Boolean.valueOf(false));
 			chatStyle.setUnderlined(Boolean.valueOf(false));
 			chatStyle.setItalic(Boolean.valueOf(false));
-			//chatStyle.setColor(TextFormatting.RESET);
+			chatStyle.setColor(TextFormatting.RESET);
 			break;
 		case 'p':
 		case 'q':
 		default:
-			//chatStyle.setColor(ChatProcessor.getTextFormattingByValue(formattingChar));
+			chatStyle.setColor(ChatProcessor.getTextFormattingByValue(formattingChar));
 		}
 
 		return chatStyle;

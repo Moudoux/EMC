@@ -38,7 +38,7 @@ public class SessionUtils {
 					username.contains("@") ? "mojang" : "legacy");
 			MCLeaks.clearMCLeaksSession();
 
-			((IMixinMinecraft) Minecraft.getMinecraft()).setSession(session);
+			((IMixinMinecraft) Minecraft.getInstance()).setSession(session);
 
 			return true;
 		} catch (AuthenticationException e) {
@@ -52,7 +52,7 @@ public class SessionUtils {
 	 * @param username
 	 */
 	public static void loginWithoutPassword(String username) {
-		((IMixinMinecraft) Minecraft.getMinecraft()).setSession(new Session(username, "", "0", "legacy"));
+		((IMixinMinecraft) Minecraft.getInstance()).setSession(new Session(username, "", "0", "legacy"));
 		MCLeaks.clearMCLeaksSession();
 	}
 

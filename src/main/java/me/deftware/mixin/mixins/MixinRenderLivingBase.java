@@ -30,7 +30,7 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> {
 	 */
 	@Overwrite
 	protected void renderLivingAt(T entityLivingBaseIn, double x, double y, double z) {
-		GlStateManager.translate((float) x, (float) y, (float) z);
+		GlStateManager.translatef((float) x, (float) y, (float) z);
 		if (!(entityLivingBaseIn instanceof EntityPlayer)) {
 			return;
 		}
@@ -49,8 +49,8 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> {
 				flip = names.equals(s);
 			}
 			if (flip) {
-				GlStateManager.translate(0.0F, entityLivingBaseIn.height + 0.1F, 0.0F);
-				GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
+				GlStateManager.translatef(0.0F, entityLivingBaseIn.height + 0.1F, 0.0F);
+				GlStateManager.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
 			}
 		}
 	}

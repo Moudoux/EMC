@@ -33,7 +33,7 @@ public class IGlStateManager {
 	}
 
 	public static void color(float colorRed, float colorGreen, float colorBlue) {
-		GlStateManager.color(colorRed, colorGreen, colorBlue, 1.0F);
+		GlStateManager.color4f(colorRed, colorGreen, colorBlue, 1.0F);
 	}
 
 	public static void resetColor() {
@@ -49,11 +49,11 @@ public class IGlStateManager {
 	}
 
 	public static void enableDepth() {
-		GlStateManager.enableDepth();
+		GlStateManager.enableDepthTest();
 	}
 
 	public static void disableDepth() {
-		GlStateManager.disableDepth();
+		GlStateManager.disableDepthTest();
 	}
 
 	public static void disableLighting() {
@@ -69,7 +69,7 @@ public class IGlStateManager {
 	}
 
 	public static void tryBlendFuncSeparate(int srcFactor, int dstFactor, int srcFactorAlpha, int dstFactorAlpha) {
-		GlStateManager.tryBlendFuncSeparate(srcFactor, dstFactor, srcFactorAlpha, dstFactorAlpha);
+		GlStateManager.blendFuncSeparate(srcFactor, dstFactor, srcFactorAlpha, dstFactorAlpha);
 	}
 
 	public static void enableTexture2D() {
@@ -97,15 +97,15 @@ public class IGlStateManager {
 	}
 
 	public static void doPolygonOffset(float f, float g) {
-		GlStateManager.doPolygonOffset(f, g);
+		GlStateManager.polygonOffset(f, g);
 	}
 
 	public static void disableAlpha() {
-		GlStateManager.disableAlpha();
+		GlStateManager.disableAlphaTest();
 	}
 
 	public static void enableAlpha() {
-		GlStateManager.enableAlpha();
+		GlStateManager.enableAlphaTest();
 	}
 
 	public static void enablePolygonOffset() {

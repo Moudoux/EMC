@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.registry.IRegistry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
@@ -46,11 +47,11 @@ public class IItemStack {
 	}
 
 	public void setNBT(String nbt) throws Exception {
-		stack.setTagCompound(JsonToNBT.getTagFromJson(nbt));
+		stack.setTag(JsonToNBT.getTagFromJson(nbt));
 	}
 
 	public void enchantAll(int level) {
-		for (Object enchantment : Enchantment.REGISTRY) {
+		for (Object enchantment : IRegistry.ENCHANTMENT) {
 			try {
 				if (enchantment != Enchantments.SILK_TOUCH && enchantment != Enchantments.BINDING_CURSE
 						&& enchantment != Enchantments.VANISHING_CURSE) {
@@ -67,8 +68,8 @@ public class IItemStack {
 	}
 
 	public void setStackDisplayName(String name) {
-		NBTTagCompound nbttagcompound = stack.getOrCreateSubCompound("display");
-		nbttagcompound.setString("Name", ITextComponent.Serializer.componentToJson(new TextComponentString(name)));
+		NBTTagCompound nbttagcompound = stack.getOrCreateChildTag("display");
+		nbttagcompound.putString("Name", ITextComponent.Serializer.toJson(new TextComponentString(name)));
 	}
 
 	public static boolean validName(String name) {
@@ -80,7 +81,7 @@ public class IItemStack {
 	}
 
 	public String getDisplayName() {
-		return stack.func_200301_q().getUnformattedComponentText();
+		return stack.getDisplayName().getUnformattedComponentText();
 	}
 
 	public int getItemID() {
@@ -88,7 +89,7 @@ public class IItemStack {
 	}
 
 	public float getStrVsBlock(IBlockPos pos) {
-		return stack.getDestroySpeed(Minecraft.getMinecraft().world.getBlockState(pos.getPos()));
+		return stack.getDestroySpeed(Minecraft.getInstance().world.getBlockState(pos.getPos()));
 	}
 
 	public boolean isEmpty() {

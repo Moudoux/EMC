@@ -38,19 +38,19 @@ public class IMinecraft {
 	}
 
 	public static void clickMouse() {
-		((IMixinMinecraft) Minecraft.getMinecraft()).doClickMouse();
+		((IMixinMinecraft) Minecraft.getInstance()).doClickMouse();
 	}
 
 	public synchronized static IServerData getCurrentServer() {
-		if (Minecraft.getMinecraft().getCurrentServerData() == null) {
+		if (Minecraft.getInstance().getCurrentServerData() == null) {
 			return null;
 		}
-		if (iServerCache != null && Minecraft.getMinecraft().getCurrentServerData() != null) {
-			if (iServerCache.serverIP.equals(Minecraft.getMinecraft().getCurrentServerData().serverIP)) {
+		if (iServerCache != null && Minecraft.getInstance().getCurrentServerData() != null) {
+			if (iServerCache.serverIP.equals(Minecraft.getInstance().getCurrentServerData().serverIP)) {
 				return iServerCache;
 			}
 		}
-		ServerData sd = Minecraft.getMinecraft().getCurrentServerData();
+		ServerData sd = Minecraft.getInstance().getCurrentServerData();
 		iServerCache = new IServerData(sd.serverName, sd.serverIP, sd.isOnLAN());
 		iServerCache.gameVersion = sd.gameVersion;
 		return iServerCache;
@@ -62,34 +62,34 @@ public class IMinecraft {
 	}
 
 	public static IGuiScreen getIScreen() {
-		if (Minecraft.getMinecraft().currentScreen != null) {
-			if (Minecraft.getMinecraft().currentScreen instanceof IGuiScreen) {
-				return (IGuiScreen) Minecraft.getMinecraft().currentScreen;
+		if (Minecraft.getInstance().currentScreen != null) {
+			if (Minecraft.getInstance().currentScreen instanceof IGuiScreen) {
+				return (IGuiScreen) Minecraft.getInstance().currentScreen;
 			}
 		}
 		return null;
 	}
 
 	public static float getRenderPartialTicks() {
-		return Minecraft.getMinecraft().getRenderPartialTicks();
+		return Minecraft.getInstance().getRenderPartialTicks();
 	}
 
 	public static void leaveServer() {
-		Minecraft.getMinecraft().player.connection.sendPacket(new CPacketChatMessage(new String(new char[] { 167 })));
+		Minecraft.getInstance().player.connection.sendPacket(new CPacketChatMessage(new String(new char[] { 167 })));
 	}
 
 	public static IBlockPos getBlockOver() {
 		if (!IMinecraft.isMouseOver()) {
 			return null;
 		}
-		if (Minecraft.getMinecraft().objectMouseOver.getBlockPos() != null) {
-			return new IBlockPos(Minecraft.getMinecraft().objectMouseOver.getBlockPos());
+		if (Minecraft.getInstance().objectMouseOver.getBlockPos() != null) {
+			return new IBlockPos(Minecraft.getInstance().objectMouseOver.getBlockPos());
 		}
 		return null;
 	}
 
 	public static IEntity getPointedEntity() {
-		Entity pointedEntity = Minecraft.getMinecraft().pointedEntity;
+		Entity pointedEntity = Minecraft.getInstance().pointedEntity;
 		if ((pointedEntity != null) && ((pointedEntity instanceof EntityPlayer))) {
 			return new IEntity(pointedEntity);
 		}
@@ -97,7 +97,7 @@ public class IMinecraft {
 	}
 
 	public static boolean isEntityHit() {
-		return Minecraft.getMinecraft().objectMouseOver.entityHit != null;
+		return Minecraft.getInstance().objectMouseOver.entity != null;
 	}
 
 	public static int getFPS() {
@@ -105,78 +105,78 @@ public class IMinecraft {
 	}
 
 	public static boolean isInGame() {
-		return Minecraft.getMinecraft().currentScreen == null;
+		return Minecraft.getInstance().currentScreen == null;
 	}
 
 	public static void reloadRenderers() {
-		Minecraft.getMinecraft().renderGlobal.loadRenderers();
+		Minecraft.getInstance().worldRenderer.loadRenderers();
 	}
 
 	public static void addEntityToWorld(int id, IEntity entity) {
-		Minecraft.getMinecraft().world.addEntityToWorld(id, entity.getEntity());
+		Minecraft.getInstance().world.addEntityToWorld(id, entity.getEntity());
 	}
 
 	public static void removeEntityFromWorld(int id) {
-		Minecraft.getMinecraft().world.removeEntityFromWorld(id);
+		Minecraft.getInstance().world.removeEntityFromWorld(id);
 	}
 
 	public static void connectToServer(IServerData server) {
-		Minecraft.getMinecraft()
-				.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(null), Minecraft.getMinecraft(), server));
+		Minecraft.getInstance()
+				.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(null), Minecraft.getInstance(), server));
 	}
 
 	public static int thridPersonView() {
-		return Minecraft.getMinecraft().gameSettings.thirdPersonView;
+		return Minecraft.getInstance().gameSettings.thirdPersonView;
 	}
 
 	public static int getGuiScale() {
-		return Minecraft.getMinecraft().gameSettings.guiScale;
+		return Minecraft.getInstance().gameSettings.guiScale;
 	}
 
 	public static boolean isDebugInfoShown() {
-		return Minecraft.getMinecraft().gameSettings.showDebugInfo;
+		return Minecraft.getInstance().gameSettings.showDebugInfo;
 	}
 
 	public static IGuiScreen getCurrentScreen() {
-		if (Minecraft.getMinecraft().currentScreen != null) {
-			if (Minecraft.getMinecraft().currentScreen instanceof IGuiScreen) {
-				return (IGuiScreen) Minecraft.getMinecraft().currentScreen;
+		if (Minecraft.getInstance().currentScreen != null) {
+			if (Minecraft.getInstance().currentScreen instanceof IGuiScreen) {
+				return (IGuiScreen) Minecraft.getInstance().currentScreen;
 			}
 		}
 		return null;
 	}
 
 	public static void setGuiScreen(IGuiScreen screen) {
-		Minecraft.getMinecraft().displayGuiScreen(screen);
+		Minecraft.getInstance().displayGuiScreen(screen);
 	}
 
 	public static void openInventory(IGuiInventory inventory) {
-		Minecraft.getMinecraft().displayGuiScreen(inventory);
+		Minecraft.getInstance().displayGuiScreen(inventory);
 	}
 
 	public static void setGuiScreenType(Screen screen) {
-		Minecraft.getMinecraft().displayGuiScreen(IScreens.translate(screen, null));
+		Minecraft.getInstance().displayGuiScreen(IScreens.translate(screen, null));
 	}
 
 	public static void shutdown() {
-		Minecraft.getMinecraft().shutdown();
+		Minecraft.getInstance().shutdown();
 	}
 
 	public static void setGamma(double value) {
-		Minecraft.getMinecraft().gameSettings.gammaSetting = value;
+		Minecraft.getInstance().gameSettings.gammaSetting = value;
 	}
 
 	public static double getGamma() {
-		return Minecraft.getMinecraft().gameSettings.gammaSetting;
+		return Minecraft.getInstance().gameSettings.gammaSetting;
 	}
 
 	public static void setRightClickDelayTimer(int delay) {
-		((IMixinMinecraft) Minecraft.getMinecraft()).setRightClickDelayTimer(delay);
+		((IMixinMinecraft) Minecraft.getInstance()).setRightClickDelayTimer(delay);
 	}
 
 	public static boolean isChatOpen() {
-		if (Minecraft.getMinecraft().currentScreen != null) {
-			if (Minecraft.getMinecraft().currentScreen instanceof GuiChat) {
+		if (Minecraft.getInstance().currentScreen != null) {
+			if (Minecraft.getInstance().currentScreen instanceof GuiChat) {
 				return true;
 			}
 		}
@@ -184,9 +184,9 @@ public class IMinecraft {
 	}
 
 	public static boolean isContainerOpen() {
-		if (Minecraft.getMinecraft().currentScreen != null) {
-			if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer
-					&& !(Minecraft.getMinecraft().currentScreen instanceof GuiInventory)) {
+		if (Minecraft.getInstance().currentScreen != null) {
+			if (Minecraft.getInstance().currentScreen instanceof GuiContainer
+					&& !(Minecraft.getInstance().currentScreen instanceof GuiInventory)) {
 				return true;
 			}
 		}
@@ -194,10 +194,10 @@ public class IMinecraft {
 	}
 
 	public static boolean isInventoryOpen() {
-		if (Minecraft.getMinecraft().currentScreen != null) {
-			if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer
-					&& (Minecraft.getMinecraft().currentScreen instanceof GuiInventory
-							|| Minecraft.getMinecraft().currentScreen instanceof GuiContainerCreative)) {
+		if (Minecraft.getInstance().currentScreen != null) {
+			if (Minecraft.getInstance().currentScreen instanceof GuiContainer
+					&& (Minecraft.getInstance().currentScreen instanceof GuiInventory
+							|| Minecraft.getInstance().currentScreen instanceof GuiContainerCreative)) {
 				return true;
 			}
 		}
@@ -205,8 +205,8 @@ public class IMinecraft {
 	}
 
 	public static boolean isChestOpen() {
-		if (Minecraft.getMinecraft().player.openContainer != null) {
-			if (Minecraft.getMinecraft().player.openContainer instanceof ContainerChest) {
+		if (Minecraft.getInstance().player.openContainer != null) {
+			if (Minecraft.getInstance().player.openContainer instanceof ContainerChest) {
 				return true;
 			}
 		}
@@ -222,7 +222,7 @@ public class IMinecraft {
 	}
 
 	public static boolean isMouseOver() {
-		if (Minecraft.getMinecraft().objectMouseOver != null) {
+		if (Minecraft.getInstance().objectMouseOver != null) {
 			return true;
 		}
 		return false;
@@ -232,7 +232,7 @@ public class IMinecraft {
 		if (!isMouseOver()) {
 			return null;
 		}
-		return new IEntity(Minecraft.getMinecraft().objectMouseOver.entityHit);
+		return new IEntity(Minecraft.getInstance().objectMouseOver.entity);
 	}
 
 	public static boolean entityHitInstanceOf(EntityType type) {
@@ -240,7 +240,7 @@ public class IMinecraft {
 			return false;
 		}
 		if (type.equals(EntityType.ENTITY_LIVING_BASE)) {
-			return Minecraft.getMinecraft().objectMouseOver.entityHit instanceof EntityLivingBase;
+			return Minecraft.getInstance().objectMouseOver.entity instanceof EntityLivingBase;
 		}
 		return false;
 	}

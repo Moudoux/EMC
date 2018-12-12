@@ -21,12 +21,12 @@ public class IPlayerController {
 		} else {
 			return;
 		}
-		Minecraft.getMinecraft().playerController.windowClick(windowID, id, next, t,
-				Minecraft.getMinecraft().player);
+		Minecraft.getInstance().playerController.windowClick(windowID, id, next, t,
+				Minecraft.getInstance().player);
 	}
 
 	public static void processRightClick(boolean offhand) {
-		Minecraft.getMinecraft().playerController.processRightClick(Minecraft.getMinecraft().player, Minecraft.getMinecraft().world, offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+		Minecraft.getInstance().playerController.processRightClick(Minecraft.getInstance().player, Minecraft.getInstance().world, offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
 	}
 
 	public enum IClickType {

@@ -17,8 +17,8 @@ public class InternalGuiTextField extends GuiTextField {
 	}
 
 	@Override
-	public void func_195608_a(int mouseX, int mouseY, float partialTicks) {
-		super.func_195608_a(mouseX, mouseY, partialTicks);
+	public void drawTextField(int mouseX, int mouseY, float partialTicks) {
+		super.drawTextField(mouseX, mouseY, partialTicks);
 		String currentText = getText();
 		int currentWidth = ((IMixinGuiTextField) this).getFontRendererInstance().getStringWidth(currentText);
 		int l = getEnableBackgroundDrawing() ? x + 4 : x;

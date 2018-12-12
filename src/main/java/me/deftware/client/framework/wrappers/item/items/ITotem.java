@@ -10,7 +10,7 @@ public class ITotem {
 
 
 	public static int getSlot() {
-		InventoryPlayer in = Minecraft.getMinecraft().player.inventory;
+		InventoryPlayer in = Minecraft.getInstance().player.inventory;
 		for (int i = 0; i < in.mainInventory.size() + 1; i++) {
 			try {
 				ItemStack it = in.mainInventory.get(i);
@@ -25,7 +25,7 @@ public class ITotem {
 
 
 	public static boolean hasTotem() {
-		InventoryPlayer in = Minecraft.getMinecraft().player.inventory;
+		InventoryPlayer in = Minecraft.getInstance().player.inventory;
 		for (int i = 0; i < in.mainInventory.size() + 1; i++) {
 			try {
 				ItemStack it = in.mainInventory.get(i);
@@ -39,16 +39,16 @@ public class ITotem {
 	}
 
 	public static void swapItems(int one, int two, int windowId) {
-		Minecraft.getMinecraft().playerController.windowClick(windowId, one, 0, ClickType.SWAP,
-				Minecraft.getMinecraft().player);
-		Minecraft.getMinecraft().playerController.windowClick(windowId, two, 0, ClickType.SWAP,
-				Minecraft.getMinecraft().player);
-		Minecraft.getMinecraft().playerController.updateController();
+		Minecraft.getInstance().playerController.windowClick(windowId, one, 0, ClickType.SWAP,
+				Minecraft.getInstance().player);
+		Minecraft.getInstance().playerController.windowClick(windowId, two, 0, ClickType.SWAP,
+				Minecraft.getInstance().player);
+		Minecraft.getInstance().playerController.tick();
 	}
 
 	public static void moveItem() {
-		Minecraft.getMinecraft().playerController.windowClick(0, ITotem.getSlot(), 0, ClickType.QUICK_MOVE,
-				Minecraft.getMinecraft().player);
+		Minecraft.getInstance().playerController.windowClick(0, ITotem.getSlot(), 0, ClickType.QUICK_MOVE,
+				Minecraft.getInstance().player);
 	}
 
 }

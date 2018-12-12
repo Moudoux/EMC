@@ -15,18 +15,18 @@ import java.util.List;
 public class MixinGuiScreen implements IMixinGuiScreen {
 
 	@Shadow
-	private List<GuiButton> buttonList;
+	private List<GuiButton> buttons;
 
 	@Shadow
 	@Final
-	private List<IGuiEventListener> field_195124_j;
+	private List<IGuiEventListener> children;
 
 	@Shadow
 	protected FontRenderer fontRenderer;
 
 	@Override
 	public List<GuiButton> getButtonList() {
-		return buttonList;
+		return buttons;
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class MixinGuiScreen implements IMixinGuiScreen {
 
 	@Override
 	public List<IGuiEventListener> getEventList() {
-		return field_195124_j;
+		return children;
 	}
 
 }

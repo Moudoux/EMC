@@ -2,6 +2,7 @@ package me.deftware.client.framework.wrappers.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import org.spongepowered.asm.mixin.Overwrite;
 
 public abstract class IGuiButton extends GuiButton implements CustomIGuiEventListener {
 
@@ -22,19 +23,29 @@ public abstract class IGuiButton extends GuiButton implements CustomIGuiEventLis
 	}
 
 	@Override
-	public void func_194828_a(int mouseX, int mouseY, float partialTicks) {
+	public void render(int mouseX, int mouseY, float partialTicks) {
 		if (onDraw(mouseX, mouseY) == 0) {
-			super.func_194828_a(mouseX, mouseY, partialTicks);
+			super.render(mouseX, mouseY, partialTicks);
 		}
 	}
 
 	public void drawCenteredString(String text, int x, int y, int color) {
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, x - Minecraft.getMinecraft().fontRenderer.getStringWidth(text) / 2, y, color);
+		Minecraft.getInstance().fontRenderer.drawStringWithShadow(text, x - Minecraft.getInstance().fontRenderer.getStringWidth(text) / 2, y, color);
 	}
 
 	@Override
-	public void mouseClicked(double p_194829_1_, double p_194829_3_) {
-		onClick(p_194829_1_, p_194829_3_);
+	public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
+		if (p_mouseClicked_5_ == 0) {
+			boolean lvt_6_1_ = this.isPressable(p_mouseClicked_1_, p_mouseClicked_3_);
+			if (lvt_6_1_) {
+				this.playPressSound(Minecraft.getInstance().getSoundHandler());
+				onClick(p_mouseClicked_1_, p_mouseClicked_3_);
+				this.onClick(p_mouseClicked_1_, p_mouseClicked_3_);
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public abstract void onClick(double mouseX, double mouseY);
@@ -75,7 +86,7 @@ public abstract class IGuiButton extends GuiButton implements CustomIGuiEventLis
 		this.x = x;
 	}
 
-	protected int getWidth() {
+	protected int getButtonWidth() {
 		return width;
 	}
 

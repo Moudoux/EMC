@@ -2,10 +2,11 @@ package me.deftware.mixin.mixins;
 
 import net.minecraft.block.BlockFlowingFluid;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.math.shapes.ShapeUtils;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.registry.IRegistry;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.chunk.BlockStateContainer;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,14 +24,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 @Mixin(Block.class)
 public abstract class MixinBlock {
 
 	@Shadow
 	@Final
-	protected StateContainer<Block, IBlockState> blockState;
+	protected StateContainer<Block, IBlockState> stateContainer;
 
 	@Shadow
 	private int lightValue;
@@ -41,7 +41,7 @@ public abstract class MixinBlock {
 	@Inject(method = "getLightValue", at = @At("HEAD"), cancellable = true)
 	private void getLightValue(IBlockState state, CallbackInfoReturnable<Integer> callback) {
 		callback.setReturnValue(
-				(int) SettingsMap.getValue(Block.REGISTRY.getIDForObject(state.getBlock()), "lightValue", lightValue));
+				(int) SettingsMap.getValue(IRegistry.BLOCK.getId(state.getBlock()), "lightValue", lightValue));
 	}
 
 	@Inject(method = "shouldSideBeRendered", at = @At("HEAD"), cancellable = true)
@@ -49,7 +49,7 @@ public abstract class MixinBlock {
 									  CallbackInfoReturnable<Boolean> callback) {
 		if (SettingsMap.isOverrideMode()) {
 			callback.setReturnValue(
-					(boolean) SettingsMap.getValue(Block.REGISTRY.getIDForObject(blockState.getBlock()), "render", false));
+					(boolean) SettingsMap.getValue(IRegistry.BLOCK.getId(blockState.getBlock()), "render", false));
 		}
 	}
 
@@ -75,18 +75,18 @@ public abstract class MixinBlock {
 	@Inject(method = "getRenderLayer", at = @At("HEAD"), cancellable = true)
 	private void getRenderLayer(CallbackInfoReturnable<BlockRenderLayer> ci) {
 		if (SettingsMap.isOverrideMode()) {
-			if ((boolean) SettingsMap.getValue(Block.REGISTRY.getIDForObject(blockState.getBlock()), "translucent", true)) {
+			if ((boolean) SettingsMap.getValue(IRegistry.BLOCK.getId(stateContainer.getOwner()), "translucent", true)) {
 				ci.setReturnValue(BlockRenderLayer.TRANSLUCENT);
 			}
 		}
 	}
 
-	@Inject(method = "getShapeForCollision", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
 	public void getShapeForCollision(IBlockState p_getShapeForCollision_1_, IBlockReader p_getShapeForCollision_2_, BlockPos p_getShapeForCollision_3_, CallbackInfoReturnable<VoxelShape> ci) {
 		if ((Object) this instanceof BlockFlowingFluid) {
 			ci.setReturnValue((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "LIQUID_VOXEL_FULL", false)
-					? ShapeUtils.fullCube()
-					: ShapeUtils.emptyShape());
+					? VoxelShapes.fullCube()
+					: VoxelShapes.empty());
 		}
 	}
 

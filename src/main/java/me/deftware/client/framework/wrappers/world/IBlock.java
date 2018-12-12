@@ -1,25 +1,23 @@
 package me.deftware.client.framework.wrappers.world;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.client.resources.I18n;
+import javax.annotation.Nullable;
 
-/**
- * NOTE: ID's have changed for all blocks in Minecraft 1.13 and up, using block ids is discouraged
- * @return
- */
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.IRegistry;
+
 public class IBlock {
 
 	private Block block;
 
-	@Deprecated
 	public IBlock(int id) {
-		block = Block.getBlockById(id);
+		block = IRegistry.BLOCK.get(id);
 	}
 
 	public IBlock(String name) {
-		block = Block.getBlockFromName(name);
+		block = getBlockFromName(name);
 	}
 
 	public IBlock(Block block) {
@@ -38,22 +36,20 @@ public class IBlock {
 		return block;
 	}
 
-	@Deprecated
 	public int getID() {
-		return Block.REGISTRY.getIDForObject(block);
+		return IRegistry.BLOCK.getId(block);
 	}
 
 	public String getLocalizedName() {
 		return block.getNameTextComponent().getUnformattedComponentText();
 	}
 
-	@Deprecated
 	public static boolean isValidBlock(int id) {
-		return Block.getBlockById(id) != null;
+		return IRegistry.BLOCK.get(id) != null;
 	}
 
 	public static boolean isValidBlock(String id) {
-		return Block.getBlockFromName(id) != null;
+		return getBlockFromName(id) != null;
 	}
 
 	public boolean instanceOf(IBlockTypes type) {
@@ -65,6 +61,19 @@ public class IBlock {
 
 	public enum IBlockTypes {
 		BlockContainer
+	}
+
+	@Nullable
+	public static Block getBlockFromName(String p_getBlockFromName_0_) {
+		try {
+			ResourceLocation lvt_1_1_ = new ResourceLocation(p_getBlockFromName_0_);
+			if (IRegistry.BLOCK.containsKey(lvt_1_1_)) {
+				return IRegistry.BLOCK.getOrDefault(lvt_1_1_);
+			}
+		} catch (IllegalArgumentException var2) {
+			;
+		}
+		return null;
 	}
 
 }

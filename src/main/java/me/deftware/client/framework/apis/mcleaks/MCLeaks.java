@@ -52,7 +52,7 @@ public class MCLeaks {
 	 */
 	public static void backupSession() {
 		if (MCLeaks.original == null) {
-			MCLeaks.original = Minecraft.getMinecraft().getSession();
+			MCLeaks.original = Minecraft.getInstance().getSession();
 		}
 	}
 
@@ -68,7 +68,7 @@ public class MCLeaks {
 	 * Restores the default Minecraft session used before using MCLeaks
 	 */
 	public static void restoreSession() {
-		((IMixinMinecraft) Minecraft.getMinecraft()).setSession(MCLeaks.original);
+		((IMixinMinecraft) Minecraft.getInstance()).setSession(MCLeaks.original);
 		MCLeaks.clearMCLeaksSession();
 	}
 

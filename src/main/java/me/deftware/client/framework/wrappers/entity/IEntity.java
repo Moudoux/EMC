@@ -59,7 +59,7 @@ public class IEntity {
 	}
 
 	public float getDistanceToPlayer() {
-		return entity.getDistance(Minecraft.getMinecraft().player);
+		return entity.getDistance(Minecraft.getInstance().player);
 	}
 
 	public String getName() {
@@ -70,7 +70,7 @@ public class IEntity {
 	}
 
 	public boolean isDead() {
-		return entity.isDead;
+		return !entity.isAlive();
 	}
 
 	public boolean hasIMob() {
@@ -110,7 +110,7 @@ public class IEntity {
 
 	public boolean isPlayerOwned() {
 		if (entity instanceof EntityWolf) {
-			if (((EntityWolf) entity).isOwner(Minecraft.getMinecraft().player)) {
+			if (((EntityWolf) entity).isOwner(Minecraft.getInstance().player)) {
 				return true;
 			}
 		}
@@ -132,11 +132,11 @@ public class IEntity {
 	}
 
 	public boolean isInvisibleToPlayer() {
-		return entity.isInvisibleToPlayer(Minecraft.getMinecraft().player);
+		return entity.isInvisibleToPlayer(Minecraft.getInstance().player);
 	}
 
 	public boolean isSelf() {
-		return entity == Minecraft.getMinecraft().player;
+		return entity == Minecraft.getInstance().player;
 	}
 
 	public double getPosX() {
@@ -168,7 +168,7 @@ public class IEntity {
 	}
 
 	public boolean canBeSeen() {
-		return Minecraft.getMinecraft().player.canEntityBeSeen(entity);
+		return Minecraft.getInstance().player.canEntityBeSeen(entity);
 	}
 
 	public boolean isHostile() {

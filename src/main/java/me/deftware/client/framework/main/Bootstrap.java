@@ -155,7 +155,7 @@ public class Bootstrap {
 
 		// Version check
 		if (jsonObject.get("minversion").getAsDouble() > FrameworkConstants.VERSION) {
-			Minecraft.getMinecraft().displayGuiScreen(new GuiUpdateLoader(jsonObject));
+			Minecraft.getInstance().displayGuiScreen(new GuiUpdateLoader(jsonObject));
 			jarFile.close();
 			return;
 		}

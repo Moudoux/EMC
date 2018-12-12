@@ -29,17 +29,17 @@ public class IKeybindWrapper {
 
 	public static enum IKeybind {
 
-		SNEAK(Minecraft.getMinecraft().gameSettings.keyBindSneak), USEITEM(
-				Minecraft.getMinecraft().gameSettings.keyBindUseItem), JUMP(
-						Minecraft.getMinecraft().gameSettings.keyBindJump), SPRINT(
-								Minecraft.getMinecraft().gameSettings.keyBindSprint), FORWARD(
-										Minecraft.getMinecraft().gameSettings.keyBindForward), BACK(
-												Minecraft.getMinecraft().gameSettings.keyBindBack), LEFT(
-														Minecraft.getMinecraft().gameSettings.keyBindLeft), RIGHT(
+		SNEAK(Minecraft.getInstance().gameSettings.keyBindSneak), USEITEM(
+				Minecraft.getInstance().gameSettings.keyBindUseItem), JUMP(
+						Minecraft.getInstance().gameSettings.keyBindJump), SPRINT(
+								Minecraft.getInstance().gameSettings.keyBindSprint), FORWARD(
+										Minecraft.getInstance().gameSettings.keyBindForward), BACK(
+												Minecraft.getInstance().gameSettings.keyBindBack), LEFT(
+														Minecraft.getInstance().gameSettings.keyBindLeft), RIGHT(
 																Minecraft
-																		.getMinecraft().gameSettings.keyBindRight), ATTACK(
+																		.getInstance().gameSettings.keyBindRight), ATTACK(
 																				Minecraft
-																						.getMinecraft().gameSettings.keyBindAttack);
+																						.getInstance().gameSettings.keyBindAttack);
 
 		KeyBinding bind;
 

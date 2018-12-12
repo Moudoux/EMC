@@ -17,7 +17,7 @@ public class IVec3d {
 	}
 
 	public static boolean rayTraceBlocks(IVec3d vec1, IVec3d vec2) {
-		RayTraceResult res = Minecraft.getMinecraft().world.rayTraceBlocks(vec1.getVector(), vec2.getVector());
+		RayTraceResult res = Minecraft.getInstance().world.rayTraceBlocks(vec1.getVector(), vec2.getVector());
 		if (res != null) {
 			return true;
 		}

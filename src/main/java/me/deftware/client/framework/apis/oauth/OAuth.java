@@ -20,10 +20,10 @@ public class OAuth {
 			try {
 				InetAddress inetaddress = InetAddress.getByName(OAuth.ip);
 				OAuthNetworkManager manager = OAuthNetworkManager.createNetworkManagerAndConnect(inetaddress, OAuth.port,
-						Minecraft.getMinecraft().gameSettings.isUsingNativeTransport(), callback);
-				manager.setNetHandler(new OAuthNetHandler(manager, Minecraft.getMinecraft(), null, callback));
+						Minecraft.getInstance().gameSettings.isUsingNativeTransport(), callback);
+				manager.setNetHandler(new OAuthNetHandler(manager, Minecraft.getInstance(), null, callback));
 				manager.sendPacket(new CPacketHandshake(OAuth.ip, OAuth.port, EnumConnectionState.LOGIN));
-				manager.sendPacket(new CPacketLoginStart(Minecraft.getMinecraft().getSession().getProfile()));
+				manager.sendPacket(new CPacketLoginStart(Minecraft.getInstance().getSession().getProfile()));
 			} catch (Exception ex) {
 				callback.callback(false, "", "");
 			}
