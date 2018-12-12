@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import org.spongepowered.asm.mixin.Overwrite;
 
-public abstract class IGuiButton extends GuiButton implements CustomIGuiEventListener {
+public class IGuiButton extends GuiButton implements CustomIGuiEventListener {
 
 	public IGuiButton(int buttonId, int x, int y, String buttonText) {
 		super(buttonId, x, y, 200, 20, buttonText);
@@ -34,21 +34,11 @@ public abstract class IGuiButton extends GuiButton implements CustomIGuiEventLis
 	}
 
 	@Override
-	public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
-		if (p_mouseClicked_5_ == 0) {
-			boolean lvt_6_1_ = this.isPressable(p_mouseClicked_1_, p_mouseClicked_3_);
-			if (lvt_6_1_) {
-				this.playPressSound(Minecraft.getInstance().getSoundHandler());
-				onClick(p_mouseClicked_1_, p_mouseClicked_3_);
-				this.onClick(p_mouseClicked_1_, p_mouseClicked_3_);
-				return true;
-			}
-		}
-
-		return false;
+	public void onClick(double x, double y) {
+		onButtonClick(x, y);
 	}
 
-	public abstract void onClick(double mouseX, double mouseY);
+	public void onButtonClick(double mouseX, double mouseY){}
 
 	protected int onDraw(int mouseX, int mouseY) {
 		return 0;
@@ -70,19 +60,19 @@ public abstract class IGuiButton extends GuiButton implements CustomIGuiEventLis
 		return enabled;
 	}
 
-	protected int getX() {
+	protected int getButtonX() {
 		return x;
 	}
 
-	protected int getY() {
+	protected int getButtonY() {
 		return y;
 	}
 
-	protected void setY(int y) {
+	protected void setButtonY(int y) {
 		this.y = y;
 	}
 
-	protected void setX(int x) {
+	protected void setButtonX(int x) {
 		this.x = x;
 	}
 
@@ -90,7 +80,7 @@ public abstract class IGuiButton extends GuiButton implements CustomIGuiEventLis
 		return width;
 	}
 
-	protected int getHeight() {
+	protected int getButtonHeight() {
 		return height;
 	}
 
