@@ -56,6 +56,10 @@ public class IItem {
 		return item.getName().getUnformattedComponentText();
 	}
 
+	public String getTranslationKey() {
+		return item.getTranslationKey();
+	}
+
 	public int getID() {
 		return Item.getIdFromItem(item);
 	}
