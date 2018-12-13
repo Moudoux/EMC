@@ -44,6 +44,10 @@ public class IBlock {
 		return block.getNameTextComponent().getUnformattedComponentText();
 	}
 
+	public String getTranslationKey() {
+		return block.getTranslationKey();
+	}
+
 	public static boolean isValidBlock(int id) {
 		return IRegistry.BLOCK.get(id) != null;
 	}

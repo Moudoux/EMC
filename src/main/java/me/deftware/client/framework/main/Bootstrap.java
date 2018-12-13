@@ -20,6 +20,7 @@ import me.deftware.client.framework.command.commands.*;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.Settings;
 import me.deftware.client.framework.wrappers.IMinecraft;
+import me.deftware.client.framework.wrappers.world.IBlock;
 import net.minecraft.realms.RealmsSharedConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
