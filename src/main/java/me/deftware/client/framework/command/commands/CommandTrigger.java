@@ -21,8 +21,7 @@ public class CommandTrigger extends EMCModCommand {
 										RequiredArgumentBuilder.argument("prefix", StringArgumentType.string())
 												.executes(c -> {
 													CommandResult r = new CommandResult(c);
-													if(r.getString("prefix").length() > 1)
-													{
+													if(r.getString("prefix").length() > 1) {
 														IChat.sendClientMessage("Command trigger has to be a single character!");
 														IChat.sendClientMessage("No configuration had been altered");
 													}
