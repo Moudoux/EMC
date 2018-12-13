@@ -76,11 +76,11 @@ public class IGuiButton extends GuiButton implements CustomIGuiEventListener {
 		this.x = x;
 	}
 
-	protected int getButtonWidth() {
+	protected int getTheButtonWidth() {
 		return width;
 	}
 
-	protected int getButtonHeight() {
+	protected int getTheButtonHeight() {
 		return height;
 	}
 
