@@ -21,12 +21,29 @@ public class CommandTrigger extends EMCModCommand {
 										RequiredArgumentBuilder.argument("prefix", StringArgumentType.string())
 												.executes(c -> {
 													CommandResult r = new CommandResult(c);
-													SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", r.getString("prefix"));
-													Bootstrap.EMCSettings.saveString("commandtrigger", r.getString("prefix"));
-													IChat.sendClientMessage("Set command trigger to \"" + r.getString("prefix") + "\"");
+													if(r.getString("prefix").length() > 1)
+													{
+														IChat.sendClientMessage("Command trigger has to be a single character!");
+														IChat.sendClientMessage("No configuration had been altered");
+													}
+													else {
+														SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", r.getString("prefix"));
+														Bootstrap.EMCSettings.saveString("commandtrigger", r.getString("prefix"));
+														IChat.sendClientMessage("Set command trigger to \"" + r.getString("prefix") + "\"");
+													}
 													return 1;
 												})
 								)
+				)
+				.then(
+						LiteralArgumentBuilder.literal("restore")
+								.executes(c -> {
+									//CommandResult r = new CommandResult(c);
+									SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".");
+									Bootstrap.EMCSettings.saveString("commandtrigger", ".");
+									IChat.sendClientMessage("Command trigger had been reset to \".\" (single dot)");
+									return 1;
+								})
 				)
 		);
 	}
