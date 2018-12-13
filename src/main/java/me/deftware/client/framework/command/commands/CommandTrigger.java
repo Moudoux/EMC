@@ -24,8 +24,7 @@ public class CommandTrigger extends EMCModCommand {
 													if(r.getString("prefix").length() > 1) {
 														IChat.sendClientMessage("Command trigger has to be a single character!");
 														IChat.sendClientMessage("No configuration had been altered");
-													}
-													else {
+													} else {
 														SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", r.getString("prefix"));
 														Bootstrap.EMCSettings.saveString("commandtrigger", r.getString("prefix"));
 														IChat.sendClientMessage("Set command trigger to \"" + r.getString("prefix") + "\"");
