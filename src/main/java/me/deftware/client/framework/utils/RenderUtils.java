@@ -523,6 +523,90 @@ public class RenderUtils {
 		RenderUtils.drawColorBox(axisalignedbb.getAABB(), red, green, blue, alpha);
 	}
 
+	public static void drawOutlinedBox(IAxisAlignedBB bbb) {
+		AxisAlignedBB bb = bbb.getAABB();
+
+		GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
+		GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
+
+		GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
+		GL11.glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+
+		GL11.glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+		GL11.glVertex3d(bb.minX, bb.minY, bb.maxZ);
+
+		GL11.glVertex3d(bb.minX, bb.minY, bb.maxZ);
+		GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
+
+		GL11.glVertex3d(bb.minX, bb.minY, bb.minZ);
+		GL11.glVertex3d(bb.minX, bb.maxY, bb.minZ);
+
+		GL11.glVertex3d(bb.maxX, bb.minY, bb.minZ);
+		GL11.glVertex3d(bb.maxX, bb.maxY, bb.minZ);
+
+		GL11.glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+		GL11.glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
+
+		GL11.glVertex3d(bb.minX, bb.minY, bb.maxZ);
+		GL11.glVertex3d(bb.minX, bb.maxY, bb.maxZ);
+
+		GL11.glVertex3d(bb.minX, bb.maxY, bb.minZ);
+		GL11.glVertex3d(bb.maxX, bb.maxY, bb.minZ);
+
+		GL11.glVertex3d(bb.maxX, bb.maxY, bb.minZ);
+		GL11.glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
+
+		GL11.glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
+		GL11.glVertex3d(bb.minX, bb.maxY, bb.maxZ);
+
+		GL11.glVertex3d(bb.minX, bb.maxY, bb.maxZ);
+		GL11.glVertex3d(bb.minX, bb.maxY, bb.minZ);
+	}
+
+	public static void drawNode(IAxisAlignedBB bbb) {
+		AxisAlignedBB bb = bbb.getAABB();
+
+		double midX = (bb.minX + bb.maxX) / 2;
+		double midY = (bb.minY + bb.maxY) / 2;
+		double midZ = (bb.minZ + bb.maxZ) / 2;
+
+		GL11.glVertex3d(midX, midY, bb.maxZ);
+		GL11.glVertex3d(bb.minX, midY, midZ);
+
+		GL11.glVertex3d(bb.minX, midY, midZ);
+		GL11.glVertex3d(midX, midY, bb.minZ);
+
+		GL11.glVertex3d(midX, midY, bb.minZ);
+		GL11.glVertex3d(bb.maxX, midY, midZ);
+
+		GL11.glVertex3d(bb.maxX, midY, midZ);
+		GL11.glVertex3d(midX, midY, bb.maxZ);
+
+		GL11.glVertex3d(midX, bb.maxY, midZ);
+		GL11.glVertex3d(bb.maxX, midY, midZ);
+
+		GL11.glVertex3d(midX, bb.maxY, midZ);
+		GL11.glVertex3d(bb.minX, midY, midZ);
+
+		GL11.glVertex3d(midX, bb.maxY, midZ);
+		GL11.glVertex3d(midX, midY, bb.minZ);
+
+		GL11.glVertex3d(midX, bb.maxY, midZ);
+		GL11.glVertex3d(midX, midY, bb.maxZ);
+
+		GL11.glVertex3d(midX, bb.minY, midZ);
+		GL11.glVertex3d(bb.maxX, midY, midZ);
+
+		GL11.glVertex3d(midX, bb.minY, midZ);
+		GL11.glVertex3d(bb.minX, midY, midZ);
+
+		GL11.glVertex3d(midX, bb.minY, midZ);
+		GL11.glVertex3d(midX, midY, bb.minZ);
+
+		GL11.glVertex3d(midX, bb.minY, midZ);
+		GL11.glVertex3d(midX, midY, bb.maxZ);
+	}
+
 	public static void drawColorBox(AxisAlignedBB axisalignedbb, float red, float green, float blue, float alpha) {
 		Tessellator ts = Tessellator.getInstance();
 		BufferBuilder vb = ts.getBuffer();

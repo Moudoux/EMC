@@ -1,6 +1,7 @@
 package me.deftware.client.framework.utils;
 
 import me.deftware.client.framework.wrappers.entity.IEntity;
+import me.deftware.client.framework.wrappers.math.IVec3d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -96,6 +97,12 @@ public class RotUtils {
 
 	private static Vec3d getEyesPos() {
 		return new Vec3d(Minecraft.getInstance().player.posX,
+				Minecraft.getInstance().player.posY + Minecraft.getInstance().player.getEyeHeight(),
+				Minecraft.getInstance().player.posZ);
+	}
+
+	public static IVec3d getEyesPosIVec() {
+		return new IVec3d(Minecraft.getInstance().player.posX,
 				Minecraft.getInstance().player.posY + Minecraft.getInstance().player.getEyeHeight(),
 				Minecraft.getInstance().player.posZ);
 	}
