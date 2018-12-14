@@ -114,7 +114,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
 	@Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
 	public void sendChatMessage(String message, CallbackInfo ci) {
-		String trigger = (String) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".");
+		String trigger = CommandRegister.getCommandTrigger();
 		if (message.startsWith(trigger) && !trigger.equals("")) {
 			try {
 				if (message.startsWith(trigger + "say")) {
@@ -127,7 +127,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 					ci.cancel();
 					return;
 				}
-				CommandRegister.getDispatcher().execute(message.substring(1), Minecraft.getInstance().player.getCommandSource());
+				CommandRegister.getDispatcher().execute(message.substring(CommandRegister.getCommandTrigger().length()), Minecraft.getInstance().player.getCommandSource());
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				IChat.sendClientMessage(ex.getMessage());

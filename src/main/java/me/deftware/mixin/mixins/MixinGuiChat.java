@@ -83,14 +83,18 @@ public abstract class MixinGuiChat extends GuiScreen {
 	private void updateSuggestionInject(CallbackInfo ci) {
 		String lvt_1_1_ = this.inputField.getText();
 		StringReader lvt_2_1_ = new StringReader(lvt_1_1_);
-		if (lvt_2_1_.canRead() && this.inputField.getText().startsWith((String) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", "."))) {
-			lvt_2_1_.skip();
+		if (lvt_2_1_.canRead() && lvt_1_1_.startsWith((String) CommandRegister.getCommandTrigger())) {
+			for(int triggerLength = 0; triggerLength < Math.min(CommandRegister.getCommandTrigger().length(), lvt_1_1_.length()); triggerLength++) {
+				lvt_2_1_.skip();
+			}
 			CommandDispatcher<ISuggestionProvider> lvt_3_1_ = CommandRegister.getDispatcher();
 			this.currentParse = lvt_3_1_.parse(lvt_2_1_, this.mc.player.connection.getSuggestionProvider());
 			if (!field_212338_z) {
-				StringReader lvt_4_1_ = new StringReader(lvt_1_1_.substring(0, Math.min(lvt_1_1_.length(), this.inputField.getCursorPosition())));
+				StringReader lvt_4_1_ = new StringReader(lvt_1_1_.substring(0, lvt_1_1_.length()));
 				if (lvt_4_1_.canRead()) {
-					lvt_4_1_.skip();
+					for(int triggerLength = 0; triggerLength < CommandRegister.getCommandTrigger().length(); triggerLength++) {
+						lvt_4_1_.skip();
+					}
 					ParseResults<ISuggestionProvider> lvt_5_1_ = lvt_3_1_.parse(lvt_4_1_, this.mc.player.connection.getSuggestionProvider());
 					this.pendingSuggestions = lvt_3_1_.getCompletionSuggestions(lvt_5_1_);
 					this.pendingSuggestions.thenRun(() -> {
