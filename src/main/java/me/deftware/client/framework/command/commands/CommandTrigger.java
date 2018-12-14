@@ -28,6 +28,15 @@ public class CommandTrigger extends EMCModCommand {
 												})
 								)
 				)
+				.then(
+						LiteralArgumentBuilder.literal("restore")
+								.executes(c -> {
+									SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".");
+									Bootstrap.EMCSettings.saveString("commandtrigger", ".");
+									IChat.sendClientMessage("Command trigger had been reset to \".\" (single dot)");
+									return 1;
+								})
+				)
 		);
 	}
 

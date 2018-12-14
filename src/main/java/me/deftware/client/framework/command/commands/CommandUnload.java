@@ -27,7 +27,7 @@ public class CommandUnload extends EMCModCommand {
 										Bootstrap.getMods().remove(arg);
 										ChatProcessor.printFrameworkMessage("Unloaded " + arg);
 									} else {
-										ChatProcessor.printFrameworkMessage("Could not find mod " + arg);
+										ChatProcessor.printFrameworkMessage("Could not find mod named \"" + arg + "\"");
 									}
 									return 1;
 								})
