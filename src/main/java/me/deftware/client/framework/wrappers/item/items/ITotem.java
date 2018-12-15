@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 
 public class ITotem {
 
-
 	public static int getSlot() {
 		InventoryPlayer in = Minecraft.getInstance().player.inventory;
 		for (int i = 0; i < in.mainInventory.size() + 1; i++) {
@@ -22,7 +21,6 @@ public class ITotem {
 		}
 		return -1;
 	}
-
 
 	public static boolean hasTotem() {
 		InventoryPlayer in = Minecraft.getInstance().player.inventory;

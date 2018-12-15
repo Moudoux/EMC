@@ -1,8 +1,11 @@
 package me.deftware.client.framework.command.commands;
 
 import me.deftware.client.framework.command.CommandBuilder;
+import me.deftware.client.framework.command.CommandResult;
 import me.deftware.client.framework.command.EMCModCommand;
+import me.deftware.client.framework.command.argument.arguments.EMCModArgument;
 import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.utils.ChatProcessor;
 
 import net.minecraft.client.Minecraft;
@@ -18,17 +21,13 @@ public class CommandUnload extends EMCModCommand {
 	public CommandBuilder getCommandBuilder() {
 		return new CommandBuilder().set(literal("unload")
 				.then(
-						argument("modname", string())
+						argument("modname", new EMCModArgument())
 								.executes(c -> {
-									String arg = getString(c, "modname");
-									// Unload specific EMC mod
-									if (Bootstrap.getMods().containsKey(arg)) {
-										Bootstrap.getMods().get(arg).onUnload();
-										Bootstrap.getMods().remove(arg);
-										ChatProcessor.printFrameworkMessage("Unloaded " + arg);
-									} else {
-										ChatProcessor.printFrameworkMessage("Could not find mod named \"" + arg + "\"");
-									}
+									CommandResult r = new CommandResult(c);
+									EMCMod mod = (EMCMod) r.getCustom("modname", EMCMod.class);
+									Bootstrap.getMods().get(mod.modInfo.get("name").getAsString()).onUnload();
+									Bootstrap.getMods().remove(mod.modInfo.get("name").getAsString());
+									ChatProcessor.printFrameworkMessage("Unloaded " + mod.modInfo.get("name").getAsString());
 									return 1;
 								})
 				)

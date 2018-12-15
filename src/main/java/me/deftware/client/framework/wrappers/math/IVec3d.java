@@ -4,6 +4,7 @@ import me.deftware.client.framework.wrappers.world.IBlockPos;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 
 public class IVec3d {
 
@@ -15,6 +16,10 @@ public class IVec3d {
 
 	public IVec3d(Vec3d vector) {
 		this.vector = vector;
+	}
+
+	public IVec3d(Vec3i vector) {
+		this.vector = new Vec3d(vector);
 	}
 
 	public IVec3d(IBlockPos pos) {
@@ -37,13 +42,23 @@ public class IVec3d {
 		return vector.z;
 	}
 
+	public IVec3d scale(double scale) {
+		vector = vector.scale(scale);
+		return this;
+	}
+
 	public IVec3d subtract(double x, double y, double z) {
-		this.vector.subtract(x, y, z);
+		vector = vector.subtract(x, y, z);
 		return this;
 	}
 
 	public IVec3d add(double x, double y, double z) {
-		this.vector.add(x, y, z);
+		vector = vector.add(x, y, z);
+		return this;
+	}
+
+	public IVec3d add(IVec3d vector) {
+		this.vector = this.vector.add(vector.vector);
 		return this;
 	}
 

@@ -15,9 +15,7 @@ public class IBlockPos {
 
 	public IBlockPos(BlockPos pos) {
 		this.pos = pos;
-		x = pos.getX();
-		y = pos.getY();
-		z = pos.getZ();
+		updateCords(false);
 	}
 
 	public IBlockPos(double x, double y, double z) {
@@ -44,6 +42,7 @@ public class IBlockPos {
 
 	public void setX(double x) {
 		this.x = x;
+		updateCords(true);
 	}
 
 	public double getY() {
@@ -52,6 +51,7 @@ public class IBlockPos {
 
 	public void setY(double y) {
 		this.y = y;
+		updateCords(true);
 	}
 
 	public double getZ() {
@@ -60,6 +60,37 @@ public class IBlockPos {
 
 	public void setZ(double z) {
 		this.z = z;
+		updateCords(true);
+	}
+
+	private void updateCords(boolean blockPos) {
+		if (blockPos) {
+			pos = new BlockPos(x, y, z);
+			return;
+		}
+		x = pos.getX();
+		y = pos.getY();
+		z = pos.getZ();
+	}
+
+	public IBlockPos down(int count) {
+		pos = pos.down(count);
+		updateCords(false);
+		return this;
+	}
+
+	public IBlockPos up(int count) {
+		pos = pos.up(count);
+		updateCords(false);
+		return this;
+	}
+
+	public String toCords() {
+		return pos.getX() + "-" + pos.getY() + "-" + pos.getZ();
+	}
+
+	public boolean compareTo(IBlockPos pos2) {
+		return pos.getX() == pos2.getX() && pos.getY() == pos2.getY() && pos.getZ() == pos2.getZ();
 	}
 
 	public IBlockPos add(int x, int y, int z) {

@@ -18,7 +18,7 @@ public class CommandBuilder<T> {
 	private List<String> aliases = new ArrayList<>();
 
 	/**
-	 * Adds a single command (.test for example) with no arguments, recommended for simple
+	 * Adds a single command (.test for example) with no argument, recommended for simple
 	 * no argument commands
 	 * @param command
 	 * @param execution

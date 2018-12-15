@@ -134,11 +134,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 			}
 			ci.cancel();
 		} else if (message.startsWith("#")) {
-			if (message.startsWith("# ")) {
-				message = message.substring(2);
-			} else {
-				message = message.substring(1);
-			}
+			message = message.startsWith("# ") ? message.substring(2) : message.substring(1);
 			if (message.equals("")) {
 				ChatProcessor.printClientMessage("Invalid syntax, please use: " + ChatColor.AQUA + "# <Message>");
 				ci.cancel();
