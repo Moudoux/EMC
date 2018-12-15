@@ -31,19 +31,6 @@ public class IItem {
 		item = getByNameOrId(name);
 	}
 
-	@Nullable
-	public static Item getByNameOrId(String id) {
-		try {
-			return Item.getItemById(Integer.parseInt(id));
-		} catch (NumberFormatException var3) {
-			ResourceLocation resourceLocation = new ResourceLocation(id);
-			if (IRegistry.ITEM.containsKey(resourceLocation)) {
-				return IRegistry.ITEM.getOrDefault(resourceLocation);
-			}
-			return null;
-		}
-	}
-
 	public IItem(Item item) {
 		this.item = item;
 	}
@@ -102,7 +89,7 @@ public class IItem {
 			return item instanceof ItemNameTag;
 		} else if (type.equals(IItemType.ItemBlock)) {
 			return item instanceof ItemBlock;
-		} else if (type.equals(type.ItemSoup)) {
+		} else if (type.equals(IItemType.ItemSoup)) {
 			return item instanceof ItemSoup;
 		} else if (type.equals(IItemType.ItemHoe)) {
 			return item instanceof ItemHoe;
@@ -113,6 +100,19 @@ public class IItem {
 	public enum IItemType {
 		ItemPotion, ItemFishingRod, ItemFood, ItemSword, ItemTool, ItemNameTag, ItemBlock, ItemHoe, SplashPotion,
 		ItemSoup
+	}
+
+	@Nullable
+	protected static Item getByNameOrId(String id) {
+		try {
+			return Item.getItemById(Integer.parseInt(id));
+		} catch (NumberFormatException var3) {
+			ResourceLocation resourceLocation = new ResourceLocation(id);
+			if (IRegistry.ITEM.containsKey(resourceLocation)) {
+				return IRegistry.ITEM.getOrDefault(resourceLocation);
+			}
+			return null;
+		}
 	}
 
 }

@@ -10,6 +10,10 @@ import com.google.common.collect.Lists;
 
 import me.deftware.client.framework.utils.ICachedList;
 import me.deftware.client.framework.wrappers.entity.IEntity;
+import me.deftware.client.framework.wrappers.world.blocks.IBlockCrops;
+import me.deftware.client.framework.wrappers.world.blocks.IBlockNetherWart;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
@@ -88,12 +92,19 @@ public class IWorld {
 		return (ArrayList<IEntity>) IWorld.ILoadedEntityList.getList();
 	}
 
-	public static void updateLists() {
-
+	public static IBlock getBlockFromPos(IBlockPos pos) {
+		Block mBlock = Minecraft.getInstance().world.getBlockState(pos.getPos()).getBlock();
+		IBlock block = new IBlock(mBlock);
+		if (block.instanceOf(IBlock.IBlockTypes.BlockCrops)) {
+			block = new IBlockCrops(mBlock);
+		} else if (block.instanceOf(IBlock.IBlockTypes.BlockNetherWart)) {
+			block = new IBlockNetherWart(mBlock);
+		}
+		return block;
 	}
 
-	public static IBlock getBlockFromPos(IBlockPos pos) {
-		return new IBlock(Minecraft.getInstance().world.getBlockState(pos.getPos()).getBlock());
+	public static IBlockState getStateFromPos(IBlockPos pos) {
+		return Minecraft.getInstance().world.getBlockState(pos.getPos());
 	}
 
 	public static class IChest {

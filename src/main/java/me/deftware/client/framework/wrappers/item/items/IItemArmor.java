@@ -13,7 +13,6 @@ public class IItemArmor extends IItem {
 		this.armor = (ItemArmor) getItem();
 	}
 
-
 	public int getDamageReduceAmount() {
 		return armor.getDamageReduceAmount();
 	}

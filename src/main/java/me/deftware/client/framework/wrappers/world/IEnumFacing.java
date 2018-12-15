@@ -1,11 +1,16 @@
 package me.deftware.client.framework.wrappers.world;
 
 
+import me.deftware.client.framework.wrappers.math.IVec3d;
 import net.minecraft.util.EnumFacing;
 
 public enum IEnumFacing {
 
 	DOWN, UP, NORTH, SOUTH, WEST, EAST;
+
+	public static IVec3d getDirectionVec(IEnumFacing facing) {
+		return new IVec3d(getFacing(facing).getDirectionVec());
+	}
 
 	public static EnumFacing getFacing(IEnumFacing facing) {
 		if (facing.equals(IEnumFacing.DOWN)) {

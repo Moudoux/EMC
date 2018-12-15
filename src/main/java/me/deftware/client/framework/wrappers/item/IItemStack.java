@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -46,18 +47,19 @@ public class IItemStack {
 		stack = new ItemStack(IItem.getByNameOrId(name));
 	}
 
+	public IItemStack(String name, int amount) {
+		stack = new ItemStack(IItem.getByNameOrId(name), amount);
+	}
+
 	public void setNBT(String nbt) throws Exception {
 		stack.setTag(JsonToNBT.getTagFromJson(nbt));
 	}
 
 	public void enchantAll(int level) {
 		for (Object enchantment : IRegistry.ENCHANTMENT) {
-			try {
-				if (enchantment != Enchantments.SILK_TOUCH && enchantment != Enchantments.BINDING_CURSE
-						&& enchantment != Enchantments.VANISHING_CURSE) {
-					stack.addEnchantment((Enchantment) enchantment, 127);
-				}
-			} catch (Exception ex) {
+			if (enchantment != Enchantments.SILK_TOUCH && enchantment != Enchantments.BINDING_CURSE
+					&& enchantment != Enchantments.VANISHING_CURSE) {
+				stack.addEnchantment((Enchantment) enchantment, level);
 			}
 		}
 	}
