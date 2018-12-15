@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers.entity;
 
+import me.deftware.mixin.imp.IMixinPlayerControllerMP;
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.util.EnumHand;
@@ -23,6 +24,14 @@ public class IPlayerController {
 		}
 		Minecraft.getInstance().playerController.windowClick(windowID, id, next, t,
 				Minecraft.getInstance().player);
+	}
+
+	public static void resetBlockRemoving() {
+		Minecraft.getInstance().playerController.resetBlockRemoving();
+	}
+
+	public static void setPlayerHittingBlock(boolean state) {
+		((IMixinPlayerControllerMP) Minecraft.getInstance().playerController).setPlayerHittingBlock(state);
 	}
 
 	public static void processRightClick(boolean offhand) {
