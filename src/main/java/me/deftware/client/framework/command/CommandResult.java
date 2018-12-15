@@ -26,6 +26,10 @@ public class CommandResult {
 		return getEntity(node).getName();
 	}
 
+	public Object getCustom(String node, Class<?> clazz) {
+		return context.getArgument(node, clazz);
+	}
+
 	public int getInteger(String node) {
 		return IntegerArgumentType.getInteger(context, node);
 	}

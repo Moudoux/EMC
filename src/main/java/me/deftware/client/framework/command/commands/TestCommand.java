@@ -11,7 +11,7 @@ import me.deftware.client.framework.wrappers.IChat;
 
 @SuppressWarnings("ALL")
 /**
- * Demo command demonstrating how to use arguments
+ * Demo command demonstrating how to use argument
  */
 public class TestCommand extends EMCModCommand {
 
