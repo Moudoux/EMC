@@ -1,12 +1,7 @@
 package me.deftware.client.framework.wrappers.world;
 
 
-import me.deftware.client.framework.wrappers.math.IVec3d;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class IBlockPos {
 
@@ -24,13 +19,6 @@ public class IBlockPos {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		pos = new BlockPos(x, y, z);
-	}
-
-	public IBlockPos(IVec3d vec) {
-		this.x = vec.vector.x;
-		this.y = vec.vector.y;
-		this.z = vec.vector.z;
 		pos = new BlockPos(x, y, z);
 	}
 
@@ -64,21 +52,6 @@ public class IBlockPos {
 
 	public IBlockPos add(int x, int y, int z) {
 		return x == 0 && y == 0 && z == 0 ? this : new IBlockPos(getX() + x, getY() + y, getZ() + z);
-	}
-
-	public static Iterable<IBlockPos> getAllInBox(IBlockPos pos1, IBlockPos pos2) {
-		List<IBlockPos> newPos = new ArrayList<>();
-		Iterable<BlockPos> list = BlockPos.getAllInBox(pos1.getPos(), pos2.getPos());
-		list.forEach(blockPos -> newPos.add(new IBlockPos(blockPos)));
-		return newPos;
-	}
-
-	public boolean isCollidable() {
-		return isCollidable(this);
-	}
-
-	public static boolean isCollidable(IBlockPos pos) {
-		return Minecraft.getInstance().world.getBlockState(pos.getPos()).getBlock().isCollidable(Minecraft.getInstance().world.getBlockState(pos.getPos()));
 	}
 
 }
