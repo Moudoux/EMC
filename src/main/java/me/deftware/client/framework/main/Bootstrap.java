@@ -221,6 +221,8 @@ public class Bootstrap {
 		//Remove all the commands the mods might have created
 		RootCommandNode<?> root = CommandRegister.getDispatcher().getRoot();
 		clearChildren(root);
+
+		//Clear the command dispatcher
 		CommandRegister.clearDispatcher();
 
 		//Reinitialize the framework default commands
