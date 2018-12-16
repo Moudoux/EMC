@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.command.ISuggestionProvider;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +26,14 @@ public class CommandRegister {
 	 */
 	public static CommandDispatcher<ISuggestionProvider> getDispatcher() {
 		return dispatcher;
+	}
+
+	/**
+	 * Clears the Brigadier dispatcher object
+	 * (restores to the dafault state - no commands loaded)
+	 */
+	public static void clearDispatcher(){
+		dispatcher = new CommandDispatcher<ISuggestionProvider>();
 	}
 
 	/**

@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 
 import com.google.gson.*;
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.tree.CommandNode;
+import com.mojang.brigadier.tree.RootCommandNode;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.commands.*;
 import me.deftware.client.framework.maps.SettingsMap;
@@ -111,12 +114,7 @@ public class Bootstrap {
 			EMCSettings.initialize(null);
 
 			// Register default EMC commands
-			CommandRegister.registerCommand(new CommandMods());
-			CommandRegister.registerCommand(new CommandUnload());
-			CommandRegister.registerCommand(new CommandVersion());
-			CommandRegister.registerCommand(new CommandHelp());
-			CommandRegister.registerCommand(new CommandOAuth());
-			CommandRegister.registerCommand(new CommandTrigger());
+			registerFrameworkCommands();
 
 			SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
 
@@ -127,6 +125,18 @@ public class Bootstrap {
 		}
 	}
 
+	/**
+	 * Registers all framework-specific commands
+	 *
+	 */
+	static void registerFrameworkCommands(){
+		CommandRegister.registerCommand(new CommandMods());
+		CommandRegister.registerCommand(new CommandUnload());
+		CommandRegister.registerCommand(new CommandVersion());
+		CommandRegister.registerCommand(new CommandHelp());
+		CommandRegister.registerCommand(new CommandOAuth());
+		CommandRegister.registerCommand(new CommandTrigger());
+	}
 	/**
 	 * Loads an EMC mod
 	 *
@@ -206,6 +216,21 @@ public class Bootstrap {
 	public static void ejectMods() {
 		Bootstrap.mods.forEach((key, mod) -> mod.onUnload());
 		Bootstrap.mods.clear();
+
+		//Remove all the commands the mods might have created
+		RootCommandNode<?> root = CommandRegister.getDispatcher().getRoot();
+		clearChildren(root);
+		CommandRegister.clearDispatcher();
+
+		//Reinitialize the framework default commands
+		registerFrameworkCommands();
+	}
+
+	static void clearChildren(CommandNode<?> commandNode){
+		for(CommandNode<?> child : commandNode.getChildren()){
+			clearChildren(child);
+		}
+		commandNode.getChildren().clear();
 	}
 
 }
