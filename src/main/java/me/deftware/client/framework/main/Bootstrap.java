@@ -17,6 +17,7 @@ import com.google.gson.*;
 import com.mojang.brigadier.Command;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.commands.*;
+import me.deftware.client.framework.event.EventBus;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.Settings;
 import me.deftware.client.framework.wrappers.IMinecraft;
@@ -119,6 +120,8 @@ public class Bootstrap {
 			CommandRegister.registerCommand(new CommandTrigger());
 
 			SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
+
+			EventBus.TestEventHandler test = new EventBus.TestEventHandler();
 
 			// Initialize the EMC marketplace API
 			MarketplaceAPI.init((status) -> Bootstrap.mods.forEach((name, mod) -> mod.onMarketplaceAuth(status)));
