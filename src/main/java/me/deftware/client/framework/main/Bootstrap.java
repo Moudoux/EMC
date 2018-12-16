@@ -127,8 +127,7 @@ public class Bootstrap {
 	}
 
 	/**
-	 * Registers all framework-specific commands
-	 *
+	 * Registers framework commands
 	 */
 	static void registerFrameworkCommands(){
 		CommandRegister.registerCommand(new CommandMods());
@@ -138,6 +137,7 @@ public class Bootstrap {
 		CommandRegister.registerCommand(new CommandOAuth());
 		CommandRegister.registerCommand(new CommandTrigger());
 	}
+
 	/**
 	 * Loads an EMC mod
 	 *
