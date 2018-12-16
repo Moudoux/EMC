@@ -121,8 +121,6 @@ public class Bootstrap {
 
 			SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
 
-			EventBus.TestEventHandler test = new EventBus.TestEventHandler();
-
 			// Initialize the EMC marketplace API
 			MarketplaceAPI.init((status) -> Bootstrap.mods.forEach((name, mod) -> mod.onMarketplaceAuth(status)));
 		} catch (Exception ex) {
