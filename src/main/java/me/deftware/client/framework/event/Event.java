@@ -34,6 +34,7 @@ public class Event {
 	public <T extends Event> T send() {
 		try {
 			Bootstrap.getMods().forEach((key, mod) -> mod.onEvent(this));
+			EventBus.sendEvent(this);
 		} catch (Exception ex) {
 			Bootstrap.logger.warn("Failed to send event {}", this, ex);
 		}

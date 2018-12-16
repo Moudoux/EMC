@@ -20,6 +20,7 @@ import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.commands.*;
+import me.deftware.client.framework.event.EventBus;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.Settings;
 import me.deftware.client.framework.wrappers.IMinecraft;
