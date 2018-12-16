@@ -227,7 +227,12 @@ public class Bootstrap {
 		registerFrameworkCommands();
 	}
 
-	static void clearChildren(CommandNode<?> commandNode){
+	/**
+	 * Loops around command nodes until all of them are removed
+	 * Clears the unnecessary data from the memory
+	 * @param commandNode
+	 */
+	private static void clearChildren(CommandNode<?> commandNode){
 		for(CommandNode<?> child : commandNode.getChildren()){
 			clearChildren(child);
 		}
