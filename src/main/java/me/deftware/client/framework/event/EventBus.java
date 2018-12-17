@@ -11,8 +11,12 @@ public class EventBus {
 
 	public static synchronized void registerClass(Class clazz, Object instance) {
 		Bootstrap.logger.debug(String.format("Loading event handlers in class %s", clazz.getName()));
-		for (Method method : clazz.getMethods()) {
+		for (Method method : clazz.getDeclaredMethods()) {
 			if (method.isAnnotationPresent(EventHandler.class)) {
+				if (!method.isAccessible()) {
+					Bootstrap.logger.debug(String.format("Making method %s accessible", method.getName()));
+					method.setAccessible(true);
+				}
 				EventHandler annotation = method.getAnnotation(EventHandler.class);
 				Class eventType = annotation.eventType();
 				if (!classes.containsKey(eventType)) {
@@ -22,10 +26,6 @@ public class EventBus {
 					classes.get(eventType).put(clazz, new ConcurrentHashMap<>());
 				}
 				classes.get(eventType).get(clazz).putIfAbsent(method, instance);
-				if (!method.isAccessible()) {
-					Bootstrap.logger.debug(String.format("Making method %s accessible", method.getName()));
-					method.setAccessible(true);
-				}
 				Bootstrap.logger.debug(String.format("Loaded event handler for method %s", method.getName()));
 			}
 		}

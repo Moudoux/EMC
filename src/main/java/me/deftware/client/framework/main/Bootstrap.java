@@ -11,7 +11,10 @@ import me.deftware.client.framework.utils.OSUtils;
 import me.deftware.client.framework.utils.Settings;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
 import net.minecraft.realms.RealmsSharedConstants;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.IRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,14 +41,13 @@ import java.util.stream.Collectors;
 public class Bootstrap {
 
 	public static Logger logger = LogManager.getLogger();
-	private static URLClassLoader modClassLoader;
 	public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
-	private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
 	public static ArrayList<String> internalModClassNames = new ArrayList<>();
 	public static boolean isRunning = true;
 	public static Settings EMCSettings;
-
 	public static String JSON_JARNAME_NOTE = "DYNAMIC_jarname";
+	private static URLClassLoader modClassLoader;
+	private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
 
 	public static void init() {
 		try {

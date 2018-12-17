@@ -105,7 +105,7 @@ public class IBlock {
 	private static Block getBlockFromName(String p_getBlockFromName_0_) {
 		ResourceLocation lvt_1_1_ = new ResourceLocation(p_getBlockFromName_0_);
 		if (IRegistry.BLOCK.containsKey(lvt_1_1_)) {
-			return IRegistry.BLOCK.getOrDefault(lvt_1_1_);
+			return IRegistry.BLOCK.get(lvt_1_1_);
 		}
 		return null;
 	}

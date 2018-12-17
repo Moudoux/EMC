@@ -94,7 +94,7 @@ public class IItem {
 		} catch (NumberFormatException var3) {
 			ResourceLocation resourceLocation = new ResourceLocation(id);
 			if (IRegistry.ITEM.containsKey(resourceLocation)) {
-				return IRegistry.ITEM.getOrDefault(resourceLocation);
+				return IRegistry.ITEM.get(resourceLocation);
 			}
 			return null;
 		}
