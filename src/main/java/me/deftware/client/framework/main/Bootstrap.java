@@ -1,6 +1,23 @@
 package me.deftware.client.framework.main;
 
-import java.io.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import me.deftware.client.framework.FrameworkConstants;
+import me.deftware.client.framework.apis.marketplace.MarketplaceAPI;
+import me.deftware.client.framework.command.CommandRegister;
+import me.deftware.client.framework.command.commands.*;
+import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.utils.OSUtils;
+import me.deftware.client.framework.utils.Settings;
+import me.deftware.client.framework.wrappers.IMinecraft;
+import net.minecraft.client.Minecraft;
+import net.minecraft.realms.RealmsSharedConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -13,28 +30,10 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
-import com.google.gson.*;
-import com.mojang.brigadier.Command;
-import me.deftware.client.framework.command.CommandRegister;
-import me.deftware.client.framework.command.commands.*;
-import me.deftware.client.framework.event.EventBus;
-import me.deftware.client.framework.maps.SettingsMap;
-import me.deftware.client.framework.utils.Settings;
-import me.deftware.client.framework.wrappers.IMinecraft;
-import me.deftware.client.framework.wrappers.world.IBlock;
-import net.minecraft.realms.RealmsSharedConstants;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import me.deftware.client.framework.FrameworkConstants;
-import me.deftware.client.framework.apis.marketplace.MarketplaceAPI;
-import me.deftware.client.framework.utils.OSUtils;
-import net.minecraft.client.Minecraft;
-
 /**
  * This class is responsible for bootstrapping (initialization) process of EMC freamwork
  * it handles loading all of the mods, connecting with event listeners and checking
- * for available updates 
+ * for available updates
  */
 public class Bootstrap {
 
@@ -137,7 +136,7 @@ public class Bootstrap {
 	public static void loadMod(File clientJar) throws Exception {
 		JarFile jarFile = new JarFile(clientJar);
 		Bootstrap.modClassLoader = URLClassLoader.newInstance(
-				new URL[] { new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/") },
+				new URL[]{new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/")},
 				Bootstrap.class.getClassLoader());
 
 		// Read client.json
@@ -180,9 +179,9 @@ public class Bootstrap {
 	}
 
 	/**
-	 *	Call a function in another EMC mod from your mod, using this you can call functions across EMC mods
+	 * Call a function in another EMC mod from your mod, using this you can call functions across EMC mods
 	 *
-	 * @param mod The name of the mod you want to talk with
+	 * @param mod    The name of the mod you want to talk with
 	 * @param method The method name you want to call
 	 * @param caller The name of your mod
 	 */

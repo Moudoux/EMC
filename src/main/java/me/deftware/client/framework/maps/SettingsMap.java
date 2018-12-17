@@ -14,8 +14,8 @@ public class SettingsMap {
 	 * Sets a value, creates the value if it does not exist yet
 	 *
 	 * @param mapKey The key of the map
-	 * @param key The key of the current map
-	 * @param value The value of the map
+	 * @param key    The key of the current map
+	 * @param value  The value of the map
 	 */
 	public static void update(int mapKey, String key, Object value) {
 		SettingsMap.map.putIfAbsent(mapKey, new ConcurrentHashMap<>());
@@ -25,8 +25,8 @@ public class SettingsMap {
 	/**
 	 * Returns a value from the map
 	 *
-	 * @param mapKey The map you want to access
-	 * @param key The key in the map you want
+	 * @param mapKey   The map you want to access
+	 * @param key      The key in the map you want
 	 * @param _default Default value to return if the map does not exist
 	 * @return Object
 	 */
@@ -92,7 +92,7 @@ public class SettingsMap {
 		/**
 		 * COMMAND_TRIGGER
 		 */
-		public static final int EMC_SETTINGS =   6;
+		public static final int EMC_SETTINGS = 6;
 
 	}
 

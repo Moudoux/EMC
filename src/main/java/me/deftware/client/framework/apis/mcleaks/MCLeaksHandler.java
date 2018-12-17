@@ -88,8 +88,8 @@ public class MCLeaksHandler {
 	 * @return
 	 */
 	public static String getCustomuserUUID(String username) throws Exception {
-			return  new Gson().fromJson(WebUtils.get("https://api.mojang.com/users/profiles/minecraft/" + username)
-					, JsonObject.class).get("id").getAsString();
+		return new Gson().fromJson(WebUtils.get("https://api.mojang.com/users/profiles/minecraft/" + username)
+				, JsonObject.class).get("id").getAsString();
 	}
 
 	/**

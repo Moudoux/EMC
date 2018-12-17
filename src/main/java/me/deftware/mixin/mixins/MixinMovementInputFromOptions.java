@@ -1,14 +1,13 @@
 package me.deftware.mixin.mixins;
 
-import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
-
+import me.deftware.client.framework.event.events.EventSlowdown;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.MovementInputFromOptions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import me.deftware.client.framework.event.events.EventSlowdown;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.MovementInputFromOptions;
+import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
 
 @Mixin(MovementInputFromOptions.class)
 public class MixinMovementInputFromOptions {

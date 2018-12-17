@@ -6,7 +6,6 @@ import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.suggestion.Suggestions;
 import me.deftware.client.framework.command.CommandRegister;
-import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.mixin.components.InternalGuiTextField;
 import me.deftware.mixin.imp.IMixinGuiScreen;
 import net.minecraft.client.Minecraft;
@@ -14,7 +13,6 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.command.ISuggestionProvider;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -84,7 +82,7 @@ public abstract class MixinGuiChat extends GuiScreen {
 		String lvt_1_1_ = this.inputField.getText();
 		StringReader lvt_2_1_ = new StringReader(lvt_1_1_);
 		if (lvt_2_1_.canRead() && lvt_1_1_.startsWith((String) CommandRegister.getCommandTrigger())) {
-			for(int triggerLength = 0; triggerLength < Math.min(CommandRegister.getCommandTrigger().length(), lvt_1_1_.length()); triggerLength++) {
+			for (int triggerLength = 0; triggerLength < Math.min(CommandRegister.getCommandTrigger().length(), lvt_1_1_.length()); triggerLength++) {
 				lvt_2_1_.skip();
 			}
 			CommandDispatcher<ISuggestionProvider> lvt_3_1_ = CommandRegister.getDispatcher();
@@ -92,7 +90,7 @@ public abstract class MixinGuiChat extends GuiScreen {
 			if (!field_212338_z) {
 				StringReader lvt_4_1_ = new StringReader(lvt_1_1_.substring(0, lvt_1_1_.length()));
 				if (lvt_4_1_.canRead()) {
-					for(int triggerLength = 0; triggerLength < CommandRegister.getCommandTrigger().length(); triggerLength++) {
+					for (int triggerLength = 0; triggerLength < CommandRegister.getCommandTrigger().length(); triggerLength++) {
 						lvt_4_1_.skip();
 					}
 					ParseResults<ISuggestionProvider> lvt_5_1_ = lvt_3_1_.parse(lvt_4_1_, this.mc.player.connection.getSuggestionProvider());

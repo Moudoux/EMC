@@ -4,9 +4,7 @@ import me.deftware.client.framework.event.events.EventCharacter;
 import me.deftware.client.framework.event.events.EventKeyAction;
 import net.minecraft.client.KeyboardListener;
 import net.minecraft.client.Minecraft;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -33,7 +31,6 @@ public class MixinKeyboardListener {
 			}
 		}
 	}
-
 
 
 }

@@ -21,7 +21,7 @@ public class IMouse {
 			((IMixinMinecraft) Minecraft.getInstance()).doClickMouse();
 		} else if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
 			((IMixinMinecraft) Minecraft.getInstance()).doRightClickMouse();
-		} else	if (button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE) {
+		} else if (button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE) {
 			((IMixinMinecraft) Minecraft.getInstance()).doMiddleClickMouse();
 		}
 	}

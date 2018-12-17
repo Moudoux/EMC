@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
-
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ISuggestionProvider;
@@ -29,6 +28,7 @@ public class CommandRegister {
 
 	/**
 	 * Registers a commandbuilder
+	 *
 	 * @param command
 	 */
 	public static synchronized void registerCommand(CommandBuilder command) {
@@ -41,6 +41,7 @@ public class CommandRegister {
 
 	/**
 	 * Registers a EMCModCommand
+	 *
 	 * @param command
 	 */
 	public static void registerCommand(EMCModCommand modCommand) {
@@ -49,6 +50,7 @@ public class CommandRegister {
 
 	/**
 	 * Returns an array of all registered commands, without any argument usage
+	 *
 	 * @return
 	 */
 	public static ArrayList<String> listCommands() {
@@ -62,6 +64,7 @@ public class CommandRegister {
 
 	/**
 	 * Returns an array of all registered commands, with argument usage
+	 *
 	 * @return
 	 */
 	public static ArrayList<String> getCommandsAndUsage() {
@@ -75,6 +78,7 @@ public class CommandRegister {
 
 	/**
 	 * Returns a map of all root commands with their correct usage
+	 *
 	 * @return
 	 */
 	public static Map<CommandNode<ISuggestionProvider>, String> getSmartUsage() {
@@ -83,6 +87,7 @@ public class CommandRegister {
 
 	/**
 	 * Returns the command trigger used to trigger commands, default is a .
+	 *
 	 * @return
 	 */
 	public static String getCommandTrigger() {

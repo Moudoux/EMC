@@ -26,7 +26,6 @@ public abstract class EMCMod {
 	public abstract void initialize();
 
 	/**
-	 *
 	 * @return EMCModInfo
 	 */
 	public abstract EMCModInfo getModInfo();
@@ -43,7 +42,8 @@ public abstract class EMCMod {
 	 *
 	 * @param status Whether or not EMC has a successful connection with the EMC mod marketplace
 	 */
-	public void onMarketplaceAuth(boolean status) { }
+	public void onMarketplaceAuth(boolean status) {
+	}
 
 	/**
 	 * Unloads your mod from EMC
@@ -87,14 +87,16 @@ public abstract class EMCMod {
 	/**
 	 * Called when Minecraft is closed, use this method to save anything in your mod
 	 */
-	public void onUnload() { }
+	public void onUnload() {
+	}
 
 	/**
-	 *	By implementing this function you can call functions in other EMC mods
+	 * By implementing this function you can call functions in other EMC mods
 	 *
 	 * @param method The method the caller wants to call
 	 * @param caller The EMC mod that is calling your function
 	 */
-	public void callMethod(String method, String caller) { }
+	public void callMethod(String method, String caller) {
+	}
 
 }

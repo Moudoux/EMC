@@ -1,14 +1,14 @@
 package me.deftware.client.framework.utils;
 
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.mixin.imp.IMixinGuiNewChat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
+
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class ChatProcessor {
 
@@ -90,7 +90,7 @@ public class ChatProcessor {
 	}
 
 	public static void printChatMessage(String chatMessage, boolean send) {
-		if (!send){
+		if (!send) {
 			history.add(chatMessage);
 			return;
 		}
@@ -137,33 +137,33 @@ public class ChatProcessor {
 
 	private static Style formatChatStyle(Style chatStyle, char formattingChar) {
 		switch (formattingChar) {
-		case 'k':
-			chatStyle.setObfuscated(Boolean.valueOf(true));
-			break;
-		case 'm':
-			chatStyle.setStrikethrough(Boolean.valueOf(true));
-			break;
-		case 'l':
-			chatStyle.setBold(Boolean.valueOf(true));
-			break;
-		case 'n':
-			chatStyle.setUnderlined(Boolean.valueOf(true));
-			break;
-		case 'o':
-			chatStyle.setItalic(Boolean.valueOf(true));
-			break;
-		case 'r':
-			chatStyle.setObfuscated(Boolean.valueOf(false));
-			chatStyle.setStrikethrough(Boolean.valueOf(false));
-			chatStyle.setBold(Boolean.valueOf(false));
-			chatStyle.setUnderlined(Boolean.valueOf(false));
-			chatStyle.setItalic(Boolean.valueOf(false));
-			chatStyle.setColor(TextFormatting.RESET);
-			break;
-		case 'p':
-		case 'q':
-		default:
-			chatStyle.setColor(ChatProcessor.getTextFormattingByValue(formattingChar));
+			case 'k':
+				chatStyle.setObfuscated(Boolean.valueOf(true));
+				break;
+			case 'm':
+				chatStyle.setStrikethrough(Boolean.valueOf(true));
+				break;
+			case 'l':
+				chatStyle.setBold(Boolean.valueOf(true));
+				break;
+			case 'n':
+				chatStyle.setUnderlined(Boolean.valueOf(true));
+				break;
+			case 'o':
+				chatStyle.setItalic(Boolean.valueOf(true));
+				break;
+			case 'r':
+				chatStyle.setObfuscated(Boolean.valueOf(false));
+				chatStyle.setStrikethrough(Boolean.valueOf(false));
+				chatStyle.setBold(Boolean.valueOf(false));
+				chatStyle.setUnderlined(Boolean.valueOf(false));
+				chatStyle.setItalic(Boolean.valueOf(false));
+				chatStyle.setColor(TextFormatting.RESET);
+				break;
+			case 'p':
+			case 'q':
+			default:
+				chatStyle.setColor(ChatProcessor.getTextFormattingByValue(formattingChar));
 		}
 
 		return chatStyle;

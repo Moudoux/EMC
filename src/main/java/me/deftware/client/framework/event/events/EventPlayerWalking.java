@@ -12,7 +12,7 @@ public class EventPlayerWalking extends Event {
 	private boolean onGround;
 
 	public EventPlayerWalking(double posX, double posY, double posZ, float rotationYaw, float rotationPitch,
-			boolean onGround) {
+							  boolean onGround) {
 		this.posX = posX;
 		this.posY = posY;
 		this.posZ = posZ;

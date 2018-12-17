@@ -1,11 +1,11 @@
 package me.deftware.mixin.imp;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.Session;
 import net.minecraft.util.Timer;
+
+import javax.annotation.Nullable;
 
 public interface IMixinMinecraft {
 

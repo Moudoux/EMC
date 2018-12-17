@@ -2,7 +2,6 @@ package me.deftware.client.framework.wrappers.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import org.spongepowered.asm.mixin.Overwrite;
 
 public class IGuiButton extends GuiButton implements CustomIGuiEventListener {
 
@@ -38,7 +37,8 @@ public class IGuiButton extends GuiButton implements CustomIGuiEventListener {
 		onButtonClick(x, y);
 	}
 
-	public void onButtonClick(double mouseX, double mouseY){}
+	public void onButtonClick(double mouseX, double mouseY) {
+	}
 
 	protected int onDraw(int mouseX, int mouseY) {
 		return 0;

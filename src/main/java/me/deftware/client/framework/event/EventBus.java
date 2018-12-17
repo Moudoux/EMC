@@ -1,5 +1,7 @@
 package me.deftware.client.framework.event;
 
+import me.deftware.client.framework.main.Bootstrap;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
@@ -7,7 +9,8 @@ public class EventBus {
 
 	private static HashMap<Class, HashMap<Class, HashMap<Method, Object>>> classes = new HashMap<>();
 
-	public static void registerClass(Class clazz, Object instance) {
+	public static synchronized void registerClass(Class clazz, Object instance) {
+		Bootstrap.logger.info(String.format("Loading event handlers in class %s", clazz.getName()));
 		for (Method method : clazz.getMethods()) {
 			if (method.isAnnotationPresent(EventHandler.class)) {
 				EventHandler annotation = method.getAnnotation(EventHandler.class);
@@ -19,6 +22,7 @@ public class EventBus {
 					classes.get(eventType).put(clazz, new HashMap<>());
 				}
 				classes.get(eventType).get(clazz).putIfAbsent(method, instance);
+				Bootstrap.logger.info(String.format("Loaded event handler %s", method.getName()));
 			}
 		}
 	}

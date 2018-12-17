@@ -37,8 +37,8 @@ public class OAuth {
 		 * Called after oAuth attempt
 		 *
 		 * @param success If the user successfully authenticated
-		 * @param code The users oAuth code
-		 * @param time How long before the oAuth code expires
+		 * @param code    The users oAuth code
+		 * @param time    How long before the oAuth code expires
 		 */
 		void callback(boolean success, String code, String time);
 

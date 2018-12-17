@@ -34,7 +34,6 @@ public class IGuiTextField extends GuiTextField implements CustomIGuiEventListen
 	 * @see GLFW#GLFW_RELEASE
 	 * @see GLFW#GLFW_PRESS
 	 * @see GLFW#GLFW_REPEAT
-	 *
 	 * @see GLFW#GLFW_MOD_SHIFT
 	 */
 	public void onKeyPressed(int keyCode, int action, int modifiers) {

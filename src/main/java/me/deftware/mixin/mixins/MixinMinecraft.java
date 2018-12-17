@@ -1,10 +1,15 @@
 package me.deftware.mixin.mixins;
 
-import javax.annotation.Nullable;
-
+import me.deftware.client.framework.event.events.EventGuiScreenDisplay;
 import me.deftware.client.framework.event.events.EventShutdown;
-import net.minecraft.client.GameSettings;
+import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.mixin.imp.IMixinMinecraft;
 import net.minecraft.client.MainWindow;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.Session;
+import net.minecraft.util.Timer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -14,14 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import me.deftware.client.framework.event.events.EventGuiScreenDisplay;
-import me.deftware.client.framework.main.Bootstrap;
-import me.deftware.mixin.imp.IMixinMinecraft;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.Session;
-import net.minecraft.util.Timer;
+import javax.annotation.Nullable;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft implements IMixinMinecraft {

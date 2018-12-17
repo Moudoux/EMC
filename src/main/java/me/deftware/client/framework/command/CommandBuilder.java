@@ -1,6 +1,6 @@
 package me.deftware.client.framework.command;
 
-import com.mojang.brigadier.arguments.*;
+import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;
@@ -20,6 +20,7 @@ public class CommandBuilder<T> {
 	/**
 	 * Adds a single command (.test for example) with no argument, recommended for simple
 	 * no argument commands
+	 *
 	 * @param command
 	 * @param execution
 	 * @return CommandBuilder
@@ -33,6 +34,7 @@ public class CommandBuilder<T> {
 
 	/**
 	 * Set's the LiteralArgumentBuilder of this commandbuilder, used for building your own command tree
+	 *
 	 * @param argument
 	 * @return
 	 */
@@ -43,6 +45,7 @@ public class CommandBuilder<T> {
 
 	/**
 	 * Appends a literal or an argument to the existing command tree
+	 *
 	 * @param argument
 	 * @return
 	 */
@@ -57,6 +60,7 @@ public class CommandBuilder<T> {
 
 	/**
 	 * Registers an alternate alias for the command
+	 *
 	 * @param alias
 	 * @return
 	 */
@@ -67,6 +71,7 @@ public class CommandBuilder<T> {
 
 	/**
 	 * Autocomplete list of all entities on the current server
+	 *
 	 * @return
 	 */
 	public ArgumentType<T> getEntityArgumentType() {
@@ -75,6 +80,7 @@ public class CommandBuilder<T> {
 
 	/**
 	 * Returns a list of all aliases for this command
+	 *
 	 * @return
 	 */
 	public List<String> getAliases() {
