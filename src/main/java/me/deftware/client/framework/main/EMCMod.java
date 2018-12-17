@@ -31,19 +31,11 @@ public abstract class EMCMod {
 	public abstract EMCModInfo getModInfo();
 
 	/**
-	 * The main function that EMC uses to send events to your mod
-	 *
-	 * @param event
-	 */
-	public abstract void onEvent(Event event);
-
-	/**
 	 * Called when EMC has tried to connect to the marketplace API, both successfully and unsuccessfully
 	 *
 	 * @param status Whether or not EMC has a successful connection with the EMC mod marketplace
 	 */
-	public void onMarketplaceAuth(boolean status) {
-	}
+	public void onMarketplaceAuth(boolean status) { }
 
 	/**
 	 * Unloads your mod from EMC

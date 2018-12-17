@@ -34,6 +34,21 @@ public void setWalkspeed(float speed) {
 
 That's it. It is as easy as that. The IEntityPlayer.setWalkspeed then calls the obfuscated Minecraft call.
 
+EMC also has a very extensive event system with hooks for everything you could need in Minecraft.
+All you need to do is make a new class, extend it by `EventListener` and use the `@EventHandler` annotation for each method as 
+demonstrated below:
+
+```
+public class UpdateListener extends EventListener {
+
+    @EventHandler(eventType = EventUpdate.class)
+    public void onUpdate(EventUpdate event) {
+        // This function will be called 20 times a second or each tick in Minecraft
+    }
+
+}
+```
+
 Minecraft versions currently supported
 -------------------
 
