@@ -15,14 +15,14 @@ import java.util.ArrayList;
 @Mixin(Main.class)
 public class MixinMain {
 
-    @Inject(method = "main", at = @At("HEAD"))
-    private static void main(String[] args, CallbackInfo ci) {
-        OptionParser optionParser = new OptionParser();
-        optionParser.allowsUnrecognizedOptions();
-        OptionSpec<String> modClassOption = optionParser.accepts("emcMod").withRequiredArg();
-        OptionSet options = optionParser.parse(args);
-        Bootstrap.internalModClassNames = new ArrayList<>(options.valuesOf(modClassOption));
-        Bootstrap.internalModClassNames.forEach((clazz) -> System.out.println(String.format("Found EMC mod class %s", clazz)));
-    }
+	@Inject(method = "main", at = @At("HEAD"))
+	private static void main(String[] args, CallbackInfo ci) {
+		OptionParser optionParser = new OptionParser();
+		optionParser.allowsUnrecognizedOptions();
+		OptionSpec<String> modClassOption = optionParser.accepts("emcMod").withRequiredArg();
+		OptionSet options = optionParser.parse(args);
+		Bootstrap.internalModClassNames = new ArrayList<>(options.valuesOf(modClassOption));
+		Bootstrap.internalModClassNames.forEach((clazz) -> System.out.println(String.format("Found EMC mod class %s", clazz)));
+	}
 
 }

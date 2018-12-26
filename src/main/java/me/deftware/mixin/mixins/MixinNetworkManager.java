@@ -19,7 +19,7 @@ public abstract class MixinNetworkManager {
 	protected abstract void dispatchPacket(Packet<?> p_dispatchPacket_1_, @Nullable GenericFutureListener<? extends Future<? super Void>> p_dispatchPacket_2_);
 
 	@Redirect(method = "sendPacket(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V", at = @At(value = "INVOKE", target = "net/minecraft/network/NetworkManager.dispatchPacket(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V"))
-	private void sendPacket$dispatchPacket(NetworkManager networkManager, Packet<?> packetIn, @Nullable final GenericFutureListener<? extends Future<?super Void>> futureListeners) {
+	private void sendPacket$dispatchPacket(NetworkManager networkManager, Packet<?> packetIn, @Nullable final GenericFutureListener<? extends Future<? super Void>> futureListeners) {
 		EventPacketSend event = new EventPacketSend(packetIn).send();
 		if (event.isCanceled()) {
 			return;

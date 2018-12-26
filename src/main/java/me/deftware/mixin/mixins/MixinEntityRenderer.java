@@ -1,9 +1,13 @@
 package me.deftware.mixin.mixins;
 
-import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
-
+import me.deftware.client.framework.event.events.EventHurtcam;
+import me.deftware.client.framework.event.events.EventRender2D;
+import me.deftware.client.framework.event.events.EventRender3D;
+import me.deftware.client.framework.event.events.EventWeather;
+import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.ChatProcessor;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,13 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import me.deftware.client.framework.event.events.EventHurtcam;
-import me.deftware.client.framework.event.events.EventRender2D;
-import me.deftware.client.framework.event.events.EventRender3D;
-import me.deftware.client.framework.event.events.EventWeather;
-import me.deftware.client.framework.maps.SettingsMap;
-
-import net.minecraft.client.renderer.GlStateManager;
+import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
 
 @Mixin(GameRenderer.class)
 public class MixinEntityRenderer {

@@ -31,15 +31,15 @@ public class IKeybindWrapper {
 
 		SNEAK(Minecraft.getInstance().gameSettings.keyBindSneak), USEITEM(
 				Minecraft.getInstance().gameSettings.keyBindUseItem), JUMP(
-						Minecraft.getInstance().gameSettings.keyBindJump), SPRINT(
-								Minecraft.getInstance().gameSettings.keyBindSprint), FORWARD(
-										Minecraft.getInstance().gameSettings.keyBindForward), BACK(
-												Minecraft.getInstance().gameSettings.keyBindBack), LEFT(
-														Minecraft.getInstance().gameSettings.keyBindLeft), RIGHT(
-																Minecraft
-																		.getInstance().gameSettings.keyBindRight), ATTACK(
-																				Minecraft
-																						.getInstance().gameSettings.keyBindAttack);
+				Minecraft.getInstance().gameSettings.keyBindJump), SPRINT(
+				Minecraft.getInstance().gameSettings.keyBindSprint), FORWARD(
+				Minecraft.getInstance().gameSettings.keyBindForward), BACK(
+				Minecraft.getInstance().gameSettings.keyBindBack), LEFT(
+				Minecraft.getInstance().gameSettings.keyBindLeft), RIGHT(
+				Minecraft
+						.getInstance().gameSettings.keyBindRight), ATTACK(
+				Minecraft
+						.getInstance().gameSettings.keyBindAttack);
 
 		KeyBinding bind;
 

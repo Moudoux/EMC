@@ -1,6 +1,6 @@
 {
-    "inheritsFrom": "1.13",
-    "id": "1.13-EMC",
+    "inheritsFrom": "1.13.2",
+    "id": "1.13.2-EMC",
     "time": "2018-07-12T08:51:45-05:00",
     "releaseTime": "2018-07-12T08:51:45-05:00",
     "type": "release",
@@ -16,7 +16,7 @@
             "name": "net.minecraft:launchwrapper:1.12"
         },
         {
-            "name": "me.deftware:EMC:13.6.0-1.13",
+            "name": "me.deftware:EMC:13.6.5-1.13.2",
             "url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
         },
         {

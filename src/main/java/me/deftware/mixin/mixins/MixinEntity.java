@@ -1,8 +1,13 @@
 package me.deftware.mixin.mixins;
 
-import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
-
+import me.deftware.client.framework.event.events.EventKnockback;
+import me.deftware.client.framework.event.events.EventSlowdown;
+import me.deftware.client.framework.event.events.EventSneakingCheck;
 import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.mixin.imp.IMixinEntity;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.AxisAlignedBB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -10,14 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import me.deftware.client.framework.event.events.EventKnockback;
-import me.deftware.client.framework.event.events.EventNoClip;
-import me.deftware.client.framework.event.events.EventSlowdown;
-import me.deftware.client.framework.event.events.EventSneakingCheck;
-import me.deftware.mixin.imp.IMixinEntity;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.AxisAlignedBB;
+import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
 
 @Mixin(Entity.class)
 public abstract class MixinEntity implements IMixinEntity {

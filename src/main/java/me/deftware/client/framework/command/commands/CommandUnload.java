@@ -7,11 +7,8 @@ import me.deftware.client.framework.command.argument.arguments.EMCModArgument;
 import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.utils.ChatProcessor;
-
 import net.minecraft.client.Minecraft;
 
-import static com.mojang.brigadier.arguments.StringArgumentType.getString;
-import static com.mojang.brigadier.arguments.StringArgumentType.string;
 import static com.mojang.brigadier.builder.LiteralArgumentBuilder.literal;
 import static com.mojang.brigadier.builder.RequiredArgumentBuilder.argument;
 

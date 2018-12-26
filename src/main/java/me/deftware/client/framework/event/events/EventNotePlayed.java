@@ -4,7 +4,7 @@ import me.deftware.client.framework.event.Event;
 
 /**
  * Triggered when music note is played.
- *
+ * <p>
  * Watch out! This event is deprecated and might not be available in the future
  */
 @Deprecated

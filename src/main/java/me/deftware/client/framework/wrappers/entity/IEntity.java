@@ -4,7 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.*;
-import net.minecraft.entity.boss.*;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
@@ -208,7 +209,7 @@ public class IEntity {
 			return entity instanceof EntityMob;
 		}
 		// Passives
-		  else if (e.equals(EntityType.ENTITY_BAT)) {
+		else if (e.equals(EntityType.ENTITY_BAT)) {
 			return entity instanceof EntityBat;
 		} else if (e.equals(EntityType.ENTITY_CHICKEN)) {
 			return entity instanceof EntityChicken;
@@ -246,7 +247,7 @@ public class IEntity {
 			return entity instanceof EntityParrot;
 		}
 		// Hostiles
-		  else if (e.equals(EntityType.EntitySlime) || e.equals(EntityType.ENTITY_SLIME)) {
+		else if (e.equals(EntityType.EntitySlime) || e.equals(EntityType.ENTITY_SLIME)) {
 			return entity instanceof EntitySlime;
 		} else if (e.equals(EntityType.EntityFlying)) {
 			return entity instanceof EntityFlying;
@@ -259,7 +260,7 @@ public class IEntity {
 		} else if (e.equals(EntityType.ENTITY_ENDERMAN)) {
 			return entity instanceof EntityEnderman;
 		} else if (e.equals(EntityType.ENTITY_WITHER_SKELETON)) {
-		    return entity instanceof EntityWitherSkeleton;
+			return entity instanceof EntityWitherSkeleton;
 		} else if (e.equals(EntityType.ENTITY_WITHER)) {
 			return entity instanceof EntityWither;
 		} else if (e.equals(EntityType.ENTITY_DRAGON)) {
@@ -310,16 +311,16 @@ public class IEntity {
 			return entity instanceof EntityCaveSpider;
 		}
 		// Neutrals
-		  else if (e.equals(EntityType.ENTITY_WOLF)) {
+		else if (e.equals(EntityType.ENTITY_WOLF)) {
 			return entity instanceof EntityWolf;
 		} else if (e.equals(EntityType.ENTITY_LLAMA)) {
 			return entity instanceof EntityLlama;
 		} else if (e.equals(EntityType.ENTITY_IRON_GOLEM)) {
-		  	return entity instanceof EntityIronGolem;
+			return entity instanceof EntityIronGolem;
 		} else if (e.equals(EntityType.ENTITY_SNOW_GOLEM)) {
-		  	return entity instanceof EntitySnowman;
+			return entity instanceof EntitySnowman;
 		} else if (e.equals(EntityType.ENTITY_PUFFERFISH)) {
-		  	return entity instanceof EntityPufferFish;
+			return entity instanceof EntityPufferFish;
 		}
 		return false;
 	}

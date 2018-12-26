@@ -1,29 +1,27 @@
 package me.deftware.mixin.mixins;
 
+import me.deftware.client.framework.event.events.EventBlockhardness;
+import me.deftware.client.framework.event.events.EventCollideCheck;
+import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.wrappers.world.IBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlowingFluid;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.state.StateContainer;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.registry.IRegistry;
 import net.minecraft.world.IBlockReader;
-
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import me.deftware.client.framework.event.events.EventBlockhardness;
-import me.deftware.client.framework.event.events.EventCollideCheck;
-import me.deftware.client.framework.maps.SettingsMap;
-import me.deftware.client.framework.wrappers.world.IBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 
 @Mixin(Block.class)
 public abstract class MixinBlock {
@@ -46,7 +44,7 @@ public abstract class MixinBlock {
 
 	@Inject(method = "shouldSideBeRendered", at = @At("HEAD"), cancellable = true)
 	private static void shouldSideBeRendered(IBlockState blockState, IBlockReader blockReader, BlockPos pos, EnumFacing side,
-									  CallbackInfoReturnable<Boolean> callback) {
+											 CallbackInfoReturnable<Boolean> callback) {
 		if (SettingsMap.isOverrideMode()) {
 			callback.setReturnValue(
 					(boolean) SettingsMap.getValue(IRegistry.BLOCK.getId(blockState.getBlock()), "render", false));
@@ -61,7 +59,7 @@ public abstract class MixinBlock {
 
 	@Inject(method = "getPlayerRelativeBlockHardness", at = @At("HEAD"), cancellable = true)
 	public void getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, IBlockReader reader, BlockPos pos,
-			CallbackInfoReturnable<Float> ci) {
+											   CallbackInfoReturnable<Float> ci) {
 		float f = state.getBlockHardness(reader, pos);
 		EventBlockhardness event = new EventBlockhardness().send();
 		if (f < 0.0F) {

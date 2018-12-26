@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
-public class ArgumentBuilder  {
+public class ArgumentBuilder {
 
 	public static CompletableFuture<Suggestions> getSuggestions(ArrayList<String> options, SuggestionsBuilder builder) {
 		String s = builder.getRemaining().toLowerCase(Locale.ROOT);

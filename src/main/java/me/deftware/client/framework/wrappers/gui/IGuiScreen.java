@@ -1,26 +1,24 @@
 package me.deftware.client.framework.wrappers.gui;
 
-import java.awt.*;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 import me.deftware.client.framework.wrappers.IMinecraft;
-import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.util.StringUtils;
-
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.StringUtils;
 import net.minecraft.util.Util;
 import org.lwjgl.glfw.GLFW;
+
+import java.awt.*;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class IGuiScreen extends GuiScreen {
 

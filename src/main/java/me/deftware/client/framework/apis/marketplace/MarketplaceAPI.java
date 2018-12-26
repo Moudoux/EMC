@@ -23,7 +23,6 @@ public class MarketplaceAPI {
 	/**
 	 * Initializes Marketplace API or does nothing if already initialized
 	 * Prints out status to the System.out
-	 *
 	 */
 	public static void init(LoginCallback callback) {
 		if (MarketplaceAPI.initialized) {
@@ -36,9 +35,9 @@ public class MarketplaceAPI {
 			callback.cb(status);
 		});
 	}
+
 	/**
 	 * Handles login response
-	 *
 	 */
 	private static void login(LoginCallback callback) {
 		OAuth.oAuth((boolean success, String token, String time) -> {

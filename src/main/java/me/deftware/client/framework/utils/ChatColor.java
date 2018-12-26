@@ -1,24 +1,23 @@
 package me.deftware.client.framework.utils;
 
-import java.util.Map;
-import java.util.regex.Pattern;
-
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.Validate;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 public enum ChatColor {
 
 	BLACK("BLACK", 0, '0', 0), DARK_BLUE("DARK_BLUE", 1, '1', 1), DARK_GREEN("DARK_GREEN", 2, '2', 2), DARK_AQUA(
 			"DARK_AQUA", 3, '3',
 			3), DARK_RED("DARK_RED", 4, '4', 4), DARK_PURPLE("DARK_PURPLE", 5, '5', 5), GOLD("GOLD", 6, '6', 6), GRAY(
-					"GRAY", 7, '7', 7), DARK_GRAY("DARK_GRAY", 8, '8', 8), BLUE("BLUE", 9, '9', 9), GREEN("GREEN", 10,
-							'a', 10), AQUA("AQUA", 11, 'b', 11), RED("RED", 12, 'c', 12), LIGHT_PURPLE("LIGHT_PURPLE",
-									13, 'd', 13), YELLOW("YELLOW", 14, 'e', 14), WHITE("WHITE", 15, 'f', 15), MAGIC(
-											"MAGIC", 16, 'k', 16, true), BOLD("BOLD", 17, 'l', 17, true), STRIKETHROUGH(
-													"STRIKETHROUGH", 18, 'm', 18,
-													true), UNDERLINE("UNDERLINE", 19, 'n', 19, true), ITALIC("ITALIC",
-															20, 'o', 20, true), RESET("RESET", 21, 'r', 21, true);
+			"GRAY", 7, '7', 7), DARK_GRAY("DARK_GRAY", 8, '8', 8), BLUE("BLUE", 9, '9', 9), GREEN("GREEN", 10,
+			'a', 10), AQUA("AQUA", 11, 'b', 11), RED("RED", 12, 'c', 12), LIGHT_PURPLE("LIGHT_PURPLE",
+			13, 'd', 13), YELLOW("YELLOW", 14, 'e', 14), WHITE("WHITE", 15, 'f', 15), MAGIC(
+			"MAGIC", 16, 'k', 16, true), BOLD("BOLD", 17, 'l', 17, true), STRIKETHROUGH(
+			"STRIKETHROUGH", 18, 'm', 18,
+			true), UNDERLINE("UNDERLINE", 19, 'n', 19, true), ITALIC("ITALIC",
+			20, 'o', 20, true), RESET("RESET", 21, 'r', 21, true);
 
 	public static final char COLOR_CHAR = 167;
 	private static final Pattern STRIP_COLOR_PATTERN, STRIP_COLOR_PATTERN2;
@@ -51,7 +50,7 @@ public enum ChatColor {
 		this.code = code;
 		this.intCode = intCode;
 		this.isFormat = isFormat;
-		toString = new String(new char[] { 167, code });
+		toString = new String(new char[]{167, code});
 	}
 
 	public char getChar() {

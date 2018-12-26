@@ -1,7 +1,7 @@
 package me.deftware.mixin.mixins;
 
-import me.deftware.client.framework.event.events.EventKnockback;
 import me.deftware.client.framework.event.events.EventAnimation;
+import me.deftware.client.framework.event.events.EventKnockback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.Entity;

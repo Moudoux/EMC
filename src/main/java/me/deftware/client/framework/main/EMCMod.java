@@ -26,17 +26,9 @@ public abstract class EMCMod {
 	public abstract void initialize();
 
 	/**
-	 *
 	 * @return EMCModInfo
 	 */
 	public abstract EMCModInfo getModInfo();
-
-	/**
-	 * The main function that EMC uses to send events to your mod
-	 *
-	 * @param event
-	 */
-	public abstract void onEvent(Event event);
 
 	/**
 	 * Called when EMC has tried to connect to the marketplace API, both successfully and unsuccessfully
@@ -87,14 +79,16 @@ public abstract class EMCMod {
 	/**
 	 * Called when Minecraft is closed, use this method to save anything in your mod
 	 */
-	public void onUnload() { }
+	public void onUnload() {
+	}
 
 	/**
-	 *	By implementing this function you can call functions in other EMC mods
+	 * By implementing this function you can call functions in other EMC mods
 	 *
 	 * @param method The method the caller wants to call
 	 * @param caller The EMC mod that is calling your function
 	 */
-	public void callMethod(String method, String caller) { }
+	public void callMethod(String method, String caller) {
+	}
 
 }

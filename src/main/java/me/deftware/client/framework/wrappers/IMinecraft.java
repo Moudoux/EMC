@@ -1,9 +1,5 @@
 package me.deftware.client.framework.wrappers;
 
-import java.io.File;
-import java.net.URISyntaxException;
-
-
 import me.deftware.client.framework.wrappers.entity.IEntity;
 import me.deftware.client.framework.wrappers.entity.IEntity.EntityType;
 import me.deftware.client.framework.wrappers.gui.IGuiInventory;
@@ -27,6 +23,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.network.play.client.CPacketChatMessage;
 import net.minecraft.realms.RealmsSharedConstants;
+
+import java.io.File;
+import java.net.URISyntaxException;
 
 public class IMinecraft {
 
@@ -75,7 +74,7 @@ public class IMinecraft {
 	}
 
 	public static void leaveServer() {
-		Minecraft.getInstance().player.connection.sendPacket(new CPacketChatMessage(new String(new char[] { 167 })));
+		Minecraft.getInstance().player.connection.sendPacket(new CPacketChatMessage(new String(new char[]{167})));
 	}
 
 	public static IBlockPos getBlockOver() {
@@ -197,7 +196,7 @@ public class IMinecraft {
 		if (Minecraft.getInstance().currentScreen != null) {
 			if (Minecraft.getInstance().currentScreen instanceof GuiContainer
 					&& (Minecraft.getInstance().currentScreen instanceof GuiInventory
-							|| Minecraft.getInstance().currentScreen instanceof GuiContainerCreative)) {
+					|| Minecraft.getInstance().currentScreen instanceof GuiContainerCreative)) {
 				return true;
 			}
 		}
