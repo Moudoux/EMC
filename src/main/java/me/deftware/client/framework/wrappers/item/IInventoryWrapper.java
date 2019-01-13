@@ -5,6 +5,7 @@ import me.deftware.client.framework.wrappers.entity.IEntityPlayer;
 import me.deftware.client.framework.wrappers.entity.IPlayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -50,6 +51,20 @@ public class IInventoryWrapper {
 		}
 
 		return false;
+	}
+
+	public static void moveStack(int srcInventoryId, int dstInventoryId, int srcSlot, int dstSlot){
+		Minecraft.getInstance().playerController.windowClick(srcInventoryId, srcSlot, 0,
+				ClickType.QUICK_MOVE, Minecraft.getInstance().player);
+		Minecraft.getInstance().playerController.windowClick(dstInventoryId, dstSlot, 0,
+				ClickType.QUICK_MOVE, Minecraft.getInstance().player);
+	}
+
+	public static void swapStack(int srcInventoryId, int dstInventoryId, int srcSlot, int dstSlot){
+		Minecraft.getInstance().playerController.windowClick(srcInventoryId, srcSlot, 0,
+				ClickType.SWAP, Minecraft.getInstance().player);
+		Minecraft.getInstance().playerController.windowClick(dstInventoryId, dstSlot, 0,
+				ClickType.SWAP, Minecraft.getInstance().player);
 	}
 
 	public static IItemStack getHeldItem(IPlayer player, boolean offhand) {
