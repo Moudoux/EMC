@@ -12,8 +12,6 @@ import java.io.IOException;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Texture {
-
-
 	int width;
 	int height;
 	DynamicTexture dynamicTexture;
@@ -34,12 +32,10 @@ public class Texture {
 		return width;
 	}
 
-
 	public void refreshParameters() {
 		this.width = nativeImage.getWidth();
 		this.height = nativeImage.getHeight();
 	}
-
 
 	public int fillFromBufferedImage(BufferedImage img) {
 		try {
@@ -59,11 +55,37 @@ public class Texture {
 		return 0;
 	}
 
+	public int fillFromBufferedImageFlip(BufferedImage img) {
+		try {
+			this.nativeImage = new NativeImage(img.getWidth(), img.getHeight(), true);
+			for (int width = 0; width < img.getWidth(); width++) {
+				for (int height = 0; height < img.getHeight(); height++) {
+					int rgb = img.getRGB(width, height);
+					int alpha = (rgb >> 24) & 0xFF;
+					int red = (rgb >> 16) & 0xFF;
+					int green = (rgb >> 8) & 0xFF;
+					int blue = rgb & 0xFF;
+					rgb = ((alpha & 0xFF) << 24) |
+							((blue & 0xFF) << 16) |
+							((green & 0xFF) << 8) |
+							((red & 0xFF));
+					this.setPixel(width, height, rgb);
+				}
 
-	public int fillFromBufferedRGBImage(BufferedImage img) {
+			}
+
+			this.refreshParameters();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 2;
+		}
+		return 0;
+	}
+
+	public int fillFromBufferedFormatImage(BufferedImage img, NativeImage.PixelFormat pixelFormat) {
 		byte[] imageBytes = ((DataBufferByte) img.getData().getDataBuffer()).getData();
 		try {
-			this.nativeImage = NativeImage.read(NativeImage.PixelFormat.RGB, new ByteArrayInputStream(imageBytes));
+			this.nativeImage = NativeImage.read(pixelFormat, new ByteArrayInputStream(imageBytes));
 			this.dynamicTexture.setTextureData(nativeImage);
 			this.refreshParameters();
 		} catch (IOException ioe) {
@@ -75,6 +97,14 @@ public class Texture {
 		return 0;
 	}
 
+	public int fillFromBufferedRGBImage(BufferedImage img) {
+		return fillFromBufferedFormatImage(img, NativeImage.PixelFormat.RGB);
+	}
+
+
+	public int fillFromBufferedRGBAImage(BufferedImage img) {
+		return fillFromBufferedFormatImage(img, NativeImage.PixelFormat.RGBA);
+	}
 
 	public int clearPixels() {
 		try {
@@ -103,7 +133,6 @@ public class Texture {
 		this.nativeImage.setPixelRGBA(x, y, rgb);
 	}
 
-
 	public void setPixel(int x, int y, int red, int green, int blue, int alpha) {
 		int rgba = ((alpha & 0xFF) << 24) |
 				((red & 0xFF) << 16) |
@@ -112,21 +141,17 @@ public class Texture {
 		this.nativeImage.setPixelRGBA(x, y, rgba);
 	}
 
-
 	public void setPixel(int x, int y, int rgba) {
 		this.nativeImage.setPixelRGBA(x, y, rgba);
 	}
-
 
 	public int getPixel(int x, int y) {
 		return this.nativeImage.getPixelRGBA(x, y);
 	}
 
-
 	public byte getAlpha(int x, int y) {
 		return this.nativeImage.getPixelLuminanceOrAlpha(x, y);
 	}
-
 
 	public int updatePixels() {
 		try {
@@ -137,7 +162,6 @@ public class Texture {
 		}
 		return 0;
 	}
-
 
 	public int updateTexture() {
 		try {
