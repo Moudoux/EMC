@@ -10,12 +10,19 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.BitSet;
+import java.util.HashMap;
 
 public class DynamicFont implements Font {
 
+    private Texture textTexture;
+    private int lastRenderedWidth;
+    private int lastRenderedHeight;
+    private int rendererTaskId;
+    private AffineTransform affineTransform;
+    private FontRenderContext renderContext;
+
     private String fontName;
-    private int fontSize;
-    private Color fontColor;
+    private int fontSize, shadowSize = 1;
     private boolean bold;
     private boolean italics;
     private boolean underlined;
@@ -24,17 +31,10 @@ public class DynamicFont implements Font {
     private boolean antialiased;
     private java.awt.Font stdFont;
 
-    Texture textTexture;
-    String lastRenderedString;
-    int lastRenderedWidth;
-    int lastRenderedHeight;
-    int rendererTaskId;
-    AffineTransform affineTransform;
-    FontRenderContext renderContext;
+    private HashMap<String, Texture> textureStore = new HashMap<>();
 
-    public DynamicFont(@Nonnull String fontName, @Nonnull Color fontColor, int fontSize, int modifiers) {
+    public DynamicFont(@Nonnull String fontName, int fontSize, int modifiers) {
         this.fontName = fontName;
-        this.fontColor = fontColor;
         this.fontSize = fontSize;
 
         this.bold = new BitSet(modifiers).get(7);
@@ -57,7 +57,6 @@ public class DynamicFont implements Font {
         }
 
         textTexture = null;
-        lastRenderedString = "";
         rendererTaskId = 0;
         lastRenderedWidth = 0;
         lastRenderedHeight = 0;
@@ -65,41 +64,39 @@ public class DynamicFont implements Font {
         renderContext = new FontRenderContext(affineTransform, false, true);
     }
 
-    public void setFontColor(Color fontColor){
-        this.fontColor = fontColor;
-        lastRenderedString = "";
+    public void clearCache() {
+        textureStore.clear();
     }
 
-    public void setFontSize(int fontSize){
+    public void setShadowSize(int shadowSize) {
+        this.shadowSize = shadowSize;
+    }
+
+    public void setFontSize(int fontSize) {
         this.fontSize = fontSize;
-        lastRenderedString = "";
     }
 
-    public void setAntialiased(boolean antialiased){
+    public void setAntialiased(boolean antialiased) {
         this.antialiased = antialiased;
-        lastRenderedString = "";
     }
 
     public void prepareAndPushMatrix() {
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST); //3008 alpha test
-
         GL11.glPushMatrix();
-
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    public void renderAndPopMatrix(int x, int y, int width, int height, boolean autoAdjust){
+    public void renderAndPopMatrix(int x, int y, int width, int height, boolean autoAdjust) {
         int scale = 2;
 
         //Counter the default scaling
-        if(autoAdjust)
+        if (autoAdjust)
             scale = IMinecraft.getGuiScale();
 
-        if(scale == 0)
+        if (scale == 0)
             scale = 2;
 
         //Draw quad counterclockwise
@@ -127,53 +124,74 @@ public class DynamicFont implements Font {
     }
 
     @Override
-    public int generateString(String text) {
-        if (!text.equals(lastRenderedString)) { //Optimisation. Generate only if needed
-            if(textTexture != null)
-                textTexture.destroy();
-            int textwidth = getStringWidth(text);
-            int textheight = getStringHeight(text);
+    public int generateString(String text, Color color) {
+        String key = text + color.getRGB() + bold + fontName;
+        int textwidth = getStringWidth(text);
+        int textheight = getStringHeight(text);
+        if (textureStore.containsKey(key)) {
+            textTexture = textureStore.get(key);
+        } else {
             BufferedImage premadeTexture = new BufferedImage(textwidth, textheight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = premadeTexture.createGraphics();
-            graphics.setColor(fontColor);
+            graphics.setColor(color);
             graphics.setFont(stdFont);
-            if(antialiased)
+            if (antialiased)
                 graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics.drawString(text, 1, textheight - 8);
             graphics.dispose();
             textTexture = new Texture(textwidth, textheight, true);
             textTexture.fillFromBufferedImageFlip(premadeTexture);
             textTexture.update();
-
-            lastRenderedString = text;
-            lastRenderedWidth = textwidth;
-            lastRenderedHeight = textheight;
+            textureStore.put(key, textTexture);
         }
+        lastRenderedWidth = textwidth;
+        lastRenderedHeight = textheight;
         return 0;
     }
 
     @Override
-    public int prepareForRendering(){
-        if(textTexture != null) {
+    public int prepareForRendering() {
+        if (textTexture != null) {
             textTexture.updateTexture();
             textTexture.bind(GL11.GL_ONE_MINUS_SRC_ALPHA);
-        }
-        else
+        } else
             return 1;
         return 0;
     }
 
     @Override
     public int drawString(int x, int y, String text) {
-        generateString(text);
+        return drawString(x, y, text, Color.white);
+    }
+
+    public int drawString(int x, int y, String text, Color color) {
+        generateString(text, color);
+        drawOnScreen(x, y);
+        return 0;
+    }
+
+    public int drawStringWithShadow(int x, int y, String text) {
+        return drawStringWithShadow(x, y, text, Color.white);
+    }
+
+    public int drawStringWithShadow(int x, int y, String text, Color color) {
+        generateString(text, Color.black);
+        drawOnScreen(x + shadowSize, y + shadowSize);
+        generateString(text, color);
         drawOnScreen(x, y);
         return 0;
     }
 
     @Override
     public int drawCenteredString(int x, int y, String text) {
-        generateString(text);
-        drawOnScreen(x - getLastRenderedWidth() /2, y - getLastRenderedHeight()/2);
+        generateString(text, Color.white);
+        drawOnScreen(x - getLastRenderedWidth() / 2, y - getLastRenderedHeight() / 2);
+        return 0;
+    }
+
+    public int drawCenteredString(int x, int y, String text, Color color) {
+        generateString(text, color);
+        drawOnScreen(x - getLastRenderedWidth() / 2, y - getLastRenderedHeight() / 2);
         return 0;
     }
 
@@ -206,7 +224,9 @@ public class DynamicFont implements Font {
     }
 
     @Override
-    public int getLastRenderedWidth() { return lastRenderedWidth; }
+    public int getLastRenderedWidth() {
+        return lastRenderedWidth;
+    }
 
     @Override
     public int getLastRenderedHeight() {
@@ -222,4 +242,5 @@ public class DynamicFont implements Font {
         public static byte MOVING = 0b00010000;
         public static byte ANTIALIASED = 0b00100000;
     }
+
 }

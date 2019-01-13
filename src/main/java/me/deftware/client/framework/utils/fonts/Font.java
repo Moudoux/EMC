@@ -1,8 +1,10 @@
 package me.deftware.client.framework.utils.fonts;
 
+import java.awt.*;
 
 public interface Font {
-    int generateString(String text);
+
+    int generateString(String text, Color color);
 
     int prepareForRendering();
 
