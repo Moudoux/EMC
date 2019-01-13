@@ -1,11 +1,6 @@
 package me.deftware.client.framework.event;
 
-import me.deftware.client.framework.event.events.EventRender2D;
 import me.deftware.client.framework.main.Bootstrap;
-import me.deftware.client.framework.utils.fonts.DynamicFont;
-import me.deftware.client.framework.utils.fonts.FontManager;
-
-import java.awt.*;
 
 /**
  * This class describes the way events are defined in EMC framework and handles the process of

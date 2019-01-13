@@ -11,14 +11,12 @@ import me.deftware.client.framework.command.commands.*;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.OSUtils;
 import me.deftware.client.framework.utils.Settings;
-import me.deftware.client.framework.utils.fonts.DynamicFont;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.realms.RealmsSharedConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;

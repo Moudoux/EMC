@@ -1,4 +1,4 @@
-package me.deftware.client.framework.utils.fonts;
+package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.utils.Texture;
 import me.deftware.client.framework.wrappers.IMinecraft;
@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.util.BitSet;
 import java.util.HashMap;
 
-public class DynamicFont implements Font {
+public class DynamicFont implements EMCFont {
 
     private Texture textTexture;
     private int lastRenderedWidth;
@@ -68,6 +68,7 @@ public class DynamicFont implements Font {
         textureStore.clear();
     }
 
+    @Override
     public void setShadowSize(int shadowSize) {
         this.shadowSize = shadowSize;
     }
@@ -164,16 +165,19 @@ public class DynamicFont implements Font {
         return drawString(x, y, text, Color.white);
     }
 
+    @Override
     public int drawString(int x, int y, String text, Color color) {
         generateString(text, color);
         drawOnScreen(x, y);
         return 0;
     }
 
+    @Override
     public int drawStringWithShadow(int x, int y, String text) {
         return drawStringWithShadow(x, y, text, Color.white);
     }
 
+    @Override
     public int drawStringWithShadow(int x, int y, String text, Color color) {
         generateString(text, Color.black);
         drawOnScreen(x + shadowSize, y + shadowSize);
@@ -189,9 +193,22 @@ public class DynamicFont implements Font {
         return 0;
     }
 
+    @Override
     public int drawCenteredString(int x, int y, String text, Color color) {
         generateString(text, color);
         drawOnScreen(x - getLastRenderedWidth() / 2, y - getLastRenderedHeight() / 2);
+        return 0;
+    }
+
+    @Override
+    public int drawCenteredStringWithShadow(int x, int y, String text) {
+        return drawCenteredStringWithShadow(x, y, text, Color.white);
+    }
+
+    @Override
+    public int drawCenteredStringWithShadow(int x, int y, String text, Color color) {
+        drawCenteredString(x + shadowSize, y + shadowSize, text, Color.black);
+        drawCenteredString(x, y, text, color);
         return 0;
     }
 

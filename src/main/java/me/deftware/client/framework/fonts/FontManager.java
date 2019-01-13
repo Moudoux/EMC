@@ -1,12 +1,12 @@
-package me.deftware.client.framework.utils.fonts;
+package me.deftware.client.framework.fonts;
 
 import java.util.HashMap;
 
 public class FontManager {
 
-    private static HashMap<String, DynamicFont> fontStore = new HashMap<>();
+    private static HashMap<String, EMCFont> fontStore = new HashMap<>();
 
-    public static DynamicFont getFont(String name, int size, int modifiers) {
+    public static EMCFont getFont(String name, int size, int modifiers) {
         String key = name + size + modifiers;
         if (fontStore.containsKey(key)) {
             return fontStore.get(key);
