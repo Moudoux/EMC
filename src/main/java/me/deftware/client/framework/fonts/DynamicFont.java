@@ -222,6 +222,20 @@ public class DynamicFont implements EMCFont {
     }
 
     @Override
+    public int drawStringDirectly(int x, int y, String text) {
+        generateString(text, Color.white);
+        drawOnScreenDirectly(x, y);
+        return 0;
+    }
+
+    @Override
+    public int drawStringDirectly(int x, int y, String text, Color color) {
+        generateString(text, color);
+        drawOnScreenDirectly(x, y);
+        return 0;
+    }
+
+    @Override
     public int drawOnScreen(int x, int y) {
         prepareAndPushMatrix(); //GL PART
         prepareForRendering(); //BINDING
