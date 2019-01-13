@@ -1,8 +1,10 @@
 package me.deftware.client.framework.utils;
 
+import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.client.framework.wrappers.entity.*;
 import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
+import me.deftware.mixin.imp.IMixinEntityRenderer;
 import me.deftware.mixin.imp.IMixinRenderManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -26,6 +28,14 @@ import static org.lwjgl.opengl.GL11.*;
  * Common functions used for rendering
  */
 public class RenderUtils {
+
+	public static void loadShader(IResourceLocation location) {
+		((IMixinEntityRenderer) Minecraft.getInstance().gameRenderer).loadCustomShader(location);
+	}
+
+	public static void disableShader() {
+		Minecraft.getInstance().addScheduledTask(() -> Minecraft.getInstance().gameRenderer.stopUseShader());
+	}
 
 	public static void glColor(Color color) {
 		GL11.glColor4f(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F,

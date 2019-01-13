@@ -9,35 +9,35 @@ import me.deftware.client.framework.main.Bootstrap;
 @SuppressWarnings("ALL")
 public class Event {
 
-	private boolean canceled = false;
+    private boolean canceled = false;
 
-	/**
-	 * Checks if event was canceled
-	 *
-	 * @return {@link Boolean}
-	 */
-	public boolean isCanceled() {
-		return canceled;
-	}
+    /**
+     * Checks if event was canceled
+     *
+     * @return {@link Boolean}
+     */
+    public boolean isCanceled() {
+        return canceled;
+    }
 
-	/**
-	 * Sets event as canceled
-	 */
-	public <T extends Event> T setCanceled(boolean canceled) {
-		this.canceled = canceled;
-		return (T) this;
-	}
+    /**
+     * Sets event as canceled
+     */
+    public <T extends Event> T setCanceled(boolean canceled) {
+        this.canceled = canceled;
+        return (T) this;
+    }
 
-	/**
-	 * Sends an event to all of the child-events and then to the loaded mods
-	 */
-	public <T extends Event> T send() {
-		try {
-			EventBus.sendEvent(this);
-		} catch (Exception ex) {
-			Bootstrap.logger.warn("Failed to send event {}", this, ex);
-		}
-		return (T) this;
-	}
+    /**
+     * Sends an event to all of the child-events and then to the loaded mods
+     */
+    public <T extends Event> T send() {
+        try {
+            EventBus.sendEvent(this);
+        } catch (Exception ex) {
+            Bootstrap.logger.warn("Failed to send event {}", this, ex);
+        }
+        return (T) this;
+    }
 
 }
