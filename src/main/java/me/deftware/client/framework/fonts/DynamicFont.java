@@ -29,6 +29,7 @@ public class DynamicFont implements EMCFont {
     private boolean striked;
     private boolean moving;
     private boolean antialiased;
+    private boolean memorysaving;
     private java.awt.Font stdFont;
 
     private HashMap<String, Texture> textureStore = new HashMap<>();
@@ -43,6 +44,7 @@ public class DynamicFont implements EMCFont {
         this.striked = new BitSet(modifiers).get(4);
         this.moving = new BitSet(modifiers).get(3);
         this.antialiased = new BitSet(modifiers).get(2);
+        this.memorysaving = new BitSet(modifiers).get(1);
 
         if (!bold && !italics) {
             this.stdFont = new java.awt.Font(fontName, java.awt.Font.PLAIN, fontSize);
@@ -79,6 +81,12 @@ public class DynamicFont implements EMCFont {
 
     public void setAntialiased(boolean antialiased) {
         this.antialiased = antialiased;
+    }
+
+    public void setMemorysaving(boolean memorysaving) {
+        this.memorysaving = memorysaving;
+        if(!memorysaving)
+            textureStore.clear();
     }
 
     public void prepareAndPushMatrix() {
@@ -129,7 +137,7 @@ public class DynamicFont implements EMCFont {
         String key = text + color.getRGB() + bold + fontName;
         int textwidth = getStringWidth(text);
         int textheight = getStringHeight(text);
-        if (textureStore.containsKey(key)) {
+        if (!memorysaving && textureStore.containsKey(key)) {
             textTexture = textureStore.get(key);
         } else {
             BufferedImage premadeTexture = new BufferedImage(textwidth, textheight, BufferedImage.TYPE_INT_ARGB);
@@ -143,7 +151,8 @@ public class DynamicFont implements EMCFont {
             textTexture = new Texture(textwidth, textheight, true);
             textTexture.fillFromBufferedImageFlip(premadeTexture);
             textTexture.update();
-            textureStore.put(key, textTexture);
+            if(!memorysaving)
+                textureStore.put(key, textTexture);
         }
         lastRenderedWidth = textwidth;
         lastRenderedHeight = textheight;
@@ -258,6 +267,7 @@ public class DynamicFont implements EMCFont {
         public static byte STRIKED = 0b00001000;
         public static byte MOVING = 0b00010000;
         public static byte ANTIALIASED = 0b00100000;
+        public static byte MEMORYSAVING = 0b01000000;
     }
 
 }
