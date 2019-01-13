@@ -74,7 +74,7 @@ Then in the `arguments->game` array add `"--tweakClass", "me.deftware.launch.Lau
 Stacking on top of Forge
 -------------------
 
-EMC can be stacked on top of Forge to run EMC mods in conjunction with forge mods. To build EMC for Forge simply run the gradle build task with the `-Pforgebuild="true"` argument. 
+EMC can be stacked on top of Forge to run EMC mods in conjunction with Forge mods. To build EMC for Forge simply run the gradle build task with the `-Pforgebuild="true"` argument. 
 
 Making client mods with EMC 
 -------------------
