@@ -26,8 +26,6 @@ public class ColoredDynamicFont extends DynamicFont {
         if (!memorysaving && textureStore.containsKey(key)) {
             textTexture = textureStore.get(key);
         } else {
-            if(textTexture != null)
-                textTexture.destroy();
             BufferedImage premadeTexture = new BufferedImage(textwidth, textheight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = premadeTexture.createGraphics();
             graphics.setFont(stdFont);

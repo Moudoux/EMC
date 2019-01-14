@@ -60,6 +60,7 @@ public class DynamicFont implements EMCFont {
         lastRenderedHeight = 0;
     }
 
+    @Override
     public void clearCache() {
         for (String key : textureStore.keySet()) {
             textureStore.get(key).destroy();
@@ -100,6 +101,7 @@ public class DynamicFont implements EMCFont {
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
         GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
+        GL11.glColor4f(1f, 1f, 1f, 1f);
     }
 
     public void renderAndPopMatrix(int x, int y, int width, int height) {
@@ -134,8 +136,6 @@ public class DynamicFont implements EMCFont {
         if (!memorysaving && textureStore.containsKey(key)) {
             textTexture = textureStore.get(key);
         } else {
-            if(textTexture != null)
-                textTexture.destroy();
             BufferedImage premadeTexture = new BufferedImage(textwidth, textheight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = premadeTexture.createGraphics();
             graphics.setFont(stdFont);
