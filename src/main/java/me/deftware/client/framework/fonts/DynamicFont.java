@@ -15,7 +15,6 @@ public class DynamicFont implements EMCFont {
     protected Texture textTexture;
     protected int lastRenderedWidth;
     protected int lastRenderedHeight;
-    protected int rendererTaskId;
 
     protected String fontName;
     protected int fontSize, shadowSize = 1;
@@ -42,6 +41,14 @@ public class DynamicFont implements EMCFont {
         this.antialiased = ((modifiers & 32) != 0);
         this.memorysaving = ((modifiers & 64) != 0);
 
+        prepareStandardFont();
+
+        textTexture = null;
+        lastRenderedWidth = 0;
+        lastRenderedHeight = 0;
+    }
+
+    protected void prepareStandardFont(){
         if (!bold && !italics) {
             this.stdFont = new java.awt.Font(fontName, java.awt.Font.PLAIN, fontSize);
         } else {
@@ -53,11 +60,6 @@ public class DynamicFont implements EMCFont {
                 this.stdFont = new java.awt.Font(fontName, java.awt.Font.BOLD, fontSize);
             }
         }
-
-        textTexture = null;
-        rendererTaskId = 0;
-        lastRenderedWidth = 0;
-        lastRenderedHeight = 0;
     }
 
     @Override
@@ -66,25 +68,6 @@ public class DynamicFont implements EMCFont {
             textureStore.get(key).destroy();
         }
         textureStore.clear();
-    }
-
-    @Override
-    public void setShadowSize(int shadowSize) {
-        this.shadowSize = shadowSize;
-    }
-
-    public void setFontSize(int fontSize) {
-        this.fontSize = fontSize;
-    }
-
-    public void setAntialiased(boolean antialiased) {
-        this.antialiased = antialiased;
-    }
-
-    public void setMemorysaving(boolean memorysaving) {
-        this.memorysaving = memorysaving;
-        if (!memorysaving)
-            textureStore.clear();
     }
 
     public void prepareAndPushMatrix() {
@@ -127,8 +110,8 @@ public class DynamicFont implements EMCFont {
         IMinecraft.triggerGuiRenderer();
     }
 
-    @SuppressWarnings("Duplicates")
     @Override
+    @SuppressWarnings("Duplicates")
     public int generateString(String text, Color color) {
         String key = text + color.getRGB() + bold + fontName;
         int textwidth = getStringWidth(text);
@@ -260,4 +243,104 @@ public class DynamicFont implements EMCFont {
         public static byte MEMORYSAVING = 0b01000000;
     }
 
+    @Override
+    public String getFontName() {
+        return fontName;
+    }
+
+    @Override
+    public void setFontName(String fontName) {
+        this.fontName = fontName;
+        prepareStandardFont();
+    }
+
+    @Override
+    public int getFontSize() {
+        return fontSize;
+    }
+
+    @Override
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    @Override
+    public int getShadowSize() {
+        return shadowSize;
+    }
+
+    @Override
+    public void setShadowSize(int shadowSize) {
+        this.shadowSize = shadowSize;
+    }
+
+    @Override
+    public boolean isBold() {
+        return bold;
+    }
+
+    @Override
+    public void setBold(boolean bold) {
+        this.bold = bold;
+    }
+
+    @Override
+    public boolean isItalics() {
+        return italics;
+    }
+
+    @Override
+    public void setItalics(boolean italics) {
+        this.italics = italics;
+    }
+
+    @Override
+    public boolean isUnderlined() {
+        return underlined;
+    }
+
+    @Override
+    public void setUnderlined(boolean underlined) {
+        this.underlined = underlined;
+    }
+
+    @Override
+    public boolean isStriked() {
+        return striked;
+    }
+
+    @Override
+    public void setStriked(boolean striked) {
+        this.striked = striked;
+    }
+
+    @Override
+    public boolean isMoving() {
+        return moving;
+    }
+
+    @Override
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    @Override
+    public boolean isAntialiased() {
+        return antialiased;
+    }
+
+    @Override
+    public void setAntialiased(boolean antialiased) {
+        this.antialiased = antialiased;
+    }
+
+    @Override
+    public boolean isMemorysaving() {
+        return memorysaving;
+    }
+
+    @Override
+    public void setMemorysaving(boolean memorysaving) {
+        this.memorysaving = memorysaving;
+    }
 }

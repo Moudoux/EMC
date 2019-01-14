@@ -26,8 +26,6 @@ public interface EMCFont {
 
     int drawOnScreen(int x, int y);
 
-    void setShadowSize(int shadowSize);
-
     int getStringWidth(String text);
 
     int getStringHeight(String text);
@@ -37,5 +35,47 @@ public interface EMCFont {
     int getLastRenderedWidth();
 
     void clearCache();
+
+    //Expose getters end setters
+
+    String getFontName();
+
+    void setFontName(String fontName);
+
+    int getFontSize();
+        
+    void setFontSize(int fontSize);
+
+    int getShadowSize();
+        
+    void setShadowSize(int shadowSize);
+
+    boolean isBold();
+
+    void setBold(boolean bold);
+
+    boolean isItalics();
+
+    void setItalics(boolean italics);
+
+    boolean isUnderlined();
+
+    void setUnderlined(boolean underlined);
+
+    boolean isStriked();
+
+    void setStriked(boolean striked);
+
+    boolean isMoving();
+
+    void setMoving(boolean moving);
+
+    boolean isAntialiased();
+
+    void setAntialiased(boolean antialiased);
+    
+    boolean isMemorysaving();
+
+    void setMemorysaving(boolean memorysaving);
 
 }
