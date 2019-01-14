@@ -24,15 +24,9 @@ public interface EMCFont {
 
     int drawCenteredStringWithShadow(int x, int y, String text, Color color);
 
-    int drawStringDirectly(int x, int y, String text);
-
-    int drawStringDirectly(int x, int y, String text, Color color);
-
     int drawOnScreen(int x, int y);
 
     void setShadowSize(int shadowSize);
-
-    int drawOnScreenDirectly(int x, int y);
 
     int getStringWidth(String text);
 
