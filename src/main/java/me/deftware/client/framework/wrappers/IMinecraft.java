@@ -111,6 +111,10 @@ public class IMinecraft {
 		Minecraft.getInstance().worldRenderer.loadRenderers();
 	}
 
+	public static void triggerGuiRenderer() {
+		Minecraft.getInstance().mainWindow.setupOverlayRendering();
+	}
+
 	public static void addEntityToWorld(int id, IEntity entity) {
 		Minecraft.getInstance().world.addEntityToWorld(id, entity.getEntity());
 	}

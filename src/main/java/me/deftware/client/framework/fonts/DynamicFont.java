@@ -2,6 +2,7 @@ package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.utils.Texture;
 import me.deftware.client.framework.wrappers.IMinecraft;
+import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
@@ -95,30 +96,28 @@ public class DynamicFont implements EMCFont {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST); //3008 alpha test
         GL11.glPushMatrix();
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA); //Transparency blending
+        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        GL11.glOrtho(0.0D, IGuiScreen.getDisplayWidth(), IGuiScreen.getDisplayHeight(), 0.0D, 1000.0D, 3000.0D);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glLoadIdentity();
+        GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
     }
 
-    public void renderAndPopMatrix(int x, int y, int width, int height, boolean autoAdjust) {
-        int scale = 2;
-
-        //Counter the default scaling
-        if (autoAdjust)
-            scale = IMinecraft.getGuiScale();
-
-        if (scale == 0)
-            scale = 2;
-
+    public void renderAndPopMatrix(int x, int y, int width, int height) {
         //Draw quad counterclockwise
         GL11.glBegin(GL11.GL_QUADS);
         {
             GL11.glTexCoord2f(0, 0);
-            GL11.glVertex2d((x) * (scale * 0.25), (y) * (scale * 0.25)); //top-left
+            GL11.glVertex2d(x, y); //top-left
             GL11.glTexCoord2f(0, 1);
-            GL11.glVertex2d((x) * (scale * 0.25), (y + height) * (scale * 0.25)); //down-left aka height
+            GL11.glVertex2d(x, y + height); //down-left aka height
             GL11.glTexCoord2f(1, 1);
-            GL11.glVertex2d((x + width) * (scale * 0.25), (y + height) * (scale * 0.25)); //down-right aka width
+            GL11.glVertex2d(x + width, y + height); //down-right aka width
             GL11.glTexCoord2f(1, 0);
-            GL11.glVertex2d((x + width) * (scale * 0.25), (y) * (scale * 0.25)); //top-right
+            GL11.glVertex2d(x + width, y); //top-right
         }
         GL11.glEnd();
 
@@ -126,6 +125,8 @@ public class DynamicFont implements EMCFont {
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
+
+        IMinecraft.triggerGuiRenderer();
     }
 
     private FontRenderContext getRenderContext() {
@@ -222,32 +223,10 @@ public class DynamicFont implements EMCFont {
     }
 
     @Override
-    public int drawStringDirectly(int x, int y, String text) {
-        generateString(text, Color.white);
-        drawOnScreenDirectly(x, y);
-        return 0;
-    }
-
-    @Override
-    public int drawStringDirectly(int x, int y, String text, Color color) {
-        generateString(text, color);
-        drawOnScreenDirectly(x, y);
-        return 0;
-    }
-
-    @Override
     public int drawOnScreen(int x, int y) {
         prepareAndPushMatrix(); //GL PART
         prepareForRendering(); //BINDING
-        renderAndPopMatrix(x, y, getLastRenderedWidth(), getLastRenderedHeight(), true); //GL PART
-        return 0;
-    }
-
-    @Override
-    public int drawOnScreenDirectly(int x, int y) {
-        prepareAndPushMatrix();
-        prepareForRendering();
-        renderAndPopMatrix(x, y, getLastRenderedWidth(), getLastRenderedHeight(), false);
+        renderAndPopMatrix(x, y, getLastRenderedWidth(), getLastRenderedHeight()); //GL PART
         return 0;
     }
 
