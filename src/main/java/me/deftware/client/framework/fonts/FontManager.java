@@ -13,8 +13,8 @@ public class FontManager {
         }
         if (type == DynamicFont.class) {
             fontStore.put(key, new DynamicFont(name, size, modifiers));
-        } else if (type == ColoredDynamicFontRenderer.class) {
-            fontStore.put(key, new ColoredDynamicFontRenderer(name, size, modifiers));
+        } else if (type == ColoredDynamicFont.class) {
+            fontStore.put(key, new ColoredDynamicFont(name, size, modifiers));
         }
         return fontStore.get(key);
     }

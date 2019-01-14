@@ -7,9 +7,9 @@ import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ColoredDynamicFontRenderer extends DynamicFont {
+public class ColoredDynamicFont extends DynamicFont {
 
-    public ColoredDynamicFontRenderer(@Nonnull String fontName, int fontSize, int modifiers) {
+    public ColoredDynamicFont(@Nonnull String fontName, int fontSize, int modifiers) {
         super(fontName, fontSize, modifiers);
     }
 
