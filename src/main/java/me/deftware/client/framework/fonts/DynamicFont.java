@@ -138,8 +138,6 @@ public class DynamicFont implements EMCFont {
         } else {
             BufferedImage premadeTexture = new BufferedImage(textwidth, textheight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = premadeTexture.createGraphics();
-            graphics.setColor(new Color(0, 0, 0, 75));
-            graphics.fillRect(0,0,textwidth, textheight);
             graphics.setFont(stdFont);
             graphics.setColor(color);
             if (antialiased) {
