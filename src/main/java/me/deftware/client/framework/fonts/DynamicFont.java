@@ -142,8 +142,6 @@ public class DynamicFont implements EMCFont {
             graphics.fillRect(0,0,textwidth, textheight);
             graphics.setFont(stdFont);
             graphics.setColor(color);
-            FontMetrics fontMetrics = graphics.getFontMetrics(stdFont);
-            int width = fontMetrics.charsWidth(text.toCharArray(), 0, text.length());
             if (antialiased) {
                 graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
@@ -151,8 +149,7 @@ public class DynamicFont implements EMCFont {
             graphics.drawString(text, 1 , textheight - textheight/4);
             graphics.dispose();
             textTexture = new Texture(textwidth, textheight, true);
-            //textTexture.fillFromBufferedImageFlip(premadeTexture);
-            textTexture.fillFromBufferedImage(premadeTexture);
+            textTexture.fillFromBufferedImageFlip(premadeTexture);
             textTexture.update();
             if(!memorysaving)
                 textureStore.put(key, textTexture);
