@@ -7,31 +7,28 @@ import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.BitSet;
 import java.util.HashMap;
 
 public class DynamicFont implements EMCFont {
 
-    private Texture textTexture;
-    private int lastRenderedWidth;
-    private int lastRenderedHeight;
-    private int rendererTaskId;
+    protected Texture textTexture;
+    protected int lastRenderedWidth;
+    protected int lastRenderedHeight;
+    protected int rendererTaskId;
 
-    private String fontName;
-    private int fontSize, shadowSize = 1;
-    private boolean bold;
-    private boolean italics;
-    private boolean underlined;
-    private boolean striked;
-    private boolean moving;
-    private boolean antialiased;
-    private boolean memorysaving;
-    private java.awt.Font stdFont;
+    protected String fontName;
+    protected int fontSize, shadowSize = 1;
+    protected boolean bold;
+    protected boolean italics;
+    protected boolean underlined;
+    protected boolean striked;
+    protected boolean moving;
+    protected boolean antialiased;
+    protected boolean memorysaving;
+    protected java.awt.Font stdFont;
 
-    private HashMap<String, Texture> textureStore = new HashMap<>();
+    protected HashMap<String, Texture> textureStore = new HashMap<>();
 
     public DynamicFont(@Nonnull String fontName, int fontSize, int modifiers) {
         this.fontName = fontName;
@@ -85,7 +82,7 @@ public class DynamicFont implements EMCFont {
 
     public void setMemorysaving(boolean memorysaving) {
         this.memorysaving = memorysaving;
-        if(!memorysaving)
+        if (!memorysaving)
             textureStore.clear();
     }
 
@@ -128,6 +125,7 @@ public class DynamicFont implements EMCFont {
         IMinecraft.triggerGuiRenderer();
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public int generateString(String text, Color color) {
         String key = text + color.getRGB() + bold + fontName;
@@ -144,12 +142,12 @@ public class DynamicFont implements EMCFont {
                 graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
             }
-            graphics.drawString(text, 1 , textheight - textheight/4);
+            graphics.drawString(text, 1, textheight - textheight / 4);
             graphics.dispose();
             textTexture = new Texture(textwidth, textheight, true);
             textTexture.fillFromBufferedImageFlip(premadeTexture);
             textTexture.update();
-            if(!memorysaving)
+            if (!memorysaving)
                 textureStore.put(key, textTexture);
         }
         lastRenderedWidth = textwidth;

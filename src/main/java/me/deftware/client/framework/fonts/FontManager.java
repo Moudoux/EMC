@@ -6,13 +6,21 @@ public class FontManager {
 
     private static HashMap<String, EMCFont> fontStore = new HashMap<>();
 
-    public static EMCFont getFont(String name, int size, int modifiers) {
+    public static EMCFont getFont(String name, int size, int modifiers, Class<?> type) {
         String key = name + size + modifiers;
         if (fontStore.containsKey(key)) {
             return fontStore.get(key);
         }
-        fontStore.put(key, new DynamicFont(name, size, modifiers));
+        if (type == DynamicFont.class) {
+            fontStore.put(key, new DynamicFont(name, size, modifiers));
+        } else if (type == ColoredDynamicFontRenderer.class) {
+            fontStore.put(key, new ColoredDynamicFontRenderer(name, size, modifiers));
+        }
         return fontStore.get(key);
+    }
+
+    public static EMCFont getFont(String name, int size, int modifiers) {
+        return getFont(name, size, modifiers, DynamicFont.class);
     }
 
     public static void removeFont(String name, int size, int modifiers) {
