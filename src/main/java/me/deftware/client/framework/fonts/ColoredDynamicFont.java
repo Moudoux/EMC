@@ -21,7 +21,7 @@ public class ColoredDynamicFont extends DynamicFont {
             return super.generateString(ChatColor.stripColor(text), color);
         }
         String key = text + color.getRGB() + bold + fontName;
-        int textwidth = getStringWidth(ChatColor.stripColor(text));
+        int textwidth = getStringWidth(text);
         int textheight = getStringHeight(text);
         if (!memorysaving && textureStore.containsKey(key)) {
             textTexture = textureStore.get(key);
@@ -77,6 +77,11 @@ public class ColoredDynamicFont extends DynamicFont {
         lastRenderedWidth = textwidth;
         lastRenderedHeight = textheight;
         return 0;
+    }
+
+    @Override
+    public int getStringWidth(String text){
+        return super.getStringWidth(ChatColor.stripColor(text));
     }
 
     private Color convertCharToColor(String character) {
