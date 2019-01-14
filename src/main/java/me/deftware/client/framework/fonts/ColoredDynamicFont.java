@@ -26,6 +26,8 @@ public class ColoredDynamicFont extends DynamicFont {
         if (!memorysaving && textureStore.containsKey(key)) {
             textTexture = textureStore.get(key);
         } else {
+            if(textTexture != null)
+                textTexture.destroy();
             BufferedImage premadeTexture = new BufferedImage(textwidth, textheight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = premadeTexture.createGraphics();
             graphics.setFont(stdFont);
@@ -48,18 +50,17 @@ public class ColoredDynamicFont extends DynamicFont {
                     graphics.setColor(convertCharToColor(character));
                     skip = false;
                     currentText = "";
-                    continue;
-                }
-                if (character.equalsIgnoreCase("&")) {
-                    // Next char will be a color code
-                    skip = true;
-                    if (!currentText.equals("")) {
-                        graphics.drawString(currentText, getStringWidth(drawnText) + 1, textheight - textheight / 4);
-                        drawnText += currentText;
-                    }
-                    continue;
                 } else {
-                    currentText += character;
+                    if (character.equalsIgnoreCase("&")) {
+                        // Next char will be a color code
+                        skip = true;
+                        if (!currentText.equals("")) {
+                            graphics.drawString(currentText, getStringWidth(drawnText) + 1, textheight - textheight / 4);
+                            drawnText += currentText;
+                        }
+                    } else {
+                        currentText += character;
+                    }
                 }
             }
             if (!currentText.equals("")) {
@@ -76,6 +77,11 @@ public class ColoredDynamicFont extends DynamicFont {
         lastRenderedWidth = textwidth;
         lastRenderedHeight = textheight;
         return 0;
+    }
+
+    @Override
+    public int getStringWidth(String text){
+        return super.getStringWidth(ChatColor.stripColor(text));
     }
 
     private Color convertCharToColor(String character) {
