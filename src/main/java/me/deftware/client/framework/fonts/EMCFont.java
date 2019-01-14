@@ -36,4 +36,6 @@ public interface EMCFont {
 
     int getLastRenderedWidth();
 
+    void clearCache();
+
 }
