@@ -11,10 +11,10 @@ public class FontManager {
         if (fontStore.containsKey(key)) {
             return fontStore.get(key);
         }
-        if (type == DynamicFont.class) {
-            fontStore.put(key, new DynamicFont(name, size, modifiers));
-        } else if (type == ColoredDynamicFont.class) {
+        if (type == ColoredDynamicFont.class) {
             fontStore.put(key, new ColoredDynamicFont(name, size, modifiers));
+        } else {
+            fontStore.put(key, new DynamicFont(name, size, modifiers));
         }
         return fontStore.get(key);
     }
