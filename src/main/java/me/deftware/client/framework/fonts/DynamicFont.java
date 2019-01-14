@@ -19,8 +19,6 @@ public class DynamicFont implements EMCFont {
     private int lastRenderedWidth;
     private int lastRenderedHeight;
     private int rendererTaskId;
-    private AffineTransform affineTransform;
-    private FontRenderContext renderContext;
 
     private String fontName;
     private int fontSize, shadowSize = 1;
@@ -39,13 +37,13 @@ public class DynamicFont implements EMCFont {
         this.fontName = fontName;
         this.fontSize = fontSize;
 
-        this.bold = new BitSet(modifiers).get(7);
-        this.italics = new BitSet(modifiers).get(6);
-        this.underlined = new BitSet(modifiers).get(5);
-        this.striked = new BitSet(modifiers).get(4);
-        this.moving = new BitSet(modifiers).get(3);
-        this.antialiased = new BitSet(modifiers).get(2);
-        this.memorysaving = new BitSet(modifiers).get(1);
+        this.bold = ((modifiers & 1) != 0);
+        this.italics = ((modifiers & 2) != 0);
+        this.underlined = ((modifiers & 4) != 0);
+        this.striked = ((modifiers & 8) != 0);
+        this.moving = ((modifiers & 16) != 0);
+        this.antialiased = ((modifiers & 32) != 0);
+        this.memorysaving = ((modifiers & 64) != 0);
 
         if (!bold && !italics) {
             this.stdFont = new java.awt.Font(fontName, java.awt.Font.PLAIN, fontSize);
@@ -63,11 +61,12 @@ public class DynamicFont implements EMCFont {
         rendererTaskId = 0;
         lastRenderedWidth = 0;
         lastRenderedHeight = 0;
-        affineTransform = new AffineTransform();
-        renderContext = new FontRenderContext(affineTransform, false, true);
     }
 
     public void clearCache() {
+        for (String key : textureStore.keySet()) {
+            textureStore.get(key).destroy();
+        }
         textureStore.clear();
     }
 
@@ -129,10 +128,6 @@ public class DynamicFont implements EMCFont {
         IMinecraft.triggerGuiRenderer();
     }
 
-    private FontRenderContext getRenderContext() {
-        return this.renderContext;
-    }
-
     @Override
     public int generateString(String text, Color color) {
         String key = text + color.getRGB() + bold + fontName;
@@ -143,14 +138,21 @@ public class DynamicFont implements EMCFont {
         } else {
             BufferedImage premadeTexture = new BufferedImage(textwidth, textheight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = premadeTexture.createGraphics();
-            graphics.setColor(color);
+            graphics.setColor(new Color(0, 0, 0, 75));
+            graphics.fillRect(0,0,textwidth, textheight);
             graphics.setFont(stdFont);
-            if (antialiased)
+            graphics.setColor(color);
+            FontMetrics fontMetrics = graphics.getFontMetrics(stdFont);
+            int width = fontMetrics.charsWidth(text.toCharArray(), 0, text.length());
+            if (antialiased) {
                 graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            graphics.drawString(text, 1, textheight - 8);
+                graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            }
+            graphics.drawString(text, 1 , textheight - textheight/4);
             graphics.dispose();
             textTexture = new Texture(textwidth, textheight, true);
-            textTexture.fillFromBufferedImageFlip(premadeTexture);
+            //textTexture.fillFromBufferedImageFlip(premadeTexture);
+            textTexture.fillFromBufferedImage(premadeTexture);
             textTexture.update();
             if(!memorysaving)
                 textureStore.put(key, textTexture);
@@ -232,14 +234,14 @@ public class DynamicFont implements EMCFont {
 
     @Override
     public int getStringWidth(String text) {
-        return (int) (stdFont.getStringBounds(text, getRenderContext()).getWidth()) + 2;
-        //+1px margins
+        FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
+        return fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) + 1;
     }
 
     @Override
     public int getStringHeight(String text) {
-        return (int) (stdFont.getStringBounds(text, getRenderContext()).getHeight()) + 10;
-        //+1px margins + 8px for tails
+        FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
+        return fontMetrics.getHeight();
     }
 
     @Override
