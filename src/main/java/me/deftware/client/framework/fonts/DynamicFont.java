@@ -262,6 +262,7 @@ public class DynamicFont implements EMCFont {
     @Override
     public void setFontSize(int fontSize) {
         this.fontSize = fontSize;
+        prepareStandardFont();
     }
 
     @Override
