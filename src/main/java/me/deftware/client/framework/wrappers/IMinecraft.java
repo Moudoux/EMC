@@ -60,6 +60,10 @@ public class IMinecraft {
 				.getParent();
 	}
 
+	public static double getScaleFactor() {
+		return Minecraft.getInstance().mainWindow.getGuiScaleFactor();
+	}
+
 	public static IGuiScreen getIScreen() {
 		if (Minecraft.getInstance().currentScreen != null) {
 			if (Minecraft.getInstance().currentScreen instanceof IGuiScreen) {

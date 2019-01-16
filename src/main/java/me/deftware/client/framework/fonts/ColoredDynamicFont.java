@@ -41,6 +41,11 @@ public class ColoredDynamicFont extends DynamicFont {
                     .replace("&n", "")
                     .replace("&o", "");
 
+            text = text.replace("§l", "")
+                    .replace("§m", "")
+                    .replace("§n", "")
+                    .replace("§o", "");
+
             String currentText = "", drawnText = "";
             boolean skip = false;
             for (String character : text.split("")) {
@@ -49,7 +54,7 @@ public class ColoredDynamicFont extends DynamicFont {
                     skip = false;
                     currentText = "";
                 } else {
-                    if (character.equalsIgnoreCase("&")) {
+                    if (character.equalsIgnoreCase("&") || character.equalsIgnoreCase("§")) {
                         // Next char will be a color code
                         skip = true;
                         if (!currentText.equals("")) {
