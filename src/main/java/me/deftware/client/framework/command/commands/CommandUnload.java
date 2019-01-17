@@ -4,6 +4,7 @@ import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.CommandResult;
 import me.deftware.client.framework.command.EMCModCommand;
 import me.deftware.client.framework.command.argument.arguments.EMCModArgument;
+import me.deftware.client.framework.event.EventBus;
 import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.utils.ChatProcessor;
@@ -17,6 +18,7 @@ public class CommandUnload extends EMCModCommand {
 	@Override
 	public CommandBuilder getCommandBuilder() {
 		return new CommandBuilder().set(literal("unload")
+				/* Disable until a way to unload mod specific events/commands is made
 				.then(
 						argument("modname", new EMCModArgument())
 								.executes(c -> {
@@ -27,10 +29,13 @@ public class CommandUnload extends EMCModCommand {
 									ChatProcessor.printFrameworkMessage("Unloaded " + mod.modInfo.get("name").getAsString());
 									return 1;
 								})
-				)
+				)*/
 				.executes(c -> {
+					// Remove event listeners
+					EventBus.clearEvents();
 					// Unload all mods
 					Bootstrap.ejectMods();
+					// Reset gamma
 					Minecraft.getInstance().gameSettings.gammaSetting = 0.5F;
 					ChatProcessor.printFrameworkMessage("Unloaded all EMC mods, Minecraft is now running as vanilla");
 					return 1;

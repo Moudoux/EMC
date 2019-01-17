@@ -9,6 +9,10 @@ public class EventBus {
 
 	private static ConcurrentHashMap<Class, ConcurrentHashMap<Class, ConcurrentHashMap<Method, Object>>> classes = new ConcurrentHashMap<>();
 
+	public static void clearEvents() {
+		classes.clear();
+	}
+
 	public static synchronized void registerClass(Class clazz, Object instance) {
 		Bootstrap.logger.debug(String.format("Loading event handlers in class %s", clazz.getName()));
 		for (Method method : clazz.getDeclaredMethods()) {
