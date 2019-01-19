@@ -1,6 +1,7 @@
 package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.TexUtil;
 import me.deftware.client.framework.utils.Texture;
 import org.apache.commons.lang3.ArrayUtils;
@@ -181,13 +182,13 @@ public class BitmapFont implements EMCFont{
 
     @Override
     public int drawCenteredString(int x, int y, String text) {
-        drawString(x - getStringWidth(text), y - getStringHeight(text), text);
+        drawCenteredString(x, y, text, Color.white);
         return 0;
     }
 
     @Override
     public int drawCenteredString(int x, int y, String text, Color color) {
-        drawString(x - getStringWidth(text), y - getStringHeight(text), text, color);
+        drawString(x - (getStringWidth(ChatColor.stripColor(text)) / 2), y - (getStringHeight(ChatColor.stripColor(text)) / 2), text, color);
         return 0;
     }
 
@@ -199,8 +200,8 @@ public class BitmapFont implements EMCFont{
 
     @Override
     public int drawCenteredStringWithShadow(int x, int y, String text, Color color) {
-        drawStringWithShadow(x + getStringWidth(text) + shadowSize, y + getStringWidth(text) + shadowSize, text, Color.black);
-        drawStringWithShadow(x, y, text, color);
+        drawCenteredString(x + shadowSize , y + shadowSize, text, Color.black);
+        drawCenteredString(x, y, text, color);
         return 0;
     }
 
