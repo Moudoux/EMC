@@ -1,6 +1,7 @@
 package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.TexUtil;
 import me.deftware.client.framework.utils.Texture;
 import org.apache.commons.lang3.ArrayUtils;
@@ -95,8 +96,6 @@ public class BitmapFont implements EMCFont{
         for (int additional = 0; additional < specialCharacters.length; additional++) { //0 - 9 in ASCII
             characterGenerate(specialCharacters[additional], color);
         }
-
-        System.out.println(specialCharacters);
         return 0;
     }
 
@@ -114,7 +113,7 @@ public class BitmapFont implements EMCFont{
             graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         }
-        graphics.drawString(letterBuffer, 1, textheight - textheight / 4);
+        graphics.drawString(letterBuffer, 0, textheight - textheight / 4);
         graphics.dispose();
 
         bitmapTexture = new Texture(textwidth, textheight, true);
@@ -153,8 +152,9 @@ public class BitmapFont implements EMCFont{
                 buffer[character] = '?';
             }
             TexUtil.prepareAndPushMatrix(); //GL PART
-            if(color != null)
-                GL11.glColor4ub((byte) color.getRed(),(byte) color.getGreen(),(byte) color.getBlue(), (byte) color.getAlpha());
+            if(color != null) {
+                GL11.glColor4ub((byte) color.getRed(), (byte) color.getGreen(), (byte) color.getBlue(), (byte) color.getAlpha());
+            }
             Texture texture = bitmapStore.get(buffer[character]);
             texture.updateTexture();
             texture.bind(GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -182,27 +182,26 @@ public class BitmapFont implements EMCFont{
 
     @Override
     public int drawCenteredString(int x, int y, String text) {
-        drawString(x - getStringWidth(text), y - getStringHeight(text), text);
+        drawCenteredString(x, y, text, Color.white);
         return 0;
     }
 
     @Override
     public int drawCenteredString(int x, int y, String text, Color color) {
-        drawString(x - getStringWidth(text), y - getStringHeight(text), text, color);
+        drawString(x - (getStringWidth(ChatColor.stripColor(text)) / 2), y - (getStringHeight(ChatColor.stripColor(text)) / 2), text, color);
         return 0;
     }
 
     @Override
     public int drawCenteredStringWithShadow(int x, int y, String text) {
-        drawStringWithShadow(x + shadowSize, y + shadowSize, text, Color.black);
-        drawStringWithShadow(x, y, text);
+        drawCenteredStringWithShadow(x, y, text, Color.white);
         return 0;
     }
 
     @Override
     public int drawCenteredStringWithShadow(int x, int y, String text, Color color) {
-        drawStringWithShadow(x + shadowSize, y + shadowSize, text, Color.black);
-        drawStringWithShadow(x, y, text, color);
+        drawCenteredString(x + shadowSize , y + shadowSize, text, Color.black);
+        drawCenteredString(x, y, text, color);
         return 0;
     }
 
@@ -214,7 +213,7 @@ public class BitmapFont implements EMCFont{
     @Override
     public int getStringWidth(String text) {
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
-        return fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) + 1;
+        return fontMetrics.charsWidth(text.toCharArray(), 0, text.length());
     }
 
     @Override
@@ -235,7 +234,7 @@ public class BitmapFont implements EMCFont{
 
     @Override
     public void clearCache() {
-        Bootstrap.logger.error("Calling clearCache() on BitmapFont is forbidden!");
+        //Bootstrap.logger.error("Calling clearCache() on BitmapFont is forbidden!");
     }
 
     @Override
