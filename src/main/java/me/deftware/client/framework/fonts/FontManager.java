@@ -13,6 +13,10 @@ public class FontManager {
         }
         if (type == ColoredDynamicFont.class) {
             fontStore.put(key, new ColoredDynamicFont(name, size, modifiers));
+        } else if (type == BitmapFont.class) {
+            fontStore.put(key, new ColoredDynamicFont(name, size, modifiers));
+        } else if (type == ColoredBitmapFont.class) {
+            fontStore.put(key, new ColoredDynamicFont(name, size, modifiers));
         } else {
             fontStore.put(key, new DynamicFont(name, size, modifiers));
         }
