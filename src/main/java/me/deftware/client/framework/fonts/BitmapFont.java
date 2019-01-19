@@ -70,71 +70,17 @@ public class BitmapFont implements EMCFont{
         Texture bitmapTexture;
         //Lowercase alphabet
         for (char lowercaseAlphabet = 'a'; lowercaseAlphabet <= 'z'; lowercaseAlphabet++) {
-            String letterBuffer = String.valueOf(lowercaseAlphabet);
-            int textwidth = getStringWidth(letterBuffer);
-            int textheight = getStringHeight(letterBuffer);
-
-            BufferedImage characterTexture = new BufferedImage(textwidth,textheight, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D graphics = characterTexture.createGraphics();
-            graphics.setFont(stdFont);
-            graphics.setColor(color);
-            if (antialiased) {
-                graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-            }
-            graphics.drawString(letterBuffer, 1, textheight - textheight / 4);
-            graphics.dispose();
-
-            bitmapTexture = new Texture(textwidth, textheight, true);
-            bitmapTexture.fillFromBufferedImageFlip(characterTexture);
-            bitmapTexture.update();
-            bitmapStore.put(lowercaseAlphabet, bitmapTexture);
+            characterGenerate(lowercaseAlphabet, color);
         }
 
         //Uppercase alphabet
         for (char uppercaseAlphabet = 'A'; uppercaseAlphabet <= 'Z'; uppercaseAlphabet++) {
-            String letterBuffer = String.valueOf(uppercaseAlphabet);
-            int textwidth = getStringWidth(letterBuffer);
-            int textheight = getStringHeight(letterBuffer);
-
-            BufferedImage characterTexture = new BufferedImage(textwidth,textheight, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D graphics = characterTexture.createGraphics();
-            graphics.setFont(stdFont);
-            graphics.setColor(color);
-            if (antialiased) {
-                graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-            }
-            graphics.drawString(letterBuffer, 1, textheight - textheight / 4);
-            graphics.dispose();
-
-            bitmapTexture = new Texture(textwidth, textheight, true);
-            bitmapTexture.fillFromBufferedImageFlip(characterTexture);
-            bitmapTexture.update();
-            bitmapStore.put(uppercaseAlphabet, bitmapTexture);
+            characterGenerate(uppercaseAlphabet, color);
         }
 
         //Numbers
         for (char numeric = 48; numeric <= 57; numeric++) { //0 - 9 in ASCII
-            String letterBuffer = String.valueOf(numeric);
-            int textwidth = getStringWidth(letterBuffer);
-            int textheight = getStringHeight(letterBuffer);
-
-            BufferedImage characterTexture = new BufferedImage(textwidth,textheight, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D graphics = characterTexture.createGraphics();
-            graphics.setFont(stdFont);
-            graphics.setColor(color);
-            if (antialiased) {
-                graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-            }
-            graphics.drawString(letterBuffer, 1, textheight - textheight / 4);
-            graphics.dispose();
-
-            bitmapTexture = new Texture(textwidth, textheight, true);
-            bitmapTexture.fillFromBufferedImageFlip(characterTexture);
-            bitmapTexture.update();
-            bitmapStore.put(numeric, bitmapTexture);
+            characterGenerate(numeric, color);
         }
 
         char specialCharacters[] = {'!', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
@@ -145,29 +91,34 @@ public class BitmapFont implements EMCFont{
 
         //Additional and special characters
         for (int additional = 0; additional < specialCharacters.length; additional++) { //0 - 9 in ASCII
-            String letterBuffer = String.valueOf(specialCharacters[additional]);
-            int textwidth = getStringWidth(letterBuffer);
-            int textheight = getStringHeight(letterBuffer);
-
-            BufferedImage characterTexture = new BufferedImage(textwidth,textheight, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D graphics = characterTexture.createGraphics();
-            graphics.setFont(stdFont);
-            graphics.setColor(color);
-            if (antialiased) {
-                graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-            }
-            graphics.drawString(letterBuffer, 1, textheight - textheight / 4);
-            graphics.dispose();
-
-            bitmapTexture = new Texture(textwidth, textheight, true);
-            bitmapTexture.fillFromBufferedImageFlip(characterTexture);
-            bitmapTexture.update();
-            bitmapStore.put(specialCharacters[additional], bitmapTexture);
+            characterGenerate(specialCharacters[additional], color);
         }
 
         System.out.println(specialCharacters);
         return 0;
+    }
+
+    protected void characterGenerate(char character, Color color){
+        Texture bitmapTexture;
+        String letterBuffer = String.valueOf(character);
+        int textwidth = getStringWidth(letterBuffer);
+        int textheight = getStringHeight(letterBuffer);
+
+        BufferedImage characterTexture = new BufferedImage(textwidth,textheight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = characterTexture.createGraphics();
+        graphics.setFont(stdFont);
+        graphics.setColor(color);
+        if (antialiased) {
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        }
+        graphics.drawString(letterBuffer, 1, textheight - textheight / 4);
+        graphics.dispose();
+
+        bitmapTexture = new Texture(textwidth, textheight, true);
+        bitmapTexture.fillFromBufferedImageFlip(characterTexture);
+        bitmapTexture.update();
+        bitmapStore.put(character, bitmapTexture);
     }
 
     /**
