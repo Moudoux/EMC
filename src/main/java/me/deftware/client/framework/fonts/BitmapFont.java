@@ -1,5 +1,6 @@
 package me.deftware.client.framework.fonts;
 
+import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.utils.TexUtil;
 import me.deftware.client.framework.utils.Texture;
 import org.apache.commons.lang3.ArrayUtils;
@@ -234,15 +235,15 @@ public class BitmapFont implements EMCFont{
 
     @Override
     public void clearCache() {
-        for (Character key : bitmapStore.keySet()) {
-            bitmapStore.get(key).destroy();
-        }
-        bitmapStore.clear();
+        Bootstrap.logger.error("Calling clearCache() on BitmapFont is forbidden!");
     }
 
     @Override
     public void destroy() {
-        clearCache();
+        for (Character key : bitmapStore.keySet()) {
+            bitmapStore.get(key).destroy();
+        }
+        bitmapStore.clear();
     }
 
     @Override
