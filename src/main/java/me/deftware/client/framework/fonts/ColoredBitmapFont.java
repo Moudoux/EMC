@@ -22,7 +22,7 @@ public class ColoredBitmapFont extends BitmapFont {
     @Override
     public int drawString(int x, int y, String text, Color color) {
         if (color == Color.black) {
-            return super.drawString(x, y, text, color);
+            return super.drawString(x, y, ChatColor.stripColor(text), color);
         }
         int textheight = getStringHeight(text);
 
