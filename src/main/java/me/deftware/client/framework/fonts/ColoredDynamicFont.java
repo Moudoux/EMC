@@ -37,15 +37,8 @@ public class ColoredDynamicFont extends DynamicFont {
             }
 
             // Remove formatting codes as we dont support those...
-            text = text.replace("&l", "")
-                    .replace("&m", "")
-                    .replace("&n", "")
-                    .replace("&o", "");
-
-            text = text.replace("§l", "")
-                    .replace("§m", "")
-                    .replace("§n", "")
-                    .replace("§o", "");
+            text = text.replaceAll("&+[l-o]", "");
+            text = text.replaceAll("§+[l-o]", "");
 
             String currentText = "", drawnText = "";
             boolean skip = false;

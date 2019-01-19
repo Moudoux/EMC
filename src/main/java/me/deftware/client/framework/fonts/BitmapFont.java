@@ -112,7 +112,7 @@ public class BitmapFont implements EMCFont{
             graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         }
-        graphics.drawString(letterBuffer, 1, textheight - textheight / 4);
+        graphics.drawString(letterBuffer, 0, textheight - textheight / 4);
         graphics.dispose();
 
         bitmapTexture = new Texture(textwidth, textheight, true);
@@ -212,7 +212,7 @@ public class BitmapFont implements EMCFont{
     @Override
     public int getStringWidth(String text) {
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
-        return fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) + 1;
+        return fontMetrics.charsWidth(text.toCharArray(), 0, text.length());
     }
 
     @Override
@@ -233,7 +233,7 @@ public class BitmapFont implements EMCFont{
 
     @Override
     public void clearCache() {
-        Bootstrap.logger.error("Calling clearCache() on BitmapFont is forbidden!");
+        //Bootstrap.logger.error("Calling clearCache() on BitmapFont is forbidden!");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package me.deftware.client.framework.fonts;
 
+import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.ColorUtil;
 import me.deftware.client.framework.utils.TexUtil;
 import me.deftware.client.framework.utils.Texture;
@@ -25,15 +26,8 @@ public class ColoredBitmapFont extends BitmapFont {
         }
         int textheight = getStringHeight(text);
 
-        text = text.replace("&l", "")
-                .replace("&m", "")
-                .replace("&n", "")
-                .replace("&o", "");
-
-        text = text.replace("§l", "")
-                .replace("§m", "")
-                .replace("§n", "")
-                .replace("§o", "");
+        text = text.replaceAll("&+[l-o]", "");
+        text = text.replaceAll("§+[l-o]", "");
 
         String currentText = "", drawnText = "";
         boolean skip = false;

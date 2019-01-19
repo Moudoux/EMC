@@ -115,7 +115,7 @@ public class DynamicFont implements EMCFont {
     @Override
     public int drawString(int x, int y, String text, Color color) {
         generateString(text, color);
-        drawOnScreen(x, y);
+        drawOnScreen(x-1, y);
         return 0;
     }
 
