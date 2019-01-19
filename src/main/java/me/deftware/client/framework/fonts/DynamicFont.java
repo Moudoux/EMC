@@ -1,5 +1,6 @@
 package me.deftware.client.framework.fonts;
 
+import me.deftware.client.framework.utils.TexUtil;
 import me.deftware.client.framework.utils.Texture;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
@@ -62,52 +63,18 @@ public class DynamicFont implements EMCFont {
         }
     }
 
+    protected int prepareForRendering() {
+        if (textTexture != null) {
+            textTexture.updateTexture();
+            textTexture.bind(GL11.GL_ONE_MINUS_SRC_ALPHA);
+        } else
+            return 1;
+        return 0;
+    }
+
     @Override
-    public void clearCache() {
-        for (String key : textureStore.keySet()) {
-            textureStore.get(key).destroy();
-        }
-        textureStore.clear();
-    }
-
-    public void prepareAndPushMatrix() {
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_ALPHA_TEST); //3008 alpha test
-        GL11.glPushMatrix();
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA); //Transparency blending
-        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        GL11.glOrtho(0.0D, IGuiScreen.getDisplayWidth(), IGuiScreen.getDisplayHeight(), 0.0D, 1000.0D, 3000.0D);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glLoadIdentity();
-        GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
-        GL11.glColor4f(1f, 1f, 1f, 1f);
-    }
-
-    public void renderAndPopMatrix(int x, int y, int width, int height) {
-        //Draw quad counterclockwise
-        GL11.glBegin(GL11.GL_QUADS);
-        {
-            GL11.glTexCoord2f(0, 0);
-            GL11.glVertex2d(x, y); //top-left
-            GL11.glTexCoord2f(0, 1);
-            GL11.glVertex2d(x, y + height); //down-left aka height
-            GL11.glTexCoord2f(1, 1);
-            GL11.glVertex2d(x + width, y + height); //down-right aka width
-            GL11.glTexCoord2f(1, 0);
-            GL11.glVertex2d(x + width, y); //top-right
-        }
-        GL11.glEnd();
-
-        GL11.glPopMatrix();
-
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-
-        IMinecraft.triggerGuiRenderer();
+    public int initialize(Color color, String extras) {
+        return 0;
     }
 
     @Override
@@ -137,16 +104,6 @@ public class DynamicFont implements EMCFont {
         }
         lastRenderedWidth = textwidth;
         lastRenderedHeight = textheight;
-        return 0;
-    }
-
-    @Override
-    public int prepareForRendering() {
-        if (textTexture != null) {
-            textTexture.updateTexture();
-            textTexture.bind(GL11.GL_ONE_MINUS_SRC_ALPHA);
-        } else
-            return 1;
         return 0;
     }
 
@@ -204,9 +161,9 @@ public class DynamicFont implements EMCFont {
 
     @Override
     public int drawOnScreen(int x, int y) {
-        prepareAndPushMatrix(); //GL PART
+        TexUtil.prepareAndPushMatrix(); //GL PART
         prepareForRendering(); //BINDING
-        renderAndPopMatrix(x, y, getLastRenderedWidth(), getLastRenderedHeight()); //GL PART
+        TexUtil.renderAndPopMatrix(x, y, getLastRenderedWidth(), getLastRenderedHeight()); //GL PART
         return 0;
     }
 
@@ -232,15 +189,18 @@ public class DynamicFont implements EMCFont {
         return lastRenderedHeight;
     }
 
-    public static class Modifiers {
-        public static byte NONE = 0b00000000;
-        public static byte BOLD = 0b00000001;
-        public static byte ITALICS = 0b00000010;
-        public static byte UNDERLINED = 0b00000100;
-        public static byte STRIKED = 0b00001000;
-        public static byte MOVING = 0b00010000;
-        public static byte ANTIALIASED = 0b00100000;
-        public static byte MEMORYSAVING = 0b01000000;
+    @Override
+    public void clearCache() {
+        for (String key : textureStore.keySet()) {
+            textureStore.get(key).destroy();
+        }
+        textureStore.clear();
+    }
+
+    @Override
+    public void destroy() {
+        clearCache();
+        textTexture.destroy();
     }
 
     @Override
