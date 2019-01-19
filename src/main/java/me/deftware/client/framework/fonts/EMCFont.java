@@ -4,9 +4,9 @@ import java.awt.*;
 
 public interface EMCFont {
 
-    int generateString(String text, Color color);
+    int initialize (Color color, String extras);
 
-    int prepareForRendering();
+    int generateString(String text, Color color);
 
     int drawString(int x, int y, String text);
 
@@ -35,6 +35,8 @@ public interface EMCFont {
     int getLastRenderedWidth();
 
     void clearCache();
+
+    void destroy();
 
     //Expose getters end setters
 
@@ -78,4 +80,14 @@ public interface EMCFont {
 
     void setMemorysaving(boolean memorysaving);
 
+    public static class Modifiers {
+        public static byte NONE = 0b00000000;
+        public static byte BOLD = 0b00000001;
+        public static byte ITALICS = 0b00000010;
+        public static byte UNDERLINED = 0b00000100;
+        public static byte STRIKED = 0b00001000;
+        public static byte MOVING = 0b00010000;
+        public static byte ANTIALIASED = 0b00100000;
+        public static byte MEMORYSAVING = 0b01000000;
+    }
 }
