@@ -11,7 +11,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-public class ColoredBitmapFont extends BitmapFont{
+@SuppressWarnings("Duplicates")
+public class ColoredBitmapFont extends BitmapFont {
 
     public ColoredBitmapFont(@Nonnull String fontName, int fontSize, int modifiers) {
         super(fontName, fontSize, modifiers);
@@ -43,7 +44,7 @@ public class ColoredBitmapFont extends BitmapFont{
                     // Next char will be a color code
                     skip = true;
                     if (!currentText.equals("")) {
-                        super.drawString(x + getStringWidth(drawnText), y + (textheight - textheight / 4), currentText, color);
+                        super.drawString(x + getStringWidth(drawnText), y, currentText, color);
                         drawnText += currentText;
                     }
                 } else {
@@ -52,7 +53,7 @@ public class ColoredBitmapFont extends BitmapFont{
             }
         }
         if (!currentText.equals("")) {
-            super.drawString(x + getStringWidth(drawnText), y + (textheight - textheight / 4), currentText, color);
+            super.drawString(x + getStringWidth(drawnText), y, currentText, color);
         }
 
 

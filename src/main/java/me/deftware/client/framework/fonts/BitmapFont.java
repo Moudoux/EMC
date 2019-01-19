@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
+@SuppressWarnings("Duplicates")
 public class BitmapFont implements EMCFont{
 
     protected int lastRenderedWidth;
@@ -84,7 +85,7 @@ public class BitmapFont implements EMCFont{
         }
 
         char specialCharacters[] = {'!', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
-                ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'};
+                ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', '"'};
 
         if(additionalCharacters.length > 0)
             specialCharacters = ArrayUtils.addAll(specialCharacters, additionalCharacters);
@@ -160,7 +161,6 @@ public class BitmapFont implements EMCFont{
             int height = texture.getHeight();
             TexUtil.renderAndPopMatrix(x + offset, y, width, height); //GL PART
             offset += width;
-            //System.out.println("Drawing " + buffer[character] + " at " + width + ":" + height);
         }
         lastRenderedWidth = offset;
         return 0;
