@@ -20,6 +20,9 @@ public class ColoredBitmapFont extends BitmapFont {
 
     @Override
     public int drawString(int x, int y, String text, Color color) {
+        if (color == Color.black) {
+            return super.drawString(x, y, text, color);
+        }
         int textheight = getStringHeight(text);
 
         text = text.replace("&l", "")

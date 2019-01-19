@@ -95,8 +95,6 @@ public class BitmapFont implements EMCFont{
         for (int additional = 0; additional < specialCharacters.length; additional++) { //0 - 9 in ASCII
             characterGenerate(specialCharacters[additional], color);
         }
-
-        System.out.println(specialCharacters);
         return 0;
     }
 
@@ -153,8 +151,9 @@ public class BitmapFont implements EMCFont{
                 buffer[character] = '?';
             }
             TexUtil.prepareAndPushMatrix(); //GL PART
-            if(color != null)
-                GL11.glColor4ub((byte) color.getRed(),(byte) color.getGreen(),(byte) color.getBlue(), (byte) color.getAlpha());
+            if(color != null) {
+                GL11.glColor4ub((byte) color.getRed(), (byte) color.getGreen(), (byte) color.getBlue(), (byte) color.getAlpha());
+            }
             Texture texture = bitmapStore.get(buffer[character]);
             texture.updateTexture();
             texture.bind(GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -194,14 +193,13 @@ public class BitmapFont implements EMCFont{
 
     @Override
     public int drawCenteredStringWithShadow(int x, int y, String text) {
-        drawStringWithShadow(x + shadowSize, y + shadowSize, text, Color.black);
-        drawStringWithShadow(x, y, text);
+        drawCenteredStringWithShadow(x, y, text, Color.white);
         return 0;
     }
 
     @Override
     public int drawCenteredStringWithShadow(int x, int y, String text, Color color) {
-        drawStringWithShadow(x + shadowSize, y + shadowSize, text, Color.black);
+        drawStringWithShadow(x + getStringWidth(text) + shadowSize, y + getStringWidth(text) + shadowSize, text, Color.black);
         drawStringWithShadow(x, y, text, color);
         return 0;
     }
