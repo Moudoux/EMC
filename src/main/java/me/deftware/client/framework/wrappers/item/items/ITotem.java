@@ -13,7 +13,7 @@ public class ITotem {
 		for (int i = 0; i < in.mainInventory.size() + 1; i++) {
 			try {
 				ItemStack it = in.mainInventory.get(i);
-				if (Item.getIdFromItem(it.getItem()) == 449) {
+				if (it.getItem().getTranslationKey().equals("item.minecraft.totem_of_undying")) {
 					return i;
 				}
 			} catch (Exception ex) {
@@ -27,7 +27,7 @@ public class ITotem {
 		for (int i = 0; i < in.mainInventory.size() + 1; i++) {
 			try {
 				ItemStack it = in.mainInventory.get(i);
-				if (Item.getIdFromItem(it.getItem()) == 449) {
+				if (it.getItem().getTranslationKey().equals("item.minecraft.totem_of_undying")) {
 					return true;
 				}
 			} catch (Exception ex) {
