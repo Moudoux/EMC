@@ -1,8 +1,6 @@
 package me.deftware.client.framework.fonts;
 
-import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.utils.ChatColor;
-import me.deftware.client.framework.utils.OSUtils;
 import me.deftware.client.framework.utils.TexUtil;
 import me.deftware.client.framework.utils.Texture;
 import org.apache.commons.lang3.ArrayUtils;
@@ -14,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 @SuppressWarnings("Duplicates")
-public class BitmapFont implements EMCFont{
+public class BitmapFont implements EMCFont {
 
     protected int lastRenderedWidth;
     protected int lastRenderedHeight;
@@ -50,7 +48,7 @@ public class BitmapFont implements EMCFont{
         lastRenderedHeight = 0;
     }
 
-    protected void prepareStandardFont(){
+    protected void prepareStandardFont() {
         if (!bold && !italics) {
             this.stdFont = new Font(fontName, Font.PLAIN, fontSize);
         } else {
@@ -66,8 +64,8 @@ public class BitmapFont implements EMCFont{
 
     @Override
     public int initialize(Color color, String extras) {
-        if(extras == null)
-            extras= "";
+        if (extras == null)
+            extras = "";
         char[] additionalCharacters = extras.toCharArray();
         //Generate the font bitmaps
 
@@ -90,7 +88,7 @@ public class BitmapFont implements EMCFont{
         char specialCharacters[] = {'!', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
                 ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', '"'};
 
-        if(additionalCharacters.length > 0)
+        if (additionalCharacters.length > 0)
             specialCharacters = ArrayUtils.addAll(specialCharacters, additionalCharacters);
 
         //Additional and special characters
@@ -100,13 +98,13 @@ public class BitmapFont implements EMCFont{
         return 0;
     }
 
-    protected void characterGenerate(char character, Color color){
+    protected void characterGenerate(char character, Color color) {
         Texture bitmapTexture;
         String letterBuffer = String.valueOf(character);
         int textwidth = getStringWidth(letterBuffer);
         int textheight = getStringHeight(letterBuffer);
 
-        BufferedImage characterTexture = new BufferedImage(textwidth,textheight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage characterTexture = new BufferedImage(textwidth, textheight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = characterTexture.createGraphics();
         graphics.setFont(stdFont);
         graphics.setColor(color);
@@ -125,6 +123,7 @@ public class BitmapFont implements EMCFont{
 
     /**
      * Unimplemented in BitmapFont
+     *
      * @param text
      * @param color
      * @return 0
@@ -144,20 +143,19 @@ public class BitmapFont implements EMCFont{
     public int drawString(int x, int y, String text, Color color) {
         char[] buffer = text.toCharArray();
         int offset = 0;
-        for(int character = 0; character < buffer.length; character++){
-            if(buffer[character] == ' ') {
+        for (int character = 0; character < buffer.length; character++) {
+            if (buffer[character] == ' ') {
                 offset += getStringWidth(" ");
                 continue;
-            }
-            else if(!bitmapStore.containsKey(buffer[character])) {
+            } else if (!bitmapStore.containsKey(buffer[character])) {
                 buffer[character] = '?';
             }
             TexUtil.prepareAndPushMatrix(); //GL PART
-            if(color != null) {
-                float red = color.getRed() > 0 ? color.getRed() * (1f/255f) : 0;
-                float green = color.getGreen() > 0 ? color.getGreen() * (1f/255f) : 0;
-                float blue = color.getBlue() > 0 ? color.getBlue() * (1f/255f) : 0;
-                float alpha = color.getAlpha() > 0 ? color.getAlpha() * (1f/255f) : 0;
+            if (color != null) {
+                float red = color.getRed() > 0 ? color.getRed() * (1f / 255f) : 0;
+                float green = color.getGreen() > 0 ? color.getGreen() * (1f / 255f) : 0;
+                float blue = color.getBlue() > 0 ? color.getBlue() * (1f / 255f) : 0;
+                float alpha = color.getAlpha() > 0 ? color.getAlpha() * (1f / 255f) : 0;
                 GL11.glColor4f(red, green, blue, alpha);
             }
             Texture texture = bitmapStore.get(buffer[character]);
@@ -205,7 +203,7 @@ public class BitmapFont implements EMCFont{
 
     @Override
     public int drawCenteredStringWithShadow(int x, int y, String text, Color color) {
-        drawCenteredString(x + shadowSize , y + shadowSize, text, Color.black);
+        drawCenteredString(x + shadowSize, y + shadowSize, text, Color.black);
         drawCenteredString(x, y, text, color);
         return 0;
     }
