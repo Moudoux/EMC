@@ -136,13 +136,14 @@ public class IMinecraft {
 		return Minecraft.getInstance().gameSettings.thirdPersonView;
 	}
 
+	public static int getGuiScaleRaw() {
+		return Minecraft.getInstance().gameSettings.guiScale;
+	}
+
 	public static int getGuiScale() {
-		int factor =  Minecraft.getInstance().gameSettings.guiScale;
+		int factor =  Minecraft.getInstance().mainWindow.getScaleFactor(Minecraft.getInstance().gameSettings.guiScale);
 		if (factor == 0) {
-			factor = Minecraft.getInstance().mainWindow.getScaleFactor(0);
-			if (factor == 0) {
-				factor = 4;
-			}
+			factor = 4;
 		}
 		return factor;
 	}
