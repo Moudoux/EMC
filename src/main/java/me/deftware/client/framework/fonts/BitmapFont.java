@@ -2,6 +2,7 @@ package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.utils.ChatColor;
+import me.deftware.client.framework.utils.OSUtils;
 import me.deftware.client.framework.utils.TexUtil;
 import me.deftware.client.framework.utils.Texture;
 import org.apache.commons.lang3.ArrayUtils;
@@ -153,7 +154,11 @@ public class BitmapFont implements EMCFont{
             }
             TexUtil.prepareAndPushMatrix(); //GL PART
             if(color != null) {
-                GL11.glColor4ub((byte) color.getRed(), (byte) color.getGreen(), (byte) color.getBlue(), (byte) color.getAlpha());
+                float red = color.getRed() > 0 ? color.getRed() * (1f/255f) : 0;
+                float green = color.getGreen() > 0 ? color.getGreen() * (1f/255f) : 0;
+                float blue = color.getBlue() > 0 ? color.getBlue() * (1f/255f) : 0;
+                float alpha = color.getAlpha() > 0 ? color.getAlpha() * (1f/255f) : 0;
+                GL11.glColor4f(red, green, blue, alpha);
             }
             Texture texture = bitmapStore.get(buffer[character]);
             texture.updateTexture();
