@@ -12,6 +12,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
+import static me.deftware.client.framework.utils.ChatColor.COLOR_CHAR;
+
 @SuppressWarnings("Duplicates")
 public class ColoredBitmapFont extends BitmapFont {
 
@@ -26,8 +28,8 @@ public class ColoredBitmapFont extends BitmapFont {
         }
         int textheight = getStringHeight(text);
 
-        text = text.replaceAll("&+[l-o]", "");
-        text = text.replaceAll("§+[l-o]", "");
+        text = text.replaceAll(Character.toString(COLOR_CHAR) + "+[l-o]", "");
+        text = text.replaceAll(Character.toString(COLOR_CHAR) + "+[l-o]", "");
 
         String currentText = "", drawnText = "";
         boolean skip = false;
@@ -37,7 +39,7 @@ public class ColoredBitmapFont extends BitmapFont {
                 skip = false;
                 currentText = "";
             } else {
-                if (character.equalsIgnoreCase("&") || character.equalsIgnoreCase("§")) {
+                if (character.equalsIgnoreCase("&") || character.equalsIgnoreCase(Character.toString(COLOR_CHAR))) {
                     // Next char will be a color code
                     skip = true;
                     if (!currentText.equals("")) {

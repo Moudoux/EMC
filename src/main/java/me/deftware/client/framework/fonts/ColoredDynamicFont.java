@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import static me.deftware.client.framework.utils.ChatColor.COLOR_CHAR;
+
 public class ColoredDynamicFont extends DynamicFont {
 
     public ColoredDynamicFont(@Nonnull String fontName, int fontSize, int modifiers) {
@@ -37,8 +39,8 @@ public class ColoredDynamicFont extends DynamicFont {
             }
 
             // Remove formatting codes as we dont support those...
-            text = text.replaceAll("&+[l-o]", "");
-            text = text.replaceAll("§+[l-o]", "");
+            text = text.replaceAll(Character.toString(COLOR_CHAR) + "+[l-o]", "");
+            text = text.replaceAll(Character.toString(COLOR_CHAR) + "+[l-o]", "");
 
             String currentText = "", drawnText = "";
             boolean skip = false;
@@ -48,7 +50,7 @@ public class ColoredDynamicFont extends DynamicFont {
                     skip = false;
                     currentText = "";
                 } else {
-                    if (character.equalsIgnoreCase("&") || character.equalsIgnoreCase("§")) {
+                    if (character.equalsIgnoreCase("&") || character.equalsIgnoreCase(Character.toString(COLOR_CHAR))) {
                         // Next char will be a color code
                         skip = true;
                         if (!currentText.equals("")) {
