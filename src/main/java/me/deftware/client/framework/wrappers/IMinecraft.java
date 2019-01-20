@@ -137,7 +137,19 @@ public class IMinecraft {
 	}
 
 	public static int getGuiScale() {
-		return Minecraft.getInstance().gameSettings.guiScale;
+		int factor =  Minecraft.getInstance().gameSettings.guiScale;
+		if (factor == 0) {
+			factor = Minecraft.getInstance().mainWindow.getScaleFactor(0);
+			if (factor == 0) {
+				factor = 4;
+			}
+		}
+		return factor;
+	}
+
+	public static void setScaleFactor(int factor) {
+		Minecraft.getInstance().gameSettings.guiScale = factor;
+		Minecraft.getInstance().mainWindow.updateSize();
 	}
 
 	public static boolean isDebugInfoShown() {
