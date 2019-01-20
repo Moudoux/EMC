@@ -205,6 +205,12 @@ public abstract class IGuiScreen extends GuiScreen {
 		return Minecraft.getInstance().mainWindow.getWidth();
 	}
 
+	public static boolean isWindowMinimized(){
+		if(getDisplayWidth() == 0 || getDisplayHeight() == 0)
+			return true;
+		return false;
+	}
+
 	public void drawITintBackground(int tint) {
 		drawBackground(tint);
 	}
