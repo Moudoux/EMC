@@ -37,7 +37,8 @@ public class TexUtil {
 		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0.0D, IGuiScreen.getDisplayWidth(), IGuiScreen.getDisplayHeight(), 0.0D, 1000.0D, 3000.0D);
+		if(!IGuiScreen.isWindowMinimized())
+			GL11.glOrtho(0.0D, IGuiScreen.getDisplayWidth(), IGuiScreen.getDisplayHeight(), 0.0D, 1000.0D, 3000.0D);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
 		GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
