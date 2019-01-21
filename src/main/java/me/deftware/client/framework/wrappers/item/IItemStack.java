@@ -5,6 +5,7 @@ import me.deftware.client.framework.wrappers.world.IBlock;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.MobEffects;
@@ -110,6 +111,7 @@ public class IItemStack {
 	}
 
 	public enum IEffects {
+
 		InstantHelth(MobEffects.INSTANT_HEALTH);
 
 		private Potion effect;
@@ -121,6 +123,7 @@ public class IItemStack {
 		public Potion getEffect() {
 			return effect;
 		}
+
 	}
 
 	public int getRarity() {
@@ -148,6 +151,10 @@ public class IItemStack {
 			return true;
 		}
 		return false;
+	}
+
+	public int getEnchantmentLevel(int enchantID) {
+		return EnchantmentHelper.getEnchantmentLevel(Enchantment.getEnchantmentByID(16), getStack());
 	}
 
 }

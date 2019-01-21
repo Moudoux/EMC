@@ -9,9 +9,6 @@ public class IPlayer {
 
 	private EntityPlayer player;
 
-	public IPlayer() {
-	}
-
 	public IPlayer(EntityPlayer player) {
 		this.player = player;
 	}

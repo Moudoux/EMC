@@ -53,20 +53,6 @@ public class IInventoryWrapper {
 		return false;
 	}
 
-	public static void moveStack(int srcInventoryId, int dstInventoryId, int srcSlot, int dstSlot){
-		Minecraft.getInstance().playerController.windowClick(srcInventoryId, srcSlot, 0,
-				ClickType.QUICK_MOVE, Minecraft.getInstance().player);
-		Minecraft.getInstance().playerController.windowClick(dstInventoryId, dstSlot, 0,
-				ClickType.QUICK_MOVE, Minecraft.getInstance().player);
-	}
-
-	public static void swapStack(int srcInventoryId, int dstInventoryId, int srcSlot, int dstSlot){
-		Minecraft.getInstance().playerController.windowClick(srcInventoryId, srcSlot, 0,
-				ClickType.SWAP, Minecraft.getInstance().player);
-		Minecraft.getInstance().playerController.windowClick(dstInventoryId, dstSlot, 0,
-				ClickType.SWAP, Minecraft.getInstance().player);
-	}
-
 	public static IItemStack getHeldItem(IPlayer player, boolean offhand) {
 		if (IEntityPlayer.isNull()) {
 			return null;

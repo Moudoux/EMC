@@ -9,18 +9,22 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class EventNametagRender extends Event {
 
-	private Entity entity;
+	private boolean isPlayer;
+	private String name = "";
 
 	public EventNametagRender(Entity entity) {
-		this.entity = entity;
+		isPlayer = entity instanceof EntityPlayer;
+		if (isPlayer) {
+			name = entity.getName().getFormattedText();
+		}
 	}
 
 	public boolean isPlayer() {
-		return entity instanceof EntityPlayer;
+		return isPlayer;
 	}
 
 	public String getName() {
-		return entity.getName().getFormattedText();
+		return name;
 	}
 
 }

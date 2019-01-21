@@ -32,7 +32,6 @@ import java.util.Set;
 
 public class IEntityPlayer {
 
-
 	private static int ping = 0;
 
 	public static void drawPlayer(int posX, int posY, int scale) {
@@ -704,8 +703,6 @@ public class IEntityPlayer {
 	}
 
 	static class PlayerComparator implements Comparator<NetworkPlayerInfo> {
-		private PlayerComparator() {
-		}
 
 		@Override
 		public int compare(NetworkPlayerInfo p_compare_1_, NetworkPlayerInfo p_compare_2_) {
@@ -713,6 +710,7 @@ public class IEntityPlayer {
 			ScorePlayerTeam scoreplayerteam1 = p_compare_2_.getPlayerTeam();
 			return ComparisonChain.start().compareTrueFirst(p_compare_1_.getGameType() != GameType.SPECTATOR, p_compare_2_.getGameType() != GameType.SPECTATOR).compare(scoreplayerteam != null ? scoreplayerteam.getName() : "", scoreplayerteam1 != null ? scoreplayerteam1.getName() : "").compare(p_compare_1_.getGameProfile().getName(), p_compare_2_.getGameProfile().getName()).result();
 		}
+
 	}
 
 }
