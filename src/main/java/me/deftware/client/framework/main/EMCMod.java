@@ -1,7 +1,6 @@
 package me.deftware.client.framework.main;
 
 import com.google.gson.JsonObject;
-import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.utils.Settings;
 
 /**
@@ -26,11 +25,6 @@ public abstract class EMCMod {
 	public abstract void initialize();
 
 	/**
-	 * @return EMCModInfo
-	 */
-	public abstract EMCModInfo getModInfo();
-
-	/**
 	 * Called when EMC has tried to connect to the marketplace API, both successfully and unsuccessfully
 	 *
 	 * @param status Whether or not EMC has a successful connection with the EMC mod marketplace
@@ -51,29 +45,6 @@ public abstract class EMCMod {
 	 */
 	public Settings getSettings() {
 		return settings;
-	}
-
-	/**
-	 * Stores all info about an EMC mod
-	 */
-	@Deprecated
-	public static class EMCModInfo {
-
-		private String modName, modVersion;
-
-		public EMCModInfo(String modName, String modVersion) {
-			this.modName = modName;
-			this.modVersion = modVersion;
-		}
-
-		public String getModName() {
-			return modName;
-		}
-
-		public String getModVersion() {
-			return modVersion;
-		}
-
 	}
 
 	/**

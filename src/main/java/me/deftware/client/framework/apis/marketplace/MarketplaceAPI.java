@@ -63,12 +63,12 @@ public class MarketplaceAPI {
 	/**
 	 * Checks if the product is licensed
 	 *
-	 * @param clientInfo the mod's info
+	 * @param modName the mod's name
 	 * @return {@link MarketplaceResponse} with licensed status in
 	 * {@link MarketplaceResponse#success}
 	 */
-	public static MarketplaceResponse checkLicensed(EMCMod.EMCModInfo clientInfo) {
-		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getCheckLicensedURL(clientInfo.getModName())));
+	public static MarketplaceResponse checkLicensed(String modName) {
+		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getCheckLicensedURL(modName)));
 	}
 
 	/**
@@ -78,26 +78,26 @@ public class MarketplaceAPI {
 	 * To protect against response forging and emulation, verify that the decrypted
 	 * response matches the supplied secret
 	 *
-	 * @param clientInfo the mod's info
+	 * @param modName the mod's name
 	 * @param secret     a unique string (e.g. timestamp) that will be returned in the
 	 *                   encrypted message
 	 * @return {@link MarketplaceResponse} with licensed status in
 	 * {@link MarketplaceResponse#success} and the encrypted {@code secret}
 	 * in {@link MarketplaceResponse#data}
 	 */
-	public static MarketplaceResponse checkLicensedSecure(EMCMod.EMCModInfo clientInfo, String secret) {
-		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getCheckLicensedURL(clientInfo.getModName(), secret)));
+	public static MarketplaceResponse checkLicensedSecure(String modName, String secret) {
+		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getCheckLicensedURL(modName, secret)));
 	}
 
 	/**
 	 * Retrieves a product key if licensed
 	 *
-	 * @param clientInfo the mod's info
+	 * @param modName the mod's name
 	 * @return {@link MarketplaceResponse} with the key in
 	 * {@link MarketplaceResponse#data}
 	 */
-	public static MarketplaceResponse getKey(EMCMod.EMCModInfo clientInfo) {
-		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getKeyURL(clientInfo.getModName())));
+	public static MarketplaceResponse getKey(String modName) {
+		return MarketplaceAPI.parseResponse(MarketplaceAPI.getSafe(MarketplaceAPI.getKeyURL(modName)));
 	}
 
 	/**

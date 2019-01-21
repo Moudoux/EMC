@@ -2,6 +2,7 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 
 /**
  * Triggered when player model is being rendered.
@@ -10,14 +11,14 @@ import net.minecraft.entity.Entity;
 public class EventRenderPlayerModel extends Event {
 
 	private boolean shouldRender = false;
-	private Entity entity;
+	private String name;
 
 	public EventRenderPlayerModel(Entity entity) {
-		this.entity = entity;
+		this.name = entity.getName().getFormattedText();
 	}
 
-	public Entity getEntity() {
-		return entity;
+	public String getName() {
+		return name;
 	}
 
 	public boolean isShouldRender() {

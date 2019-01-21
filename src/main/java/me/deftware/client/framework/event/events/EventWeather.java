@@ -13,6 +13,10 @@ public class EventWeather extends Event {
 		this.type = type;
 	}
 
+	public WeatherType getType() {
+		return type;
+	}
+
 	public enum WeatherType {
 		Rain, RainSnow
 	}
