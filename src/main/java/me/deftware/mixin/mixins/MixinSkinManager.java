@@ -22,6 +22,7 @@ public abstract class MixinSkinManager {
 
 	@Inject(method = "loadProfileTextures", at = @At("HEAD"))
 	public void loadProfileTextures(final GameProfile profile, final SkinManager.SkinAvailableCallback skinAvailableCallback, final boolean requireSecure, CallbackInfo cb) {
+		/* TODO: Redo
 		Minecraft.getInstance().addScheduledTask(new Thread(() -> {
 			try {
 				String url = EMCSkinManager.getCape(profile.getName());
@@ -32,6 +33,7 @@ public abstract class MixinSkinManager {
 				ex.printStackTrace();
 			}
 		}));
+		*/
 	}
 
 }

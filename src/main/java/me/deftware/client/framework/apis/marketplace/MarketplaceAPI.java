@@ -29,8 +29,10 @@ public class MarketplaceAPI {
 			return;
 		}
 		MarketplaceAPI.login((status) -> {
-			System.out.println(
+			/*
+			System.err.println(
 					status ? "EMC API initialized" : "EMC API initialization failed, could not get oAuth token");
+					*/
 			MarketplaceAPI.initialized = true;
 			callback.cb(status);
 		});
