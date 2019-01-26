@@ -1,5 +1,6 @@
 package me.deftware.client.framework.fonts;
 
+import me.deftware.client.framework.utils.GraphicsUtil;
 import me.deftware.client.framework.utils.TexUtil;
 import me.deftware.client.framework.utils.Texture;
 import me.deftware.client.framework.wrappers.IMinecraft;
@@ -161,9 +162,11 @@ public class DynamicFont implements EMCFont {
 
     @Override
     public int drawOnScreen(int x, int y) {
-        TexUtil.prepareAndPushMatrix(); //GL PART
+        GL11.glPushMatrix();
+        GraphicsUtil.prepareMatrix(getLastRenderedWidth(), getLastRenderedHeight());
         prepareForRendering(); //BINDING
-        TexUtil.renderAndPopMatrix(x, y, getLastRenderedWidth(), getLastRenderedHeight()); //GL PART
+        GraphicsUtil.drawQuads(x,y, getLastRenderedWidth(), getLastRenderedHeight());
+        GL11.glPopMatrix();
         return 0;
     }
 
