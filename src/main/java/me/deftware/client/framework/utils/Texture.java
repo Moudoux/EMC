@@ -164,12 +164,7 @@ public class Texture {
 	}
 
 	public int updateTexture() {
-		try {
-			this.dynamicTexture.updateDynamicTexture();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 1;
-		}
+		this.dynamicTexture.updateDynamicTexture();
 		return 0;
 	}
 
