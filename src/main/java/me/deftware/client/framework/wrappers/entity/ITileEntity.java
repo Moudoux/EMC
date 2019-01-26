@@ -9,16 +9,18 @@ public class ITileEntity {
 
     private IChestType chestType;
     private IBlockPos position;
-    private Color color;
+    private Color color = Color.white;
 
     public ITileEntity(TileEntity entity) {
         chestType = entity instanceof TileEntityChest
                 ? entity instanceof TileEntityTrappedChest ? IChestType.TRAPPED_CHEST : IChestType.CHEST
                 : entity instanceof TileEntityEnderChest ? IChestType.ENDER_CHEST
                 : entity instanceof TileEntityShulkerBox ? IChestType.SHULKER_BOX : null;
-        color = chestType.equals(IChestType.TRAPPED_CHEST) ? Color.RED
-                : chestType.equals(IChestType.CHEST) ? Color.ORANGE
-                : chestType.equals(IChestType.ENDER_CHEST) ? Color.BLUE : Color.PINK;
+        if (chestType != null) {
+            color = chestType.equals(IChestType.TRAPPED_CHEST) ? Color.RED
+                    : chestType.equals(IChestType.CHEST) ? Color.ORANGE
+                    : chestType.equals(IChestType.ENDER_CHEST) ? Color.BLUE : Color.PINK;
+        }
         position = new IBlockPos(entity.getPos());
     }
 
