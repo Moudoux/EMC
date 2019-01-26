@@ -71,9 +71,7 @@ public class BitmapFont implements EMCFont {
         if (extras == null)
             extras = "";
         char[] additionalCharacters = extras.toCharArray();
-        //Generate the font bitmaps
 
-        Texture bitmapTexture;
         //Lowercase alphabet
         for (char lowercaseAlphabet = 'a'; lowercaseAlphabet <= 'z'; lowercaseAlphabet++) {
             characterGenerate(lowercaseAlphabet, color);
@@ -103,7 +101,6 @@ public class BitmapFont implements EMCFont {
     }
 
     protected void characterGenerate(char character, Color color) {
-        //Texture bitmapTexture;
         String letterBuffer = String.valueOf(character);
         int textwidth = getStringWidth(letterBuffer);
         int textheight = getStringHeight(letterBuffer);
