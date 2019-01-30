@@ -1,6 +1,9 @@
 package me.deftware.client.framework.wrappers.entity;
 
+import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
+import me.deftware.mixin.imp.IMixinNetworkPlayerInfo;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.*;
@@ -76,6 +79,15 @@ public class IEntity {
             return ((EntityLivingBase) entity).getHealth();
         }
         return 0;
+    }
+
+    public void reloadSkin() {
+        if (entity instanceof AbstractClientPlayer) {
+            AbstractClientPlayer abstractEntity = (AbstractClientPlayer) entity;
+            if (abstractEntity.hasPlayerInfo()) {
+                ((IMixinNetworkPlayerInfo) ((IMixinAbstractClientPlayer) abstractEntity).getPlayerNetworkInfo()).reloadTextures();
+            }
+        }
     }
 
     public boolean isPlayerOwned() {

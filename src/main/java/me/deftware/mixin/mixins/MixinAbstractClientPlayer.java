@@ -2,6 +2,7 @@ package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventFovModifier;
 import me.deftware.client.framework.event.events.EventSpectator;
+import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
@@ -12,9 +13,13 @@ import net.minecraft.init.Items;
 import net.minecraft.world.GameType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(AbstractClientPlayer.class)
-public abstract class MixinAbstractClientPlayer {
+public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientPlayer {
+
+	@Shadow
+	private NetworkPlayerInfo playerInfo;
 
 	/**
 	 * @Author Deftware
@@ -65,6 +70,11 @@ public abstract class MixinAbstractClientPlayer {
 		}
 
 		return f;
+	}
+
+	@Override
+	public NetworkPlayerInfo getPlayerNetworkInfo() {
+		return playerInfo;
 	}
 
 }

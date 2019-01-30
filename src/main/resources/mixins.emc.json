@@ -49,6 +49,7 @@
     "MixinKeyboardListener",
     "MixinMouseHelper",
     "MixinGuiEventHandler",
-    "MixinMain"
+    "MixinMain",
+    "MixinNetworkPlayerInfo"
   ]
 }

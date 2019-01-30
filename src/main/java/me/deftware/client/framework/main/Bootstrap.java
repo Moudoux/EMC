@@ -2,6 +2,7 @@ package me.deftware.client.framework.main;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
 import me.deftware.client.framework.FrameworkConstants;
@@ -133,6 +134,7 @@ public class Bootstrap {
         CommandRegister.registerCommand(new CommandHelp());
         CommandRegister.registerCommand(new CommandOAuth());
         CommandRegister.registerCommand(new CommandTrigger());
+        CommandRegister.registerCommand(new CommandReload());
     }
 
     /**
