@@ -5,7 +5,9 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.InsecureTextureException;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
+import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.utils.HashUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.SkinManager;
 import net.minecraft.util.ResourceLocation;
@@ -73,12 +75,18 @@ public abstract class MixinSkinManager {
     }
 
     private void injectCape(GameProfile player, Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map) {
-        String id = SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, player.getName()) ? player.getName() :
-                SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, player.getId().toString().replace("-", "")) ? player.getId().toString().replace("-", "") : null;
-        if (id != null) {
-            map.put(MinecraftProfileTexture.Type.CAPE, new MinecraftProfileTexture(
-                    (String) SettingsMap.getValue(SettingsMap.MapKeys.CAPES_TEXTURE, id, ""), null));
-        }
+       try {
+           String uidHash = HashUtils.getSHA(player.getId().toString().toLowerCase().replace("-", ""));
+           String id = SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, player.getName()) ? player.getName() :
+                   SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, player.getId().toString().replace("-", ""))
+                           ? player.getId().toString().replace("-", "") : SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, uidHash) ? uidHash : null;
+           if (id != null) {
+               map.put(MinecraftProfileTexture.Type.CAPE, new MinecraftProfileTexture(
+                       (String) SettingsMap.getValue(SettingsMap.MapKeys.CAPES_TEXTURE, id, ""), null));
+           }
+       } catch (Exception ex) {
+           Bootstrap.logger.error("Failed to load skin");
+       }
     }
 
 }
