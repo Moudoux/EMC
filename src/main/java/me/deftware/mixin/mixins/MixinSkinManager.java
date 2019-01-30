@@ -1,39 +1,82 @@
 package me.deftware.mixin.mixins;
 
+import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.minecraft.InsecureTextureException;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-import me.deftware.client.framework.maps.EMCSkinManager;
+import com.mojang.authlib.minecraft.MinecraftSessionService;
+import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.SkinManager;
 import net.minecraft.util.ResourceLocation;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.*;
 
 import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 @Mixin(SkinManager.class)
 public abstract class MixinSkinManager {
 
-	@Shadow
-	public abstract ResourceLocation loadSkin(final MinecraftProfileTexture profileTexture, final MinecraftProfileTexture.Type textureType, @Nullable final SkinManager.SkinAvailableCallback skinAvailableCallback);
+    @Shadow
+    @Final
+    @Mutable
+    private static ExecutorService THREAD_POOL;
 
-	@Inject(method = "loadProfileTextures", at = @At("HEAD"))
-	public void loadProfileTextures(final GameProfile profile, final SkinManager.SkinAvailableCallback skinAvailableCallback, final boolean requireSecure, CallbackInfo cb) {
-		/* TODO: Redo
-		Minecraft.getInstance().addScheduledTask(new Thread(() -> {
-			try {
-				String url = EMCSkinManager.getCape(profile.getName());
-				if (!url.isEmpty()) {
-					loadSkin(new MinecraftProfileTexture(url, null), MinecraftProfileTexture.Type.CAPE, skinAvailableCallback);
-				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		}));
-		*/
-	}
+    @Final
+    @Shadow
+    private MinecraftSessionService sessionService;
+
+    @Shadow
+    public abstract ResourceLocation loadSkin(final MinecraftProfileTexture profileTexture, final MinecraftProfileTexture.Type textureType, @Nullable final SkinManager.SkinAvailableCallback skinAvailableCallback);
+
+    @Overwrite
+    public void loadProfileTextures(GameProfile player, SkinManager.SkinAvailableCallback callback, boolean requireSecure) {
+        THREAD_POOL.submit(() -> {
+            Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> textureMap = Maps.newHashMap();
+
+            try {
+                textureMap.putAll(this.sessionService.getTextures(player, requireSecure));
+            } catch (InsecureTextureException var7) {
+                //
+            }
+
+            if (textureMap.isEmpty()) {
+                player.getProperties().clear();
+                if (player.getId().equals(Minecraft.getInstance().getSession().getProfile().getId())) {
+                    player.getProperties().putAll(Minecraft.getInstance().getProfileProperties());
+                    textureMap.putAll(this.sessionService.getTextures(player, false));
+                } else {
+                    this.sessionService.fillProfileProperties(player, requireSecure);
+
+                    try {
+                        textureMap.putAll(this.sessionService.getTextures(player, requireSecure));
+                    } catch (InsecureTextureException var6) {
+                        //
+                    }
+                }
+            }
+
+            injectCape(player, textureMap);
+
+            Minecraft.getInstance().addScheduledTask(() -> {
+                if (textureMap.containsKey(MinecraftProfileTexture.Type.SKIN)) {
+                    this.loadSkin((MinecraftProfileTexture) textureMap.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN, callback);
+                }
+
+                if (textureMap.containsKey(MinecraftProfileTexture.Type.CAPE)) {
+                    this.loadSkin((MinecraftProfileTexture) textureMap.get(MinecraftProfileTexture.Type.CAPE), MinecraftProfileTexture.Type.CAPE, callback);
+                }
+
+            });
+        });
+    }
+
+    private void injectCape(GameProfile player, Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map) {
+        if (SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, player.getName())) {
+            map.put(MinecraftProfileTexture.Type.CAPE, new MinecraftProfileTexture(
+                    (String) SettingsMap.getValue(SettingsMap.MapKeys.CAPES_TEXTURE, player.getName(), ""), null));
+        }
+    }
 
 }

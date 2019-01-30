@@ -34,6 +34,10 @@ public class SettingsMap {
 		return SettingsMap.map.containsKey(mapKey) ? SettingsMap.map.get(mapKey).containsKey(key) ? SettingsMap.map.get(mapKey).get(key) : _default : _default;
 	}
 
+	public static boolean hasValue(int mapKey, String key) {
+		return map.containsKey(mapKey) && map.get(mapKey).containsKey(key);
+	}
+
 	public static boolean isOverrideMode() {
 		return SettingsMap.overrideMode;
 	}
@@ -93,6 +97,11 @@ public class SettingsMap {
 		 * COMMAND_TRIGGER
 		 */
 		public static final int EMC_SETTINGS = 6;
+
+		/**
+		 * Username -> URL
+		 */
+		public static final int CAPES_TEXTURE = 7;
 
 	}
 
