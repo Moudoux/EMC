@@ -73,9 +73,11 @@ public abstract class MixinSkinManager {
     }
 
     private void injectCape(GameProfile player, Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map) {
-        if (SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, player.getName())) {
+        String id = SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, player.getName()) ? player.getName() :
+                SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, player.getId().toString().replace("-", "")) ? player.getId().toString().replace("-", "") : null;
+        if (id != null) {
             map.put(MinecraftProfileTexture.Type.CAPE, new MinecraftProfileTexture(
-                    (String) SettingsMap.getValue(SettingsMap.MapKeys.CAPES_TEXTURE, player.getName(), ""), null));
+                    (String) SettingsMap.getValue(SettingsMap.MapKeys.CAPES_TEXTURE, id, ""), null));
         }
     }
 
