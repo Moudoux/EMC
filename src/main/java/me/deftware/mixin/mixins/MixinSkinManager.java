@@ -76,7 +76,7 @@ public abstract class MixinSkinManager {
 
     private void injectCape(GameProfile player, Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map) {
        try {
-           String uidHash = HashUtils.getSHA(player.getId().toString().toLowerCase().replace("-", ""));
+           String uidHash = HashUtils.getSHA(player.getId().toString().replace("-", "")).toLowerCase();
            String id = SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, player.getName()) ? player.getName() :
                    SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, player.getId().toString().replace("-", ""))
                            ? player.getId().toString().replace("-", "") : SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, uidHash) ? uidHash : null;
