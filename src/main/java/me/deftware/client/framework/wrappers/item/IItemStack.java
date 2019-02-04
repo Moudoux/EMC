@@ -21,6 +21,8 @@ import net.minecraft.util.text.TextComponentString;
 
 public class IItemStack {
 
+	public static final IItemStack EMPTY = new IItemStack(ItemStack.EMPTY);
+
 	private ItemStack stack;
 
 	public IItemStack(ItemStack stack) {
@@ -60,6 +62,10 @@ public class IItemStack {
 		}
 	}
 
+	public static IItemStack read(INBTTagCompound compound) {
+		return new IItemStack(ItemStack.read(compound.getCompound()));
+	}
+
 	public static IItemStack cloneWithoutEffects(IItemStack stack) {
 		return new IItemStack(new ItemStack(Item.getItemById(Item.getIdFromItem(stack.getStack().getItem())),
 				Integer.valueOf(stack.getStack().toString().split("x")[0])));
@@ -70,12 +76,36 @@ public class IItemStack {
 		nbttagcompound.putString("Name", ITextComponent.Serializer.toJson(new TextComponentString(name)));
 	}
 
+	public int getMaxStackSize() {
+		return stack.getMaxStackSize();
+	}
+
+	public static boolean areItemStackTagsEqual(IItemStack one, IItemStack two) {
+		return ItemStack.areItemStackTagsEqual(one.getStack(), two.getStack());
+	}
+
+	public boolean isItemEqual(IItemStack stack) {
+		return this.stack.isItemEqual(stack.getStack());
+	}
+
+	public INBTTagCompound getTagCompound() {
+		return new INBTTagCompound(stack.getTag());
+	}
+
 	public static boolean validName(String name) {
 		return IItem.getByNameOrId(name) != null;
 	}
 
 	public ItemStack getStack() {
 		return stack;
+	}
+
+	public void setCount(int count) {
+		stack.setCount(count);
+	}
+
+	public int getCount() {
+		return stack.getCount();
 	}
 
 	public String getDisplayName() {

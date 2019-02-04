@@ -1,4 +1,4 @@
-package me.deftware.client.framework.utils;
+package me.deftware.client.framework.utils.render;
 
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.client.framework.wrappers.entity.*;
@@ -27,6 +27,7 @@ import static org.lwjgl.opengl.GL11.*;
 /**
  * Common functions used for rendering
  */
+@SuppressWarnings("All")
 public class RenderUtils {
 
 	public static void loadShader(IResourceLocation location) {

@@ -1,16 +1,10 @@
 package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.utils.ChatColor;
-import me.deftware.client.framework.utils.ColorUtil;
-import me.deftware.client.framework.utils.TexUtil;
-import me.deftware.client.framework.utils.Texture;
-import org.apache.commons.lang3.ArrayUtils;
-import org.lwjgl.opengl.GL11;
+import me.deftware.client.framework.utils.render.ColorUtil;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
 
 import static me.deftware.client.framework.utils.ChatColor.COLOR_CHAR;
 

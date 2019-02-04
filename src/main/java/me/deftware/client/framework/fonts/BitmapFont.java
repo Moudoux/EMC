@@ -2,8 +2,7 @@ package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.utils.ChatColor;
-import me.deftware.client.framework.utils.GraphicsUtil;
-import me.deftware.client.framework.utils.Texture;
+import me.deftware.client.framework.utils.render.GraphicsUtil;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import org.apache.commons.lang3.ArrayUtils;

@@ -1,10 +1,7 @@
 package me.deftware.client.framework.fonts;
 
-import me.deftware.client.framework.utils.GraphicsUtil;
-import me.deftware.client.framework.utils.TexUtil;
-import me.deftware.client.framework.utils.Texture;
-import me.deftware.client.framework.wrappers.IMinecraft;
-import me.deftware.client.framework.wrappers.gui.IGuiScreen;
+import me.deftware.client.framework.utils.render.GraphicsUtil;
+import me.deftware.client.framework.utils.render.Texture;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;

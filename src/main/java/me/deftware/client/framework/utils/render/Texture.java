@@ -1,4 +1,4 @@
-package me.deftware.client.framework.utils;
+package me.deftware.client.framework.utils.render;
 
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.NativeImage;

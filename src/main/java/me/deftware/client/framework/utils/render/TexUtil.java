@@ -1,4 +1,4 @@
-package me.deftware.client.framework.utils;
+package me.deftware.client.framework.utils.render;
 
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.IResourceLocation;
@@ -17,6 +17,10 @@ public class TexUtil {
 	public static void drawModalRectWithCustomSizedTexture(int x, int y, float u, float v, int width, int height,
 														   float textureWidth, float textureHeight) {
 		Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, width, height, textureWidth, textureHeight);
+	}
+
+	public static void drawTexturedModalRect(int p_drawTexturedModalRect_1_, int p_drawTexturedModalRect_2_, int p_drawTexturedModalRect_3_, int p_drawTexturedModalRect_4_, int p_drawTexturedModalRect_5_, int p_drawTexturedModalRect_6_) {
+
 	}
 
 	public static int glGenTextures() {

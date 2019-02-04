@@ -1,6 +1,6 @@
 package me.deftware.client.framework.wrappers.render;
 
-import me.deftware.client.framework.utils.TexUtil;
+import me.deftware.client.framework.utils.render.TexUtil;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.client.framework.wrappers.entity.IEntityPlayer;
 import net.minecraft.client.Minecraft;

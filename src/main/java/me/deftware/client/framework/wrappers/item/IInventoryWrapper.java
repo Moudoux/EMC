@@ -53,6 +53,10 @@ public class IInventoryWrapper {
 		return false;
 	}
 
+	public static IItemStack getHeldInventoryItem() {
+		return new IItemStack(Minecraft.getInstance().player.inventory.getCurrentItem());
+	}
+
 	public static IItemStack getHeldItem(IPlayer player, boolean offhand) {
 		if (IEntityPlayer.isNull()) {
 			return null;

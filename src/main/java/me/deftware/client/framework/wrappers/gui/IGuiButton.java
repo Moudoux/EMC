@@ -92,11 +92,11 @@ public class IGuiButton extends GuiButton implements CustomIGuiEventListener {
 		this.height = height;
 	}
 
-	protected boolean isHovered() {
+	protected boolean isButtonHovered() {
 		return hovered;
 	}
 
-	protected void setHovered(boolean state) {
+	protected void setButtonHovered(boolean state) {
 		hovered = state;
 	}
 

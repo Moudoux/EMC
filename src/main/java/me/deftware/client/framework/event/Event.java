@@ -1,6 +1,9 @@
 package me.deftware.client.framework.event;
 
+import me.deftware.client.framework.event.events.EventUpdate;
 import me.deftware.client.framework.main.Bootstrap;
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 
 /**
  * This class describes the way events are defined in EMC framework and handles the process of

@@ -1,6 +1,7 @@
 package me.deftware.client.framework.wrappers.item;
 
 import me.deftware.mixin.imp.IMixinItemTool;
+import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
@@ -78,13 +79,15 @@ public class IItem {
 			return item instanceof ItemSoup;
 		} else if (type.equals(IItemType.ItemHoe)) {
 			return item instanceof ItemHoe;
+		} else if (type.equals(IItemType.ItemShulkerBox)) {
+			return item instanceof ItemBlock && ((ItemBlock) item).getTranslationKey().contains("shulker_box");
 		}
 		return false;
 	}
 
 	public enum IItemType {
 		ItemPotion, ItemFishingRod, ItemFood, ItemSword, ItemTool, ItemNameTag, ItemBlock, ItemHoe, SplashPotion,
-		ItemSoup
+		ItemSoup, ItemShulkerBox
 	}
 
 	@Nullable

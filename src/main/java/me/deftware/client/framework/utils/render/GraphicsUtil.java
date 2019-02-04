@@ -1,4 +1,4 @@
-package me.deftware.client.framework.utils;
+package me.deftware.client.framework.utils.render;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;

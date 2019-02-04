@@ -1,8 +1,8 @@
 package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.utils.ChatColor;
-import me.deftware.client.framework.utils.ColorUtil;
-import me.deftware.client.framework.utils.Texture;
+import me.deftware.client.framework.utils.render.ColorUtil;
+import me.deftware.client.framework.utils.render.Texture;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
