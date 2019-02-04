@@ -30,7 +30,6 @@
     "MixinNetHandlerPlayClient",
     "MixinNetHandlerLoginClient",
     "MixinGuiConnecting",
-    "MixinGuiIngameMenu",
     "MixinGuiIngame",
     "MixinGuiGameOver",
     "MixinGuiDisconnected",
@@ -50,6 +49,7 @@
     "MixinMouseHelper",
     "MixinGuiEventHandler",
     "MixinMain",
-    "MixinNetworkPlayerInfo"
+    "MixinNetworkPlayerInfo",
+    "MixinGuiContainer"
   ]
 }
