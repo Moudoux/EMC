@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
-import me.deftware.aristois.main.Main;
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.apis.marketplace.MarketplaceAPI;
 import me.deftware.client.framework.command.CommandRegister;
@@ -116,17 +115,6 @@ public class Bootstrap {
             registerFrameworkCommands();
 
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
-
-            // Load Aristois
-            JsonObject json = new JsonObject();
-            json.addProperty("updateLinkOverride", true);
-            json.addProperty("version", 226);
-            json.addProperty("author", "deft-devel");
-            json.addProperty("name", "Aristois");
-            json.addProperty("minversion", 13.7);
-            Bootstrap.mods.put("Aristois", new Main());
-            Bootstrap.mods.get("Aristois").init(json);
-
 
             // Initialize the EMC marketplace API
             MarketplaceAPI.init((status) -> Bootstrap.mods.forEach((name, mod) -> mod.onMarketplaceAuth(status)));

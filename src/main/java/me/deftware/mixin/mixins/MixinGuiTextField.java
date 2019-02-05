@@ -101,10 +101,10 @@ public class MixinGuiTextField implements IMixinGuiTextField {
 	public int onDrawText(FontRenderer self, String text, float x, float y, int color) {
 		if (useCustomFont) {
 			customFont.drawStringWithShadow((int) x, (int) y - 6, text, new Color(color));
+			return (int) (x + customFont.getStringWidth(text) + 1f);
 		} else {
-			this.fontRenderer.drawStringWithShadow(text, x, y, color);
+			return this.fontRenderer.drawStringWithShadow(text, x, y, color);
 		}
-		return 0;
 	}
 
 }
