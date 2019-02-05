@@ -18,7 +18,7 @@ public class IGuiTextField extends GuiTextField implements CustomIGuiEventListen
 		setText(text);
 	}
 
-	public void setMaxLenght(int lenght) {
+	public void setMaxTextboxLenght(int lenght) {
 		setMaxStringLength(lenght);
 	}
 
