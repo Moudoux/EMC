@@ -62,4 +62,7 @@ public abstract class EMCMod {
 	public void callMethod(String method, String caller) {
 	}
 
+	public void postInit() {
+	}
+
 }

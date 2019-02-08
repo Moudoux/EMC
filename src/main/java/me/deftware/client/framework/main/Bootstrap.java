@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -185,6 +186,7 @@ public class Bootstrap {
         jarFile.close();
         Bootstrap.mods.get(jsonObject.get("name").getAsString()).init(jsonObject);
         Bootstrap.logger.info("Loaded mod");
+        Bootstrap.mods.get(jsonObject.get("name").getAsString()).postInit();
     }
 
     /**
