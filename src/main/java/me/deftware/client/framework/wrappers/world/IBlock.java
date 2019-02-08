@@ -7,18 +7,9 @@ import net.minecraft.util.registry.IRegistry;
 
 import javax.annotation.Nullable;
 
-/**
- * The use of block id's is highly discouraged due to them not officially being used in Minecraft 1.13+.
- * Instead use the name for a block e.g. 'new IBlock("grass_block");' for a grass block.
- */
 public class IBlock {
 
 	protected Block block;
-
-	@Deprecated
-	public IBlock(int id) {
-		block = IRegistry.BLOCK.get(id);
-	}
 
 	public IBlock(String name) {
 		block = getBlockFromName(name);
@@ -40,7 +31,6 @@ public class IBlock {
 		return block;
 	}
 
-	@Deprecated
 	public int getID() {
 		return IRegistry.BLOCK.getId(block);
 	}
@@ -51,11 +41,6 @@ public class IBlock {
 
 	public String getTranslationKey() {
 		return block.getTranslationKey();
-	}
-
-	@Deprecated
-	public static boolean isValidBlock(int id) {
-		return IRegistry.BLOCK.get(id) != null;
 	}
 
 	public static boolean isValidBlock(String name) {
