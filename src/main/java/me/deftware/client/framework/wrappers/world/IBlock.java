@@ -43,6 +43,10 @@ public class IBlock {
 		return block.getTranslationKey();
 	}
 
+	public String getBlockKey() {
+		return getTranslationKey().substring("block.minecraft.".length());
+	}
+
 	public static boolean isValidBlock(String name) {
 		return getBlockFromName(name) != null;
 	}

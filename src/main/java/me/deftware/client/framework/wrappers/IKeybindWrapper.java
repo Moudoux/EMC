@@ -20,8 +20,12 @@ public class IKeybindWrapper {
 	}
 
 	public static String getKeyName(int key) {
+		if (key == 344) {
+			return "RShift";
+		}
 		return String.valueOf((char) key);
 	}
+
 
 	public static boolean isKeyDown(int key) {
 		return InputMappings.isKeyDown(key);

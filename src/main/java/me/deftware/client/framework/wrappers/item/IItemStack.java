@@ -42,11 +42,11 @@ public class IItemStack {
 	}
 
 	public IItemStack(String name) {
-		stack = new ItemStack(IItem.getByNameOrId(name));
+		stack = new ItemStack(IItem.getByName(name));
 	}
 
 	public IItemStack(String name, int amount) {
-		stack = new ItemStack(IItem.getByNameOrId(name), amount);
+		stack = new ItemStack(IItem.getByName(name), amount);
 	}
 
 	public void setNBT(String nbt) throws Exception {
@@ -93,7 +93,7 @@ public class IItemStack {
 	}
 
 	public static boolean validName(String name) {
-		return IItem.getByNameOrId(name) != null;
+		return IItem.getByName(name) != null;
 	}
 
 	public ItemStack getStack() {

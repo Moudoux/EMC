@@ -14,7 +14,7 @@ public class IItem {
 	private Item item;
 
 	public IItem(String name) {
-		item = getByNameOrId(name);
+		item = getByName(name);
 	}
 
 	public IItem(Item item) {
@@ -31,6 +31,10 @@ public class IItem {
 
 	public String getTranslationKey() {
 		return item.getTranslationKey();
+	}
+
+	public String getItemKey() {
+		return getTranslationKey().substring("item.minecraft.".length());
 	}
 
 	public int getID() {
@@ -90,17 +94,12 @@ public class IItem {
 		ItemSoup, ItemShulkerBox
 	}
 
-	@Nullable
-	protected static Item getByNameOrId(String id) {
-		try {
-			return Item.getItemById(Integer.parseInt(id));
-		} catch (NumberFormatException var3) {
-			ResourceLocation resourceLocation = new ResourceLocation(id);
-			if (IRegistry.ITEM.containsKey(resourceLocation)) {
-				return IRegistry.ITEM.get(resourceLocation);
-			}
-			return null;
+	protected static Item getByName(String id) {
+		ResourceLocation resourceLocation = new ResourceLocation(id);
+		if (IRegistry.ITEM.containsKey(resourceLocation)) {
+			return IRegistry.ITEM.get(resourceLocation);
 		}
+		return null;
 	}
 
 }
