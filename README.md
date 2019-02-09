@@ -4,7 +4,10 @@ The EMC (Easy Minecraft Client) Framework
 EMC (Easy Minecraft Client) is a framework for modifying Minecraft code without having to think about
 obfuscation as the framework will act as a middle man handling your calls to Minecraft.
 
-This framework also allows you to write a mod once, then use it on Minecraft 1.8 and above.
+Unlike other mod loaders that require you to write your own Mixins to modify Minecraft code, EMC acts as an API that enables cross compatability with multiple Minecraft
+versions and you don't have to write any Mixins on your own.
+
+This framework also allows you to write a mod once, then use it on Minecraft 1.12 and above.
 
 Discord
 -------------------
@@ -58,24 +61,23 @@ Minecraft versions currently supported
 * 1.13
 * 1.12.2
 
-Maven repo/Loading EMC
+Loading EMC (1.14)
 -------------------
+
+Some versions of EMC are loaded differently and use a small library to load, these builds are appended with an F, such as `EMC-F` for the 1.14 version of EMC.
 
 Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To load EMC in Minecraft add the following in the `libraries` array to your Minecraft json file:
 
 ```
 {
-	"name": "me.deftware:EMC:13.7.5-1.13.2",
+	"name": "me.deftware:EMC-F:13.7.5-19w06a",
 	"url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
 }
 ```
 
-Then in the `arguments->game` array add `"--tweakClass", "me.deftware.launch.Launcher"` at the end. If you want to see an example on how to load EMC see [example_client.json](https://gitlab.com/EMC-Framework/EMC/blob/master/example_client.json)
+Then change `mainClass` to `net.fabricmc.loader.launch.knot.KnotClient`. If you want to see an example on how to load EMC see [example_client.json](https://gitlab.com/EMC-Framework/EMC/blob/1.14/example_client.json)
 
-Stacking on top of Forge
--------------------
-
-EMC can be stacked on top of Forge to run EMC mods in conjunction with Forge mods. To build EMC for Forge simply run the gradle build task with the `-Pforgebuild="true"` argument. 
+For using EMC with 1.13.2 see the [1.13.2 Readme](https://gitlab.com/EMC-Framework/EMC/blob/1.13.2/README.md)
 
 Making client mods with EMC 
 -------------------
@@ -87,13 +89,12 @@ Built in commands
 -------------------
 
 You can type `.version` to check what EMC version you are running, you can type `.mods` to see all loaded mods.
-You can also type `.unload [mod name]` to eject loaded mods.
+You can also type `.unload` to eject loaded mods.
 
 Why use EMC?
 -------------------
 
-* Easy to use (You don't have to think about Minecraft obfuscation)
-* Suitable for large client rewrite style mods
+* Easy to use (You don't have to think about Minecraft obfuscation or Mixins)
 * Completely compliant with the Minecraft EULA (You don't have to worry about DMCA takedown requests)
 * Write once, use on multiple Minecraft versions
 * Less code (This requires less code than writing your client with Minecraft)
@@ -104,16 +105,6 @@ EULA compliant
 The EMC framework is compliant with the Minecraft EULA, it does not distribute any Minecraft source code in it's installer.
 Any mods you make using this framework will be compliant with the Minecraft EULA as your mod will not contain ANY
 Minecraft source code, only EMC wrapper calls.
-
-Developing EMC (Not making client mods, the actual framework)
--------------------
-
-1. Clone this repository with `git clone git@gitlab.com:EMC-Framework/EMC.git`
-2. Run the `setupDecompWorkspace` task
-3. If you are using IDEA run the `genIntellijRuns` task, otherwise skip this point
-4. Import sources into your IDE as a gradle project
-
-You can now start modifying EMC.
 
 License
 -------------------
