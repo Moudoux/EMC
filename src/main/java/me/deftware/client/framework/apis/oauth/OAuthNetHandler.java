@@ -1,36 +1,36 @@
 package me.deftware.client.framework.apis.oauth;
 
 import me.deftware.mixin.imp.IMixinNetHandlerLoginClient;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.network.NetHandlerLoginClient;
-import net.minecraft.network.EnumConnectionState;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.login.server.SPacketLoginSuccess;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.class_2901;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Screen;
+import net.minecraft.client.network.ClientLoginNetworkHandler;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.network.NetworkState;
+import net.minecraft.text.TextComponent;
 
-public class OAuthNetHandler extends NetHandlerLoginClient {
+public class OAuthNetHandler extends ClientLoginNetworkHandler {
 
-	public OAuth.OAuthCallback callback;
+    public OAuth.OAuthCallback callback;
 
-	public OAuthNetHandler(NetworkManager networkManagerIn, Minecraft mcIn, GuiScreen previousScreenIn,
-						   OAuth.OAuthCallback callback) {
-		super(networkManagerIn, mcIn, previousScreenIn, (fakeConsumer) -> {
-		});
-		this.callback = callback;
-	}
+    public OAuthNetHandler(ClientConnection networkManagerIn, MinecraftClient mcIn, Screen previousScreenIn,
+                           OAuth.OAuthCallback callback) {
+        super(networkManagerIn, mcIn, previousScreenIn, (fakeConsumer) -> {
+        });
+        this.callback = callback;
+    }
 
-	@Override
-	public void onDisconnect(ITextComponent reason) {
-		callback.callback(false, "", "");
-	}
+    @Override
+    public void onConnectionLost(TextComponent reason) {
+        callback.callback(false, "", "");
+    }
 
-	@Override
-	public void handleLoginSuccess(SPacketLoginSuccess packetIn) {
-		((IMixinNetHandlerLoginClient) this).setGameProfile(packetIn.getProfile());
-		((IMixinNetHandlerLoginClient) this).getNetworkManager().setConnectionState(EnumConnectionState.PLAY);
-		((IMixinNetHandlerLoginClient) this).getNetworkManager().setNetHandler(new OAuthNetHandlerPlayClient(Minecraft.getInstance(), null,
-				((IMixinNetHandlerLoginClient) this).getNetworkManager(), ((IMixinNetHandlerLoginClient) this).getGameProfile(), callback));
-	}
+    @Override
+    public void method_12588(class_2901 packetIn) {
+        ((IMixinNetHandlerLoginClient) this).setGameProfile(packetIn.method_12593());
+        ((IMixinNetHandlerLoginClient) this).getNetworkManager().setState(NetworkState.GAME);
+        ((IMixinNetHandlerLoginClient) this).getNetworkManager().setPacketListener(new OAuthNetHandlerPlayClient(MinecraftClient.getInstance(), null,
+                ((IMixinNetHandlerLoginClient) this).getNetworkManager(), ((IMixinNetHandlerLoginClient) this).getGameProfile(), callback));
+    }
 
 }

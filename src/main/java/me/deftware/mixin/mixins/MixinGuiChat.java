@@ -8,11 +8,11 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.mixin.components.InternalGuiTextField;
 import me.deftware.mixin.imp.IMixinGuiScreen;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.command.ISuggestionProvider;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Screen;
+import net.minecraft.client.gui.ingame.ChatScreen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.server.command.CommandSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,86 +23,82 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("ALL")
-@Mixin(GuiChat.class)
-public abstract class MixinGuiChat extends GuiScreen {
+@Mixin(ChatScreen.class)
+public abstract class MixinGuiChat extends Screen {
 
-	@Shadow
-	protected GuiTextField inputField;
+    @Shadow
+    protected TextFieldWidget chatField;
 
-	@Shadow
-	private String defaultInputFieldText;
+    @Shadow
+    private String field_2384;
 
-	@Shadow
-	private int sentHistoryCursor;
+    @Shadow
+    private int field_2387;
+    @Shadow
+    private ParseResults<CommandSource> field_2388;
+    @Shadow
+    private CompletableFuture<Suggestions> field_2386;
+    @Shadow
+    private boolean field_2378;
 
-	@Shadow
-	public abstract String formatMessage(String p_195130_1_, int p_195130_2_);
+    @Shadow
+    public abstract String method_2102(String p_195130_1_, int p_195130_2_);
 
-	@Shadow
-	public abstract void acceptMessage(int p_195128_1_, String p_195128_2_);
+    @Shadow
+    public abstract void method_2111(int p_195128_1_, String p_195128_2_);
 
-	@Shadow
-	public abstract void updateUsageInfo();
+    @Shadow
+    public abstract void method_2116();
 
-	@Shadow
-	private ParseResults<ISuggestionProvider> currentParse;
+    @Shadow
+    public abstract void method_2110();
 
-	@Shadow
-	private CompletableFuture<Suggestions> pendingSuggestions;
+    /**
+     * @Author Deftware
+     * @reason
+     */
+    @Overwrite
+    public void onInitialized() {
+        MinecraftClient.getInstance().keyboard.enableRepeatEvents(true);
+        this.field_2387 = MinecraftClient.getInstance().inGameHud.getHudChat().method_1809().size();
+        this.chatField = new InternalGuiTextField(0, ((IMixinGuiScreen) this).getFontRenderer(), 4, ((Screen) (Object) this).height - 12, ((Screen) (Object) this).width - 4, 12);
+        this.chatField.setMaxLength(256);
+        this.chatField.setHasBorder(false);
+        this.chatField.setFocused(true);
+        this.chatField.setText(this.field_2384);
+        this.chatField.method_1856(false);
+        this.chatField.method_1854(this::method_2102);
+        this.chatField.setChangedListener(this::method_2111);
+        this.listeners.add(this.chatField);
+        this.method_2110();
+    }
 
-	@Shadow
-	public abstract void updateSuggestion();
-
-	@Shadow
-	private boolean field_212338_z;
-
-	/**
-	 * @Author Deftware
-	 * @reason
-	 */
-	@Overwrite
-	public void initGui() {
-		Minecraft.getInstance().keyboardListener.enableRepeatEvents(true);
-		this.sentHistoryCursor = Minecraft.getInstance().ingameGUI.getChatGUI().getSentMessages().size();
-		this.inputField = new InternalGuiTextField(0, ((IMixinGuiScreen) this).getFontRenderer(), 4, ((GuiScreen) (Object) this).height - 12, ((GuiScreen) (Object) this).width - 4, 12);
-		this.inputField.setMaxStringLength(256);
-		this.inputField.setEnableBackgroundDrawing(false);
-		this.inputField.setFocused(true);
-		this.inputField.setText(this.defaultInputFieldText);
-		this.inputField.setCanLoseFocus(false);
-		this.inputField.setTextFormatter(this::formatMessage);
-		this.inputField.setTextAcceptHandler(this::acceptMessage);
-		this.children.add(this.inputField);
-		this.updateSuggestion();
-	}
-
-
-	@Inject(method = "updateSuggestion", at = @At("RETURN"), cancellable = true)
-	private void updateSuggestionInject(CallbackInfo ci) {
-		String lvt_1_1_ = this.inputField.getText();
-		StringReader lvt_2_1_ = new StringReader(lvt_1_1_);
-		if (lvt_2_1_.canRead() && lvt_1_1_.startsWith((String) CommandRegister.getCommandTrigger())) {
-			for (int triggerLength = 0; triggerLength < Math.min(CommandRegister.getCommandTrigger().length(), lvt_1_1_.length()); triggerLength++) {
-				lvt_2_1_.skip();
-			}
-			CommandDispatcher<ISuggestionProvider> lvt_3_1_ = CommandRegister.getDispatcher();
-			this.currentParse = lvt_3_1_.parse(lvt_2_1_, this.mc.player.connection.getSuggestionProvider());
-			if (!field_212338_z) {
-				StringReader lvt_4_1_ = new StringReader(lvt_1_1_.substring(0, lvt_1_1_.length()));
-				if (lvt_4_1_.canRead()) {
-					for (int triggerLength = 0; triggerLength < CommandRegister.getCommandTrigger().length(); triggerLength++) {
-						lvt_4_1_.skip();
-					}
-					ParseResults<ISuggestionProvider> lvt_5_1_ = lvt_3_1_.parse(lvt_4_1_, this.mc.player.connection.getSuggestionProvider());
-					this.pendingSuggestions = lvt_3_1_.getCompletionSuggestions(lvt_5_1_);
-					this.pendingSuggestions.thenRun(() -> {
-						if (this.pendingSuggestions.isDone()) {
-							this.updateUsageInfo();
-						}
-					});
-				}
-			}
-		}
-	}
+    @Inject(method = "method_2110", at = @At("RETURN"), cancellable = true)
+    private void injectCustomSuggestions(CallbackInfo ci) {
+        String string_1 = this.chatField.getText();
+        StringReader stringReader_1 = new StringReader(string_1);
+        if (stringReader_1.canRead() && string_1.startsWith((String) CommandRegister.getCommandTrigger())) {
+            for (int triggerLength = 0; triggerLength < Math.min(CommandRegister.getCommandTrigger().length(), string_1.length()); triggerLength++) {
+                stringReader_1.skip();
+            }
+            CommandDispatcher<CommandSource> commandDispatcher_1 = CommandRegister.getDispatcher();
+            this.field_2388 = commandDispatcher_1.parse(stringReader_1, this.client.player.networkHandler.getCommandSource());
+            if (!this.field_2378) {
+                StringReader stringReader_2 = new StringReader(string_1.substring(0, Math.min(string_1.length(), this.chatField.getCursor())));
+                if (stringReader_2.canRead()) {
+                    for (int triggerLength = 0; triggerLength < CommandRegister.getCommandTrigger().length(); triggerLength++) {
+                        stringReader_2.skip();
+                    }
+                    ParseResults<CommandSource> parseResults_1 = commandDispatcher_1.parse(stringReader_2, this.client.player.networkHandler.getCommandSource());
+                    this.field_2386 = commandDispatcher_1.getCompletionSuggestions(parseResults_1);
+                    this.field_2386.thenRun(() -> {
+                        if (this.field_2386.isDone()) {
+                            this.method_2116();
+                        }
+                    });
+                }
+            }
+        }
+    }
 
 }

@@ -2,8 +2,6 @@ package me.deftware.client.framework.utils;
 
 import org.apache.commons.lang3.Validate;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +12,15 @@ public class INonNullList<E> extends AbstractList<E> {
 
     private final List<E> delegate;
     private final E defaultElement;
+
+    protected INonNullList() {
+        this(new ArrayList(), null);
+    }
+
+    protected INonNullList(List<E> p_i47327_1_, E p_i47327_2_) {
+        this.delegate = p_i47327_1_;
+        this.defaultElement = p_i47327_2_;
+    }
 
     public static <E> INonNullList<E> create() {
         return new INonNullList();
@@ -31,16 +38,6 @@ public class INonNullList<E> extends AbstractList<E> {
         return new INonNullList(Arrays.asList(p_from_1_), p_from_0_);
     }
 
-    protected INonNullList() {
-        this(new ArrayList(), null);
-    }
-
-    protected INonNullList(List<E> p_i47327_1_, @Nullable E p_i47327_2_) {
-        this.delegate = p_i47327_1_;
-        this.defaultElement = p_i47327_2_;
-    }
-
-    @Nonnull
     public E get(int p_get_1_) {
         return this.delegate.get(p_get_1_);
     }
@@ -67,10 +64,11 @@ public class INonNullList<E> extends AbstractList<E> {
         if (this.defaultElement == null) {
             super.clear();
         } else {
-            for(int lvt_1_1_ = 0; lvt_1_1_ < this.size(); ++lvt_1_1_) {
+            for (int lvt_1_1_ = 0; lvt_1_1_ < this.size(); ++lvt_1_1_) {
                 this.set(lvt_1_1_, this.defaultElement);
             }
         }
     }
 
 }
+

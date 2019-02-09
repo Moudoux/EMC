@@ -1,23 +1,23 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventGameOver;
-import net.minecraft.client.gui.GuiGameOver;
+import net.minecraft.client.gui.ingame.DeathScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(GuiGameOver.class)
+@Mixin(DeathScreen.class)
 public class MixinGuiGameOver {
 
-	private boolean flag = false;
+    private boolean flag = false;
 
-	@Inject(method = "initGui", at = @At("HEAD"))
-	private void initGui(CallbackInfo ci) {
-		if (!flag) {
-			flag = true;
-			new EventGameOver().send();
-		}
-	}
+    @Inject(method = "onInitialized", at = @At("HEAD"))
+    private void initGui(CallbackInfo ci) {
+        if (!flag) {
+            flag = true;
+            new EventGameOver().send();
+        }
+    }
 
 }

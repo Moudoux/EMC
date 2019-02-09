@@ -3,10 +3,10 @@ package me.deftware.mixin.mixins;
 import me.deftware.client.framework.event.events.EventIsPotionActive;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.mixin.imp.IMixinEntityLivingBase;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -14,42 +14,42 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.Map;
 
-@Mixin(EntityLivingBase.class)
+@Mixin(LivingEntity.class)
 public class MixinEntityLivingBase implements IMixinEntityLivingBase {
 
-	@Shadow
-	@Final
-	private Map<Potion, PotionEffect> activePotionsMap;
+    @Shadow
+    @Final
+    private Map<StatusEffect, StatusEffectInstance> activePotionEffects;
 
-	@Shadow
-	private int activeItemStackUseCount;
+    @Shadow
+    private int field_6222;
 
-	/**
-	 * @Author Deftware
-	 * @reason
-	 */
-	@Overwrite
-	public boolean isPotionActive(Potion potionIn) {
-		if (!((EntityLivingBase) (Object) this instanceof EntityPlayerSP)) {
-			return activePotionsMap.containsKey(potionIn);
-		}
-		EventIsPotionActive event = new EventIsPotionActive(potionIn.getName(),
-				activePotionsMap.containsKey(potionIn)).send();
-		return event.isActive();
-	}
+    /**
+     * @Author Deftware
+     * @reason
+     */
+    @Overwrite
+    public boolean hasPotionEffect(StatusEffect statusEffect_1) {
+        if (!((LivingEntity) (Object) this instanceof ClientPlayerEntity)) {
+            return activePotionEffects.containsKey(statusEffect_1);
+        }
+        EventIsPotionActive event = new EventIsPotionActive(statusEffect_1.getTranslationKey(),
+                activePotionEffects.containsKey(statusEffect_1)).send();
+        return event.isActive();
+    }
 
-	/**
-	 * @Author Deftware
-	 * @reason
-	 */
-	@Overwrite
-	protected float getJumpUpwardsMotion() {
-		return (float) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "JUMP_HEIGHT", 0.42F);
-	}
+    /**
+     * @Author Deftware
+     * @reason
+     */
+    @Overwrite
+    public float method_6106() {
+        return (float) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "JUMP_HEIGHT", 0.42F);
+    }
 
-	@Override
-	public int getActiveItemStackUseCount() {
-		return activeItemStackUseCount;
-	}
+    @Override
+    public int getActiveItemStackUseCount() {
+        return field_6222;
+    }
 
 }

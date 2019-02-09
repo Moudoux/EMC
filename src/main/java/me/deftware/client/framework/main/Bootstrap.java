@@ -12,8 +12,7 @@ import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.OSUtils;
 import me.deftware.client.framework.utils.Settings;
 import me.deftware.client.framework.wrappers.IMinecraft;
-import net.minecraft.client.Minecraft;
-import net.minecraft.realms.RealmsSharedConstants;
+import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,10 +23,13 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +45,7 @@ public class Bootstrap {
     public static boolean isRunning = true;
     public static Settings EMCSettings;
     public static String JSON_JARNAME_NOTE = "DYNAMIC_jarname";
+    public static ArrayList<Consumer> initList = new ArrayList<>();
     private static URLClassLoader modClassLoader;
     private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
 
@@ -56,7 +59,7 @@ public class Bootstrap {
             }
 
             // EMC mods are stored in .minecraft/libraries/EMC
-            File emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + RealmsSharedConstants.VERSION_STRING + File.separator);
+            File emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + FrameworkConstants.MINECRAFT_VERSION + File.separator);
             if (!emc_root.exists()) {
                 emc_root.mkdir();
             }
@@ -144,7 +147,7 @@ public class Bootstrap {
 
         // Version check
         if (jsonObject.get("minversion").getAsDouble() > FrameworkConstants.VERSION) {
-            Minecraft.getInstance().displayGuiScreen(new GuiUpdateLoader(jsonObject));
+            MinecraftClient.getInstance().openScreen(new GuiUpdateLoader(jsonObject));
             jarFile.close();
             return;
         }
@@ -162,9 +165,13 @@ public class Bootstrap {
         }
 
         jarFile.close();
+
         Bootstrap.mods.get(jsonObject.get("name").getAsString()).init(jsonObject);
         Bootstrap.logger.info("Loaded mod");
-        Bootstrap.mods.get(jsonObject.get("name").getAsString()).postInit();
+
+        initList.add((arg) -> {
+            Bootstrap.mods.get(jsonObject.get("name").getAsString()).postInit();
+        });
     }
 
     /**

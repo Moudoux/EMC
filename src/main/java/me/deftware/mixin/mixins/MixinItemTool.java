@@ -1,19 +1,21 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.mixin.imp.IMixinItemTool;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.ToolItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(ItemTool.class)
+@Mixin(ToolItem.class)
 public class MixinItemTool implements IMixinItemTool {
 
-	@Shadow
-	protected float attackDamage;
+    /* TODO: Removed?
+    @Shadow
+    protected float attackDamage;
+    */
 
-	@Override
-	public float getAttackDamage() {
-		return attackDamage;
-	}
+    @Override
+    public float getAttackDamage() {
+        return 1;
+    }
 
 }

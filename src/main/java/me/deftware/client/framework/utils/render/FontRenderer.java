@@ -1,5 +1,6 @@
 package me.deftware.client.framework.utils.render;
 
+import me.deftware.client.framework.utils.render.Texture;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;

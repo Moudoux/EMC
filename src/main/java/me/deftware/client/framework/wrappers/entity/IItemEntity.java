@@ -4,46 +4,46 @@ import net.minecraft.entity.Entity;
 
 public class IItemEntity {
 
-	private Entity item;
+    private Entity item;
 
-	public IItemEntity(Entity item) {
-		this.item = item;
-	}
+    public IItemEntity(Entity item) {
+        this.item = item;
+    }
 
-	public double getPosX() {
-		return item.posX;
-	}
+    public double getPosX() {
+        return item.x;
+    }
 
-	public double getPosY() {
-		return item.posY;
-	}
+    public double getPosY() {
+        return item.y;
+    }
 
-	public double getPosZ() {
-		return item.posZ;
-	}
+    public double getPosZ() {
+        return item.z;
+    }
 
-	public double getLastTickPosX() {
-		return item.lastTickPosX;
-	}
+    public double getLastTickPosX() {
+        return item.prevRenderX;
+    }
 
-	public double getLastTickPosY() {
-		return item.lastTickPosY;
-	}
+    public double getLastTickPosY() {
+        return item.prevRenderY;
+    }
 
-	public double getLastTickPosZ() {
-		return item.lastTickPosZ;
-	}
+    public double getLastTickPosZ() {
+        return item.prevRenderZ;
+    }
 
-	public float getHeight() {
-		return item.height;
-	}
+    public float getHeight() {
+        return item.getHeight();
+    }
 
-	public Entity getItem() {
-		return item;
-	}
+    public Entity getItem() {
+        return item;
+    }
 
-	public void setGlowing(boolean state) {
-		item.setGlowing(state);
-	}
+    public void setGlowing(boolean state) {
+        item.setGlowing(state);
+    }
 
 }

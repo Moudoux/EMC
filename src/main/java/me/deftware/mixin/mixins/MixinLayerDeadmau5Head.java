@@ -1,57 +1,53 @@
 package me.deftware.mixin.mixins;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import me.deftware.client.framework.maps.SettingsMap;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.layers.LayerDeadmau5Head;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.entity.feature.Deadmau5FeatureRenderer;
+import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(LayerDeadmau5Head.class)
+@Mixin(Deadmau5FeatureRenderer.class)
 public class MixinLayerDeadmau5Head {
 
-	@Shadow
-	@Final
-	private RenderPlayer playerRenderer;
+    /**
+     * @Author Deftware
+     * @reason
+     */
+    @Overwrite
+    public void method_4181(AbstractClientPlayerEntity abstractClientPlayerEntity_1, float float_1, float float_2, float float_3, float float_4, float float_5, float float_6, float float_7) {
+        String usernames = (String) SettingsMap.getValue(SettingsMap.MapKeys.MISC, "DEADMAU_EARS", "");
+        boolean flag = abstractClientPlayerEntity_1.getGameProfile().getName().equalsIgnoreCase(usernames);
+        if (usernames.contains(",")) {
+            for (String username : usernames.split(",")) {
+                if (username.equalsIgnoreCase(abstractClientPlayerEntity_1.getGameProfile()
+                        .getName())) {
+                    flag = true;
+                    break;
+                }
+            }
+        }
+        if (abstractClientPlayerEntity_1.method_3127() && !abstractClientPlayerEntity_1.isInvisible() && flag) {
+            ((Deadmau5FeatureRenderer) (Object) this).bindTexture(abstractClientPlayerEntity_1.method_3117());
 
-	/**
-	 * @Author Deftware
-	 * @reason
-	 */
-	@Overwrite
-	public void render(AbstractClientPlayer entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		String usernames = (String) SettingsMap.getValue(SettingsMap.MapKeys.MISC, "DEADMAU_EARS", "");
-		boolean flag = entitylivingbaseIn.getGameProfile().getName().equalsIgnoreCase(usernames);
-		if (usernames.contains(",")) {
-			for (String username : usernames.split(",")) {
-				if (username.equalsIgnoreCase(entitylivingbaseIn.getGameProfile()
-						.getName())) {
-					flag = true;
-					break;
-				}
-			}
-		}
-		if (entitylivingbaseIn.hasSkin() && !entitylivingbaseIn.isInvisible() && flag) {
-			playerRenderer.bindTexture(entitylivingbaseIn.getLocationSkin());
-			for (int i = 0; i < 2; ++i) {
-				float f = entitylivingbaseIn.prevRotationYaw + (entitylivingbaseIn.rotationYaw - entitylivingbaseIn.prevRotationYaw) * partialTicks - (entitylivingbaseIn.prevRenderYawOffset + (entitylivingbaseIn.renderYawOffset - entitylivingbaseIn.prevRenderYawOffset) * partialTicks);
-				float f1 = entitylivingbaseIn.prevRotationPitch + (entitylivingbaseIn.rotationPitch - entitylivingbaseIn.prevRotationPitch) * partialTicks;
-				GlStateManager.pushMatrix();
-				GlStateManager.rotatef(f, 0.0F, 1.0F, 0.0F);
-				GlStateManager.rotatef(f1, 1.0F, 0.0F, 0.0F);
-				GlStateManager.translatef(0.375F * (float) (i * 2 - 1), 0.0F, 0.0F);
-				GlStateManager.translatef(0.0F, -0.375F, 0.0F);
-				GlStateManager.rotatef(-f1, 1.0F, 0.0F, 0.0F);
-				GlStateManager.rotatef(-f, 0.0F, 1.0F, 0.0F);
-				float f2 = 1.3333334F;
-				GlStateManager.scalef(1.3333334F, 1.3333334F, 1.3333334F);
-				playerRenderer.getMainModel().renderDeadmau5Head(0.0625F);
-				GlStateManager.popMatrix();
-			}
-		}
-	}
+            for (int int_1 = 0; int_1 < 2; ++int_1) {
+                float float_8 = MathHelper.lerp(float_3, abstractClientPlayerEntity_1.prevYaw, abstractClientPlayerEntity_1.yaw) - MathHelper.lerp(float_3, abstractClientPlayerEntity_1.field_6220, abstractClientPlayerEntity_1.field_6283);
+                float float_9 = MathHelper.lerp(float_3, abstractClientPlayerEntity_1.prevPitch, abstractClientPlayerEntity_1.pitch);
+                GlStateManager.pushMatrix();
+                GlStateManager.rotatef(float_8, 0.0F, 1.0F, 0.0F);
+                GlStateManager.rotatef(float_9, 1.0F, 0.0F, 0.0F);
+                GlStateManager.translatef(0.375F * (float) (int_1 * 2 - 1), 0.0F, 0.0F);
+                GlStateManager.translatef(0.0F, -0.375F, 0.0F);
+                GlStateManager.rotatef(-float_9, 1.0F, 0.0F, 0.0F);
+                GlStateManager.rotatef(-float_8, 0.0F, 1.0F, 0.0F);
+                float float_10 = 1.3333334F;
+                GlStateManager.scalef(1.3333334F, 1.3333334F, 1.3333334F);
+                (((Deadmau5FeatureRenderer) (Object) this).getModel()).method_2824(0.0625F);
+                GlStateManager.popMatrix();
+            }
+
+        }
+    }
 
 }

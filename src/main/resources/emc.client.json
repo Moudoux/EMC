@@ -1,7 +1,6 @@
 {
   "required": true,
   "package": "me.deftware.mixin.mixins",
-  "refmap": "mixins.emc.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinMinecraft",
@@ -48,8 +47,11 @@
     "MixinKeyboardListener",
     "MixinMouseHelper",
     "MixinGuiEventHandler",
-    "MixinMain",
     "MixinNetworkPlayerInfo",
-    "MixinGuiContainer"
-  ]
+    "MixinGuiContainer",
+    "MixinSplashScreen"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

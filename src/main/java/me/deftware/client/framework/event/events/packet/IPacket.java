@@ -1,6 +1,6 @@
 package me.deftware.client.framework.event.events.packet;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.Packet;
 
 /**
@@ -8,19 +8,19 @@ import net.minecraft.network.Packet;
  */
 public class IPacket {
 
-	private Packet<?> packet;
+    private Packet<?> packet;
 
-	public IPacket(Packet<?> packet) {
-		this.packet = packet;
-	}
+    public IPacket(Packet<?> packet) {
+        this.packet = packet;
+    }
 
-	public Packet<?> getPacket() {
-		return packet;
-	}
+    public Packet<?> getPacket() {
+        return packet;
+    }
 
 
-	public void sendPacket() {
-		Minecraft.getInstance().player.connection.sendPacket(packet);
-	}
+    public void sendPacket() {
+        MinecraftClient.getInstance().player.networkHandler.sendPacket(packet);
+    }
 
 }

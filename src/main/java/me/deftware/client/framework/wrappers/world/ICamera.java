@@ -1,52 +1,52 @@
 package me.deftware.client.framework.wrappers.world;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 
 public class ICamera {
 
-	private static Entity getRenderViewEntity() {
-		return Minecraft.getInstance().getRenderViewEntity();
-	}
+    public static Entity getRenderViewEntity() {
+        return MinecraftClient.getInstance().getCameraEntity();
+    }
 
-	public static double getPosX() {
-		return ICamera.getRenderViewEntity().posX;
-	}
+    public static double getPosX() {
+        return ICamera.getRenderViewEntity().x;
+    }
 
-	public static double getPosY() {
-		return ICamera.getRenderViewEntity().posY;
-	}
+    public static void setPosX(double pos) {
+        ICamera.getRenderViewEntity().x = pos;
+    }
 
-	public static double getPosZ() {
-		return ICamera.getRenderViewEntity().posZ;
-	}
+    public static double getPosY() {
+        return ICamera.getRenderViewEntity().y;
+    }
 
-	public static double getPrevPosX() {
-		return ICamera.getRenderViewEntity().prevPosX;
-	}
+    public static void setPosY(double pos) {
+        ICamera.getRenderViewEntity().y = pos;
+    }
 
-	public static double getPrevPosY() {
-		return ICamera.getRenderViewEntity().prevPosY;
-	}
+    public static double getPosZ() {
+        return ICamera.getRenderViewEntity().z;
+    }
 
-	public static double getPrevPosZ() {
-		return ICamera.getRenderViewEntity().prevPosZ;
-	}
+    public static void setPosZ(double pos) {
+        ICamera.getRenderViewEntity().z = pos;
+    }
 
-	public static double getDistance(double x, double y, double z) {
-		return ICamera.getRenderViewEntity().getDistance(x, y, z);
-	}
+    public static double getPrevPosX() {
+        return ICamera.getRenderViewEntity().prevX;
+    }
 
-	public static void setPosX(double pos) {
-		ICamera.getRenderViewEntity().posX = pos;
-	}
+    public static double getPrevPosY() {
+        return ICamera.getRenderViewEntity().prevY;
+    }
 
-	public static void setPosY(double pos) {
-		ICamera.getRenderViewEntity().posY = pos;
-	}
+    public static double getPrevPosZ() {
+        return ICamera.getRenderViewEntity().prevZ;
+    }
 
-	public static void setPosZ(double pos) {
-		ICamera.getRenderViewEntity().posZ = pos;
-	}
+    public static double getDistance(double x, double y, double z) {
+        return ICamera.getRenderViewEntity().distanceTo(x, y, z);
+    }
 
 }

@@ -4,46 +4,46 @@ import net.minecraft.entity.Entity;
 
 public class IMob {
 
-	private Entity mob;
+    private Entity mob;
 
-	public IMob(Entity mob) {
-		this.mob = mob;
-	}
+    public IMob(Entity mob) {
+        this.mob = mob;
+    }
 
-	public double getPosX() {
-		return mob.posX;
-	}
+    public double getPosX() {
+        return mob.x;
+    }
 
-	public double getPosY() {
-		return mob.posY;
-	}
+    public double getPosY() {
+        return mob.y;
+    }
 
-	public double getPosZ() {
-		return mob.posZ;
-	}
+    public double getPosZ() {
+        return mob.z;
+    }
 
-	public double getLastTickPosX() {
-		return mob.lastTickPosX;
-	}
+    public double getLastTickPosX() {
+        return mob.prevRenderX;
+    }
 
-	public double getLastTickPosY() {
-		return mob.lastTickPosY;
-	}
+    public double getLastTickPosY() {
+        return mob.prevRenderY;
+    }
 
-	public double getLastTickPosZ() {
-		return mob.lastTickPosZ;
-	}
+    public double getLastTickPosZ() {
+        return mob.prevRenderZ;
+    }
 
-	public float getHeight() {
-		return mob.height;
-	}
+    public float getHeight() {
+        return mob.getHeight();
+    }
 
-	public Entity getMob() {
-		return mob;
-	}
+    public Entity getMob() {
+        return mob;
+    }
 
-	public void setGlowing(boolean state) {
-		mob.setGlowing(state);
-	}
+    public void setGlowing(boolean state) {
+        mob.setGlowing(state);
+    }
 
 }

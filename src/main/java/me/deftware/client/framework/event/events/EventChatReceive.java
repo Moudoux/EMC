@@ -2,39 +2,39 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.utils.ChatProcessor;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.text.TextComponent;
 
 /**
  * Triggered by Minecraft chat listener at the moment the message is drawn to screen
  */
 public class EventChatReceive extends Event {
 
-	private ITextComponent itc;
+    private TextComponent itc;
 
-	public EventChatReceive(ITextComponent itc) {
-		this.itc = itc;
-	}
+    public EventChatReceive(TextComponent itc) {
+        this.itc = itc;
+    }
 
-	public ITextComponent getItc() {
-		return itc;
-	}
+    public TextComponent getItc() {
+        return itc;
+    }
 
-	public void setItc(ITextComponent itc) {
-		this.itc = itc;
-	}
+    public void setItc(TextComponent itc) {
+        this.itc = itc;
+    }
 
-	public void setColorCodes() {
-		itc = ChatProcessor.getITextComponent(
-				ChatProcessor.convertColorCodes(itc.getFormattedText()));
-	}
+    public void setColorCodes() {
+        itc = ChatProcessor.getTextComponent(
+                ChatProcessor.convertColorCodes(itc.getFormattedText()));
+    }
 
-	public String getMessage() {
-		return itc.getUnformattedComponentText();
-	}
+    public String getMessage() {
+        return itc.getText();
+    }
 
-	public void replace(String original, String _new) {
-		String message = itc.getFormattedText();
-		itc = ChatProcessor.getITextComponent(message.replace(original, _new));
-	}
+    public void replace(String original, String _new) {
+        String message = itc.getFormattedText();
+        itc = ChatProcessor.getTextComponent(message.replace(original, _new));
+    }
 
 }

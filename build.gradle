@@ -1,127 +1,79 @@
-buildscript {
-    repositories {
-        maven { url = 'http://repo.spongepowered.org/maven' }
-        maven { url = 'https://plugins.gradle.org/m2/' }
-        maven { url 'https://www.jitpack.io' }
-        maven { url 'https://files.minecraftforge.net/maven' }
-    }
-
-    dependencies {
-        classpath 'com.github.Chocohead:ForgeGradle:moderniser-SNAPSHOT'
-        classpath "org.spongepowered:mixingradle:${project.mixinGradleVersion}"
-        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.0"
-    }
+plugins {
+	id 'fabric-loom' version '0.2.0-SNAPSHOT'
 }
-
-def getVersionFromJava() {
-    def ver = 0.0, patch = 0
-    def versionClass = file("src/main/java/me/deftware/client/framework/FrameworkConstants.java").text
-    (versionClass =~ ~/double\s+([_a-zA-Z\u0024][_a-zA-Z0-9\u0024]*)\s+=\s+(([0-9]+)\.([0-9]+))/).each {
-        ver = it[2]
-    }
-    (versionClass =~ ~/int\s+([_a-zA-Z$][_a-zA-Z0-9$]*)\s+=\s+([0-9]+)/).each {
-        if (it[1].toString() == "PATCH") {
-            patch = it[2]
-        }
-    }
-    return "${ver}.${patch}".toString()
-}
-
-group = 'me.deftware'
-version = getVersionFromJava()
 
 apply plugin: 'maven'
-apply plugin: 'java'
-apply plugin: 'net.minecraftforge.gradle.tweaker-client'
-apply plugin: 'org.spongepowered.mixin'
-apply plugin: "com.github.johnrengelman.shadow"
 
 sourceCompatibility = targetCompatibility = 1.8
 
-minecraft {
-    version = project.minecraftVersion
-    runDir = 'run'
-    mappings = project.mappingsVer
-    makeObfSourceJar = true
-    tweakClass = 'me.deftware.launch.Launcher'
+def getVersionFromJava() {
+	def ver = 0.0, patch = 0
+	def versionClass = file("src/main/java/me/deftware/client/framework/FrameworkConstants.java").text
+	(versionClass =~ ~/double\s+([_a-zA-Z\u0024][_a-zA-Z0-9\u0024]*)\s+=\s+(([0-9]+)\.([0-9]+))/).each {
+		ver = it[2]
+	}
+	(versionClass =~ ~/int\s+([_a-zA-Z$][_a-zA-Z0-9$]*)\s+=\s+([0-9]+)/).each {
+		if (it[1].toString() == "PATCH") {
+			patch = it[2]
+		}
+	}
+	return "${ver}.${patch}".toString()
 }
 
+def mcVersion = "19w06a"
+def mappingsVer = "${mcVersion}.2"
+archivesBaseName = "EMC"
+version = getVersionFromJava()
+
 repositories {
-    mavenCentral()
-    maven { url = 'http://repo.spongepowered.org/maven/' }
-    maven { url 'https://libraries.minecraft.net/' }
-    maven { url 'https://www.dimdev.org/maven/' }
-    maven { url 'https://www.jitpack.io' }
+	mavenCentral()
+	maven { url "https://gitlab.com/EMC-Framework/maven/raw/master/" }
 }
 
 configurations {
-    deps
-    compile {
-        extendsFrom deps
-    }
+	extraLibs
 }
 
 dependencies {
-    implementation('org.dimdev:mixin:0.7.11-SNAPSHOT') { transitive = false }
-    implementation('net.minecraft:launchwrapper:1.12') { transitive = false }
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'org.ow2.asm:asm:6.2'
-    implementation 'org.ow2.asm:asm-commons:6.2'
-}
-
-mixin {
-    defaultObfuscationEnv notch
-    add sourceSets.main, "mixins.emc.refmap.json"
-}
-
-shadowJar {
-    dependencies {
-        include('org.dimdev:mixin')
-    }
-    classifier = 'full'
-}
-
-task createPom << {
-    pom {
-        project {
-            groupId "me.deftware"
-            artifactId "EMC"
-            version "${version}-${project.minecraftVersion}"
-        }
-    }.writeTo("maven/me/deftware/EMC/${version}-${project.minecraftVersion}/EMC-${version}-${project.minecraftVersion}.pom")
-}
-
-task copyBuilds(type: Copy) {
-    from "$rootDir/build/libs"
-    into "$rootDir/maven/me/deftware/EMC/${version}-${project.minecraftVersion}/"
-    rename { String fileName ->
-		fileName.replace(version, "${version}-${project.minecraftVersion}")
-	}
-}
-
-task generateApiDocumentation(type: Javadoc) {
-  source = ['src/main/java/me/deftware/client']
-  title = "EMC Framework Documentation"
-  destinationDir = file("docs")
-  failOnError false
-}
-
-reobf {
-    shadowJar {
-        mappingType = 'NOTCH'
-        classpath = sourceSets.main.compileClasspath
-    }
+	minecraft "com.mojang:minecraft:${mcVersion}"
+	mappings "net.fabricmc:yarn:${mappingsVer}"
+	modCompile "net.fabricmc:fabric-loader:0.3.5.106"
+	extraLibs "me.deftware:subsystem:0.3.8"
 }
 
 jar {
-    manifest.attributes(
-            "EMC-Version": version,
-            "EMC-ForgeBuild": false,
-            "Manifest-Version": 1.0
-    )
+	from {
+		configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+	manifest.attributes(
+			"EMC-Version": version,
+			"EMC-ForgeBuild": false,
+			"Manifest-Version": 1.0
+	)
 }
 
-delete "$rootDir/build/libs"
-build.dependsOn(shadowJar)
+task createPom << {
+	pom {
+		project {
+			groupId "me.deftware"
+			artifactId "EMC-F"
+			version "${version}-${mcVersion}"
+		}
+	}.writeTo("maven/me/deftware/EMC-F/${version}-${mcVersion}/EMC-F-${version}-${mcVersion}.pom")
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+task copyBuilds(type: Copy) {
+	from "$rootDir/build/libs/EMC-${version}.jar"
+	into "$rootDir/maven/me/deftware/EMC-F/${version}-${mcVersion}/"
+	rename { String fileName ->
+		fileName.replace(version, "${version}-${mcVersion}").replace("EMC", "EMC-F")
+	}
+}
+
 build.dependsOn(createPom)
-build.dependsOn(copyBuilds)
+build.finalizedBy(copyBuilds)

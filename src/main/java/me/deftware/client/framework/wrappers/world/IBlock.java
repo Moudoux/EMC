@@ -1,102 +1,98 @@
 package me.deftware.client.framework.wrappers.world;
 
 import net.minecraft.block.*;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.IRegistry;
-
-import javax.annotation.Nullable;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class IBlock {
 
-	protected Block block;
+    protected Block block;
 
-	public IBlock(String name) {
-		block = getBlockFromName(name);
-	}
+    public IBlock(String name) {
+        block = getBlockFromName(name);
+    }
 
-	public IBlock(Block block) {
-		this.block = block;
-	}
+    public IBlock(Block block) {
+        this.block = block;
+    }
 
-	public boolean isValidBlock() {
-		return block != null;
-	}
+    public static boolean isValidBlock(String name) {
+        return getBlockFromName(name) != null;
+    }
 
-	public boolean isAir() {
-		return block == Blocks.AIR;
-	}
+    public static boolean isReplaceable(IBlockPos pos) {
+        return IWorld.getStateFromPos(pos).getMaterial().isReplaceable();
+    }
 
-	public Block getBlock() {
-		return block;
-	}
+    private static Block getBlockFromName(String p_getBlockFromName_0_) {
+        Identifier lvt_1_1_ = new Identifier(p_getBlockFromName_0_);
+        if (Registry.BLOCK.contains(lvt_1_1_)) {
+            return Registry.BLOCK.get(lvt_1_1_);
+        }
+        return null;
+    }
 
-	public int getID() {
-		return IRegistry.BLOCK.getId(block);
-	}
+    public boolean isValidBlock() {
+        return block != null;
+    }
 
-	public String getLocalizedName() {
-		return block.getNameTextComponent().getUnformattedComponentText();
-	}
+    public boolean isAir() {
+        return block == Blocks.AIR;
+    }
 
-	public String getTranslationKey() {
-		return block.getTranslationKey();
-	}
+    public Block getBlock() {
+        return block;
+    }
 
-	public String getBlockKey() {
-		return getTranslationKey().substring("block.minecraft.".length());
-	}
+    public int getID() {
+        return Registry.BLOCK.getRawId(block);
+    }
 
-	public static boolean isValidBlock(String name) {
-		return getBlockFromName(name) != null;
-	}
+    public String getLocalizedName() {
+        return block.getTextComponent().getText();
+    }
 
-	public static boolean isReplaceable(IBlockPos pos) {
-		return IWorld.getStateFromPos(pos).getMaterial().isReplaceable();
-	}
+    public String getBlockKey() {
+        return getTranslationKey().substring("block.minecraft.".length());
+    }
 
-	public boolean instanceOf(IBlockTypes type) {
-		if (type.equals(IBlockTypes.BlockContainer)) {
-			return block instanceof BlockContainer;
-		} else if (type.equals(IBlockTypes.BlockCrops)) {
-			return block instanceof BlockCrops;
-		} else if (type.equals(IBlockTypes.BlockPumpkin)) {
-			return block instanceof BlockPumpkin;
-		} else if (type.equals(IBlockTypes.BlockMelon)) {
-			return block instanceof BlockMelon;
-		} else if (type.equals(IBlockTypes.BlockReed)) {
-			return block instanceof BlockReed;
-		} else if (type.equals(IBlockTypes.BlockCactus)) {
-			return block instanceof BlockCactus;
-		} else if (type.equals(IBlockTypes.BlockNetherWart)) {
-			return block instanceof BlockNetherWart;
-		} else if (type.equals(IBlockTypes.BlockFarmland)) {
-			return block instanceof BlockFarmland;
-		} else if (type.equals(IBlockTypes.BlockSoulSand)) {
-			return block instanceof BlockSoulSand;
-		}
-		return false;
-	}
+    public String getTranslationKey() {
+        return block.getTranslationKey();
+    }
 
-	public enum IBlockTypes {
-		// Types
-		BlockContainer, BlockCrops,
+    public boolean instanceOf(IBlockTypes type) {
+        if (type.equals(IBlockTypes.BlockContainer)) {
+            return block instanceof BlockWithEntity;
+        } else if (type.equals(IBlockTypes.BlockCrops)) {
+            return block instanceof CropBlock;
+        } else if (type.equals(IBlockTypes.BlockPumpkin)) {
+            return block instanceof PumpkinBlock;
+        } else if (type.equals(IBlockTypes.BlockMelon)) {
+            return block instanceof MelonBlock;
+        } else if (type.equals(IBlockTypes.BlockReed)) {
+            return block instanceof SugarCaneBlock;
+        } else if (type.equals(IBlockTypes.BlockCactus)) {
+            return block instanceof CactusBlock;
+        } else if (type.equals(IBlockTypes.BlockNetherWart)) {
+            return block instanceof NetherWartBlock;
+        } else if (type.equals(IBlockTypes.BlockFarmland)) {
+            return block instanceof FarmlandBlock;
+        } else if (type.equals(IBlockTypes.BlockSoulSand)) {
+            return block instanceof SoulSandBlock;
+        }
+        return false;
+    }
 
-		// Specific blocks
-		BlockPumpkin, BlockMelon, BlockReed, BlockCactus, BlockNetherWart, BlockFarmland, BlockSoulSand
-	}
+    /*
+     * Block specific functions
+     */
 
-	/*
-	 * Block specific functions
-	 */
+    public enum IBlockTypes {
+        // Types
+        BlockContainer, BlockCrops,
 
-	@Nullable
-	private static Block getBlockFromName(String p_getBlockFromName_0_) {
-		ResourceLocation lvt_1_1_ = new ResourceLocation(p_getBlockFromName_0_);
-		if (IRegistry.BLOCK.containsKey(lvt_1_1_)) {
-			return IRegistry.BLOCK.get(lvt_1_1_);
-		}
-		return null;
-	}
+        // Specific blocks
+        BlockPumpkin, BlockMelon, BlockReed, BlockCactus, BlockNetherWart, BlockFarmland, BlockSoulSand
+    }
 
 }

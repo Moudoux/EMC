@@ -3,78 +3,74 @@ package me.deftware.mixin.mixins;
 import me.deftware.client.framework.event.events.EventFovModifier;
 import me.deftware.client.framework.event.events.EventSpectator;
 import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.network.NetworkPlayerInfo;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.world.GameType;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.ScoreboardEntry;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.world.GameMode;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(AbstractClientPlayer.class)
+@Mixin(AbstractClientPlayerEntity.class)
 public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientPlayer {
 
-	@Shadow
-	private NetworkPlayerInfo playerInfo;
+    @Shadow
+    private ScoreboardEntry field_3901;
 
-	/**
-	 * @Author Deftware
-	 * @reason
-	 */
-	@Overwrite
-	public boolean isSpectator() {
-		NetworkPlayerInfo networkplayerinfo = Minecraft.getInstance().getConnection()
-				.getPlayerInfo(((EntityPlayer) (Object) this).getGameProfile().getId());
-		EventSpectator event = new EventSpectator(
-				networkplayerinfo != null && networkplayerinfo.getGameType() == GameType.SPECTATOR).send();
-		return event.isSpectator();
-	}
+    /**
+     * @Author Deftware
+     * @reason
+     */
+    @Overwrite
+    public boolean method_7325() {
+        ScoreboardEntry scoreboardEntry_1 = MinecraftClient.getInstance().getNetworkHandler().method_2871(((PlayerEntity) (Object) this).getGameProfile().getId());
+        EventSpectator event = new EventSpectator(scoreboardEntry_1 != null && scoreboardEntry_1.getGameMode() == GameMode.SPECTATOR);
+        return event.isSpectator();
+    }
 
-	/**
-	 * @Author Deftware
-	 * @reason
-	 */
-	@Overwrite
-	public float getFovModifier() {
-		float f = 1.0F;
+    /**
+     * @Author Deftware
+     * @reason
+     */
+    @Overwrite
+    public float method_3118() {
+        float float_1 = 1.0F;
+        if (((PlayerEntity) (Object) this).abilities.flying) {
+            float_1 *= 1.1F;
+        }
 
-		if (((AbstractClientPlayer) (Object) this).abilities.isFlying) {
-			f *= 1.1F;
-		}
+        EventFovModifier event = new EventFovModifier(float_1).send();
+        float_1 = event.getFov();
 
-		EventFovModifier event = new EventFovModifier(f).send();
-		f = event.getFov();
+        EntityAttributeInstance entityAttributeInstance_1 = ((LivingEntity) (Object) this).getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);
+        float_1 = (float) ((double) float_1 * ((entityAttributeInstance_1.getValue() / (double) ((PlayerEntity) (Object) this).abilities.getWalkSpeed() + 1.0D) / 2.0D));
+        if (((PlayerEntity) (Object) this).abilities.getWalkSpeed() == 0.0F || Float.isNaN(float_1) || Float.isInfinite(float_1)) {
+            float_1 = 1.0F;
+        }
 
-		IAttributeInstance iattributeinstance = ((AbstractClientPlayer) (Object) this).getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-		f = (float) ((double) f * ((iattributeinstance.getValue() / (double) ((AbstractClientPlayer) (Object) this).abilities.getWalkSpeed() + 1.0D) / 2.0D));
+        if (((LivingEntity) (Object) this).isUsingItem() && ((LivingEntity) (Object) this).getActiveItem().getItem() == Items.BOW) {
+            int int_1 = ((LivingEntity) (Object) this).method_6048();
+            float float_2 = (float) int_1 / 20.0F;
+            if (float_2 > 1.0F) {
+                float_2 = 1.0F;
+            } else {
+                float_2 *= float_2;
+            }
 
-		if (((AbstractClientPlayer) (Object) this).abilities.getWalkSpeed() == 0.0F || Float.isNaN(f) || Float.isInfinite(f)) {
-			f = 1.0F;
-		}
+            float_1 *= 1.0F - float_2 * 0.15F;
+        }
 
-		if (((AbstractClientPlayer) (Object) this).isHandActive() && ((AbstractClientPlayer) (Object) this).getActiveItemStack().getItem() == Items.BOW) {
-			int i = ((AbstractClientPlayer) (Object) this).getItemInUseMaxCount();
-			float f1 = (float) i / 20.0F;
+        return float_1;
+    }
 
-			if (f1 > 1.0F) {
-				f1 = 1.0F;
-			} else {
-				f1 = f1 * f1;
-			}
-
-			f *= 1.0F - f1 * 0.15F;
-		}
-
-		return f;
-	}
-
-	@Override
-	public NetworkPlayerInfo getPlayerNetworkInfo() {
-		return playerInfo;
-	}
+    @Override
+    public ScoreboardEntry getPlayerNetworkInfo() {
+        return field_3901;
+    }
 
 }

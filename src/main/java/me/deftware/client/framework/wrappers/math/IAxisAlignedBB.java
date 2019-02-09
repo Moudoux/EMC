@@ -1,18 +1,17 @@
 package me.deftware.client.framework.wrappers.math;
 
-
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BoundingBox;
 
 public class IAxisAlignedBB {
 
-	private AxisAlignedBB bb;
+    private BoundingBox bb;
 
-	public IAxisAlignedBB(double x, double y, double z, double x1, double y1, double z1) {
-		bb = new AxisAlignedBB(x, y, z, x1, y1, z1);
-	}
+    public IAxisAlignedBB(double x, double y, double z, double x1, double y1, double z1) {
+        bb = new BoundingBox(x, y, z, x1, y1, z1);
+    }
 
-	public AxisAlignedBB getAABB() {
-		return bb;
-	}
+    public BoundingBox getAABB() {
+        return bb;
+    }
 
 }

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 @Mixin(Main.class)
 public class MixinMain {
 
-	@Inject(method = "main", at = @At("HEAD"))
+	@Inject(method = "main", at = @At("HEAD"), remap = false)
 	private static void main(String[] args, CallbackInfo ci) {
 		OptionParser optionParser = new OptionParser();
 		optionParser.allowsUnrecognizedOptions();

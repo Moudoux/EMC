@@ -1,25 +1,25 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventSaddleCheck;
-import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.passive.HorseBaseEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(AbstractHorse.class)
+@Mixin(HorseBaseEntity.class)
 public abstract class MixinAbstractHorse {
 
-	@Shadow
-	protected abstract boolean getHorseWatchableBoolean(int p_110233_1_);
+    @Shadow
+    protected abstract boolean getHorseFlag(int int_19);
 
-	/**
-	 * @Author Deftware
-	 * @reason
-	 */
-	@Overwrite
-	public boolean isHorseSaddled() {
-		EventSaddleCheck event = new EventSaddleCheck(getHorseWatchableBoolean(4)).send();
-		return event.isState();
-	}
+    /**
+     * @Author Deftware
+     * @reason
+     */
+    @Overwrite
+    public boolean isSaddled() {
+        EventSaddleCheck event = new EventSaddleCheck(this.getHorseFlag(4)).send();
+        return event.isState();
+    }
 
 }

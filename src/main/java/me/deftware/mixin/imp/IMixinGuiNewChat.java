@@ -1,9 +1,10 @@
 package me.deftware.mixin.imp;
 
-import net.minecraft.util.text.ITextComponent;
+
+import net.minecraft.text.TextComponent;
 
 public interface IMixinGuiNewChat {
 
-	void setTheChatLine(ITextComponent chatComponent, int chatLineId, int updateCounter, boolean displayOnly);
+	void setTheChatLine(TextComponent chatComponent, int chatLineId, int updateCounter, boolean displayOnly);
 
 }

@@ -8,7 +8,6 @@ import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -33,7 +32,7 @@ public class BitmapFont implements EMCFont {
     protected HashMap<Character, Integer> textureIDStore = new HashMap<>();
     protected HashMap<Character, int[]> textureDimensionsStore = new HashMap<>();
 
-    public BitmapFont(@Nonnull String fontName, int fontSize, int modifiers) {
+    public BitmapFont(String fontName, int fontSize, int modifiers) {
         this.fontName = fontName;
         this.fontSize = fontSize;
 

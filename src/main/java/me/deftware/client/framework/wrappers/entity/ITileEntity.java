@@ -1,7 +1,7 @@
 package me.deftware.client.framework.wrappers.entity;
 
 import me.deftware.client.framework.wrappers.world.IBlockPos;
-import net.minecraft.tileentity.*;
+import net.minecraft.block.entity.*;
 
 import java.awt.*;
 
@@ -11,11 +11,11 @@ public class ITileEntity {
     private IBlockPos position;
     private Color color = Color.white;
 
-    public ITileEntity(TileEntity entity) {
-        chestType = entity instanceof TileEntityChest
-                ? entity instanceof TileEntityTrappedChest ? IChestType.TRAPPED_CHEST : IChestType.CHEST
-                : entity instanceof TileEntityEnderChest ? IChestType.ENDER_CHEST
-                : entity instanceof TileEntityShulkerBox ? IChestType.SHULKER_BOX : null;
+    public ITileEntity(BlockEntity entity) {
+        chestType = entity instanceof ChestBlockEntity
+                ? entity instanceof TrappedChestBlockEntity ? IChestType.TRAPPED_CHEST : IChestType.CHEST
+                : entity instanceof EnderChestBlockEntity ? IChestType.ENDER_CHEST
+                : entity instanceof ShulkerBoxBlockEntity ? IChestType.SHULKER_BOX : null;
         if (chestType != null) {
             color = chestType.equals(IChestType.TRAPPED_CHEST) ? Color.RED
                     : chestType.equals(IChestType.CHEST) ? Color.ORANGE

@@ -1,55 +1,55 @@
 package me.deftware.client.framework.wrappers;
 
-import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.options.ServerEntry;
 
-public class IServerData extends ServerData {
+public class IServerData extends ServerEntry {
 
-	public IServerData(String name, String ip, boolean isLan) {
-		super(name, ip, isLan);
-	}
+    public IServerData(String name, String ip, boolean isLan) {
+        super(name, ip, isLan);
+    }
 
-	public String getIMotd() {
-		return serverMOTD;
-	}
+    public String getIMotd() {
+        return label;
+    }
 
-	public boolean isIPinged() {
-		return pinged;
-	}
+    public boolean isIPinged() {
+        return field_3754;
+    }
 
-	public String getIIP() {
-		return serverIP;
-	}
+    public String getIIP() {
+        return address;
+    }
 
-	public boolean isILanServer() {
-		return isOnLAN();
-	}
+    public boolean isILanServer() {
+        return isLocal();
+    }
 
-	public String getIServerName() {
-		return serverName;
-	}
+    public String getIServerName() {
+        return name;
+    }
 
-	public String getIGameVersion() {
-		return gameVersion;
-	}
+    public String getIGameVersion() {
+        return version;
+    }
 
-	public int getIVersion() {
-		return version;
-	}
+    public int getIVersion() {
+        return protocolVersion;
+    }
 
-	public String getIPopulationInfo() {
-		return populationInfo;
-	}
+    public String getIPopulationInfo() {
+        return playerCountLabel;
+    }
 
-	public long getIPingToServer() {
-		return pingToServer;
-	}
+    public long getIPingToServer() {
+        return ping;
+    }
 
-	public String getIBase64EncodedIconData() {
-		return getBase64EncodedIconData();
-	}
+    public String getIBase64EncodedIconData() {
+        return getIcon();
+    }
 
-	public void setIBase64EncodedIconData(String icon) {
-		setBase64EncodedIconData(icon);
-	}
+    public void setIBase64EncodedIconData(String icon) {
+        setIcon(icon);
+    }
 
 }

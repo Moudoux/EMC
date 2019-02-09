@@ -1,15 +1,15 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.maps.SettingsMap;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.BlockModelRenderer;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.block.BlockModelRenderer;
+import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.IRegistry;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.ExtendedBlockView;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,49 +23,46 @@ import java.util.Random;
 @Mixin(BlockModelRenderer.class)
 public abstract class MixinBlockModelRenderer {
 
-	@Shadow
-	protected abstract void renderModelBrightnessColorQuads(float brightness, float red, float green, float blue,
-															List<BakedQuad> listQuads);
+    @Shadow
+    protected abstract void renderQuad(float float_1, float float_2, float float_3, float float_4, List<BakedQuad> list_1);
 
-	@Inject(method = "renderModel", at = @At("HEAD"), cancellable = true)
-	private void renderModel(IWorldReader p_199324_1_, IBakedModel p_199324_2_, IBlockState p_199324_3_,
-							 BlockPos p_199324_4_, BufferBuilder p_199324_5_, boolean p_199324_6_, Random p_199324_7_,
-							 long p_199324_8_, CallbackInfoReturnable<Boolean> ci) {
-		if (SettingsMap.isOverrideMode()) {
-			if (!(boolean) SettingsMap.getValue(IRegistry.BLOCK.getId(p_199324_3_.getBlock()), "render", false)) {
-				ci.setReturnValue(false);
-			}
-		}
-	}
+    @Inject(method = "tesselate", at = @At("HEAD"), cancellable = true)
+    public void tesselate(ExtendedBlockView extendedBlockView_1, BakedModel bakedModel_1, BlockState blockState_1, BlockPos blockPos_1, BufferBuilder bufferBuilder_1, boolean boolean_1, Random random_1, long long_1, CallbackInfoReturnable<Boolean> ci) {
+        if (SettingsMap.isOverrideMode()) {
+            if (!(boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "render", false)) {
+                ci.setReturnValue(false);
+            }
+        }
+    }
 
-	/**
-	 * @Author Deftware
-	 * @reason
-	 */
-	@Overwrite
-	public void renderModelBrightnessColor(IBlockState state, IBakedModel p_187495_2_, float p_187495_3_,
-										   float p_187495_4_, float p_187495_5_, float p_187495_6_) {
-		if (state != null) {
-			try {
-				p_187495_3_ = (float) SettingsMap.getValue(IRegistry.BLOCK.getId(state.getBlock()),
-						"lightValue", p_187495_3_);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		}
+    /**
+     * @Author Deftware
+     * @reason
+     */
+    @Overwrite
+    public void render(BlockState blockState_1, BakedModel bakedModel_1, float float_1, float float_2, float float_3, float float_4) {
+        if (blockState_1 != null) {
+            try {
+                float_1 = (float) SettingsMap.getValue(Registry.BLOCK.getRawId(blockState_1.getBlock()),
+                        "lightValue", float_1);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
 
-		Random random = new Random();
-		long i = 42L;
+        Random random_1 = new Random();
+        long long_1 = 42L;
+        Direction[] var10 = Direction.values();
+        int var11 = var10.length;
 
-		for (EnumFacing enumfacing : EnumFacing.values()) {
-			random.setSeed(42L);
-			this.renderModelBrightnessColorQuads(p_187495_3_, p_187495_4_, p_187495_5_, p_187495_6_,
-					p_187495_2_.getQuads(state, enumfacing, random));
-		}
+        for (int var12 = 0; var12 < var11; ++var12) {
+            Direction direction_1 = var10[var12];
+            random_1.setSeed(42L);
+            this.renderQuad(float_1, float_2, float_3, float_4, bakedModel_1.getQuads(blockState_1, direction_1, random_1));
+        }
 
-		random.setSeed(42L);
-		this.renderModelBrightnessColorQuads(p_187495_3_, p_187495_4_, p_187495_5_, p_187495_6_,
-				p_187495_2_.getQuads(state, (EnumFacing) null, random));
-	}
+        random_1.setSeed(42L);
+        this.renderQuad(float_1, float_2, float_3, float_4, bakedModel_1.getQuads(blockState_1, (Direction) null, random_1));
+    }
 
 }

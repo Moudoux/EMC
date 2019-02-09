@@ -2,7 +2,6 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 
 /**
  * Triggered when player model is being rendered.

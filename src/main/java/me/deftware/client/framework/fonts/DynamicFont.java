@@ -4,7 +4,6 @@ import me.deftware.client.framework.utils.render.GraphicsUtil;
 import me.deftware.client.framework.utils.render.Texture;
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -28,7 +27,7 @@ public class DynamicFont implements EMCFont {
 
     protected HashMap<String, Texture> textureStore = new HashMap<>();
 
-    public DynamicFont(@Nonnull String fontName, int fontSize, int modifiers) {
+    public DynamicFont(String fontName, int fontSize, int modifiers) {
         this.fontName = fontName;
         this.fontSize = fontSize;
 
@@ -47,7 +46,7 @@ public class DynamicFont implements EMCFont {
         lastRenderedHeight = 0;
     }
 
-    protected void prepareStandardFont(){
+    protected void prepareStandardFont() {
         if (!bold && !italics) {
             this.stdFont = new java.awt.Font(fontName, java.awt.Font.PLAIN, fontSize);
         } else {
@@ -113,7 +112,7 @@ public class DynamicFont implements EMCFont {
     @Override
     public int drawString(int x, int y, String text, Color color) {
         generateString(text, color);
-        drawOnScreen(x-1, y);
+        drawOnScreen(x - 1, y);
         return 0;
     }
 
@@ -162,7 +161,7 @@ public class DynamicFont implements EMCFont {
         GL11.glPushMatrix();
         GraphicsUtil.prepareMatrix(getLastRenderedWidth(), getLastRenderedHeight());
         prepareForRendering(); //BINDING
-        GraphicsUtil.drawQuads(x,y, getLastRenderedWidth(), getLastRenderedHeight());
+        GraphicsUtil.drawQuads(x, y, getLastRenderedWidth(), getLastRenderedHeight());
         GL11.glPopMatrix();
         return 0;
     }

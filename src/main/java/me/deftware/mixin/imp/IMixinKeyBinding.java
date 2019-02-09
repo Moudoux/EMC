@@ -1,11 +1,11 @@
 package me.deftware.mixin.imp;
 
-import net.minecraft.client.util.InputMappings;
+import net.minecraft.client.util.InputUtil;
 
 public interface IMixinKeyBinding {
 
-	void setPressed(boolean state);
+    void setPressed(boolean state);
 
-	InputMappings.Input getInput();
+    InputUtil.KeyCode getInput();
 
 }

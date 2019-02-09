@@ -1,9 +1,9 @@
 package me.deftware.mixin.imp;
 
-import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.client.network.ScoreboardEntry;
 
 public interface IMixinAbstractClientPlayer {
 
-    NetworkPlayerInfo getPlayerNetworkInfo();
+    ScoreboardEntry getPlayerNetworkInfo();
 
 }

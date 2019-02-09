@@ -6,16 +6,16 @@ import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.ChatProcessor;
 import me.deftware.client.framework.wrappers.IChat;
 import me.deftware.mixin.imp.IMixinEntityPlayerSP;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.MobEffects;
-import net.minecraft.network.play.client.CPacketChatMessage;
-import net.minecraft.network.play.client.CPacketEntityAction;
-import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.util.FoodStats;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.HungerManager;
+import net.minecraft.server.network.packet.ChatMessageServerPacket;
+import net.minecraft.server.network.packet.ClientCommandServerPacket;
+import net.minecraft.server.network.packet.PlayerMoveServerMessage;
+import net.minecraft.util.math.BoundingBox;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -25,215 +25,191 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(EntityPlayerSP.class)
+@Mixin(ClientPlayerEntity.class)
 public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinEntityPlayerSP {
 
-	@Shadow
-	private boolean prevOnGround;
+    @Shadow
+    @Final
+    public ClientPlayNetworkHandler networkHandler;
+    @Shadow
+    private boolean field_3920;
+    @Shadow
+    private boolean field_3919;
+    @Shadow
+    private boolean field_3936;
+    @Shadow
+    private boolean field_3927;
+    @Shadow
+    private float field_3941;
+    @Shadow
+    private float field_3925;
+    @Shadow
+    private double field_3926;
+    @Shadow
+    private double field_3940;
+    @Shadow
+    private double field_3924;
+    @Shadow
+    private int field_3923;
+    @Shadow
+    private float field_3922;
 
-	@Shadow
-	private boolean serverSprintState;
+    @Shadow
+    protected abstract boolean method_3134();
 
-	@Shadow
-	private boolean serverSneakState;
+    @Shadow
+    public abstract boolean isUsingItem();
 
-	@Shadow
-	private boolean autoJumpEnabled;
+    @Redirect(method = "updateMovement", at = @At(value = "INVOKE", target = "net/minecraft/client/network/ClientPlayerEntity.isUsingItem()Z", ordinal = 0))
+    private boolean itemUseSlowdownEvent(ClientPlayerEntity self) {
+        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Item_Use).send();
+        if (event.isCanceled()) {
+            return false;
+        }
+        return isUsingItem();
+    }
 
-	@Shadow
-	private float lastReportedYaw;
+    @Redirect(method = "updateMovement", at = @At(value = "INVOKE", target = "net/minecraft/entity/player/HungerManager.getFoodLevel()I"))
+    private int hungerSlowdownEvent(HungerManager self) {
+        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Hunger).send();
+        if (event.isCanceled()) {
+            return 7;
+        }
+        return self.getFoodLevel();
+    }
 
-	@Shadow
-	private float lastReportedPitch;
+    @Inject(method = "update", at = @At("HEAD"), cancellable = true)
+    private void update(CallbackInfo ci) {
+        EventUpdate event = new EventUpdate(x, y, z, yaw, pitch, onGround).send();
+        if (event.isCanceled()) {
+            ci.cancel();
+        }
+    }
 
-	@Shadow
-	private double lastReportedPosX;
-
-	@Shadow
-	private double lastReportedPosY;
-
-	@Shadow
-	private double lastReportedPosZ;
-
-	@Shadow
-	private int positionUpdateTicks;
-
-	@Shadow
-	private float horseJumpPower;
-
-	@Shadow
-	protected abstract boolean isCurrentViewEntity();
-
-	@Shadow
-	public abstract boolean isHandActive();
-
-	@Shadow
-	@Final
-	public NetHandlerPlayClient connection;
-
-	@Redirect(method = "livingTick", at = @At(value = "INVOKE", target = "net/minecraft/client/entity/EntityPlayerSP.isHandActive()Z", ordinal = 0))
-	private boolean itemUseSlowdownEvent(EntityPlayerSP self) {
-		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Item_Use).send();
-		if (event.isCanceled()) {
-			return false;
-		}
-		return isHandActive();
-	}
-
-	@Redirect(method = "livingTick", at = @At(value = "INVOKE", target = "net/minecraft/util/FoodStats.getFoodLevel()I"))
-	private int hungerSlowdownEvent(FoodStats self) {
-		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Hunger).send();
-		if (event.isCanceled()) {
-			return 7;
-		}
-		return self.getFoodLevel();
-	}
-
-	@Redirect(method = "livingTick", at = @At(value = "INVOKE", target = "net/minecraft/entity/EntityLivingBase.isPotionActive(Lnet/minecraft/potion/Potion;)Z"))
-	private boolean blindlessSlowdownEvent(EntityLivingBase self) {
-		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Blindness).send();
-		if (event.isCanceled()) {
-			return false;
-		}
-		return self.isPotionActive(MobEffects.BLINDNESS);
-	}
-
-	@Inject(method = "tick", at = @At("HEAD"), cancellable = true)
-	private void tick(CallbackInfo ci) {
-		EventUpdate event = new EventUpdate(posX, posY, posZ, rotationYaw, rotationPitch, onGround).send();
-		if (event.isCanceled()) {
-			ci.cancel();
-		}
-	}
-
-	@Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
-	public void sendChatMessage(String message, CallbackInfo ci) {
-		String trigger = CommandRegister.getCommandTrigger();
-		if (message.startsWith(trigger) && !trigger.equals("")) {
-			try {
-				if (message.startsWith(trigger + "say")) {
-					if (!message.contains(" ")) {
-						ChatProcessor.printClientMessage(
-								"Invalid syntax, please use: " + ChatColor.AQUA + trigger + "say <Message>");
-						return;
-					}
-					connection.sendPacket(new CPacketChatMessage(message.substring((trigger + "say ").length())));
-					ci.cancel();
-					return;
-				}
-				CommandRegister.getDispatcher().execute(message.substring(CommandRegister.getCommandTrigger().length()), Minecraft.getInstance().player.getCommandSource());
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				IChat.sendClientMessage(ex.getMessage());
-			}
-			ci.cancel();
-		} else if (message.startsWith("#")) {
-			message = message.startsWith("# ") ? message.substring(2) : message.substring(1);
-			if (message.equals("")) {
-				ChatProcessor.printClientMessage("Invalid syntax, please use: " + ChatColor.AQUA + "# <Message>");
-				ci.cancel();
-				return;
-			}
-			new EventIRCMessage(message).send();
-			ci.cancel();
-			return;
-		}
-		EventChatSend event = new EventChatSend(message).send();
-		if (event.isCanceled()) {
-			ci.cancel();
-		} else if (!event.getMessage().equals(message)) {
-			connection.sendPacket(new CPacketChatMessage(event.getMessage()));
-			ci.cancel();
-		}
-	}
+    @Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
+    public void sendChatMessage(String message, CallbackInfo ci) {
+        String trigger = CommandRegister.getCommandTrigger();
+        if (message.startsWith(trigger) && !trigger.equals("")) {
+            try {
+                if (message.startsWith(trigger + "say")) {
+                    if (!message.contains(" ")) {
+                        ChatProcessor.printClientMessage(
+                                "Invalid syntax, please use: " + ChatColor.AQUA + trigger + "say <Message>");
+                        return;
+                    }
+                    networkHandler.sendPacket(new ChatMessageServerPacket(message.substring((trigger + "say ").length())));
+                    ci.cancel();
+                    return;
+                }
+                CommandRegister.getDispatcher().execute(message.substring(CommandRegister.getCommandTrigger().length()), MinecraftClient.getInstance().player.getCommandSource());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                IChat.sendClientMessage(ex.getMessage());
+            }
+            ci.cancel();
+        } else if (message.startsWith("#")) {
+            message = message.startsWith("# ") ? message.substring(2) : message.substring(1);
+            if (message.equals("")) {
+                ChatProcessor.printClientMessage("Invalid syntax, please use: " + ChatColor.AQUA + "# <Message>");
+                ci.cancel();
+                return;
+            }
+            new EventIRCMessage(message).send();
+            ci.cancel();
+            return;
+        }
+        EventChatSend event = new EventChatSend(message).send();
+        if (event.isCanceled()) {
+            ci.cancel();
+        } else if (!event.getMessage().equals(message)) {
+            networkHandler.sendPacket(new ChatMessageServerPacket(event.getMessage()));
+            ci.cancel();
+        }
+    }
 
 
-	@Override
-	public void setHorseJumpPower(float height) {
-		horseJumpPower = height;
-	}
+    @Override
+    public void setHorseJumpPower(float height) {
+        field_3922 = height;
+    }
 
-	/**
-	 * @Author Deftware
-	 * @reason
-	 */
-	@Overwrite
-	private void onUpdateWalkingPlayer() {
-		EventPlayerWalking event = new EventPlayerWalking(posX, posY, posZ, rotationYaw, rotationPitch, onGround)
-				.send();
-		if (event.isCanceled()) {
-			return;
-		}
-		boolean flag = isSprinting();
+    /**
+     * @Author Deftware
+     * @reason
+     */
+    @Overwrite
+    private void method_3136() {
+        EventPlayerWalking event = new EventPlayerWalking(x, y, z, yaw, pitch, onGround)
+                .send();
+        if (event.isCanceled()) {
+            return;
+        }
 
-		if (flag != serverSprintState) {
-			if (flag) {
-				connection.sendPacket(new CPacketEntityAction((EntityPlayerSP) (Object) this,
-						CPacketEntityAction.Action.START_SPRINTING));
-			} else {
-				connection.sendPacket(new CPacketEntityAction((EntityPlayerSP) (Object) this,
-						CPacketEntityAction.Action.STOP_SPRINTING));
-			}
+        boolean boolean_1 = this.isSprinting();
+        if (boolean_1 != this.field_3919) {
+            if (boolean_1) {
+                this.networkHandler.sendPacket(new ClientCommandServerPacket((ClientPlayerEntity) (Object) this, ClientCommandServerPacket.Mode.START_SPRINTING));
+            } else {
+                this.networkHandler.sendPacket(new ClientCommandServerPacket((ClientPlayerEntity) (Object) this, ClientCommandServerPacket.Mode.STOP_SPRINTING));
+            }
 
-			serverSprintState = flag;
-		}
+            this.field_3919 = boolean_1;
+        }
 
-		boolean flag1 = isSneaking();
+        boolean boolean_2 = this.isSneaking();
+        if (boolean_2 != this.field_3936) {
+            if (boolean_2) {
+                this.networkHandler.sendPacket(new ClientCommandServerPacket((ClientPlayerEntity) (Object) this, ClientCommandServerPacket.Mode.START_SNEAKING));
+            } else {
+                this.networkHandler.sendPacket(new ClientCommandServerPacket((ClientPlayerEntity) (Object) this, ClientCommandServerPacket.Mode.STOP_SNEAKING));
+            }
 
-		if (flag1 != serverSneakState) {
-			if (flag1) {
-				connection.sendPacket(new CPacketEntityAction((EntityPlayerSP) (Object) this,
-						CPacketEntityAction.Action.START_SNEAKING));
-			} else {
-				connection.sendPacket(new CPacketEntityAction((EntityPlayerSP) (Object) this,
-						CPacketEntityAction.Action.STOP_SNEAKING));
-			}
+            this.field_3936 = boolean_2;
+        }
 
-			serverSneakState = flag1;
-		}
+        if (method_3134()) {
+            BoundingBox axisalignedbb = getBoundingBox();
+            double d0 = x - field_3926;
+            double d1 = event.getPosY() - field_3940;
+            double d2 = z - field_3924;
+            double d3 = event.getRotationYaw() - field_3941;
+            double d4 = event.getRotationPitch() - field_3925;
+            ++field_3923;
+            boolean flag2 = d0 * d0 + d1 * d1 + d2 * d2 > 9.0E-4D || field_3923 >= 20;
+            boolean flag3 = d3 != 0.0D || d4 != 0.0D;
 
-		if (isCurrentViewEntity()) {
-			AxisAlignedBB axisalignedbb = getBoundingBox();
-			double d0 = posX - lastReportedPosX;
-			double d1 = event.getPosY() - lastReportedPosY;
-			double d2 = posZ - lastReportedPosZ;
-			double d3 = event.getRotationYaw() - lastReportedYaw;
-			double d4 = event.getRotationPitch() - lastReportedPitch;
-			++positionUpdateTicks;
-			boolean flag2 = d0 * d0 + d1 * d1 + d2 * d2 > 9.0E-4D || positionUpdateTicks >= 20;
-			boolean flag3 = d3 != 0.0D || d4 != 0.0D;
+            if (hasVehicle()) {
+                this.networkHandler.sendPacket(new PlayerMoveServerMessage.Both(velocityX, -999.0D, velocityZ,
+                        event.getRotationYaw(), event.getRotationPitch(), event.isOnGround()));
+                flag2 = false;
+            } else if ((flag2 && flag3)) {
+                this.networkHandler.sendPacket(new PlayerMoveServerMessage.Both(x, event.getPosY(), z,
+                        event.getRotationYaw(), event.getRotationPitch(), event.isOnGround()));
+            } else if (flag2) {
+                this.networkHandler.sendPacket(new PlayerMoveServerMessage.PositionOnly(x, event.getPosY(), z, event.isOnGround()));
+            } else if (flag3) {
+                this.networkHandler.sendPacket(new PlayerMoveServerMessage.LookOnly(event.getRotationYaw(), event.getRotationPitch(),
+                        event.isOnGround()));
+            } else if (field_3920 != onGround) {
+                this.networkHandler.sendPacket(new PlayerMoveServerMessage(event.isOnGround()));
+            }
 
-			if (isPassenger()) {
-				connection.sendPacket(new CPacketPlayer.PositionRotation(motionX, -999.0D, motionZ,
-						event.getRotationYaw(), event.getRotationPitch(), event.isOnGround()));
-				flag2 = false;
-			} else if ((flag2 && flag3)) {
-				connection.sendPacket(new CPacketPlayer.PositionRotation(posX, event.getPosY(), posZ,
-						event.getRotationYaw(), event.getRotationPitch(), event.isOnGround()));
-			} else if (flag2) {
-				connection.sendPacket(new CPacketPlayer.Position(posX, event.getPosY(), posZ, event.isOnGround()));
-			} else if (flag3) {
-				connection.sendPacket(new CPacketPlayer.Rotation(event.getRotationYaw(), event.getRotationPitch(),
-						event.isOnGround()));
-			} else if (prevOnGround != onGround) {
-				connection.sendPacket(new CPacketPlayer(event.isOnGround()));
-			}
+            if (flag2) {
+                this.field_3926 = this.x;
+                this.field_3940 = axisalignedbb.minY;
+                this.field_3924 = this.z;
+                this.field_3923 = 0;
+            }
 
-			if (flag2) {
-				lastReportedPosX = posX;
-				lastReportedPosY = axisalignedbb.minY;
-				lastReportedPosZ = posZ;
-				positionUpdateTicks = 0;
-			}
+            if (flag3) {
+                this.field_3941 = this.yaw;
+                this.field_3925 = this.pitch;
+            }
 
-			if (flag3) {
-				lastReportedYaw = rotationYaw;
-				lastReportedPitch = rotationPitch;
-			}
+            this.field_3920 = this.onGround;
+            this.field_3927 = MinecraftClient.getInstance().options.autoJump;
+        }
 
-			prevOnGround = onGround;
-			autoJumpEnabled = Minecraft.getInstance().gameSettings.autoJump;
-		}
-	}
+    }
 
 }

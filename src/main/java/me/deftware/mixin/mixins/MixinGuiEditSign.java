@@ -1,30 +1,30 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.mixin.imp.IMixinGuiEditSign;
-import net.minecraft.client.gui.inventory.GuiEditSign;
-import net.minecraft.tileentity.TileEntitySign;
+import net.minecraft.block.entity.SignBlockEntity;
+import net.minecraft.client.gui.ingame.EditSignScreen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(GuiEditSign.class)
+@Mixin(EditSignScreen.class)
 public class MixinGuiEditSign implements IMixinGuiEditSign {
 
-	@Final
-	@Shadow
-	private TileEntitySign tileSign;
+    @Final
+    @Shadow
+    private SignBlockEntity sign;
 
-	@Shadow
-	private int editLine;
+    @Shadow
+    private int currentRow;
 
-	@Override
-	public int getEditLine() {
-		return editLine;
-	}
+    @Override
+    public int getEditLine() {
+        return currentRow;
+    }
 
-	@Override
-	public TileEntitySign getTileSign() {
-		return tileSign;
-	}
+    @Override
+    public SignBlockEntity getTileSign() {
+        return sign;
+    }
 
 }

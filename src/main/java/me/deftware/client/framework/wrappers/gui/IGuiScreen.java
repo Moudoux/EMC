@@ -1,15 +1,14 @@
 package me.deftware.client.framework.wrappers.gui;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.IResourceLocation;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.StringUtils;
-import net.minecraft.util.Util;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Drawable;
+import net.minecraft.client.gui.GuiEventListener;
+import net.minecraft.client.gui.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.util.SystemUtil;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
@@ -20,228 +19,226 @@ import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class IGuiScreen extends GuiScreen {
+public abstract class IGuiScreen extends Screen {
 
-	private boolean pause = true;
+    private boolean pause = true;
 
-	public IGuiScreen(boolean doesGuiPause) {
-		pause = doesGuiPause;
-	}
+    public IGuiScreen(boolean doesGuiPause) {
+        pause = doesGuiPause;
+    }
 
-	public IGuiScreen() {
-		this(true);
-	}
+    public IGuiScreen() {
+        this(true);
+    }
 
-	@Override
-	public void render(int mouseX, int mouseY, float partialTicks) {
-		onDraw(mouseX, mouseY, partialTicks);
-		super.render(mouseX, mouseY, partialTicks);
-		onPostDraw(mouseX, mouseY, partialTicks);
-	}
+    /**
+     * Returns a string stored in the system clipboard.
+     */
+    public static String getClipboardString() {
+        try {
+            Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents((Object) null);
 
-	@Override
-	public boolean doesGuiPauseGame() {
-		return pause;
-	}
+            if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                return (String) transferable.getTransferData(DataFlavor.stringFlavor);
+            }
+        } catch (Exception var1) {
+            ;
+        }
 
-	@Override
-	public void onResize(Minecraft mcIn, int w, int h) {
-		super.onResize(mcIn, w, h);
-		onGuiResize(w, h);
-	}
+        return "";
+    }
 
-	@Override
-	public void tick() {
-		super.tick();
-		onUpdate();
-	}
+    /**
+     * Stores the given string in the system clipboard
+     */
+    public static void setClipboardString(String copyText) {
+        try {
+            StringSelection stringselection = new StringSelection(copyText);
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, (ClipboardOwner) null);
+        } catch (Exception var2) {
+            ;
+        }
+    }
 
-	@Override
-	public void initGui() {
-		super.initGui();
-		onInitGui();
-		children.add(new IGuiEventListener() {
+    public static void openLink(String url) {
+        SystemUtil.getOperatingSystem().open(url);
+    }
 
-			@Override
-			public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-				onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
-				return false;
-			}
+    public static boolean isCtrlPressed() {
+        return isControlPressed();
+    }
 
-			@Override
-			public boolean mouseReleased(double mouseX, double mouseY, int mouseButton) {
-				onMouseReleased((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
-				return false;
-			}
+    public static int getScaledHeight() {
+        return MinecraftClient.getInstance().window.getScaledHeight();
+    }
 
-		});
-	}
+    public static int getScaledWidth() {
+        return MinecraftClient.getInstance().window.getScaledWidth();
+    }
 
-	@Override
-	public void onGuiClosed() {
-		onGuiClose();
-		super.onGuiClosed();
-	}
+    public static int getDisplayHeight() {
+        return MinecraftClient.getInstance().window.getHeight();
+    }
 
-	@Override
-	public boolean keyPressed(int keyCode, int action, int modifiers) {
-		onKeyPressed(keyCode, action, modifiers);
-		if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
-			IMinecraft.setGuiScreen(null);
-		}
-		return true;
-	}
+    public static int getDisplayWidth() {
+        return MinecraftClient.getInstance().window.getWidth();
+    }
 
-	public void addEventListener(CustomIGuiEventListener listener) {
-		this.children.add(listener);
-	}
+    public static boolean isWindowMinimized() {
+        if (getDisplayWidth() == 0 || getDisplayHeight() == 0)
+            return true;
+        return false;
+    }
 
-	protected void drawIDefaultBackground() {
-		drawDefaultBackground();
-	}
+    @Override
+    public void draw(int mouseX, int mouseY, float partialTicks) {
+        onDraw(mouseX, mouseY, partialTicks);
+        super.draw(mouseX, mouseY, partialTicks);
+        onPostDraw(mouseX, mouseY, partialTicks);
+    }
 
-	public void drawDarkOverlay() {
-		Gui.drawRect(0, 0, width, height, Integer.MIN_VALUE);
-	}
+    @Override
+    public boolean isPauseScreen() {
+        return pause;
+    }
 
-	protected List<GuiButton> getButtonList() {
-		return buttons;
-	}
+    @Override
+    public void onScaleChanged(MinecraftClient mcIn, int w, int h) {
+        super.onScaleChanged(mcIn, w, h);
+        onGuiResize(w, h);
+    }
 
-	protected void addButton(IGuiButton button) {
-		children.add(button);
-		buttons.add(button);
-	}
+    @Override
+    public void update() {
+        super.update();
+        onUpdate();
+    }
 
-	protected ArrayList<IGuiButton> getIButtonList() {
-		ArrayList<IGuiButton> list = new ArrayList<>();
-		for (GuiButton b : buttons) {
-			if (b instanceof IGuiButton) {
-				list.add((IGuiButton) b);
-			}
-		}
-		return list;
-	}
+    @Override
+    public void onInitialized() {
+        super.onInitialized();
+        onInitGui();
+        listeners.add(new GuiEventListener() {
 
-	protected void clearButtons() {
-		buttons.clear();
-	}
+            @Override
+            public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+                onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
+                return false;
+            }
 
-	/**
-	 * Returns a string stored in the system clipboard.
-	 */
-	public static String getClipboardString() {
-		try {
-			Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents((Object) null);
+            @Override
+            public boolean mouseReleased(double mouseX, double mouseY, int mouseButton) {
+                onMouseReleased((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
+                return false;
+            }
 
-			if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-				return (String) transferable.getTransferData(DataFlavor.stringFlavor);
-			}
-		} catch (Exception var1) {
-			;
-		}
+        });
+    }
 
-		return "";
-	}
+    @Override
+    public void onClosed() {
+        onGuiClose();
+        super.onClosed();
+    }
 
-	/**
-	 * Stores the given string in the system clipboard
-	 */
-	public static void setClipboardString(String copyText) {
-		if (!StringUtils.isNullOrEmpty(copyText)) {
-			try {
-				StringSelection stringselection = new StringSelection(copyText);
-				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, (ClipboardOwner) null);
-			} catch (Exception var2) {
-				;
-			}
-		}
-	}
+    @Override
+    public boolean keyPressed(int keyCode, int action, int modifiers) {
+        onKeyPressed(keyCode, action, modifiers);
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+            IMinecraft.setGuiScreen(null);
+        }
+        return true;
+    }
 
-	public static void openLink(String url) {
-		Util.getOSType().openURI(url);
-	}
+    public void addEventListener(CustomIGuiEventListener listener) {
+        this.listeners.add(listener);
+    }
 
-	public void drawCenteredString(String text, int x, int y, int color) {
-		Minecraft.getInstance().fontRenderer.drawStringWithShadow(text,
-				x - Minecraft.getInstance().fontRenderer.getStringWidth(text) / 2, y, color);
-	}
+    protected void drawIDefaultBackground() {
+        drawBackground();
+    }
 
-	public void setDoesGuiPauseGame(boolean state) {
-		pause = state;
-	}
+    public void drawDarkOverlay() {
+        Drawable.drawRect(0, 0, width, height, Integer.MIN_VALUE);
+    }
 
-	protected void drawTexture(IResourceLocation texture, int x, int y, int width, int height) {
-		mc.getTextureManager().bindTexture(texture);
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GuiScreen.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
-	}
+    protected List<ButtonWidget> getButtonList() {
+        return buttons;
+    }
 
-	public static boolean isCtrlPressed() {
-		return isCtrlKeyDown();
-	}
+    protected void addButton(IGuiButton button) {
+        listeners.add(button);
+        buttons.add(button);
+    }
 
-	public int getIGuiScreenWidth() {
-		return width;
-	}
+    protected ArrayList<IGuiButton> getIButtonList() {
+        ArrayList<IGuiButton> list = new ArrayList<>();
+        for (ButtonWidget b : buttons) {
+            if (b instanceof IGuiButton) {
+                list.add((IGuiButton) b);
+            }
+        }
+        return list;
+    }
 
-	public int getIGuiScreenHeight() {
-		return height;
-	}
+    protected void clearButtons() {
+        buttons.clear();
+    }
 
-	public static int getScaledHeight() {
-		return Minecraft.getInstance().mainWindow.getScaledHeight();
-	}
+    public void drawCenteredString(String text, int x, int y, int color) {
+        MinecraftClient.getInstance().fontRenderer.drawWithShadow(text,
+                x - MinecraftClient.getInstance().fontRenderer.getStringWidth(text) / 2, y, color);
+    }
 
-	public static int getScaledWidth() {
-		return Minecraft.getInstance().mainWindow.getScaledWidth();
-	}
+    public void setDoesGuiPauseGame(boolean state) {
+        pause = state;
+    }
 
-	public static int getDisplayHeight() {
-		return Minecraft.getInstance().mainWindow.getHeight();
-	}
+    protected void drawTexture(IResourceLocation texture, int x, int y, int width, int height) {
+        MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        Screen.drawTexturedRect(x, y, 0, 0, width, height, width, height);
+    }
 
-	public static int getDisplayWidth() {
-		return Minecraft.getInstance().mainWindow.getWidth();
-	}
+    public int getIGuiScreenWidth() {
+        return width;
+    }
 
-	public static boolean isWindowMinimized(){
-		if(getDisplayWidth() == 0 || getDisplayHeight() == 0)
-			return true;
-		return false;
-	}
+    public int getIGuiScreenHeight() {
+        return height;
+    }
 
-	public void drawITintBackground(int tint) {
-		drawBackground(tint);
-	}
+    public void drawITintBackground(int tint) {
+        drawTextureBackground(tint);
+    }
 
-	public void setFocusedComponent(CustomIGuiEventListener listener) {
-		this.setFocused(listener);
-	}
+    public void setFocusedComponent(CustomIGuiEventListener listener) {
+        this.setFocused(listener);
+    }
 
-	protected void onGuiClose() {
-	}
+    protected void onGuiClose() {
+    }
 
-	protected abstract void onInitGui();
+    protected abstract void onInitGui();
 
-	protected void onPostDraw(int mouseX, int mouseY, float partialTicks) {
-	}
+    protected void onPostDraw(int mouseX, int mouseY, float partialTicks) {
+    }
 
-	protected abstract void onDraw(int mouseX, int mouseY, float partialTicks);
+    protected abstract void onDraw(int mouseX, int mouseY, float partialTicks);
 
-	protected abstract void onUpdate();
+    protected abstract void onUpdate();
 
-	/**
-	 * @see GLFW#GLFW_RELEASE
-	 * @see GLFW#GLFW_PRESS
-	 * @see GLFW#GLFW_REPEAT
-	 */
-	protected abstract void onKeyPressed(int keyCode, int action, int modifiers);
+    /**
+     * @see GLFW#GLFW_RELEASE
+     * @see GLFW#GLFW_PRESS
+     * @see GLFW#GLFW_REPEAT
+     */
+    protected abstract void onKeyPressed(int keyCode, int action, int modifiers);
 
-	protected abstract void onMouseReleased(int mouseX, int mouseY, int mouseButton);
+    protected abstract void onMouseReleased(int mouseX, int mouseY, int mouseButton);
 
-	protected abstract void onMouseClicked(int mouseX, int mouseY, int mouseButton);
+    protected abstract void onMouseClicked(int mouseX, int mouseY, int mouseButton);
 
-	protected abstract void onGuiResize(int w, int h);
+    protected abstract void onGuiResize(int w, int h);
 
 }

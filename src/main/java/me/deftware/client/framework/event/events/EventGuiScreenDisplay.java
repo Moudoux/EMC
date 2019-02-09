@@ -2,46 +2,46 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
-import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiMultiplayer;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.MainMenuScreen;
+import net.minecraft.client.gui.Screen;
+import net.minecraft.client.gui.menu.MultiplayerScreen;
+import net.minecraft.client.gui.menu.PauseMenuScreen;
 
 /**
  * Triggered every time a game gui is displayed
  */
 public class EventGuiScreenDisplay extends Event {
 
-	private GuiScreen screen;
-	private ScreenTypes type;
+    private Screen screen;
+    private ScreenTypes type;
 
-	public EventGuiScreenDisplay(GuiScreen screen) {
-		this.screen = screen;
-		if (screen instanceof GuiMainMenu) {
-			type = ScreenTypes.MainMenu;
-		} else if (screen instanceof GuiMultiplayer) {
-			type = ScreenTypes.Multiplayer;
-		} else if (screen instanceof GuiIngameMenu) {
-			type = ScreenTypes.GuiIngameMenu;
-		} else {
-			type = ScreenTypes.Unknown;
-		}
-	}
+    public EventGuiScreenDisplay(Screen screen) {
+        this.screen = screen;
+        if (screen instanceof MainMenuScreen) {
+            type = ScreenTypes.MainMenu;
+        } else if (screen instanceof MultiplayerScreen) {
+            type = ScreenTypes.Multiplayer;
+        } else if (screen instanceof PauseMenuScreen) {
+            type = ScreenTypes.GuiIngameMenu;
+        } else {
+            type = ScreenTypes.Unknown;
+        }
+    }
 
-	public GuiScreen getScreen() {
-		return screen;
-	}
+    public Screen getScreen() {
+        return screen;
+    }
 
-	public void setScreen(IGuiScreen screen) {
-		this.screen = screen;
-	}
+    public void setScreen(IGuiScreen screen) {
+        this.screen = screen;
+    }
 
-	public ScreenTypes getType() {
-		return type;
-	}
+    public ScreenTypes getType() {
+        return type;
+    }
 
-	public static enum ScreenTypes {
-		MainMenu, Multiplayer, GuiIngameMenu, Unknown
-	}
+    public static enum ScreenTypes {
+        MainMenu, Multiplayer, GuiIngameMenu, Unknown
+    }
 
 }

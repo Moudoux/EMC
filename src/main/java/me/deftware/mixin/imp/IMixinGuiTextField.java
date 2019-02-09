@@ -1,24 +1,38 @@
 package me.deftware.mixin.imp;
 
 import me.deftware.client.framework.fonts.EMCFont;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.font.FontRenderer;
 
 public interface IMixinGuiTextField {
 
-	int getHeight();
+    int getHeight();
 
-	FontRenderer getFontRendererInstance();
+    FontRenderer getFontRendererInstance();
 
-	int getCursorCounter();
+    int getCursorCounter();
 
-	int getSelectionEnd();
+    int getSelectionEnd();
 
-	int getLineScrollOffset();
+    int getLineScrollOffset();
 
-	void setUseMinecraftScaling(boolean state);
+    int getX();
 
-	void setUseCustomFont(boolean state);
+    int getY();
 
-	void setCustomFont(EMCFont font);
+    void setX(int x);
+
+    void setY(int y);
+
+    int getWidth();
+
+    void setHeight(int height);
+
+    void setWidth(int width);
+
+    void setUseMinecraftScaling(boolean state);
+
+    void setUseCustomFont(boolean state);
+
+    void setCustomFont(EMCFont font);
 
 }

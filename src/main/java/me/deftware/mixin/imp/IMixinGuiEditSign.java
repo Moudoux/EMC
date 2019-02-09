@@ -1,11 +1,11 @@
 package me.deftware.mixin.imp;
 
-import net.minecraft.tileentity.TileEntitySign;
+import net.minecraft.block.entity.SignBlockEntity;
 
 public interface IMixinGuiEditSign {
 
-	int getEditLine();
+    int getEditLine();
 
-	TileEntitySign getTileSign();
+    SignBlockEntity getTileSign();
 
 }

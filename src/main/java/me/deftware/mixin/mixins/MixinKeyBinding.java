@@ -1,29 +1,29 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.mixin.imp.IMixinKeyBinding;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings;
+import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(KeyBinding.class)
 public class MixinKeyBinding implements IMixinKeyBinding {
 
-	@Shadow
-	private boolean pressed;
+    @Shadow
+    private boolean pressed;
 
-	@Shadow
-	private InputMappings.Input keyCode;
+    @Shadow
+    private InputUtil.KeyCode keyCode;
 
-	@Override
-	public void setPressed(boolean state) {
-		pressed = state;
-	}
+    @Override
+    public void setPressed(boolean state) {
+        pressed = state;
+    }
 
-	@Override
-	public InputMappings.Input getInput() {
-		return keyCode;
-	}
+    @Override
+    public InputUtil.KeyCode getInput() {
+        return keyCode;
+    }
 
 
 }

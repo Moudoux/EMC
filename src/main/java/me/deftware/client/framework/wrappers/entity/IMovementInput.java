@@ -1,20 +1,20 @@
 package me.deftware.client.framework.wrappers.entity;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.MovementInput;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.input.Input;
 
 public class IMovementInput {
 
-	private static MovementInput get() {
-		return Minecraft.getInstance().player.movementInput;
-	}
+    private static Input get() {
+        return MinecraftClient.getInstance().player.input;
+    }
 
-	public static double getForward() {
-		return IMovementInput.get().moveForward;
-	}
+    public static double getForward() {
+        return IMovementInput.get().field_3905;
+    }
 
-	public static double getStrafe() {
-		return IMovementInput.get().moveStrafe;
-	}
+    public static double getStrafe() {
+        return IMovementInput.get().field_3907;
+    }
 
 }

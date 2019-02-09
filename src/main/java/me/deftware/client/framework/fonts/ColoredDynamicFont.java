@@ -4,7 +4,6 @@ import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.render.ColorUtil;
 import me.deftware.client.framework.utils.render.Texture;
 
-import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -12,7 +11,7 @@ import static me.deftware.client.framework.utils.ChatColor.COLOR_CHAR;
 
 public class ColoredDynamicFont extends DynamicFont {
 
-    public ColoredDynamicFont(@Nonnull String fontName, int fontSize, int modifiers) {
+    public ColoredDynamicFont(String fontName, int fontSize, int modifiers) {
         super(fontName, fontSize, modifiers);
     }
 
@@ -79,7 +78,7 @@ public class ColoredDynamicFont extends DynamicFont {
     }
 
     @Override
-    public int getStringWidth(String text){
+    public int getStringWidth(String text) {
         return super.getStringWidth(ChatColor.stripColor(text));
     }
 

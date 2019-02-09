@@ -2,7 +2,7 @@ package me.deftware.client.framework.utils.render;
 
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -121,10 +121,11 @@ public class NonScaledRenderer {
         double[] pos = new double[2];
         DoubleBuffer posX = BufferUtils.createDoubleBuffer(1),
                 posY = BufferUtils.createDoubleBuffer(1);
-        GLFW.glfwGetCursorPos(Minecraft.getInstance().mainWindow.getHandle(), posX, posY);
+        GLFW.glfwGetCursorPos(MinecraftClient.getInstance().window.getHandle(), posX, posY);
         pos[0] = posX.get(0);
         pos[1] = posY.get(0);
         return pos;
     }
 
 }
+

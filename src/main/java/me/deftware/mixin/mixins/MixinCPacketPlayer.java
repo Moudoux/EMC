@@ -1,36 +1,37 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.mixin.imp.IMixinCPacketPlayer;
-import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.server.network.packet.PlayerMoveServerMessage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(CPacketPlayer.class)
+@Mixin(PlayerMoveServerMessage.class)
 public class MixinCPacketPlayer implements IMixinCPacketPlayer {
 
-	@Shadow
-	private boolean onGround;
+    @Shadow
+    private boolean onGround;
 
-	@Shadow
-	private boolean moving;
+    @Shadow
+    private boolean changePosition;
 
-	@Override
-	public boolean isOnGround() {
-		return onGround;
-	}
+    @Override
+    public boolean isOnGround() {
+        return onGround;
+    }
 
-	@Override
-	public boolean isMoving() {
-		return moving;
-	}
+    @Override
+    public void setOnGround(boolean state) {
+        onGround = state;
+    }
 
-	@Override
-	public void setOnGround(boolean state) {
-		onGround = state;
-	}
+    @Override
+    public boolean isMoving() {
+        return changePosition;
+    }
 
-	@Override
-	public void setMoving(boolean state) {
-		moving = state;
-	}
+    @Override
+    public void setMoving(boolean state) {
+        changePosition = state;
+    }
+
 }

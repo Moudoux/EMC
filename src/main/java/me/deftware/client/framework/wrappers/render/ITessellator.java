@@ -1,21 +1,21 @@
 package me.deftware.client.framework.wrappers.render;
 
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.render.Tessellator;
 
 public class ITessellator {
 
-	private Tessellator tessellator;
+    private Tessellator tessellator;
 
-	public ITessellator() {
-		tessellator = Tessellator.getInstance();
-	}
+    public ITessellator() {
+        tessellator = Tessellator.getInstance();
+    }
 
-	public Tessellator getTessellator() {
-		return tessellator;
-	}
+    public Tessellator getTessellator() {
+        return tessellator;
+    }
 
-	public void draw() {
-		tessellator.draw();
-	}
+    public void draw() {
+        tessellator.draw();
+    }
 
 }

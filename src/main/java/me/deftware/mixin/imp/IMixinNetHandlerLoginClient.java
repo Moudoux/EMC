@@ -1,14 +1,14 @@
 package me.deftware.mixin.imp;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.network.NetworkManager;
+import net.minecraft.network.ClientConnection;
 
 public interface IMixinNetHandlerLoginClient {
 
-	NetworkManager getNetworkManager();
+    ClientConnection getNetworkManager();
 
-	GameProfile getGameProfile();
+    GameProfile getGameProfile();
 
-	void setGameProfile(GameProfile profile);
+    void setGameProfile(GameProfile profile);
 
 }

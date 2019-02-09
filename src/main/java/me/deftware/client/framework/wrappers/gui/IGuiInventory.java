@@ -1,13 +1,13 @@
 package me.deftware.client.framework.wrappers.gui;
 
 import me.deftware.client.framework.wrappers.entity.IEntity;
-import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.gui.ingame.PlayerInventoryScreen;
+import net.minecraft.entity.player.PlayerEntity;
 
-public class IGuiInventory extends GuiInventory {
+public class IGuiInventory extends PlayerInventoryScreen {
 
-	public IGuiInventory(IEntity player) {
-		super((EntityPlayer) player.getEntity());
-	}
+    public IGuiInventory(IEntity player) {
+        super((PlayerEntity) player.getEntity());
+    }
 
 }

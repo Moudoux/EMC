@@ -1,20 +1,35 @@
 package me.deftware.mixin.mixins;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import me.deftware.client.framework.maps.SettingsMap;
-import net.minecraft.client.multiplayer.WorldClient;
+import me.deftware.mixin.imp.IMixinWorldClient;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Mixin(WorldClient.class)
-public abstract class MixinWorldClient {
+@Mixin(ClientWorld.class)
+public class MixinWorldClient implements IMixinWorldClient {
 
-	@ModifyVariable(method = "animateTick(IIIILjava/util/Random;ZLnet/minecraft/util/math/BlockPos$MutableBlockPos;)V", at = @At("HEAD"))
-	public boolean animateTick(boolean p_animateTick_6_) {
-		if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "render_barrier_blocks", false)) {
-			return true;
-		}
-		return p_animateTick_6_;
-	}
+    @Shadow
+    @Final
+    private Int2ObjectMap<Entity> field_17778;
+
+    @ModifyVariable(method = "randomBlockDisplayTick(IIIILjava/util/Random;ZLnet/minecraft/util/math/BlockPos$Mutable;)V", at = @At("HEAD"))
+    public boolean randomBlockDisplayTick(boolean p_animateTick_6_) {
+        if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "render_barrier_blocks", false)) {
+            return true;
+        }
+        return p_animateTick_6_;
+    }
+
+    @Override
+    public Int2ObjectMap<Entity> getLoadedEntities() {
+        return field_17778;
+    }
 
 }

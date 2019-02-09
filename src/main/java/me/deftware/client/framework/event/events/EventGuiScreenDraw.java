@@ -1,16 +1,15 @@
 package me.deftware.client.framework.event.events;
 
-
 import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.wrappers.gui.IGuiButton;
 import me.deftware.client.framework.wrappers.gui.imp.GuiContainerInstance;
 import me.deftware.client.framework.wrappers.gui.imp.ScreenInstance;
 import me.deftware.mixin.imp.IMixinGuiScreen;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiDisconnected;
-import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.ContainerScreen;
+import net.minecraft.client.gui.Screen;
+import net.minecraft.client.gui.menu.DisconnectedScreen;
+import net.minecraft.client.gui.menu.PauseMenuScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 
 import java.util.ArrayList;
 
@@ -20,67 +19,68 @@ import java.util.ArrayList;
  */
 public class EventGuiScreenDraw extends Event {
 
-	private GuiScreen screen;
-	private int x,y;
+    private Screen screen;
+    private int x,y;
 
-	public EventGuiScreenDraw(GuiScreen screen, int x, int y) {
-		this.screen = screen;
-		this.x = x;
-		this.y = y;
-	}
+    public EventGuiScreenDraw(Screen screen, int x, int y) {
+        this.screen = screen;
+        this.x = x;
+        this.y = y;
+    }
 
-	public boolean instanceOf(CommonScreenTypes type) {
-		if (type.equals(CommonScreenTypes.GuiDisconnected)) {
-			return screen instanceof GuiDisconnected;
-		} else if (type.equals(CommonScreenTypes.GuiIngameMenu)) {
-			return screen instanceof GuiIngameMenu;
-		} else if (type.equals(CommonScreenTypes.GuiContainer)) {
-			return screen instanceof GuiContainer;
-		}
-		return false;
-	}
+    public boolean instanceOf(CommonScreenTypes type) {
+        if (type.equals(CommonScreenTypes.GuiDisconnected)) {
+            return screen instanceof DisconnectedScreen;
+        } else if (type.equals(CommonScreenTypes.GuiIngameMenu)) {
+            return screen instanceof PauseMenuScreen;
+        } else if (type.equals(CommonScreenTypes.GuiContainer)) {
+            return screen instanceof ContainerScreen;
+        }
+        return false;
+    }
 
-	public ScreenInstance getInstance() {
-		if (screen instanceof GuiContainer) {
-			return new GuiContainerInstance(screen);
-		}
-		return new ScreenInstance(screen);
-	}
+    public ScreenInstance getInstance() {
+        if (screen instanceof ContainerScreen) {
+            return new GuiContainerInstance(screen);
+        }
+        return new ScreenInstance(screen);
+    }
 
-	public void addButton(IGuiButton button) {
-		((IMixinGuiScreen) screen).getButtonList().add(button);
-		((IMixinGuiScreen) screen).getEventList().add(button);
-	}
 
-	public ArrayList<IGuiButton> getIButtonList() {
-		ArrayList<IGuiButton> list = new ArrayList<>();
-		for (GuiButton b : ((IMixinGuiScreen) screen).getButtonList()) {
-			if (b instanceof IGuiButton) {
-				list.add((IGuiButton) b);
-			}
-		}
-		return list;
-	}
+    public void addButton(IGuiButton button) {
+        ((IMixinGuiScreen) screen).getButtonList().add(button);
+        ((IMixinGuiScreen) screen).getEventList().add(button);
+    }
 
-	public int getWidth() {
-		return screen.width;
-	}
+    public ArrayList<IGuiButton> getIButtonList() {
+        ArrayList<IGuiButton> list = new ArrayList<>();
+        for (ButtonWidget b : ((IMixinGuiScreen) screen).getButtonList()) {
+            if (b instanceof IGuiButton) {
+                list.add((IGuiButton) b);
+            }
+        }
+        return list;
+    }
 
-	public int getHeight() {
-		return screen.height;
-	}
+    public int getMouseX() {
+        return x;
+    }
 
-	public int getMouseX() {
-		return x;
-	}
+    public int getMouseY() {
+        return y;
+    }
 
-	public int getMouseY() {
-		return y;
-	}
+    public int getWidth() {
+        return screen.width;
+    }
 
-	public enum CommonScreenTypes {
-		GuiDisconnected, GuiIngameMenu, GuiContainer
-	}
+    public int getHeight() {
+        return screen.height;
+    }
+
+    public enum CommonScreenTypes {
+        GuiDisconnected, GuiIngameMenu, GuiContainer
+    }
 
 }
 

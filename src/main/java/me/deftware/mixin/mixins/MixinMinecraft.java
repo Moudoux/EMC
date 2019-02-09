@@ -4,12 +4,12 @@ import me.deftware.client.framework.event.events.EventGuiScreenDisplay;
 import me.deftware.client.framework.event.events.EventShutdown;
 import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.mixin.imp.IMixinMinecraft;
-import net.minecraft.client.MainWindow;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.MainMenuScreen;
+import net.minecraft.client.gui.Screen;
+import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.client.util.Window;
 import net.minecraft.util.Session;
-import net.minecraft.util.Timer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -19,105 +19,108 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javax.annotation.Nullable;
 
-@Mixin(Minecraft.class)
+@Mixin(MinecraftClient.class)
 public abstract class MixinMinecraft implements IMixinMinecraft {
 
-	@Mutable
-	@Shadow
-	@Final
-	private Session session;
+    @Mutable
+    @Shadow
+    @Final
+    private Session session;
 
-	@Shadow
-	@Final
-	private Timer timer;
+    @Shadow
+    @Final
+    private RenderTickCounter renderTickCounter;
 
-	@Shadow
-	@Nullable
-	private GuiScreen currentScreen;
+    @Shadow
+    private Screen currentScreen;
 
-	@Shadow
-	private int rightClickDelayTimer;
+    @Shadow
+    private int itemUseCooldown;
 
-	@Override
-	@Shadow
-	public abstract void displayGuiScreen(@Nullable GuiScreen guiScreenIn);
 
-	@Shadow
-	public abstract void rightClickMouse();
+    @Shadow
+    public abstract void openScreen(Screen screen);
 
-	@Shadow
-	public abstract void clickMouse();
+    @Override
+    public void displayGuiScreen(Screen guiScreenIn) {
+        openScreen(guiScreenIn);
+    }
 
-	@Shadow
-	public abstract void middleClickMouse();
+    @Shadow
+    public abstract void doAttack();
 
-	@ModifyVariable(method = "displayGuiScreen", at = @At("HEAD"))
-	private GuiScreen displayGuiScreenModifier(GuiScreen screen) {
-		EventGuiScreenDisplay event = new EventGuiScreenDisplay(screen).send();
-		return event.isCanceled() ? null : event.getScreen();
-	}
+    @Shadow
+    public abstract void doItemUse();
 
-	@Inject(method = "runTick", at = @At("HEAD"))
-	private void runTick(CallbackInfo ci) {
-		if (Minecraft.getInstance().currentScreen instanceof GuiMainMenu) {
-			EventGuiScreenDisplay event = new EventGuiScreenDisplay(Minecraft.getInstance().currentScreen).send();
-			if (!(event.getScreen() instanceof GuiMainMenu)) {
-				displayGuiScreen(event.getScreen());
-			}
-		}
-	}
+    @Shadow
+    public abstract void doItemPick();
 
-	@Inject(method = "shutdownMinecraftApplet", at = @At("HEAD"))
-	public void shutdownMinecraftApplet(CallbackInfo ci) {
-		new EventShutdown().send();
-		Bootstrap.isRunning = false;
-	}
+    @ModifyVariable(method = "openScreen", at = @At("HEAD"))
+    private Screen displayGuiScreenModifier(Screen screen) {
+        EventGuiScreenDisplay event = new EventGuiScreenDisplay(screen).send();
+        return event.isCanceled() ? null : event.getScreen();
+    }
 
-	@Override
-	public void setRightClickDelayTimer(int delay) {
-		this.rightClickDelayTimer = delay;
-	}
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void runTick(CallbackInfo ci) {
+        if (MinecraftClient.getInstance().currentScreen instanceof MainMenuScreen) {
+            EventGuiScreenDisplay event = new EventGuiScreenDisplay(MinecraftClient.getInstance().currentScreen).send();
+            if (!(event.getScreen() instanceof MainMenuScreen)) {
+                displayGuiScreen(event.getScreen());
+            }
+        }
+    }
 
-	@Override
-	public void doClickMouse() {
-		clickMouse();
-	}
+    @Inject(method = "stop", at = @At("HEAD"))
+    public void shutdownMinecraftApplet(CallbackInfo ci) {
+        new EventShutdown().send();
+        Bootstrap.isRunning = false;
+    }
 
-	@Override
-	public void doRightClickMouse() {
-		rightClickMouse();
-	}
+    @Override
+    public void setRightClickDelayTimer(int delay) {
+        this.itemUseCooldown = delay;
+    }
 
-	@Override
-	public void doMiddleClickMouse() {
-		middleClickMouse();
-	}
+    @Override
+    public void doClickMouse() {
+        doAttack();
+    }
 
-	@Inject(method = "init", at = @At("RETURN"))
-	private void init(CallbackInfo callbackInfo) {
-		Bootstrap.init();
-	}
+    @Override
+    public void doRightClickMouse() {
+        doItemUse();
+    }
 
-	@Override
-	public Session getSession() {
-		return session;
-	}
+    @Override
+    public void doMiddleClickMouse() {
+        doItemPick();
+    }
 
-	@Override
-	public void setSession(Session session) {
-		this.session = session;
-	}
+    @Inject(method = "init", at = @At("RETURN"))
+    private void init(CallbackInfo callbackInfo) {
+        Bootstrap.init();
+    }
 
-	@Override
-	public Timer getTimer() {
-		return timer;
-	}
+    @Override
+    public Session getSession() {
+        return session;
+    }
 
-	@Override
-	public MainWindow getMainWindow() {
-		return Minecraft.getInstance().mainWindow;
-	}
+    @Override
+    public void setSession(Session session) {
+        this.session = session;
+    }
+
+    @Override
+    public RenderTickCounter getTimer() {
+        return renderTickCounter;
+    }
+
+    @Override
+    public Window getMainWindow() {
+        return MinecraftClient.getInstance().window;
+    }
 
 }

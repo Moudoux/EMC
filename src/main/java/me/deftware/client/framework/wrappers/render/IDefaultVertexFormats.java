@@ -1,32 +1,32 @@
 package me.deftware.client.framework.wrappers.render;
 
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
 
 public class IDefaultVertexFormats {
 
-	public static IVertexFormat get(Types type) {
-		return type.equals(Types.POSITION_COLOR) ?
-				new IVertexFormat(DefaultVertexFormats.POSITION_COLOR) :
-				new IVertexFormat(DefaultVertexFormats.POSITION_TEX_COLOR);
-	}
+    public static IVertexFormat get(Types type) {
+        return type.equals(Types.POSITION_COLOR) ?
+                new IVertexFormat(VertexFormats.POSITION_COLOR) :
+                new IVertexFormat(VertexFormats.POSITION_UV_COLOR);
+    }
 
-	public static class IVertexFormat {
+    public enum Types {
+        POSITION_COLOR, POSITION_TEX_COLOR
+    }
 
-		private VertexFormat format;
+    public static class IVertexFormat {
 
-		public IVertexFormat(VertexFormat format) {
-			this.format = format;
-		}
+        private VertexFormat format;
 
-		public VertexFormat getFormat() {
-			return format;
-		}
+        public IVertexFormat(VertexFormat format) {
+            this.format = format;
+        }
 
-	}
+        public VertexFormat getFormat() {
+            return format;
+        }
 
-	public enum Types {
-		POSITION_COLOR, POSITION_TEX_COLOR
-	}
+    }
 
 }

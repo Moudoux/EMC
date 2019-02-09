@@ -3,7 +3,6 @@ package me.deftware.client.framework.fonts;
 import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.render.ColorUtil;
 
-import javax.annotation.Nonnull;
 import java.awt.*;
 
 import static me.deftware.client.framework.utils.ChatColor.COLOR_CHAR;
@@ -11,7 +10,7 @@ import static me.deftware.client.framework.utils.ChatColor.COLOR_CHAR;
 @SuppressWarnings("Duplicates")
 public class ColoredBitmapFont extends BitmapFont {
 
-    public ColoredBitmapFont(@Nonnull String fontName, int fontSize, int modifiers) {
+    public ColoredBitmapFont(String fontName, int fontSize, int modifiers) {
         super(fontName, fontSize, modifiers);
     }
 

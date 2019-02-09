@@ -6,14 +6,14 @@ import me.deftware.client.framework.event.events.EventGuiScreenDraw;
 import me.deftware.client.framework.event.events.EventGuiScreenPostDraw;
 import me.deftware.client.framework.wrappers.item.IItem;
 import me.deftware.mixin.imp.IMixinGuiScreen;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.FontRenderer;
+import net.minecraft.client.gui.GuiEventListener;
+import net.minecraft.client.gui.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.item.TooltipOptions;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.text.TextComponent;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -25,19 +25,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Iterator;
 import java.util.List;
 
-@Mixin(GuiScreen.class)
+@Mixin(Screen.class)
 public class MixinGuiScreen implements IMixinGuiScreen {
 
     @Shadow
     protected FontRenderer fontRenderer;
     @Shadow
-    private List<GuiButton> buttons;
+    private List<ButtonWidget> buttons;
     @Shadow
     @Final
-    private List<IGuiEventListener> children;
+    private List<GuiEventListener> listeners;
 
     @Override
-    public List<GuiButton> getButtonList() {
+    public List<ButtonWidget> getButtonList() {
         return buttons;
     }
 
@@ -47,31 +47,34 @@ public class MixinGuiScreen implements IMixinGuiScreen {
     }
 
     @Override
-    public List<IGuiEventListener> getEventList() {
-        return children;
+    public List<GuiEventListener> getEventList() {
+        return listeners;
     }
 
-    @Inject(method = "render", at = @At("HEAD"))
+    @Inject(method = "draw", at = @At("HEAD"))
     public void render(int x, int y, float p_render_3_, CallbackInfo ci) {
-        new EventGuiScreenDraw((GuiScreen) (Object) this, x, y).send();
+        new EventGuiScreenDraw((Screen) (Object) this, x, y).send();
     }
 
-    @Inject(method = "render", at = @At("RETURN"))
+    @Inject(method = "draw", at = @At("RETURN"))
     public void render_return(int x, int y, float p_render_3_, CallbackInfo ci) {
-        new EventGuiScreenPostDraw((GuiScreen) (Object) this, x, y).send();
+        new EventGuiScreenPostDraw((Screen) (Object) this, x, y).send();
     }
 
     @Overwrite
-    public List<String> getItemToolTip(ItemStack p_getItemToolTip_1_) {
-        List<ITextComponent> lvt_2_1_ = p_getItemToolTip_1_.getTooltip(Minecraft.getInstance().player, Minecraft.getInstance().gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL);
-        List<String> lvt_3_1_ = Lists.newArrayList();
-        Iterator var4 = lvt_2_1_.iterator();
+    public List<String> getStackTooltip(ItemStack itemStack_1) {
+        List<TextComponent> list_1 = itemStack_1.getTooltipText(MinecraftClient.getInstance().player, MinecraftClient.getInstance().options.advancedItemTooltips ? TooltipOptions.Instance.ADVANCED : TooltipOptions.Instance.NORMAL);
+        List<String> list_2 = Lists.newArrayList();
+        Iterator var4 = list_1.iterator();
+
         while (var4.hasNext()) {
-            ITextComponent lvt_5_1_ = (ITextComponent) var4.next();
-            lvt_3_1_.add(lvt_5_1_.getFormattedText());
+            TextComponent textComponent_1 = (TextComponent) var4.next();
+            list_2.add(textComponent_1.getFormattedText());
         }
-        EventGetItemToolTip event = new EventGetItemToolTip(lvt_3_1_, new IItem(p_getItemToolTip_1_.getItem())).send();
+
+        EventGetItemToolTip event = new EventGetItemToolTip(list_2, new IItem(itemStack_1.getItem())).send();
         return event.getList();
+
     }
 
 }
