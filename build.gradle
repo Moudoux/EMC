@@ -13,8 +13,22 @@ buildscript {
     }
 }
 
+def getVersionFromJava() {
+    def ver = 0.0, patch = 0
+    def versionClass = file("src/main/java/me/deftware/client/framework/FrameworkConstants.java").text
+    (versionClass =~ ~/double\s+([_a-zA-Z\u0024][_a-zA-Z0-9\u0024]*)\s+=\s+(([0-9]+)\.([0-9]+))/).each {
+        ver = it[2]
+    }
+    (versionClass =~ ~/int\s+([_a-zA-Z$][_a-zA-Z0-9$]*)\s+=\s+([0-9]+)/).each {
+        if (it[1].toString() == "PATCH") {
+            patch = it[2]
+        }
+    }
+    return "${ver}.${patch}".toString()
+}
+
 group = 'me.deftware'
-version = project.version
+version = getVersionFromJava()
 
 apply plugin: 'maven'
 apply plugin: 'java'

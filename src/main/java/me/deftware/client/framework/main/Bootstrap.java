@@ -24,13 +24,10 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
 /**
@@ -57,25 +54,6 @@ public class Bootstrap {
             if (!emc_configs.exists()) {
                 emc_configs.mkdirs();
             }
-
-            // Get EMC version from Manifest
-            Collections.list(Bootstrap.class.getClassLoader()
-                    .getResources("META-INF/MANIFEST.MF")).forEach((element) -> {
-                try {
-                    Manifest manifest = new Manifest(element.openStream());
-                    manifest.getMainAttributes().keySet().forEach((key) -> {
-                        if (key.toString().equals("EMC-Version")) {
-                            String EMC_VERSION = String.valueOf(manifest.getMainAttributes().getValue("EMC-Version"));
-                            FrameworkConstants.VERSION = Double.valueOf(EMC_VERSION.substring(0, EMC_VERSION.length() - EMC_VERSION.split("\\.")[2].length() - 1));
-                            FrameworkConstants.PATCH = Integer.valueOf(EMC_VERSION.split("\\.")[2]);
-                            FrameworkConstants.FORGE_MODE = Boolean.valueOf(manifest.getMainAttributes().getValue("EMC-ForgeBuild"));
-                            Bootstrap.logger.info("EMC version: " + FrameworkConstants.VERSION + " patch " + FrameworkConstants.PATCH);
-                        }
-                    });
-                } catch (Exception ex) {
-                    Bootstrap.logger.error("Failed to read Manifest", ex);
-                }
-            });
 
             // EMC mods are stored in .minecraft/libraries/EMC
             File emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + RealmsSharedConstants.VERSION_STRING + File.separator);
