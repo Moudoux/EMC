@@ -12,5 +12,6 @@
 !/.gitlab-ci.yml
 !/versions.json
 !/build.bat
+!/LICENSE
 !/gradle.properties
 !/settings.gradle

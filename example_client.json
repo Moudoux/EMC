@@ -1,0 +1,53 @@
+{
+    "inheritsFrom": "19w06a",
+    "id": "19w06a-EMC",
+    "time": "2019-02-09T01:00:43+01:00",
+    "releaseTime": "2019-02-09T01:00:43+01:00",
+    "type": "release",
+    "arguments": {
+        "game": []
+    },
+    "mainClass": "net.fabricmc.loader.launch.knot.KnotClient",
+    "libraries": [
+        {
+            "name": "net.fabricmc:sponge-mixin:0.7.11.16",
+            "url": "https://maven.fabricmc.net/"
+        },
+        {
+            "name": "net.fabricmc:tiny-mappings-parser:0.1.0.6",
+            "url": "https://maven.fabricmc.net/"
+        },
+        {
+            "name": "net.fabricmc:tiny-remapper:0.1.0.23",
+            "url": "https://maven.fabricmc.net/"
+        },
+        {
+            "name": "org.ow2.asm:asm:7.0",
+            "url": "https://maven.fabricmc.net/"
+        },
+        {
+            "name": "org.ow2.asm:asm-analysis:7.0",
+            "url": "https://maven.fabricmc.net/"
+        },
+        {
+            "name": "org.ow2.asm:asm-commons:7.0",
+            "url": "https://maven.fabricmc.net/"
+        },
+        {
+            "name": "org.ow2.asm:asm-tree:7.0",
+            "url": "https://maven.fabricmc.net/"
+        },
+        {
+            "name": "org.ow2.asm:asm-util:7.0",
+            "url": "https://maven.fabricmc.net/"
+        },
+        {
+            "name": "net.fabricmc:yarn:19w06a.2",
+            "url": "https://maven.fabricmc.net/"
+        },
+        {
+            "name": "me.deftware:EMC-F:13.7.5-19w06a",
+            "url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
+        }
+    ]
+}
