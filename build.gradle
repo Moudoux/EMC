@@ -62,6 +62,13 @@ task createPom << {
 	}.writeTo("maven/me/deftware/EMC-F/${version}-${mcVersion}/EMC-F-${version}-${mcVersion}.pom")
 }
 
+task generateApiDocumentation(type: Javadoc) {
+	source = ['src/main/java/me/deftware/client']
+	title = "EMC Framework Documentation"
+	destinationDir = file("docs")
+	failOnError false
+}
+
 task sourcesJar(type: Jar, dependsOn: classes) {
 	classifier = 'sources'
 	from sourceSets.main.allSource
