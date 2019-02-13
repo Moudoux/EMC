@@ -4,7 +4,7 @@ import me.deftware.client.framework.event.events.packet.IPacket;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.client.framework.wrappers.world.IEnumFacing;
 import net.minecraft.network.Packet;
-import net.minecraft.server.network.packet.PlayerActionServerPacket;
+import net.minecraft.server.network.packet.PlayerActionC2SPacket;
 
 public class ICPacketDig extends IPacket {
 
@@ -13,14 +13,14 @@ public class ICPacketDig extends IPacket {
     }
 
     public ICPacketDig(IDigAction action, IBlockPos pos, IEnumFacing facing) {
-        super(new PlayerActionServerPacket(getAction(action), pos.getPos(), IEnumFacing.getFacing(facing)));
+        super(new PlayerActionC2SPacket(getAction(action), pos.getPos(), IEnumFacing.getFacing(facing)));
     }
 
-    public static PlayerActionServerPacket.Action getAction(IDigAction action) {
+    public static PlayerActionC2SPacket.Action getAction(IDigAction action) {
         if (action.equals(IDigAction.START_DESTROY_BLOCK)) {
-            return PlayerActionServerPacket.Action.START_DESTROY_BLOCK;
+            return PlayerActionC2SPacket.Action.START_DESTROY_BLOCK;
         } else if (action.equals(IDigAction.STOP_DESTROY_BLOCK)) {
-            return PlayerActionServerPacket.Action.STOP_DESTROY_BLOCK;
+            return PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK;
         }
         return null;
     }

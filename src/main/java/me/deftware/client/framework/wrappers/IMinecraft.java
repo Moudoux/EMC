@@ -22,7 +22,7 @@ import net.minecraft.container.GenericContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.packet.ChatMessageServerPacket;
+import net.minecraft.server.network.packet.ChatMessageC2SPacket;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 
@@ -86,7 +86,7 @@ public class IMinecraft {
     }
 
     public static void leaveServer() {
-        MinecraftClient.getInstance().player.networkHandler.sendPacket(new ChatMessageServerPacket(new String(new char[]{167})));
+        MinecraftClient.getInstance().player.networkHandler.sendPacket(new ChatMessageC2SPacket(new String(new char[]{167})));
     }
 
     public static IBlockPos getBlockOver() {
@@ -170,7 +170,7 @@ public class IMinecraft {
     }
 
     public static void setGuiScreen(IGuiScreen screen) {
-       MinecraftClient.getInstance().openScreen(screen);
+        MinecraftClient.getInstance().openScreen(screen);
     }
 
     public static void openInventory(IGuiInventory inventory) {

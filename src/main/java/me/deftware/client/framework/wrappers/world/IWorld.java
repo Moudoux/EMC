@@ -33,7 +33,7 @@ public class IWorld {
 
     public static void sendQuittingPacket() {
         if (MinecraftClient.getInstance().world != null) {
-            MinecraftClient.getInstance().world.method_8525();
+            MinecraftClient.getInstance().world.disconnect();
         }
     }
 

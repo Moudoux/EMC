@@ -27,7 +27,7 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
      * @reason
      */
     @Overwrite
-    public boolean method_7325() {
+    public boolean isSpectator() {
         ScoreboardEntry scoreboardEntry_1 = MinecraftClient.getInstance().getNetworkHandler().method_2871(((PlayerEntity) (Object) this).getGameProfile().getId());
         EventSpectator event = new EventSpectator(scoreboardEntry_1 != null && scoreboardEntry_1.getGameMode() == GameMode.SPECTATOR);
         return event.isSpectator();

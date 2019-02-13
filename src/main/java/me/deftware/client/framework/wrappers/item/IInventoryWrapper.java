@@ -8,7 +8,7 @@ import net.minecraft.container.Slot;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.server.network.packet.CreativeInventoryActionServerPacket;
+import net.minecraft.server.network.packet.CreativeInventoryActionC2SPacket;
 
 import java.util.ArrayList;
 
@@ -44,7 +44,7 @@ public class IInventoryWrapper {
         for (int i = 0; i < 9; i++) {
             if (IInventoryWrapper.getStackInSlot(i).isEmpty()) {
                 MinecraftClient.getInstance().player.networkHandler
-                        .sendPacket(new CreativeInventoryActionServerPacket(36 + i, stack.getStack()));
+                        .sendPacket(new CreativeInventoryActionC2SPacket(36 + i, stack.getStack()));
                 return true;
             }
         }

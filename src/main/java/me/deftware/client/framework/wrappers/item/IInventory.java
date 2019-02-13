@@ -5,7 +5,7 @@ import me.deftware.mixin.imp.IMixinEntityLivingBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.ingame.PlayerInventoryScreen;
 import net.minecraft.client.network.OtherClientPlayerEntity;
-import net.minecraft.server.network.packet.PlayerActionServerPacket;
+import net.minecraft.server.network.packet.PlayerActionC2SPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -30,8 +30,8 @@ public class IInventory {
     }
 
     public static void swapHands() {
-        MinecraftClient.getInstance().player.networkHandler.sendPacket(new PlayerActionServerPacket(
-                PlayerActionServerPacket.Action.SWAP_HELD_ITEMS, BlockPos.ORIGIN, Direction.DOWN));
+        MinecraftClient.getInstance().player.networkHandler.sendPacket(new PlayerActionC2SPacket(
+                PlayerActionC2SPacket.Action.SWAP_HELD_ITEMS, BlockPos.ORIGIN, Direction.DOWN));
     }
 
     public static void openEntityInventory(IEntity entity) {

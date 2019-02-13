@@ -31,7 +31,7 @@ public class IEntityOtherPlayerMP extends OtherClientPlayerEntity {
             setScore(oldPlayer.getScore());
             field_6020 = oldPlayer.method_5656();
             field_6028 = oldPlayer.method_5843();
-        } else if (world.getGameRules().getBoolean("keepInventory") || oldPlayer.method_7325()) {
+        } else if (world.getGameRules().getBoolean("keepInventory") || oldPlayer.isSpectator()) {
             inventory.clone(oldPlayer.inventory);
             experienceLevel = oldPlayer.experienceLevel;
             experienceBarProgress = oldPlayer.experienceBarProgress;

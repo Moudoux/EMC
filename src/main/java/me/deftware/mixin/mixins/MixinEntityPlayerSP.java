@@ -9,11 +9,9 @@ import me.deftware.mixin.imp.IMixinEntityPlayerSP;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.HungerManager;
-import net.minecraft.server.network.packet.ChatMessageServerPacket;
-import net.minecraft.server.network.packet.ClientCommandServerPacket;
+import net.minecraft.server.network.packet.ChatMessageC2SPacket;
+import net.minecraft.server.network.packet.ClientCommandC2SPacket;
 import net.minecraft.server.network.packet.PlayerMoveServerMessage;
 import net.minecraft.util.math.BoundingBox;
 import org.spongepowered.asm.mixin.Final;
@@ -97,7 +95,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
                                 "Invalid syntax, please use: " + ChatColor.AQUA + trigger + "say <Message>");
                         return;
                     }
-                    networkHandler.sendPacket(new ChatMessageServerPacket(message.substring((trigger + "say ").length())));
+                    networkHandler.sendPacket(new ChatMessageC2SPacket(message.substring((trigger + "say ").length())));
                     ci.cancel();
                     return;
                 }
@@ -122,7 +120,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         if (event.isCanceled()) {
             ci.cancel();
         } else if (!event.getMessage().equals(message)) {
-            networkHandler.sendPacket(new ChatMessageServerPacket(event.getMessage()));
+            networkHandler.sendPacket(new ChatMessageC2SPacket(event.getMessage()));
             ci.cancel();
         }
     }
@@ -148,9 +146,9 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         boolean boolean_1 = this.isSprinting();
         if (boolean_1 != this.field_3919) {
             if (boolean_1) {
-                this.networkHandler.sendPacket(new ClientCommandServerPacket((ClientPlayerEntity) (Object) this, ClientCommandServerPacket.Mode.START_SPRINTING));
+                this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.START_SPRINTING));
             } else {
-                this.networkHandler.sendPacket(new ClientCommandServerPacket((ClientPlayerEntity) (Object) this, ClientCommandServerPacket.Mode.STOP_SPRINTING));
+                this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.STOP_SPRINTING));
             }
 
             this.field_3919 = boolean_1;
@@ -159,9 +157,9 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         boolean boolean_2 = this.isSneaking();
         if (boolean_2 != this.field_3936) {
             if (boolean_2) {
-                this.networkHandler.sendPacket(new ClientCommandServerPacket((ClientPlayerEntity) (Object) this, ClientCommandServerPacket.Mode.START_SNEAKING));
+                this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.START_SNEAKING));
             } else {
-                this.networkHandler.sendPacket(new ClientCommandServerPacket((ClientPlayerEntity) (Object) this, ClientCommandServerPacket.Mode.STOP_SNEAKING));
+                this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.STOP_SNEAKING));
             }
 
             this.field_3936 = boolean_2;

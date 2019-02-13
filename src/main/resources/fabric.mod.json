@@ -1,5 +1,5 @@
 {
-  "id": "EMC",
+  "id": "emc",
   "name": "EMC Framework",
   "description": "Provides an API for EMC with Fabric",
   "version": "1.0.0",

@@ -18,7 +18,7 @@ import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScoreboardTeam;
-import net.minecraft.server.network.packet.HandSwingServerPacket;
+import net.minecraft.server.network.packet.HandSwingC2SPacket;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -364,7 +364,7 @@ public class IEntityPlayer {
         if (IEntityPlayer.isNull()) {
             return;
         }
-        MinecraftClient.getInstance().player.networkHandler.sendPacket(new HandSwingServerPacket(Hand.MAIN));
+        MinecraftClient.getInstance().player.networkHandler.sendPacket(new HandSwingC2SPacket(Hand.MAIN));
     }
 
     public static float getCooldown() {

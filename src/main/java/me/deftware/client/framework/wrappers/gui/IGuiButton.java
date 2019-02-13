@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers.gui;
 
+import me.deftware.mixin.imp.IMixinGuiButton;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 
@@ -14,11 +15,11 @@ public class IGuiButton extends ButtonWidget implements CustomIGuiEventListener 
     }
 
     public String getText() {
-        return text;
+        return method_18329();
     }
 
     public void setText(String text) {
-        this.text = text;
+        method_2060(text);
     }
 
     @Override
@@ -93,11 +94,11 @@ public class IGuiButton extends ButtonWidget implements CustomIGuiEventListener 
     }
 
     protected boolean isButtonHovered() {
-        return hovered;
+        return isHovered();
     }
 
     protected void setButtonHovered(boolean state) {
-        hovered = state;
+        ((IMixinGuiButton) this).setIsHovered(state);
     }
 
 }

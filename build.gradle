@@ -20,8 +20,8 @@ def getVersionFromJava() {
 	return "${ver}.${patch}".toString()
 }
 
-def mcVersion = "19w06a"
-def mappingsVer = "${mcVersion}.2"
+def mcVersion = "19w07a"
+def mappingsVer = "${mcVersion}.3"
 archivesBaseName = "EMC"
 version = getVersionFromJava()
 

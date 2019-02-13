@@ -17,7 +17,7 @@ public class MixinWorldClient implements IMixinWorldClient {
 
     @Shadow
     @Final
-    private Int2ObjectMap<Entity> field_17778;
+    private Int2ObjectMap<Entity> regularEntities;
 
     @ModifyVariable(method = "randomBlockDisplayTick(IIIILjava/util/Random;ZLnet/minecraft/util/math/BlockPos$Mutable;)V", at = @At("HEAD"))
     public boolean randomBlockDisplayTick(boolean p_animateTick_6_) {
@@ -29,7 +29,7 @@ public class MixinWorldClient implements IMixinWorldClient {
 
     @Override
     public Int2ObjectMap<Entity> getLoadedEntities() {
-        return field_17778;
+        return regularEntities;
     }
 
 }

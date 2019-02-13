@@ -5,8 +5,8 @@ import me.deftware.client.framework.event.events.EventKnockback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.network.packet.EntityStatusClientPacket;
-import net.minecraft.client.network.packet.ExplosionClientPacket;
+import net.minecraft.client.network.packet.EntityStatusS2CPacket;
+import net.minecraft.client.network.packet.ExplosionS2CPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.NetworkThreadUtils;
 import net.minecraft.world.explosion.Explosion;
@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinNetHandlerPlayClient {
 
     @Inject(method = "onEntityStatus", at = @At("HEAD"), cancellable = true)
-    public void onEntityStatus(EntityStatusClientPacket packetIn, CallbackInfo ci) {
+    public void onEntityStatus(EntityStatusS2CPacket packetIn, CallbackInfo ci) {
         if (packetIn.getStatus() == 35) {
             EventAnimation event = new EventAnimation(EventAnimation.AnimationType.Totem).send();
             if (event.isCanceled()) {
@@ -34,7 +34,7 @@ public class MixinNetHandlerPlayClient {
      * @reason
      */
     @Overwrite
-    public void onExplosion(ExplosionClientPacket explosionClientPacket_1) {
+    public void onExplosion(ExplosionS2CPacket explosionClientPacket_1) {
         NetworkThreadUtils.forceMainThread(explosionClientPacket_1, (ClientPlayNetworkHandler) (Object) this, MinecraftClient.getInstance());
         Explosion explosion_1 = new Explosion(MinecraftClient.getInstance().world, (Entity) null, explosionClientPacket_1.getX(), explosionClientPacket_1.getY(), explosionClientPacket_1.getZ(), explosionClientPacket_1.getRadius(), explosionClientPacket_1.getAffectedBlocks());
         explosion_1.affectWorld(true);

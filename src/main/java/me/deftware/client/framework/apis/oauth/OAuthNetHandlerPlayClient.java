@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.packet.DisconnectClientPacket;
+import net.minecraft.client.network.packet.DisconnectS2CPacket;
 import net.minecraft.network.ClientConnection;
 
 public class OAuthNetHandlerPlayClient extends ClientPlayNetworkHandler {
@@ -18,7 +18,7 @@ public class OAuthNetHandlerPlayClient extends ClientPlayNetworkHandler {
     }
 
     @Override
-    public void onDisconnect(DisconnectClientPacket packetIn) {
+    public void onDisconnect(DisconnectS2CPacket packetIn) {
         String code = packetIn.getReason().getString().split("\n")[0].split("\"")[1].replace("\"", "");
         String time = packetIn.getReason().getString().split("\n")[2]
                 .substring("Your code will expire in ".length() + 1);

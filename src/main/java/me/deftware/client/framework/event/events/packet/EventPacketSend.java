@@ -3,7 +3,7 @@ package me.deftware.client.framework.event.events.packet;
 import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.event.events.packet.packets.*;
 import net.minecraft.network.Packet;
-import net.minecraft.server.network.packet.GuiCloseServerPacket;
+import net.minecraft.server.network.packet.GuiCloseC2SPacket;
 import net.minecraft.server.network.packet.PlayerMoveServerMessage;
 
 /**
@@ -39,7 +39,7 @@ public class EventPacketSend extends Event {
             return new ICPacketRotation(packet);
         } else if (packet instanceof PlayerMoveServerMessage.PositionOnly) {
             return new ICPacketPosition(packet);
-        } else if (packet instanceof GuiCloseServerPacket) {
+        } else if (packet instanceof GuiCloseC2SPacket) {
             return new ICPacketCloseWindow(packet);
         }
         return new IPacket(packet);

@@ -12,9 +12,9 @@ import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
 @Mixin(PlayerEntityRenderer.class)
 public class MixinRenderPlayer {
 
-    @Redirect(method = "setModelPose", at = @At(value = "INVOKE", target = "net/minecraft/client/network/AbstractClientPlayerEntity.method_7325()Z", opcode = GETFIELD))
+    @Redirect(method = "setModelPose", at = @At(value = "INVOKE", target = "net/minecraft/client/network/AbstractClientPlayerEntity.isSpectator()Z", opcode = GETFIELD))
     private boolean setModelVisibilities_isSpectator(AbstractClientPlayerEntity self) {
-        EventSetModelVisibilities event = new EventSetModelVisibilities(self.method_7325()).send();
+        EventSetModelVisibilities event = new EventSetModelVisibilities(self.isSpectator()).send();
         return event.isSpectator();
     }
 

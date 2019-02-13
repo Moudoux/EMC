@@ -4,13 +4,12 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.IResourceLocation;
-import net.minecraft.class_4011;
 import net.minecraft.class_766;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.SplashScreen;
-import net.minecraft.resource.ResourceReloadStatus;
+import net.minecraft.client.resource.ResourceLoadProgressProvider;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.SystemUtil;
 import net.minecraft.util.math.MathHelper;
@@ -30,11 +29,11 @@ public abstract class MixinSplashScreen {
 
     @Shadow
     @Final
-    private class_4011 field_17767;
+    private ResourceLoadProgressProvider field_17767;
 
     @Shadow
     @Final
-    private Consumer<SplashScreen> field_17768;
+    private Consumer<SplashScreen> splashScreenConsumer;
 
     @Shadow
     private class_766 field_17769;
@@ -46,7 +45,7 @@ public abstract class MixinSplashScreen {
     private long field_17771;
 
     @Shadow
-    public abstract void method_18103(int int_1, int int_2, int int_3, int int_4, float float_1, float float_2);
+    public abstract void renderProgressBar(int int_1, int int_2, int int_3, int int_4, float float_1, float float_2);
 
     @Overwrite
     public void draw(int int_1, int int_2, float float_1) {
@@ -75,10 +74,10 @@ public abstract class MixinSplashScreen {
             }
         }
 
-        float float_3 = (float) this.field_17767.method_18229() / (float) this.field_17767.method_18228();
+        float float_3 = this.field_17767.getProgress();
         this.field_17770 = this.field_17770 * 0.95F + float_3 * 0.050000012F;
         if (float_2 < 1.0F) {
-            this.method_18103(((Screen) (Object) this).width / 2 - 150, ((Screen) (Object) this).height / 4 * 3, ((Screen) (Object) this).width / 2 + 150, ((Screen) (Object) this).height / 4 * 3 + 10, this.field_17770, 1.0F - MathHelper.clamp(float_2, 0.0F, 1.0F));
+            this.renderProgressBar(((Screen) (Object) this).width / 2 - 150, ((Screen) (Object) this).height / 4 * 3, ((Screen) (Object) this).width / 2 + 150, ((Screen) (Object) this).height / 4 * 3 + 10, this.field_17770, 1.0F - MathHelper.clamp(float_2, 0.0F, 1.0F));
         }
 
         if (float_2 >= 1.0F && !SettingsMap.getValue(SettingsMap.MapKeys.GAME_SETTINGS, "CUSTOM_SPLASHSCREEN_TEXTURE", "").equals("")) {
@@ -87,14 +86,13 @@ public abstract class MixinSplashScreen {
             done();
         }
 
-        if (this.field_17771 == -1L && this.field_17767.method_18227() == ResourceReloadStatus.DONE) {
+        if (this.field_17771 == -1L && this.field_17767.method_18364().isDone()) {
             this.field_17771 = SystemUtil.getMeasuringTimeMs();
         }
-
     }
 
     public void done() {
-        this.field_17768.accept((SplashScreen) (Object) this);
+        this.splashScreenConsumer.accept((SplashScreen) (Object) this);
         Bootstrap.initList.forEach(mod -> mod.accept("arg"));
     }
 
