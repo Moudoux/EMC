@@ -1,6 +1,5 @@
 package me.deftware.client.framework.wrappers;
 
-import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.wrappers.entity.IEntity;
 import me.deftware.client.framework.wrappers.entity.IEntity.EntityType;
 import me.deftware.client.framework.wrappers.gui.IGuiInventory;
@@ -9,6 +8,7 @@ import me.deftware.client.framework.wrappers.gui.IScreens;
 import me.deftware.client.framework.wrappers.gui.IScreens.Screen;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.mixin.imp.IMixinMinecraft;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.ContainerScreen;
 import net.minecraft.client.gui.ingame.ChatScreen;
@@ -237,11 +237,11 @@ public class IMinecraft {
     }
 
     public static String getMinecraftVersion() {
-        return FrameworkConstants.MINECRAFT_VERSION;
+        return SharedConstants.getGameVersion().getName();
     }
 
     public static int getMinecraftProtocolVersion() {
-        return FrameworkConstants.MINECRAFT_PROTOCOL;
+        return SharedConstants.getGameVersion().getProtocolVersion();
     }
 
     public static boolean isMouseOver() {

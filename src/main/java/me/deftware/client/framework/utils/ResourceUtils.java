@@ -1,6 +1,5 @@
 package me.deftware.client.framework.utils;
 
-import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.wrappers.IMinecraft;
 
@@ -28,7 +27,7 @@ public class ResourceUtils {
             }
         }
         File modJar = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator
-                + FrameworkConstants.MINECRAFT_VERSION + File.separator + jarName);
+                + IMinecraft.getMinecraftVersion() + File.separator + jarName);
 
         System.out.println("Reading JAR file: " + modJar.getAbsolutePath());
 

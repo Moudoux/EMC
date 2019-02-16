@@ -58,7 +58,7 @@ public class Bootstrap {
             }
 
             // EMC mods are stored in .minecraft/libraries/EMC
-            File emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + FrameworkConstants.MINECRAFT_VERSION + File.separator);
+            File emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator);
             if (!emc_root.exists()) {
                 emc_root.mkdir();
             }
