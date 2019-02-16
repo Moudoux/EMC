@@ -1,3 +1,5 @@
+import org.gradle.internal.os.OperatingSystem
+
 plugins {
 	id 'fabric-loom' version '0.2.0-SNAPSHOT'
 }
@@ -20,6 +22,10 @@ def getVersionFromJava() {
 	return "${ver}.${patch}".toString()
 }
 
+def minecraftRoot = System.getenv('APPDATA') + "/.minecraft"
+if (OperatingSystem.current().isMacOsX()) {
+	minecraftRoot = System.getenv('HOME') + "/Library/Application Support/minecraft"
+}
 def mcVersion = "19w07a"
 def mappingsVer = "${mcVersion}.7"
 archivesBaseName = "EMC"
@@ -77,6 +83,14 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 task copyBuilds(type: Copy) {
 	from "$rootDir/build/libs/EMC-${version}.jar"
 	into "$rootDir/maven/me/deftware/EMC-F/${version}-${mcVersion}/"
+	rename { String fileName ->
+		fileName.replace(version, "${version}-${mcVersion}").replace("EMC", "EMC-F")
+	}
+}
+
+task copyToMinecraft(type: Copy) {
+	from "$rootDir/build/libs/EMC-${version}.jar"
+	into "${minecraftRoot}/libraries/me/deftware/EMC-F/${version}-${mcVersion}/"
 	rename { String fileName ->
 		fileName.replace(version, "${version}-${mcVersion}").replace("EMC", "EMC-F")
 	}
