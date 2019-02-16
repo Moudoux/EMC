@@ -1,0 +1,9 @@
+{
+  "name": "TestMod",
+  "website": "https://gitlab.com/EMC-Framework/EMC",
+  "author": "Deftware",
+  "minversion": 13.7,
+  "version": 1,
+  "main": "me.deftware.test.Main",
+  "updateLinkOverride": false
+}

@@ -23,13 +23,11 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +48,7 @@ public class Bootstrap {
     private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
 
     public static void init() {
+
         try {
             Bootstrap.logger.info("Loading EMC...");
 

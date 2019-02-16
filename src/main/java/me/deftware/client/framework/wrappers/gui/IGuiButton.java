@@ -14,14 +14,6 @@ public class IGuiButton extends ButtonWidget implements CustomIGuiEventListener 
         super(buttonId, x, y, widthIn, heightIn, buttonText);
     }
 
-    public String getText() {
-        return method_18329();
-    }
-
-    public void setText(String text) {
-        method_2060(text);
-    }
-
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
         if (onDraw(mouseX, mouseY) == 0) {
@@ -99,6 +91,14 @@ public class IGuiButton extends ButtonWidget implements CustomIGuiEventListener 
 
     protected void setButtonHovered(boolean state) {
         ((IMixinGuiButton) this).setIsHovered(state);
+    }
+
+    public String getButtonText() {
+        return getText();
+    }
+
+    public void setButtonText(String text) {
+        setText(text);
     }
 
 }

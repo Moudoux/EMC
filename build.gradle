@@ -21,7 +21,7 @@ def getVersionFromJava() {
 }
 
 def mcVersion = "19w07a"
-def mappingsVer = "${mcVersion}.3"
+def mappingsVer = "${mcVersion}.7"
 archivesBaseName = "EMC"
 version = getVersionFromJava()
 
