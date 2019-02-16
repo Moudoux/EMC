@@ -13,14 +13,6 @@ public class IGuiButton extends GuiButton implements CustomIGuiEventListener {
 		super(buttonId, x, y, widthIn, heightIn, buttonText);
 	}
 
-	public void setText(String text) {
-		displayString = text;
-	}
-
-	public String getText() {
-		return displayString;
-	}
-
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		if (onDraw(mouseX, mouseY) == 0) {
@@ -98,6 +90,14 @@ public class IGuiButton extends GuiButton implements CustomIGuiEventListener {
 
 	protected void setButtonHovered(boolean state) {
 		hovered = state;
+	}
+
+	public void setButtonText(String text) {
+		displayString = text;
+	}
+
+	public String getButtonText() {
+		return displayString;
 	}
 
 }

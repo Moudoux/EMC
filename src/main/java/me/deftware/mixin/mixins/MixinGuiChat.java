@@ -7,6 +7,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.suggestion.Suggestions;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.mixin.components.InternalGuiTextField;
+import me.deftware.mixin.imp.IMixinGuiChat;
 import me.deftware.mixin.imp.IMixinGuiScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
@@ -24,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("ALL")
 @Mixin(GuiChat.class)
-public abstract class MixinGuiChat extends GuiScreen {
+public abstract class MixinGuiChat extends GuiScreen implements IMixinGuiChat {
 
 	@Shadow
 	protected GuiTextField inputField;
@@ -103,6 +104,11 @@ public abstract class MixinGuiChat extends GuiScreen {
 				}
 			}
 		}
+	}
+
+	@Override
+	public String getCurrentText() {
+		return inputField.getText();
 	}
 
 }
