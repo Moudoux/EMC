@@ -29,14 +29,14 @@ public abstract class MixinSkinManager {
     private MinecraftSessionService sessionService;
 
     @Shadow
-    public abstract Identifier method_4651( MinecraftProfileTexture minecraftProfileTexture_1, MinecraftProfileTexture.Type minecraftProfileTexture$Type_1, PlayerSkinProvider.class_1072 playerSkinProvider$class_1072_1);
+    public abstract Identifier loadSkin( MinecraftProfileTexture minecraftProfileTexture_1, MinecraftProfileTexture.Type minecraftProfileTexture$Type_1, PlayerSkinProvider.SkinTextureAvailableCallback playerSkinProvider$class_1072_1);
 
     /**
      * @Author Deftware
      * @reason
      */
     @Overwrite
-    public void method_4652(GameProfile player, PlayerSkinProvider.class_1072 callback, boolean requireSecure) {
+    public void method_4652(GameProfile player, PlayerSkinProvider.SkinTextureAvailableCallback callback, boolean requireSecure) {
         EXECUTOR_SERVICE.submit(() -> {
             Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> textureMap = Maps.newHashMap();
 
@@ -66,11 +66,11 @@ public abstract class MixinSkinManager {
 
             MinecraftClient.getInstance().execute(() -> {
                 if (textureMap.containsKey(MinecraftProfileTexture.Type.SKIN)) {
-                    this.method_4651((MinecraftProfileTexture) textureMap.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN, callback);
+                    this.loadSkin((MinecraftProfileTexture) textureMap.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN, callback);
                 }
 
                 if (textureMap.containsKey(MinecraftProfileTexture.Type.CAPE)) {
-                    this.method_4651((MinecraftProfileTexture) textureMap.get(MinecraftProfileTexture.Type.CAPE), MinecraftProfileTexture.Type.CAPE, callback);
+                    this.loadSkin((MinecraftProfileTexture) textureMap.get(MinecraftProfileTexture.Type.CAPE), MinecraftProfileTexture.Type.CAPE, callback);
                 }
 
             });

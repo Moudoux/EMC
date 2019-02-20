@@ -367,9 +367,9 @@ public class RenderUtils {
 
     public static void drawAltFace(String name, int x, int y, int w, int h, boolean selected) {
         try {
-            AbstractClientPlayerEntity.method_3120(AbstractClientPlayerEntity.method_3124(name), name)
+            AbstractClientPlayerEntity.loadSkin(AbstractClientPlayerEntity.getSkinId(name), name)
                     .load(MinecraftClient.getInstance().getResourceManager());
-            MinecraftClient.getInstance().getTextureManager().bindTexture(AbstractClientPlayerEntity.method_3124(name));
+            MinecraftClient.getInstance().getTextureManager().bindTexture(AbstractClientPlayerEntity.getSkinId(name));
             glEnable(GL_BLEND);
             glColor4f(0.9F, 0.9F, 0.9F, 1.0F);
             Drawable.drawTexturedRect(x, y, 24, 24, w, h, 192, 192);

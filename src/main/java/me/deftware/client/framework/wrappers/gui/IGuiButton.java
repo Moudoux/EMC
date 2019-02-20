@@ -6,12 +6,12 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 
 public class IGuiButton extends ButtonWidget implements CustomIGuiEventListener {
 
-    public IGuiButton(int buttonId, int x, int y, String buttonText) {
-        super(buttonId, x, y, 200, 20, buttonText);
+    public IGuiButton(int x, int y, String buttonText) {
+        super(x, y, 200, 20, buttonText);
     }
 
-    public IGuiButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText) {
-        super(buttonId, x, y, widthIn, heightIn, buttonText);
+    public IGuiButton(int x, int y, int widthIn, int heightIn, String buttonText) {
+        super(x, y, widthIn, heightIn, buttonText);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class IGuiButton extends ButtonWidget implements CustomIGuiEventListener 
     }
 
     public void drawCenteredString(String text, int x, int y, int color) {
-        MinecraftClient.getInstance().fontRenderer.drawWithShadow(text, x - MinecraftClient.getInstance().fontRenderer.getStringWidth(text) / 2, y, color);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(text, x - MinecraftClient.getInstance().textRenderer.getStringWidth(text) / 2, y, color);
     }
 
     @Override

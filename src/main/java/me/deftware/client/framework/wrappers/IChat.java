@@ -18,7 +18,7 @@ public class IChat {
     }
 
     public static void clearMessages() {
-        MinecraftClient.getInstance().inGameHud.getHudChat().clear(true);
+        MinecraftClient.getInstance().inGameHud.getChatHud().clear(true);
     }
 
 }

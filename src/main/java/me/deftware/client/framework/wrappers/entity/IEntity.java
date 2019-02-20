@@ -10,7 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.WaterCreatureEntity;
-import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.*;
@@ -245,7 +245,7 @@ public class IEntity {
         } else if (e.equals(EntityType.ENTITY_WITHER_SKELETON)) {
             return entity instanceof WitherSkeletonEntity;
         } else if (e.equals(EntityType.ENTITY_WITHER)) {
-            return entity instanceof EntityWither;
+            return entity instanceof WitherEntity;
         } else if (e.equals(EntityType.ENTITY_DRAGON)) {
             return entity instanceof EnderDragonEntity;
         } else if (e.equals(EntityType.ENTITY_PHANTOM)) {

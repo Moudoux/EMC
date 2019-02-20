@@ -2,7 +2,7 @@ package me.deftware.mixin.components;
 
 import me.deftware.client.framework.event.events.EventChatboxType;
 import me.deftware.mixin.imp.IMixinGuiTextField;
-import net.minecraft.client.font.FontRenderer;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 
 import java.awt.*;
@@ -11,14 +11,13 @@ public class InternalGuiTextField extends TextFieldWidget {
 
     private String overlay = "";
 
-    public InternalGuiTextField(int componentId, FontRenderer fontrendererObj, int x, int y, int par5Width,
-                                int par6Height) {
-        super(componentId, fontrendererObj, x, y, par5Width, par6Height);
+    public InternalGuiTextField(TextRenderer fontrendererObj, int x, int y, int width, int height) {
+        super(fontrendererObj, x, y, width, height);
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
-        super.render(mouseX, mouseY, partialTicks);
+    public void method_18326(int mouseX, int mouseY, float partialTicks) {
+        super.method_18326(mouseX, mouseY, partialTicks);
         String currentText = getText();
         int currentWidth = ((IMixinGuiTextField) this).getFontRendererInstance().getStringWidth(currentText);
         int l = hasBorder() ? ((IMixinGuiTextField) this).getX() + 4 : ((IMixinGuiTextField) this).getX();

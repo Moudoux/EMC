@@ -93,7 +93,7 @@ public class IItem {
 
     protected static Item getByName(String id) {
         Identifier resourceLocation = new Identifier(id);
-        if (Registry.ITEM.contains(resourceLocation)) {
+        if (Registry.ITEM.containsId(resourceLocation)) {
             return Registry.ITEM.get(resourceLocation);
         }
         return null;

@@ -7,11 +7,11 @@ import me.deftware.client.framework.event.events.EventGuiScreenPostDraw;
 import me.deftware.client.framework.wrappers.item.IItem;
 import me.deftware.mixin.imp.IMixinGuiScreen;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.FontRenderer;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.GuiEventListener;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.item.TooltipOptions;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.TextComponent;
 import org.spongepowered.asm.mixin.Final;
@@ -29,7 +29,7 @@ import java.util.List;
 public class MixinGuiScreen implements IMixinGuiScreen {
 
     @Shadow
-    protected FontRenderer fontRenderer;
+    protected TextRenderer fontRenderer;
     @Shadow
     private List<ButtonWidget> buttons;
     @Shadow
@@ -42,7 +42,7 @@ public class MixinGuiScreen implements IMixinGuiScreen {
     }
 
     @Override
-    public FontRenderer getFontRenderer() {
+    public TextRenderer getFontRenderer() {
         return fontRenderer;
     }
 
@@ -51,19 +51,19 @@ public class MixinGuiScreen implements IMixinGuiScreen {
         return listeners;
     }
 
-    @Inject(method = "draw", at = @At("HEAD"))
+    @Inject(method = "method_18326", at = @At("HEAD"))
     public void render(int x, int y, float p_render_3_, CallbackInfo ci) {
         new EventGuiScreenDraw((Screen) (Object) this, x, y).send();
     }
 
-    @Inject(method = "draw", at = @At("RETURN"))
+    @Inject(method = "method_18326", at = @At("RETURN"))
     public void render_return(int x, int y, float p_render_3_, CallbackInfo ci) {
         new EventGuiScreenPostDraw((Screen) (Object) this, x, y).send();
     }
 
     @Overwrite
     public List<String> getStackTooltip(ItemStack itemStack_1) {
-        List<TextComponent> list_1 = itemStack_1.getTooltipText(MinecraftClient.getInstance().player, MinecraftClient.getInstance().options.advancedItemTooltips ? TooltipOptions.Instance.ADVANCED : TooltipOptions.Instance.NORMAL);
+        List<TextComponent> list_1 = itemStack_1.getTooltipText(MinecraftClient.getInstance().player, MinecraftClient.getInstance().options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL);
         List<String> list_2 = Lists.newArrayList();
         Iterator var4 = list_1.iterator();
 

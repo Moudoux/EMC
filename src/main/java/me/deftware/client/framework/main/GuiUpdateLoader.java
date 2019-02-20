@@ -30,7 +30,7 @@ public class GuiUpdateLoader extends Screen {
     @Override
     public void onInitialized() {
         buttons.clear();
-        addButton(new IGuiButton(0, width / 2 - 100, height / 4 + 120 + 12 - 30,
+        addButton(new IGuiButton(width / 2 - 100, height / 4 + 120 + 12 - 30,
                 "Update " + (clientInfo.get("updateLinkOverride").getAsBoolean() ? clientInfo.get("name").getAsString()
                         : "EMC")) {
             @Override
@@ -43,7 +43,7 @@ public class GuiUpdateLoader extends Screen {
                 MinecraftClient.getInstance().stop();
             }
         });
-        addButton(new IGuiButton(1, width / 2 - 100, height / 4 + 144 + 12 - 30, "Cancel (Mod won't load)") {
+        addButton(new IGuiButton(width / 2 - 100, height / 4 + 144 + 12 - 30, "Cancel (Mod won't load)") {
             @Override
             public void onButtonClick(double mouseX, double mouseY) {
                 MinecraftClient.getInstance().openScreen(null);
@@ -52,8 +52,8 @@ public class GuiUpdateLoader extends Screen {
     }
 
     @Override
-    public void draw(int mouseX, int mouseY, float partialTicks) {
-        super.draw(mouseX, mouseY, partialTicks);
+    public void method_18326(int mouseX, int mouseY, float partialTicks) {
+        super.method_18326(mouseX, mouseY, partialTicks);
         drawBackground();
 
         drawStringCentered(fontRenderer, "EMC update required", width / 2, 21, 16777215);
@@ -74,7 +74,7 @@ public class GuiUpdateLoader extends Screen {
         drawStringCentered(fontRenderer, "Your EMC version is too low.", width / 2 + 70, 90,
                 16777215);
 
-        super.draw(mouseX, mouseY, partialTicks);
+        super.method_18326(mouseX, mouseY, partialTicks);
     }
 
 }

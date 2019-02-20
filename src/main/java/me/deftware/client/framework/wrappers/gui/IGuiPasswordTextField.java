@@ -13,12 +13,12 @@ public class IGuiPasswordTextField extends IGuiTextField {
     private int enabledColor = 14737632;
     private int disabledColor = 7368816;
 
-    public IGuiPasswordTextField(int componentId, int x, int y, int width, int height) {
-        super(componentId, x, y, width, height);
+    public IGuiPasswordTextField(int x, int y, int width, int height) {
+        super(x, y, width, height);
     }
 
     @Override
-    public void render(int p_195608_1_, int p_195608_2_, float p_195608_3_) {
+    public void method_18326(int p_195608_1_, int p_195608_2_, float p_195608_3_) {
         if (isVisible()) {
             if (hasBorder()) {
                 Drawable.drawRect(((IMixinGuiTextField) this).getX() - 1, ((IMixinGuiTextField) this).getY() - 1, ((IMixinGuiTextField) this).getX() + ((IMixinGuiTextField) this).getWidth() + 1,

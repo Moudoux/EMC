@@ -140,8 +140,9 @@ public class IMinecraft {
                 .openScreen(new ServerConnectingScreen(new MultiplayerScreen(null), MinecraftClient.getInstance(), server));
     }
 
+    // TODO: Change this
     public static int thridPersonView() {
-        return MinecraftClient.getInstance().options.field_1850;
+        return MinecraftClient.getInstance().options.perspective;
     }
 
     public static int getGuiScaleRaw() {

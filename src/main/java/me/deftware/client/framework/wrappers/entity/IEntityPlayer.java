@@ -15,6 +15,7 @@ import net.minecraft.client.gui.ingame.PlayerInventoryScreen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ScoreboardEntry;
 import net.minecraft.client.render.entity.PlayerModelPart;
+import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScoreboardTeam;
@@ -52,7 +53,7 @@ public class IEntityPlayer {
     }
 
     public static void doJump() {
-        MinecraftClient.getInstance().player.method_6043();
+        MinecraftClient.getInstance().player.jump();
     }
 
     public static IItemStack getHeldItem(boolean offset) {
@@ -514,7 +515,7 @@ public class IEntityPlayer {
             public void run() {
                 ClientPlayNetworkHandler nethandlerplayclient = MinecraftClient.getInstance().player.networkHandler;
                 List<ScoreboardEntry> list = ENTRY_ORDERING
-                        .<ScoreboardEntry>sortedCopy(nethandlerplayclient.method_2880());
+                        .<ScoreboardEntry>sortedCopy(nethandlerplayclient.getScoreboardEntries());
 
                 for (ScoreboardEntry networkplayerinfo : list) {
                     String uuid = networkplayerinfo.getProfile().getId().toString();
@@ -554,7 +555,8 @@ public class IEntityPlayer {
         if (IEntityPlayer.isNull()) {
             return false;
         }
-        return MinecraftClient.getInstance().player.method_3131();
+        // TODO: Does this work?
+        return MinecraftClient.getInstance().player.hasVehicle() && MinecraftClient.getInstance().player.getRiddenEntity() instanceof HorseEntity;
     }
 
     public static boolean isInLiquid() {
@@ -658,7 +660,7 @@ public class IEntityPlayer {
     }
 
     public static boolean isInAir() {
-        return MinecraftClient.getInstance().player.method_5777(new FluidTags.class_3487(new Identifier("air")));
+        return MinecraftClient.getInstance().player.isInFluid(new FluidTags.class_3487(new Identifier("air")));
     }
 
     public static boolean isTouchingLiquid() {

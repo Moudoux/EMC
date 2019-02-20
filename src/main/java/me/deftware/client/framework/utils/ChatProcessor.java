@@ -96,7 +96,7 @@ public class ChatProcessor {
             return;
         }
         TextComponent textComponent = getTextComponent(chatMessage);
-        ((IMixinGuiNewChat) MinecraftClient.getInstance().inGameHud.getHudChat()).setTheChatLine(textComponent, 0,
+        ((IMixinGuiNewChat) MinecraftClient.getInstance().inGameHud.getChatHud()).setTheChatLine(textComponent, 0,
                 MinecraftClient.getInstance().inGameHud.getTicks(), false);
     }
 

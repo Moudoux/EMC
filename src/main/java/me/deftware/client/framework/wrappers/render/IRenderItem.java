@@ -15,7 +15,7 @@ public class IRenderItem {
     }
 
     public static void renderItemOverlays(IItemStack stack, int x, int y) {
-        IRenderItem.getRenderItem().renderGuiItemOverlay(MinecraftClient.getInstance().fontRenderer, stack.getStack(), x, y);
+        IRenderItem.getRenderItem().renderGuiItemOverlay(MinecraftClient.getInstance().textRenderer, stack.getStack(), x, y);
     }
 
     public static void renderItemAndEffectIntoGUI(IItemStack stack, int x, int y) {
@@ -23,7 +23,7 @@ public class IRenderItem {
     }
 
     public static void renderItemOverlayIntoGUI(IItemStack stack, int x, int y, String text) {
-        IRenderItem.getRenderItem().renderGuiItemOverlay(MinecraftClient.getInstance().fontRenderer, stack.getStack(), x, y, text);
+        IRenderItem.getRenderItem().renderGuiItemOverlay(MinecraftClient.getInstance().textRenderer, stack.getStack(), x, y, text);
     }
 
     public static void setZLevel(float z) {

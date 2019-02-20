@@ -4,7 +4,7 @@ import me.deftware.client.framework.fonts.EMCFont;
 import me.deftware.client.framework.utils.render.GraphicsUtil;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import me.deftware.mixin.imp.IMixinGuiTextField;
-import net.minecraft.client.font.FontRenderer;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Final;
@@ -49,7 +49,7 @@ public class MixinGuiTextField implements IMixinGuiTextField {
 
     @Shadow
     @Final
-    private FontRenderer fontRenderer;
+    private TextRenderer fontRenderer;
 
     @Override
     public int getHeight() {
@@ -62,7 +62,7 @@ public class MixinGuiTextField implements IMixinGuiTextField {
     }
 
     @Override
-    public FontRenderer getFontRendererInstance() {
+    public TextRenderer getFontRendererInstance() {
         return fontRenderer;
     }
 
@@ -126,7 +126,7 @@ public class MixinGuiTextField implements IMixinGuiTextField {
         customFont = font;
     }
 
-    @Inject(method = "render", at = @At("HEAD"))
+    @Inject(method = "method_18326", at = @At("HEAD"))
     public void drawTextField(int p_drawTextField_1_, int p_drawTextField_2_, float p_drawTextField_3_, CallbackInfo ci) {
         if (!useMinecraftScaling) {
             GL11.glPushMatrix();
@@ -134,15 +134,15 @@ public class MixinGuiTextField implements IMixinGuiTextField {
         }
     }
 
-    @Inject(method = "render", at = @At("RETURN"))
+    @Inject(method = "method_18326", at = @At("RETURN"))
     public void drawTextFieldReturn(int p_drawTextField_1_, int p_drawTextField_2_, float p_drawTextField_3_, CallbackInfo ci) {
         if (!useMinecraftScaling) {
             GL11.glPopMatrix();
         }
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "net/minecraft/client/font/FontRenderer.drawWithShadow(Ljava/lang/String;FFI)I"))
-    public int render(FontRenderer self, String text, float x, float y, int color) {
+    @Redirect(method = "method_18326", at = @At(value = "INVOKE", target = "net/minecraft/client/font/TextRenderer.drawWithShadow(Ljava/lang/String;FFI)I"))
+    public int render(TextRenderer self, String text, float x, float y, int color) {
         if (useCustomFont) {
             customFont.drawStringWithShadow((int) x, (int) y - 6, text, new Color(color));
             return (int) (x + customFont.getStringWidth(text) + 1f);

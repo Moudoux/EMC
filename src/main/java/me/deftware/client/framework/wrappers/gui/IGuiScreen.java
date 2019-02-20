@@ -91,9 +91,9 @@ public abstract class IGuiScreen extends Screen {
     }
 
     @Override
-    public void draw(int mouseX, int mouseY, float partialTicks) {
+    public void method_18326(int mouseX, int mouseY, float partialTicks) {
         onDraw(mouseX, mouseY, partialTicks);
-        super.draw(mouseX, mouseY, partialTicks);
+        super.method_18326(mouseX, mouseY, partialTicks);
         onPostDraw(mouseX, mouseY, partialTicks);
     }
 
@@ -186,8 +186,8 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public void drawCenteredString(String text, int x, int y, int color) {
-        MinecraftClient.getInstance().fontRenderer.drawWithShadow(text,
-                x - MinecraftClient.getInstance().fontRenderer.getStringWidth(text) / 2, y, color);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(text,
+                x - MinecraftClient.getInstance().textRenderer.getStringWidth(text) / 2, y, color);
     }
 
     public void setDoesGuiPauseGame(boolean state) {
@@ -213,7 +213,7 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public void setFocusedComponent(CustomIGuiEventListener listener) {
-        this.setFocused(listener);
+        this.method_1967(listener);
     }
 
     protected void onGuiClose() {

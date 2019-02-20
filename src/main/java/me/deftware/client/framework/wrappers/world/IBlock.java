@@ -26,7 +26,7 @@ public class IBlock {
 
     private static Block getBlockFromName(String p_getBlockFromName_0_) {
         Identifier lvt_1_1_ = new Identifier(p_getBlockFromName_0_);
-        if (Registry.BLOCK.contains(lvt_1_1_)) {
+        if (Registry.BLOCK.containsId(lvt_1_1_)) {
             return Registry.BLOCK.get(lvt_1_1_);
         }
         return null;

@@ -26,8 +26,8 @@ def minecraftRoot = System.getenv('APPDATA') + "/.minecraft"
 if (OperatingSystem.current().isMacOsX()) {
 	minecraftRoot = System.getenv('HOME') + "/Library/Application Support/minecraft"
 }
-def mcVersion = "19w07a"
-def mappingsVer = "${mcVersion}.7"
+def mcVersion = "${project.minecraftVersion}"
+def mappingsVer = "${mcVersion}.${project.mappingsVer}"
 archivesBaseName = "EMC"
 version = getVersionFromJava()
 
@@ -43,7 +43,7 @@ configurations {
 dependencies {
 	minecraft "com.mojang:minecraft:${mcVersion}"
 	mappings "net.fabricmc:yarn:${mappingsVer}"
-	modCompile "net.fabricmc:fabric-loader:0.3.5.106"
+	modCompile "net.fabricmc:fabric-loader:0.3.7.108"
 	extraLibs "me.deftware:subsystem:0.3.8"
 }
 
@@ -51,21 +51,19 @@ jar {
 	from {
 		configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
 	}
-	manifest.attributes(
-			"EMC-Version": version,
-			"EMC-ForgeBuild": false,
-			"Manifest-Version": 1.0
-	)
 }
 
-task createPom << {
-	pom {
-		project {
-			groupId "me.deftware"
-			artifactId "EMC-F"
-			version "${version}-${mcVersion}"
-		}
-	}.writeTo("maven/me/deftware/EMC-F/${version}-${mcVersion}/EMC-F-${version}-${mcVersion}.pom")
+task createPom {
+	doLast {
+		pom {
+			//noinspection GroovyAssignabilityCheck
+			project {
+				groupId "me.deftware"
+				artifactId "EMC-F"
+				version "${version}-${mcVersion}"
+			}
+		}.writeTo("maven/me/deftware/EMC-F/${version}-${mcVersion}/EMC-F-${version}-${mcVersion}.pom")
+	}
 }
 
 task generateApiDocumentation(type: Javadoc) {

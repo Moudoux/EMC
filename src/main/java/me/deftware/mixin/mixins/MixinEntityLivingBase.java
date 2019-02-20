@@ -43,7 +43,7 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
      * @reason
      */
     @Overwrite
-    public float method_6106() {
+    public float getJumpVelocity() {
         return (float) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "JUMP_HEIGHT", 0.42F);
     }
 
