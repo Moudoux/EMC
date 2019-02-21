@@ -42,12 +42,7 @@ public class MixinNetHandlerPlayClient {
         if (event.isCanceled()) {
             return;
         }
-        ClientPlayerEntity var10000 = MinecraftClient.getInstance().player;
-        var10000.velocityX += (double) explosionClientPacket_1.getPlayerVelocityX();
-        var10000 = MinecraftClient.getInstance().player;
-        var10000.velocityY += (double) explosionClientPacket_1.getPlayerVelocityY();
-        var10000 = MinecraftClient.getInstance().player;
-        var10000.velocityZ += (double) explosionClientPacket_1.getPlayerVelocityZ();
+        MinecraftClient.getInstance().player.setVelocity(MinecraftClient.getInstance().player.getVelocity().add((double)explosionClientPacket_1.getPlayerVelocityX(), (double)explosionClientPacket_1.getPlayerVelocityY(), (double)explosionClientPacket_1.getPlayerVelocityZ()));
     }
 
 }

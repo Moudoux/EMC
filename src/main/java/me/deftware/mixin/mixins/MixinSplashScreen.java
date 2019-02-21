@@ -8,6 +8,7 @@ import me.deftware.mixin.components.CustomClass;
 import net.minecraft.class_4071;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.SplashScreen;
 import net.minecraft.client.resource.metadata.TextureResourceMetadata;
 import net.minecraft.client.texture.NativeImage;
@@ -67,7 +68,7 @@ public abstract class MixinSplashScreen {
     }
 
     @Overwrite
-    public void method_18326(int int_1, int int_2, float float_1) {
+    public void draw(int int_1, int int_2, float float_1) {
         this.field_18217.getTextureManager().registerTexture(customLogo == null ? LOGO : customLogo, new CustomClass(customLogo == null ? LOGO : customLogo));
         int int_3 = this.field_18217.window.getScaledWidth();
         int int_4 = this.field_18217.window.getScaledHeight();
@@ -76,28 +77,28 @@ public abstract class MixinSplashScreen {
             this.field_18220 = long_1;
         }
 
-        float float_2 = this.field_17771 > -1L ? (float) (long_1 - this.field_17771) / 1000.0F : -1.0F;
-        float float_3 = this.field_18220 > -1L ? (float) (long_1 - this.field_18220) / 500.0F : -1.0F;
+        float float_2 = this.field_17771 > -1L ? (float)(long_1 - this.field_17771) / 1000.0F : -1.0F;
+        float float_3 = this.field_18220 > -1L ? (float)(long_1 - this.field_18220) / 500.0F : -1.0F;
         float float_6;
         int int_6;
         if (float_2 >= 1.0F) {
             if (this.field_18217.currentScreen != null) {
-                this.field_18217.currentScreen.method_18326(0, 0, float_1);
+                this.field_18217.currentScreen.draw(0, 0, float_1);
             }
 
             int_6 = MathHelper.ceil((1.0F - MathHelper.clamp(float_2 - 1.0F, 0.0F, 1.0F)) * 255.0F);
-            Drawable.drawRect(0, 0, int_3, int_4, 16777215 | int_6 << 24);
+            DrawableHelper.drawRect(0, 0, int_3, int_4, 16777215 | int_6 << 24);
             float_6 = 1.0F - MathHelper.clamp(float_2 - 1.0F, 0.0F, 1.0F);
         } else if (this.field_18219) {
             if (this.field_18217.currentScreen != null && float_3 < 1.0F) {
-                this.field_18217.currentScreen.method_18326(int_1, int_2, float_1);
+                this.field_18217.currentScreen.draw(int_1, int_2, float_1);
             }
 
-            int_6 = MathHelper.ceil(MathHelper.clamp((double) float_3, 0.15D, 1.0D) * 255.0D);
-            Drawable.drawRect(0, 0, int_3, int_4, 16777215 | int_6 << 24);
+            int_6 = MathHelper.ceil(MathHelper.clamp((double)float_3, 0.15D, 1.0D) * 255.0D);
+            DrawableHelper.drawRect(0, 0, int_3, int_4, 16777215 | int_6 << 24);
             float_6 = MathHelper.clamp(float_3, 0.0F, 1.0F);
         } else {
-            Drawable.drawRect(0, 0, int_3, int_4, -1);
+            DrawableHelper.drawRect(0, 0, int_3, int_4, -1);
             float_6 = 1.0F;
         }
 
@@ -114,7 +115,7 @@ public abstract class MixinSplashScreen {
         }
 
         if (float_2 >= 2.0F) {
-            this.field_18217.method_18502((class_4071) null);
+            this.field_18217.method_18502((class_4071)null);
         }
 
         if (this.field_17771 == -1L && this.field_17767.method_18787() && (!this.field_18219 || float_3 >= 2.0F)) {

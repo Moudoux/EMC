@@ -16,8 +16,8 @@ public class InternalGuiTextField extends TextFieldWidget {
     }
 
     @Override
-    public void method_18326(int mouseX, int mouseY, float partialTicks) {
-        super.method_18326(mouseX, mouseY, partialTicks);
+    public void draw(int mouseX, int mouseY, float partialTicks) {
+        super.draw(mouseX, mouseY, partialTicks);
         String currentText = getText();
         int currentWidth = ((IMixinGuiTextField) this).getFontRendererInstance().getStringWidth(currentText);
         int l = hasBorder() ? ((IMixinGuiTextField) this).getX() + 4 : ((IMixinGuiTextField) this).getX();

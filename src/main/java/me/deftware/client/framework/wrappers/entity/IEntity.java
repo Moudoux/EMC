@@ -6,10 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.OtherClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.WaterCreatureEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.mob.*;
@@ -149,7 +146,7 @@ public class IEntity {
     }
 
     public double getEyeHeight() {
-        return entity.getEyeHeight();
+        return entity.getEyeHeight(EntityPose.STANDING);
     }
 
     public boolean isHostile() {

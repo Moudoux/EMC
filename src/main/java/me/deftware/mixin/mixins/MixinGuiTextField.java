@@ -126,7 +126,7 @@ public class MixinGuiTextField implements IMixinGuiTextField {
         customFont = font;
     }
 
-    @Inject(method = "method_18326", at = @At("HEAD"))
+    @Inject(method = "draw", at = @At("HEAD"))
     public void drawTextField(int p_drawTextField_1_, int p_drawTextField_2_, float p_drawTextField_3_, CallbackInfo ci) {
         if (!useMinecraftScaling) {
             GL11.glPushMatrix();
@@ -134,14 +134,14 @@ public class MixinGuiTextField implements IMixinGuiTextField {
         }
     }
 
-    @Inject(method = "method_18326", at = @At("RETURN"))
+    @Inject(method = "draw", at = @At("RETURN"))
     public void drawTextFieldReturn(int p_drawTextField_1_, int p_drawTextField_2_, float p_drawTextField_3_, CallbackInfo ci) {
         if (!useMinecraftScaling) {
             GL11.glPopMatrix();
         }
     }
 
-    @Redirect(method = "method_18326", at = @At(value = "INVOKE", target = "net/minecraft/client/font/TextRenderer.drawWithShadow(Ljava/lang/String;FFI)I"))
+    @Redirect(method = "draw", at = @At(value = "INVOKE", target = "net/minecraft/client/font/TextRenderer.drawWithShadow(Ljava/lang/String;FFI)I"))
     public int render(TextRenderer self, String text, float x, float y, int color) {
         if (useCustomFont) {
             customFont.drawStringWithShadow((int) x, (int) y - 6, text, new Color(color));

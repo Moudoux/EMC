@@ -10,11 +10,11 @@ public class IMovementInput {
     }
 
     public static double getForward() {
-        return IMovementInput.get().field_3905;
+        return IMovementInput.get().movementForward;
     }
 
     public static double getStrafe() {
-        return IMovementInput.get().field_3907;
+        return IMovementInput.get().movementSideways;
     }
 
 }

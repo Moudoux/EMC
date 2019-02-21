@@ -22,8 +22,7 @@ public class MixinBlockSoulSand {
         if (event.isCanceled()) {
             return;
         }
-        entity_1.velocityX *= 0.4D;
-        entity_1.velocityY *= 0.4D;
+        entity_1.setVelocity(entity_1.getVelocity().method_18805(0.4D, 1.0D, 0.4D));
     }
 
 }

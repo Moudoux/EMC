@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
+import net.minecraft.client.gui.DrawableHelper;
 
 public class TexUtil {
 
@@ -12,7 +13,7 @@ public class TexUtil {
     }
 
     public static void drawModalRectWithCustomSizedTexture(int x, int y, float u, float v, int width, int height, float textureWidth, float textureHeight) {
-        Drawable.drawTexturedRect(x, y, u, v, width, height, textureWidth, textureHeight);
+        DrawableHelper.drawTexturedRect(x, y, u, v, width, height, textureWidth, textureHeight);
     }
 
     public static int glGenTextures() {

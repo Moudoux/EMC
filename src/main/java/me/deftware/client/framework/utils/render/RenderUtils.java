@@ -9,12 +9,14 @@ import me.deftware.mixin.imp.IMixinEntityRenderer;
 import me.deftware.mixin.imp.IMixinRenderManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GuiLighting;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.util.math.BoundingBox;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -372,8 +374,8 @@ public class RenderUtils {
             MinecraftClient.getInstance().getTextureManager().bindTexture(AbstractClientPlayerEntity.getSkinId(name));
             glEnable(GL_BLEND);
             glColor4f(0.9F, 0.9F, 0.9F, 1.0F);
-            Drawable.drawTexturedRect(x, y, 24, 24, w, h, 192, 192);
-            Drawable.drawTexturedRect(x, y, 120, 24, w, h, 192, 192);
+            DrawableHelper.drawTexturedRect(x, y, 24, 24, w, h, 192, 192);
+            DrawableHelper.drawTexturedRect(x, y, 120, 24, w, h, 192, 192);
             glDisable(GL_BLEND);
         } catch (Exception e) {
         }
@@ -733,7 +735,7 @@ public class RenderUtils {
 
         GL11.glBegin(1);
 
-        GL11.glVertex3d(eyes.x, MinecraftClient.getInstance().player.getEyeHeight() + eyes.y, eyes.z);
+        GL11.glVertex3d(eyes.x, MinecraftClient.getInstance().player.getEyeHeight(EntityPose.STANDING) + eyes.y, eyes.z);
         GL11.glVertex3d(x, y, z);
 
         GL11.glEnd();
@@ -766,7 +768,7 @@ public class RenderUtils {
 
         GL11.glBegin(1);
 
-        GL11.glVertex3d(eyes.x, MinecraftClient.getInstance().player.getEyeHeight() + eyes.y, eyes.z);
+        GL11.glVertex3d(eyes.x, MinecraftClient.getInstance().player.getEyeHeight(EntityPose.STANDING) + eyes.y, eyes.z);
         GL11.glVertex3d(x, y, z);
 
         GL11.glEnd();
@@ -798,7 +800,7 @@ public class RenderUtils {
 
         GL11.glBegin(1);
 
-        GL11.glVertex3d(eyes.x, MinecraftClient.getInstance().player.getEyeHeight() + eyes.y, eyes.z);
+        GL11.glVertex3d(eyes.x, MinecraftClient.getInstance().player.getEyeHeight(EntityPose.STANDING) + eyes.y, eyes.z);
         GL11.glVertex3d(x, y, z);
 
         GL11.glEnd();
@@ -904,7 +906,7 @@ public class RenderUtils {
         RenderUtils.glColor(color);
         GL11.glBegin(1);
 
-        GL11.glVertex3d(0.0D, MinecraftClient.getInstance().player.getEyeHeight(), 0.0D);
+        GL11.glVertex3d(0.0D, MinecraftClient.getInstance().player.getEyeHeight(EntityPose.STANDING), 0.0D);
         GL11.glVertex3d(x, y, z);
 
         GL11.glEnd();

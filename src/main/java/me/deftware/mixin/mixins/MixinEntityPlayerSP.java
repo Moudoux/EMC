@@ -14,6 +14,7 @@ import net.minecraft.server.network.packet.ChatMessageC2SPacket;
 import net.minecraft.server.network.packet.ClientCommandC2SPacket;
 import net.minecraft.server.network.packet.PlayerMoveServerMessage;
 import net.minecraft.util.math.BoundingBox;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -177,7 +178,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
             boolean flag3 = d3 != 0.0D || d4 != 0.0D;
 
             if (hasVehicle()) {
-                this.networkHandler.sendPacket(new PlayerMoveServerMessage.Both(velocityX, -999.0D, velocityZ,
+                Vec3d vec3d_1 = ((ClientPlayerEntity) (Object) this).getVelocity();
+                this.networkHandler.sendPacket(new PlayerMoveServerMessage.Both(vec3d_1.x, -999.0D, vec3d_1.z,
                         event.getRotationYaw(), event.getRotationPitch(), event.isOnGround()));
                 flag2 = false;
             } else if ((flag2 && flag3)) {

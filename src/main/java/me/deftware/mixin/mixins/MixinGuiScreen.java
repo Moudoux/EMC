@@ -8,7 +8,7 @@ import me.deftware.client.framework.wrappers.item.IItem;
 import me.deftware.mixin.imp.IMixinGuiScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.GuiEventListener;
+import net.minecraft.client.gui.InputListener;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.item.TooltipContext;
@@ -34,7 +34,7 @@ public class MixinGuiScreen implements IMixinGuiScreen {
     private List<ButtonWidget> buttons;
     @Shadow
     @Final
-    private List<GuiEventListener> listeners;
+    private List<InputListener> listeners;
 
     @Override
     public List<ButtonWidget> getButtonList() {
@@ -47,16 +47,16 @@ public class MixinGuiScreen implements IMixinGuiScreen {
     }
 
     @Override
-    public List<GuiEventListener> getEventList() {
+    public List<InputListener> getEventList() {
         return listeners;
     }
 
-    @Inject(method = "method_18326", at = @At("HEAD"))
+    @Inject(method = "draw", at = @At("HEAD"))
     public void render(int x, int y, float p_render_3_, CallbackInfo ci) {
         new EventGuiScreenDraw((Screen) (Object) this, x, y).send();
     }
 
-    @Inject(method = "method_18326", at = @At("RETURN"))
+    @Inject(method = "draw", at = @At("RETURN"))
     public void render_return(int x, int y, float p_render_3_, CallbackInfo ci) {
         new EventGuiScreenPostDraw((Screen) (Object) this, x, y).send();
     }

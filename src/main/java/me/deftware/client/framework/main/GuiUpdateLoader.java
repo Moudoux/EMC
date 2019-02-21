@@ -52,8 +52,8 @@ public class GuiUpdateLoader extends Screen {
     }
 
     @Override
-    public void method_18326(int mouseX, int mouseY, float partialTicks) {
-        super.method_18326(mouseX, mouseY, partialTicks);
+    public void draw(int mouseX, int mouseY, float partialTicks) {
+        super.draw(mouseX, mouseY, partialTicks);
         drawBackground();
 
         drawStringCentered(fontRenderer, "EMC update required", width / 2, 21, 16777215);
@@ -74,7 +74,7 @@ public class GuiUpdateLoader extends Screen {
         drawStringCentered(fontRenderer, "Your EMC version is too low.", width / 2 + 70, 90,
                 16777215);
 
-        super.method_18326(mouseX, mouseY, partialTicks);
+        super.draw(mouseX, mouseY, partialTicks);
     }
 
 }

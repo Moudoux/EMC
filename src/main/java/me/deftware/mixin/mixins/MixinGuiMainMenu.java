@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MainMenuScreen.class)
 public class MixinGuiMainMenu {
 
-    @Inject(method = "method_18326", at = @At("RETURN"))
+    @Inject(method = "draw", at = @At("RETURN"))
     public void draw(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
         MinecraftClient.getInstance().textRenderer.drawWithShadow(
                 FrameworkConstants.FRAMEWORK_NAME + " v" + FrameworkConstants.VERSION + "." + FrameworkConstants.PATCH, 2, 2, 0xFFFFFF);

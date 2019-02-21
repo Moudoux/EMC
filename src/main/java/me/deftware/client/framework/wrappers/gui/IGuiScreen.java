@@ -4,8 +4,8 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.GuiEventListener;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.InputListener;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.util.SystemUtil;
@@ -91,9 +91,9 @@ public abstract class IGuiScreen extends Screen {
     }
 
     @Override
-    public void method_18326(int mouseX, int mouseY, float partialTicks) {
+    public void draw(int mouseX, int mouseY, float partialTicks) {
         onDraw(mouseX, mouseY, partialTicks);
-        super.method_18326(mouseX, mouseY, partialTicks);
+        super.draw(mouseX, mouseY, partialTicks);
         onPostDraw(mouseX, mouseY, partialTicks);
     }
 
@@ -118,7 +118,7 @@ public abstract class IGuiScreen extends Screen {
     public void onInitialized() {
         super.onInitialized();
         onInitGui();
-        listeners.add(new GuiEventListener() {
+        listeners.add(new InputListener() {
 
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
@@ -159,7 +159,7 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public void drawDarkOverlay() {
-        Drawable.drawRect(0, 0, width, height, Integer.MIN_VALUE);
+        DrawableHelper.drawRect(0, 0, width, height, Integer.MIN_VALUE);
     }
 
     protected List<ButtonWidget> getButtonList() {
@@ -213,7 +213,7 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public void setFocusedComponent(CustomIGuiEventListener listener) {
-        this.method_1967(listener);
+        this.setFocused(listener);
     }
 
     protected void onGuiClose() {

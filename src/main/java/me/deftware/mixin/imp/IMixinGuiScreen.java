@@ -1,7 +1,7 @@
 package me.deftware.mixin.imp;
 
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.GuiEventListener;
+import net.minecraft.client.gui.InputListener;
 import net.minecraft.client.gui.widget.ButtonWidget;
 
 import java.util.List;
@@ -12,6 +12,6 @@ public interface IMixinGuiScreen {
 
     TextRenderer getFontRenderer();
 
-    List<GuiEventListener> getEventList();
+    List<InputListener> getEventList();
 
 }

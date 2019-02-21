@@ -24,9 +24,6 @@ public abstract class MixinEntity implements IMixinEntity {
     public boolean noClip;
 
     @Shadow
-    public boolean applyMovementMultiplier;
-
-    @Shadow
     public boolean onGround;
 
     @Shadow
@@ -69,12 +66,6 @@ public abstract class MixinEntity implements IMixinEntity {
     public float yaw;
 
     @Shadow
-    public double velocityX;
-
-    @Shadow
-    public double velocityZ;
-
-    @Shadow
     public abstract boolean isSneaking();
 
     @Shadow
@@ -95,6 +86,7 @@ public abstract class MixinEntity implements IMixinEntity {
         return noClip || noClipCheck && self instanceof ClientPlayerEntity;
     }
 
+    /* Fix
     @Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;applyMovementMultiplier:Z", opcode = GETFIELD))
     private boolean webCheck(Entity self) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Web).send();
@@ -102,7 +94,7 @@ public abstract class MixinEntity implements IMixinEntity {
             applyMovementMultiplier = false;
         }
         return applyMovementMultiplier;
-    }
+    }*/
 
     @Redirect(method = "move", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.isSneaking()Z", opcode = GETFIELD, ordinal = 0))
     private boolean sneakingCheck(Entity self) {

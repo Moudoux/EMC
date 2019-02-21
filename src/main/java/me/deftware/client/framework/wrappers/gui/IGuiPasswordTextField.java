@@ -3,6 +3,7 @@ package me.deftware.client.framework.wrappers.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 import me.deftware.mixin.imp.IMixinGuiTextField;
 import net.minecraft.client.gui.Drawable;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
@@ -18,12 +19,12 @@ public class IGuiPasswordTextField extends IGuiTextField {
     }
 
     @Override
-    public void method_18326(int p_195608_1_, int p_195608_2_, float p_195608_3_) {
+    public void draw(int p_195608_1_, int p_195608_2_, float p_195608_3_) {
         if (isVisible()) {
             if (hasBorder()) {
-                Drawable.drawRect(((IMixinGuiTextField) this).getX() - 1, ((IMixinGuiTextField) this).getY() - 1, ((IMixinGuiTextField) this).getX() + ((IMixinGuiTextField) this).getWidth() + 1,
+                DrawableHelper.drawRect(((IMixinGuiTextField) this).getX() - 1, ((IMixinGuiTextField) this).getY() - 1, ((IMixinGuiTextField) this).getX() + ((IMixinGuiTextField) this).getWidth() + 1,
                         ((IMixinGuiTextField) this).getY() + ((IMixinGuiTextField) this).getHeight() + 1, -6250336);
-                Drawable.drawRect(((IMixinGuiTextField) this).getX(), ((IMixinGuiTextField) this).getY(), ((IMixinGuiTextField) this).getX() + ((IMixinGuiTextField) this).getWidth(), ((IMixinGuiTextField) this).getY() + ((IMixinGuiTextField) this).getHeight(),
+                DrawableHelper.drawRect(((IMixinGuiTextField) this).getX(), ((IMixinGuiTextField) this).getY(), ((IMixinGuiTextField) this).getX() + ((IMixinGuiTextField) this).getWidth(), ((IMixinGuiTextField) this).getY() + ((IMixinGuiTextField) this).getHeight(),
                         -16777216);
             }
             int var1 = hasBorder() ? enabledColor : disabledColor;
@@ -60,7 +61,7 @@ public class IGuiPasswordTextField extends IGuiTextField {
             }
             if (var6) {
                 if (var13) {
-                    Drawable.drawRect(var11, var8 - 1, var11 + 1, var8 + 1 + ((IMixinGuiTextField) this).getFontRendererInstance().fontHeight,
+                    DrawableHelper.drawRect(var11, var8 - 1, var11 + 1, var8 + 1 + ((IMixinGuiTextField) this).getFontRendererInstance().fontHeight,
                             -3092272);
                 } else {
                     ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow("_", var11, var8, var1);
