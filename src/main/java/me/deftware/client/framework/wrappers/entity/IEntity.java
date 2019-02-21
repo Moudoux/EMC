@@ -181,7 +181,7 @@ public class IEntity {
         } else if (e.equals(EntityType.ENTITY_PROJECTILE)) {
             return entity instanceof Projectile;
         } else if (e.equals(EntityType.Entity_Ageable)) {
-            return false; //entity instanceof AgeableEntity;
+            return entity instanceof PassiveEntity;
         } else if (e.equals(EntityType.EntityAmbientCreature)) {
             return entity instanceof AmbientEntity;
         } else if (e.equals(EntityType.EntityWaterMob)) {

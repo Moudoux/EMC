@@ -6,11 +6,11 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 
 public class IGuiButton extends ButtonWidget implements CustomIGuiEventListener {
 
-    public IGuiButton(int x, int y, String buttonText) {
+    public IGuiButton(int id, int x, int y, String buttonText) {
         super(x, y, 200, 20, buttonText);
     }
 
-    public IGuiButton(int x, int y, int widthIn, int heightIn, String buttonText) {
+    public IGuiButton(int id, int x, int y, int widthIn, int heightIn, String buttonText) {
         super(x, y, widthIn, heightIn, buttonText);
     }
 

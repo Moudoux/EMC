@@ -121,7 +121,6 @@ public class IItemStack {
     }
 
     public float getStrVsBlock(IBlockPos pos) {
-        // TODO: Is this right?
         return stack.getBlockBreakingSpeed(MinecraftClient.getInstance().world.getBlockState(pos.getPos()));
     }
 

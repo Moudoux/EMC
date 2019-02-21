@@ -25,7 +25,6 @@ public class IChest {
     }
 
     public static int getContainerID() {
-        // TODO: Is this right?
         return IChest.getCurrent().syncId;
     }
 

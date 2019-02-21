@@ -46,7 +46,6 @@
     "MixinSkinManager",
     "MixinKeyboardListener",
     "MixinMouseHelper",
-    "MixinGuiEventHandler",
     "MixinNetworkPlayerInfo",
     "MixinGuiContainer",
     "MixinSplashScreen",

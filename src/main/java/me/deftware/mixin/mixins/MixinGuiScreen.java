@@ -77,4 +77,9 @@ public class MixinGuiScreen implements IMixinGuiScreen {
 
     }
 
+    public boolean mouseReleased(double x, double y, int button) {
+        listeners.forEach((listener) -> listener.mouseReleased(x, y, button));
+        return false;
+    }
+
 }

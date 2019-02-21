@@ -8,7 +8,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class IGuiTextField extends TextFieldWidget implements CustomIGuiEventListener {
 
-    public IGuiTextField(int x, int y, int width, int height) {
+    public IGuiTextField(int id, int x, int y, int width, int height) {
         super(MinecraftClient.getInstance().textRenderer, x, y, width, height);
     }
 

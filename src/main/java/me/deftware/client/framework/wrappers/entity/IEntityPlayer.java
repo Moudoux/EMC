@@ -555,7 +555,6 @@ public class IEntityPlayer {
         if (IEntityPlayer.isNull()) {
             return false;
         }
-        // TODO: Does this work?
         return MinecraftClient.getInstance().player.hasVehicle() && MinecraftClient.getInstance().player.getRiddenEntity() instanceof HorseEntity;
     }
 
@@ -633,7 +632,6 @@ public class IEntityPlayer {
         if (IEntityPlayer.isNull()) {
             return false;
         }
-        // TODO: Is this right?
         return MinecraftClient.getInstance().player.canClimb();
     }
 

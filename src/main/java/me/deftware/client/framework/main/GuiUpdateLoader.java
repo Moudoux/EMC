@@ -30,7 +30,7 @@ public class GuiUpdateLoader extends Screen {
     @Override
     public void onInitialized() {
         buttons.clear();
-        addButton(new IGuiButton(width / 2 - 100, height / 4 + 120 + 12 - 30,
+        addButton(new IGuiButton(0,width / 2 - 100, height / 4 + 120 + 12 - 30,
                 "Update " + (clientInfo.get("updateLinkOverride").getAsBoolean() ? clientInfo.get("name").getAsString()
                         : "EMC")) {
             @Override
@@ -43,7 +43,7 @@ public class GuiUpdateLoader extends Screen {
                 MinecraftClient.getInstance().stop();
             }
         });
-        addButton(new IGuiButton(width / 2 - 100, height / 4 + 144 + 12 - 30, "Cancel (Mod won't load)") {
+        addButton(new IGuiButton(0,width / 2 - 100, height / 4 + 144 + 12 - 30, "Cancel (Mod won't load)") {
             @Override
             public void onButtonClick(double mouseX, double mouseY) {
                 MinecraftClient.getInstance().openScreen(null);

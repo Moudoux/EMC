@@ -13,8 +13,8 @@ public class IGuiPasswordTextField extends IGuiTextField {
     private int enabledColor = 14737632;
     private int disabledColor = 7368816;
 
-    public IGuiPasswordTextField(int x, int y, int width, int height) {
-        super(x, y, width, height);
+    public IGuiPasswordTextField(int id, int x, int y, int width, int height) {
+        super(0, x, y, width, height);
     }
 
     @Override
