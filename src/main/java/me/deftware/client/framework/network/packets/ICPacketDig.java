@@ -1,6 +1,6 @@
-package me.deftware.client.framework.event.events.packet.packets;
+package me.deftware.client.framework.network.packets;
 
-import me.deftware.client.framework.event.events.packet.IPacket;
+import me.deftware.client.framework.network.IPacket;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.client.framework.wrappers.world.IEnumFacing;
 import net.minecraft.network.Packet;

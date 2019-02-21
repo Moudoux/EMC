@@ -1,4 +1,4 @@
-package me.deftware.client.framework.event.events.packet;
+package me.deftware.client.framework.network;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.Packet;

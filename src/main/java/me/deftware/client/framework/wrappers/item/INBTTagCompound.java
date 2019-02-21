@@ -10,7 +10,9 @@ public class INBTTagCompound {
         this.compound = compound;
     }
 
-    public boolean isNull() { return compound == null; }
+    public boolean isNull() {
+        return compound == null;
+    }
 
     public boolean contains(String key) {
         return compound.containsKey(key);
@@ -26,6 +28,10 @@ public class INBTTagCompound {
 
     public CompoundTag getCompound() {
         return compound;
+    }
+
+    public void setTagInfo(String key, INBTTagList list) {
+        compound.put(key, list.list);
     }
 
 }

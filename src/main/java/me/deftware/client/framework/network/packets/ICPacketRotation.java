@@ -1,6 +1,6 @@
-package me.deftware.client.framework.event.events.packet.packets;
+package me.deftware.client.framework.network.packets;
 
-import me.deftware.client.framework.event.events.packet.IPacket;
+import me.deftware.client.framework.network.IPacket;
 import net.minecraft.network.Packet;
 import net.minecraft.server.network.packet.PlayerMoveServerMessage;
 

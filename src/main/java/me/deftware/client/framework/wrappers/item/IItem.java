@@ -78,6 +78,8 @@ public class IItem {
             return item instanceof BlockItem;
         } else if (type.equals(IItemType.ItemSoup)) {
             return item instanceof MushroomStewItem;
+        } else if (type.equals(IItemType.WritableBook)) {
+            return item instanceof WritableBookItem;
         } else if (type.equals(IItemType.ItemHoe)) {
             return item instanceof HoeItem;
         } else if (type.equals(IItemType.ItemShulkerBox)) {
@@ -88,7 +90,7 @@ public class IItem {
 
     public enum IItemType {
         ItemPotion, ItemFishingRod, ItemFood, ItemSword, ItemTool, ItemNameTag, ItemBlock, ItemHoe, SplashPotion,
-        ItemSoup, ItemShulkerBox
+        ItemSoup, ItemShulkerBox, WritableBook
     }
 
     protected static Item getByName(String id) {

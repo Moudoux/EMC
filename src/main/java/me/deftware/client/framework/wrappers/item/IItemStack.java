@@ -84,6 +84,14 @@ public class IItemStack {
         nbttagcompound.putString("Name", TextComponent.Serializer.toJson(new StringTextComponent(name)).toString());
     }
 
+    public boolean hasCompoundTag() {
+        return stack.hasTag();
+    }
+
+    public void setTagInfo(String key, INBTTagList compound) {
+        stack.setChildTag(key, compound.list);
+    }
+
     public int getMaxStackSize() {
         return stack.getMaxAmount();
     }

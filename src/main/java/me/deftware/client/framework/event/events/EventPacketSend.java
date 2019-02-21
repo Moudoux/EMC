@@ -1,7 +1,8 @@
-package me.deftware.client.framework.event.events.packet;
+package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
-import me.deftware.client.framework.event.events.packet.packets.*;
+import me.deftware.client.framework.network.IPacket;
+import me.deftware.client.framework.network.packets.*;
 import net.minecraft.network.Packet;
 import net.minecraft.server.network.packet.GuiCloseC2SPacket;
 import net.minecraft.server.network.packet.PlayerMoveServerMessage;
