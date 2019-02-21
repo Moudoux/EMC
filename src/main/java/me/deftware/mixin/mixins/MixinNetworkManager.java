@@ -2,7 +2,7 @@ package me.deftware.mixin.mixins;
 
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import me.deftware.client.framework.event.events.packet.EventPacketSend;
+import me.deftware.client.framework.event.events.EventPacketSend;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import org.spongepowered.asm.mixin.Mixin;

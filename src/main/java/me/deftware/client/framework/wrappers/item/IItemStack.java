@@ -92,6 +92,14 @@ public class IItemStack {
 		return new INBTTagCompound(stack.getTag());
 	}
 
+	public boolean hasCompoundTag() {
+		return stack.hasTag();
+	}
+
+	public void setTagInfo(String key, INBTTagList compound) {
+		stack.setTagInfo(key, compound.list);
+	}
+
 	public static boolean validName(String name) {
 		return IItem.getByName(name) != null;
 	}

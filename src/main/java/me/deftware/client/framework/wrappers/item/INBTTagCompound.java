@@ -28,4 +28,8 @@ public class INBTTagCompound {
         return compound;
     }
 
+    public void setTagInfo(String key, INBTTagList list) {
+        compound.put(key, list.list);
+    }
+
 }

@@ -1,4 +1,4 @@
-package me.deftware.client.framework.event.events.packet;
+package me.deftware.client.framework.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
@@ -17,7 +17,6 @@ public class IPacket {
 	public Packet<?> getPacket() {
 		return packet;
 	}
-
 
 	public void sendPacket() {
 		Minecraft.getInstance().player.connection.sendPacket(packet);
