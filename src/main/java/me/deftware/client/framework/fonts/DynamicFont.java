@@ -1,6 +1,7 @@
 package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.utils.render.GraphicsUtil;
+import me.deftware.client.framework.utils.render.NonScaledRenderer;
 import me.deftware.client.framework.utils.render.Texture;
 import org.lwjgl.opengl.GL11;
 
@@ -8,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
+@SuppressWarnings("ALL")
 public class DynamicFont implements EMCFont {
 
     protected Texture textTexture;
@@ -20,7 +22,7 @@ public class DynamicFont implements EMCFont {
     protected boolean italics;
     protected boolean underlined;
     protected boolean striked;
-    protected boolean moving;
+    protected boolean scaling;
     protected boolean antialiased;
     protected boolean memorysaving;
     protected java.awt.Font stdFont;
@@ -35,7 +37,7 @@ public class DynamicFont implements EMCFont {
         this.italics = ((modifiers & 2) != 0);
         this.underlined = ((modifiers & 4) != 0);
         this.striked = ((modifiers & 8) != 0);
-        this.moving = ((modifiers & 16) != 0);
+        this.scaling = ((modifiers & 16) != 0);
         this.antialiased = ((modifiers & 32) != 0);
         this.memorysaving = ((modifiers & 64) != 0);
 
@@ -78,8 +80,8 @@ public class DynamicFont implements EMCFont {
     @SuppressWarnings("Duplicates")
     public int generateString(String text, Color color) {
         String key = text + color.getRGB() + bold + fontName;
-        int textwidth = getStringWidth(text);
-        int textheight = getStringHeight(text);
+        int textwidth = getStringWidthNonScaled(text);
+        int textheight = getStringHeightNonScaled(text);
         if (!memorysaving && textureStore.containsKey(key)) {
             textTexture = textureStore.get(key);
         } else {
@@ -168,12 +170,28 @@ public class DynamicFont implements EMCFont {
 
     @Override
     public int getStringWidth(String text) {
+        if (!scaling) {
+            return getStringWidthNonScaled(text);
+        }
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
-        return fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) + 1;
+        return (int) (fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) / NonScaledRenderer.getScale());
+    }
+
+    public int getStringWidthNonScaled(String text) {
+        FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
+        return fontMetrics.charsWidth(text.toCharArray(), 0, text.length());
     }
 
     @Override
     public int getStringHeight(String text) {
+        if (!scaling) {
+            return getStringHeightNonScaled(text);
+        }
+        FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
+        return (int) (fontMetrics.getHeight() / NonScaledRenderer.getScale());
+    }
+
+    public int getStringHeightNonScaled(String text) {
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return fontMetrics.getHeight();
     }
@@ -255,6 +273,11 @@ public class DynamicFont implements EMCFont {
     }
 
     @Override
+    public void setScaled(boolean state) {
+        scaling = state;
+    }
+
+    @Override
     public boolean isUnderlined() {
         return underlined;
     }
@@ -272,16 +295,6 @@ public class DynamicFont implements EMCFont {
     @Override
     public void setStriked(boolean striked) {
         this.striked = striked;
-    }
-
-    @Override
-    public boolean isMoving() {
-        return moving;
-    }
-
-    @Override
-    public void setMoving(boolean moving) {
-        this.moving = moving;
     }
 
     @Override

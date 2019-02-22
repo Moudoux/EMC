@@ -63,6 +63,12 @@ public class Bootstrap {
                 emc_root.mkdir();
             }
 
+            // Settings
+            EMCSettings = new Settings();
+            EMCSettings.initialize(null);
+            SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", EMCSettings.getFloat("RENDER_SCALE", 1.0f));
+            SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
+
             // Load all EMC mods
             Arrays.stream(emc_root.listFiles()).forEach((file) -> {
                 if (!file.isDirectory() && file.getName().endsWith(".jar")) {
@@ -89,13 +95,8 @@ public class Bootstrap {
                 }
             });
 
-            EMCSettings = new Settings();
-            EMCSettings.initialize(null);
-
             // Register default EMC commands
             registerFrameworkCommands();
-
-            SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
 
             // Initialize the EMC marketplace API
             MarketplaceAPI.init((status) -> Bootstrap.mods.forEach((name, mod) -> mod.onMarketplaceAuth(status)));
@@ -115,6 +116,7 @@ public class Bootstrap {
         CommandRegister.registerCommand(new CommandOAuth());
         CommandRegister.registerCommand(new CommandTrigger());
         CommandRegister.registerCommand(new CommandReload());
+        CommandRegister.registerCommand(new CommandScale());
     }
 
     /**

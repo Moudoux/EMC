@@ -19,7 +19,6 @@ public class ColoredBitmapFont extends BitmapFont {
         if (color == Color.black) {
             return super.drawString(x, y, ChatColor.stripColor(text), color);
         }
-        int textheight = getStringHeight(text);
 
         text = text.replaceAll(Character.toString(COLOR_CHAR) + "+[l-o]", "");
         text = text.replaceAll(Character.toString(COLOR_CHAR) + "+[l-o]", "");
@@ -36,7 +35,7 @@ public class ColoredBitmapFont extends BitmapFont {
                     // Next char will be a color code
                     skip = true;
                     if (!currentText.equals("")) {
-                        super.drawString(x + getStringWidth(drawnText), y, currentText, color);
+                        super.drawString(x + getStringWidthNonScaled(drawnText), y, currentText, color);
                         drawnText += currentText;
                     }
                 } else {
@@ -45,7 +44,7 @@ public class ColoredBitmapFont extends BitmapFont {
             }
         }
         if (!currentText.equals("")) {
-            super.drawString(x + getStringWidth(drawnText), y, currentText, color);
+            super.drawString(x + getStringWidthNonScaled(drawnText), y, currentText, color);
         }
 
 

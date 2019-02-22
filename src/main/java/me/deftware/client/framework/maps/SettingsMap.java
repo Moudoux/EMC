@@ -97,6 +97,7 @@ public class SettingsMap {
 
 		/**
 		 * COMMAND_TRIGGER
+		 * RENDER_SCALE
 		 */
 		public static final int EMC_SETTINGS = 6;
 
