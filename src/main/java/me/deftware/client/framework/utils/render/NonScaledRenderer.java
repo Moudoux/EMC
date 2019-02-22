@@ -1,5 +1,7 @@
 package me.deftware.client.framework.utils.render;
 
+import me.deftware.client.framework.event.events.EventScaleChange;
+import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import net.minecraft.client.Minecraft;
@@ -12,6 +14,15 @@ import java.nio.DoubleBuffer;
 
 @SuppressWarnings("All")
 public class NonScaledRenderer {
+
+    public static float getScale() {
+        return (float) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", 1.0f);
+    }
+
+    public static void setScale(float scale) {
+        SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", scale);
+        new EventScaleChange().send();
+    }
 
     public static void drawRectAuto(float x, float y, float width, float height, int c) {
         NonScaledRenderer.drawRect(x, y, x + width, y + height, c);
@@ -30,6 +41,10 @@ public class NonScaledRenderer {
     }
 
     public static void drawRect(float x, float y, float xx, float yy, int c, Color color) {
+        x *= getScale();
+        y *= getScale();
+        xx *= getScale();
+        yy *= getScale();
         GL11.glPushMatrix();
         GraphicsUtil.prepareMatrix(IGuiScreen.getDisplayWidth(), IGuiScreen.getDisplayHeight());
         GL11.glEnable(GL11.GL_BLEND);
@@ -57,6 +72,9 @@ public class NonScaledRenderer {
     }
 
     public static void drawFilledCircle(int xx, int yy, float radius, int col) {
+        xx *= getScale();
+        yy *= getScale();
+        radius *= getScale();
         float f = (col >> 24 & 0xFF) / 255.0F;
         float f2 = (col >> 16 & 0xFF) / 255.0F;
         float f3 = (col >> 8 & 0xFF) / 255.0F;
@@ -91,6 +109,10 @@ public class NonScaledRenderer {
     }
 
     public static void drawLine(float x1, float y1, float x2, float y2) {
+        x1 *= getScale();
+        y1 *= getScale();
+        x2 *= getScale();
+        y2 *= getScale();
         GL11.glPushMatrix();
         GraphicsUtil.prepareMatrix(IGuiScreen.getDisplayWidth(), IGuiScreen.getDisplayHeight());
         GL11.glEnable(3042);
@@ -110,11 +132,11 @@ public class NonScaledRenderer {
     }
 
     public static int getMouseX() {
-        return (int) getCursorPos()[0];
+        return (int) (getCursorPos()[0] / getScale());
     }
 
     public static int getMouseY() {
-        return (int) getCursorPos()[1];
+        return (int) (getCursorPos()[1] / getScale());
     }
 
     public static double[] getCursorPos() {

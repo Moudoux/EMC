@@ -2,6 +2,7 @@ package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.render.ColorUtil;
+import me.deftware.client.framework.utils.render.NonScaledRenderer;
 
 import javax.annotation.Nonnull;
 import java.awt.*;

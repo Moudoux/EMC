@@ -58,6 +58,8 @@ public interface EMCFont {
 
     boolean isItalics();
 
+    void setScaled(boolean state);
+
     void setItalics(boolean italics);
 
     boolean isUnderlined();

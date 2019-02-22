@@ -3,6 +3,7 @@ package me.deftware.client.framework.fonts;
 import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.render.GraphicsUtil;
+import me.deftware.client.framework.utils.render.NonScaledRenderer;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import org.apache.commons.lang3.ArrayUtils;
@@ -28,6 +29,7 @@ public class BitmapFont implements EMCFont {
     protected boolean moving;
     protected boolean antialiased;
     protected boolean memorysaving;
+    protected boolean scaling = false;
     protected Font stdFont;
 
     protected HashMap<Character, Integer> textureIDStore = new HashMap<>();
@@ -63,6 +65,10 @@ public class BitmapFont implements EMCFont {
                 this.stdFont = new Font(fontName, Font.BOLD, fontSize);
             }
         }
+    }
+
+    public void setScaled(boolean state) {
+        scaling = state;
     }
 
     @Override
@@ -139,6 +145,11 @@ public class BitmapFont implements EMCFont {
 
     @Override
     public int drawString(int x, int y, String text, Color color) {
+        if (scaling) {
+            x *= NonScaledRenderer.getScale();
+            y *= NonScaledRenderer.getScale();
+        }
+
         char[] buffer = text.toCharArray();
 
         int screenWidth = 1;

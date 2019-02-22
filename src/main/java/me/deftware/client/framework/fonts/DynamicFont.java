@@ -24,6 +24,7 @@ public class DynamicFont implements EMCFont {
     protected boolean moving;
     protected boolean antialiased;
     protected boolean memorysaving;
+    protected boolean scaling = false;
     protected java.awt.Font stdFont;
 
     protected HashMap<String, Texture> textureStore = new HashMap<>();
@@ -248,6 +249,11 @@ public class DynamicFont implements EMCFont {
     @Override
     public boolean isItalics() {
         return italics;
+    }
+
+    @Override
+    public void setScaled(boolean state) {
+        scaling = state;
     }
 
     @Override
