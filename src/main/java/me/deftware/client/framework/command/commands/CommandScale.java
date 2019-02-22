@@ -21,6 +21,10 @@ public class CommandScale extends EMCModCommand {
                                         RequiredArgumentBuilder.argument("size", FloatArgumentType.floatArg())
                                                 .executes(c -> {
                                                     CommandResult r = new CommandResult(c);
+                                                    if (r.getFloat("size") < 0.2 || r.getFloat("size") > 4.0f) {
+                                                        IChat.sendClientMessage("Error! Scale must be between 0.2 and 4.0");
+                                                        return 1;
+                                                    }
                                                     NonScaledRenderer.setScale(r.getFloat("size"));
                                                     Bootstrap.EMCSettings.saveFloat("RENDER_SCALE", r.getFloat("size"));
                                                     IChat.sendClientMessage("Gui scale has been set to \"" + r.getFloat("size") + "\"");
@@ -31,7 +35,8 @@ public class CommandScale extends EMCModCommand {
                 .then(
                         LiteralArgumentBuilder.literal("restore")
                                 .executes(c -> {
-
+                                    NonScaledRenderer.setScale(1.0f);
+                                    Bootstrap.EMCSettings.saveFloat("RENDER_SCALE", 1.0f);
                                     IChat.sendClientMessage("Gui scale has been reset to \"1.0\"");
                                     return 1;
                                 })

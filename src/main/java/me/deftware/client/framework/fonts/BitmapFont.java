@@ -26,10 +26,9 @@ public class BitmapFont implements EMCFont {
     protected boolean italics;
     protected boolean underlined;
     protected boolean striked;
-    protected boolean moving;
+    protected boolean scaling;
     protected boolean antialiased;
     protected boolean memorysaving;
-    protected boolean scaling = false;
     protected Font stdFont;
 
     protected HashMap<Character, Integer> textureIDStore = new HashMap<>();
@@ -43,7 +42,7 @@ public class BitmapFont implements EMCFont {
         this.italics = ((modifiers & 2) != 0);
         this.underlined = ((modifiers & 4) != 0);
         this.striked = ((modifiers & 8) != 0);
-        this.moving = ((modifiers & 16) != 0);
+        this.scaling = ((modifiers & 16) != 0);
         this.antialiased = ((modifiers & 32) != 0);
         this.memorysaving = ((modifiers & 64) != 0);
 
@@ -107,8 +106,8 @@ public class BitmapFont implements EMCFont {
 
     protected void characterGenerate(char character, Color color) {
         String letterBuffer = String.valueOf(character);
-        int textwidth = getStringWidth(letterBuffer);
-        int textheight = getStringHeight(letterBuffer);
+        int textwidth = getStringWidthNonScaled(letterBuffer);
+        int textheight = getStringHeightNonScaled(letterBuffer);
 
         BufferedImage characterTexture = new BufferedImage(textwidth, textheight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = characterTexture.createGraphics();
@@ -166,7 +165,7 @@ public class BitmapFont implements EMCFont {
         for (int character = 0; character < buffer.length; character++) {
 
             if (buffer[character] == ' ') {
-                offset += getStringWidth(" ");
+                offset += getStringWidthNonScaled(" ");
                 continue;
             } else if (!textureIDStore.containsKey(buffer[character])) {
                 buffer[character] = '?';
@@ -218,7 +217,7 @@ public class BitmapFont implements EMCFont {
 
     @Override
     public int drawCenteredString(int x, int y, String text, Color color) {
-        drawString(x - (getStringWidth(ChatColor.stripColor(text)) / 2), y - (getStringHeight(ChatColor.stripColor(text)) / 2), text, color);
+        drawString(x - (getStringWidthNonScaled(ChatColor.stripColor(text)) / 2), y - (getStringHeightNonScaled(ChatColor.stripColor(text)) / 2), text, color);
         return 0;
     }
 
@@ -242,12 +241,28 @@ public class BitmapFont implements EMCFont {
 
     @Override
     public int getStringWidth(String text) {
+        if (!scaling) {
+            return getStringWidthNonScaled(text);
+        }
+        FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
+        return (int) (fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) / NonScaledRenderer.getScale());
+    }
+
+    public int getStringWidthNonScaled(String text) {
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return fontMetrics.charsWidth(text.toCharArray(), 0, text.length());
     }
 
     @Override
     public int getStringHeight(String text) {
+        if (!scaling) {
+            return getStringHeightNonScaled(text);
+        }
+        FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
+        return (int) (fontMetrics.getHeight() / NonScaledRenderer.getScale());
+    }
+
+    public int getStringHeightNonScaled(String text) {
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return fontMetrics.getHeight();
     }
@@ -347,16 +362,6 @@ public class BitmapFont implements EMCFont {
     @Override
     public void setStriked(boolean striked) {
         this.striked = striked;
-    }
-
-    @Override
-    public boolean isMoving() {
-        return moving;
-    }
-
-    @Override
-    public void setMoving(boolean moving) {
-        this.moving = moving;
     }
 
     @Override
