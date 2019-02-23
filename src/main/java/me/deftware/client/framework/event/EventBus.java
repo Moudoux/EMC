@@ -27,15 +27,17 @@ public class EventBus {
     }
 
     public static synchronized void unRegisterClass(Class clazz) {
-        for (Class event : listeners.keySet()) {
-            Collection<Listener> listenerCollection = listeners.get(event);
-            for (Listener listener : listenerCollection) {
-                if (listener.getClassInstance().getClass().isInstance(clazz)) {
-                    listeners.remove(event, listener);
-                    System.out.println("Unregistered " + listener.getClassInstance().getClass().getName());
+        synchronized (listeners) {
+            for (Class event : listeners.keySet()) {
+                Collection<Listener> listenerCollection = listeners.get(event);
+                for (Listener listener : listenerCollection) {
+                    if (listener.getClassInstance().getClass() == clazz) {
+                        listeners.remove(event, listener);
+                        System.out.println("Unregistered " + listener.getClassInstance().getClass().getName());
+                    }
                 }
-            }
 
+            }
         }
     }
 
