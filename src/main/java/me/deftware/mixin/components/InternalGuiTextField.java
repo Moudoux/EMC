@@ -6,6 +6,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
 
 import java.awt.*;
+import java.lang.ref.WeakReference;
 
 public class InternalGuiTextField extends GuiTextField {
 
@@ -24,8 +25,9 @@ public class InternalGuiTextField extends GuiTextField {
 		int l = getEnableBackgroundDrawing() ? x + 4 : x;
 		int i1 = getEnableBackgroundDrawing() ? y + (((IMixinGuiTextField) this).getHeight() - 8) / 2 : y;
 		((IMixinGuiTextField) this).getFontRendererInstance().drawStringWithShadow(overlay, l + currentWidth, i1, Color.GRAY.getRGB());
-		EventChatboxType event = new EventChatboxType(getText(), overlay).send();
-		overlay = event.getOverlay();
+		WeakReference<EventChatboxType> event = new WeakReference<>(new EventChatboxType(getText(), overlay));
+		event.get().broadcast();
+		overlay = event.get().getOverlay();
 	}
 
 }

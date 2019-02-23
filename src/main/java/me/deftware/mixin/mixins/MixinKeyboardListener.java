@@ -14,7 +14,7 @@ public class MixinKeyboardListener {
 
 	@Inject(method = "onKeyEvent", at = @At(value = "INVOKE", target = "net/minecraft/client/util/InputMappings.isKeyDown(I)Z", ordinal = 4))
 	private void onKeyEvent(long windowPointer, int keyCode, int scanCode, int action, int modifiers, CallbackInfo ci) {
-		new EventKeyAction(keyCode, action, modifiers).send();
+		new EventKeyAction(keyCode, action, modifiers).broadcast();
 	}
 
 	@Inject(method = "onCharEvent", at = @At("HEAD"))
@@ -23,10 +23,10 @@ public class MixinKeyboardListener {
 			return;
 		} else {
 			if (Character.charCount(codePoint) == 1) {
-				new EventCharacter((char) codePoint, modifiers).send();
+				new EventCharacter((char) codePoint, modifiers).broadcast();
 			} else {
 				for (char character : Character.toChars(codePoint)) {
-					new EventCharacter(character, modifiers).send();
+					new EventCharacter(character, modifiers).broadcast();
 				}
 			}
 		}

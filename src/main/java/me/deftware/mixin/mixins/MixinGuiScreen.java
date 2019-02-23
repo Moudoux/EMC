@@ -53,12 +53,12 @@ public class MixinGuiScreen implements IMixinGuiScreen {
 
     @Inject(method = "render", at = @At("HEAD"))
     public void render(int x, int y, float p_render_3_, CallbackInfo ci) {
-        new EventGuiScreenDraw((GuiScreen) (Object) this, x, y).send();
+        new EventGuiScreenDraw((GuiScreen) (Object) this, x, y).broadcast();
     }
 
     @Inject(method = "render", at = @At("RETURN"))
     public void render_return(int x, int y, float p_render_3_, CallbackInfo ci) {
-        new EventGuiScreenPostDraw((GuiScreen) (Object) this, x, y).send();
+        new EventGuiScreenPostDraw((GuiScreen) (Object) this, x, y).broadcast();
     }
 
     @Overwrite
@@ -70,7 +70,8 @@ public class MixinGuiScreen implements IMixinGuiScreen {
             ITextComponent lvt_5_1_ = (ITextComponent) var4.next();
             lvt_3_1_.add(lvt_5_1_.getFormattedText());
         }
-        EventGetItemToolTip event = new EventGetItemToolTip(lvt_3_1_, new IItem(p_getItemToolTip_1_.getItem())).send();
+        EventGetItemToolTip event = new EventGetItemToolTip(lvt_3_1_, new IItem(p_getItemToolTip_1_.getItem()));
+        event.broadcast();
         return event.getList();
     }
 

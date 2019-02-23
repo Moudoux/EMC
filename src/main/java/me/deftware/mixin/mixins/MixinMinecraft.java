@@ -55,14 +55,16 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 
 	@ModifyVariable(method = "displayGuiScreen", at = @At("HEAD"))
 	private GuiScreen displayGuiScreenModifier(GuiScreen screen) {
-		EventGuiScreenDisplay event = new EventGuiScreenDisplay(screen).send();
+		EventGuiScreenDisplay event = new EventGuiScreenDisplay(screen);
+		event.broadcast();
 		return event.isCanceled() ? null : event.getScreen();
 	}
 
 	@Inject(method = "runTick", at = @At("HEAD"))
 	private void runTick(CallbackInfo ci) {
 		if (Minecraft.getInstance().currentScreen instanceof GuiMainMenu) {
-			EventGuiScreenDisplay event = new EventGuiScreenDisplay(Minecraft.getInstance().currentScreen).send();
+			EventGuiScreenDisplay event = new EventGuiScreenDisplay(Minecraft.getInstance().currentScreen);
+			event.broadcast();
 			if (!(event.getScreen() instanceof GuiMainMenu)) {
 				displayGuiScreen(event.getScreen());
 			}
@@ -71,7 +73,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 
 	@Inject(method = "shutdownMinecraftApplet", at = @At("HEAD"))
 	public void shutdownMinecraftApplet(CallbackInfo ci) {
-		new EventShutdown().send();
+		new EventShutdown().broadcast();
 		Bootstrap.isRunning = false;
 	}
 

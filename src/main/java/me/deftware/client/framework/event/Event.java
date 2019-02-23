@@ -32,8 +32,14 @@ public class Event {
     }
 
     /**
-     * Sends an event to all of the child-events and then to the loaded mods
+     * Create a method object and call broadcast() instead!
+     *
+     * Example:
+     * new Event().broadcast();
+     * @param <T>
+     * @return
      */
+    /*@Deprecated
     public <T extends Event> T send() {
         try {
             EventBus.sendEvent(this);
@@ -41,6 +47,18 @@ public class Event {
             Bootstrap.logger.warn("Failed to send event {}", this, ex);
         }
         return (T) this;
+    }*/
+
+
+    /**
+     * Broadcasts an event to all registered listeners
+     */
+    public void broadcast() {
+        try {
+            EventBus.sendEvent(this);
+        } catch (Exception ex) {
+            Bootstrap.logger.warn("Failed to send event {}", this, ex);
+        }
     }
 
 }

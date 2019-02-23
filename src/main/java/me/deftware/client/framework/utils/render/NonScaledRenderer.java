@@ -10,6 +10,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.lang.ref.WeakReference;
 import java.nio.DoubleBuffer;
 
 @SuppressWarnings("All")
@@ -21,7 +22,7 @@ public class NonScaledRenderer {
 
     public static void setScale(float scale) {
         SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", scale);
-        new EventScaleChange().send();
+        new WeakReference<>(new EventScaleChange()).get().broadcast();
     }
 
     public static void drawRectAuto(float x, float y, float width, float height, int c) {

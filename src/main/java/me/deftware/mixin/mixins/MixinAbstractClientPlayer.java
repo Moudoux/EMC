@@ -30,7 +30,8 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
 		NetworkPlayerInfo networkplayerinfo = Minecraft.getInstance().getConnection()
 				.getPlayerInfo(((EntityPlayer) (Object) this).getGameProfile().getId());
 		EventSpectator event = new EventSpectator(
-				networkplayerinfo != null && networkplayerinfo.getGameType() == GameType.SPECTATOR).send();
+				networkplayerinfo != null && networkplayerinfo.getGameType() == GameType.SPECTATOR);
+		event.broadcast();
 		return event.isSpectator();
 	}
 
@@ -46,7 +47,8 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
 			f *= 1.1F;
 		}
 
-		EventFovModifier event = new EventFovModifier(f).send();
+		EventFovModifier event = new EventFovModifier(f);
+		event.broadcast();
 		f = event.getFov();
 
 		IAttributeInstance iattributeinstance = ((AbstractClientPlayer) (Object) this).getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);

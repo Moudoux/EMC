@@ -14,7 +14,8 @@ public class MixinRenderPlayer {
 
 	@Redirect(method = "setModelVisibilities", at = @At(value = "INVOKE", target = "net/minecraft/client/entity/AbstractClientPlayer.isSpectator()Z", opcode = GETFIELD))
 	private boolean setModelVisibilities_isSpectator(AbstractClientPlayer self) {
-		EventSetModelVisibilities event = new EventSetModelVisibilities(self.isSpectator()).send();
+		EventSetModelVisibilities event = new EventSetModelVisibilities(self.isSpectator());
+		event.broadcast();
 		return event.isSpectator();
 	}
 

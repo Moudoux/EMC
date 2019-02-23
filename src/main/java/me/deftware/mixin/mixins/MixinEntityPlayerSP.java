@@ -73,7 +73,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
 	@Redirect(method = "livingTick", at = @At(value = "INVOKE", target = "net/minecraft/client/entity/EntityPlayerSP.isHandActive()Z", ordinal = 0))
 	private boolean itemUseSlowdownEvent(EntityPlayerSP self) {
-		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Item_Use).send();
+		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Item_Use);
+		event.broadcast();
 		if (event.isCanceled()) {
 			return false;
 		}
@@ -82,7 +83,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
 	@Redirect(method = "livingTick", at = @At(value = "INVOKE", target = "net/minecraft/util/FoodStats.getFoodLevel()I"))
 	private int hungerSlowdownEvent(FoodStats self) {
-		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Hunger).send();
+		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Hunger);
+		event.broadcast();
 		if (event.isCanceled()) {
 			return 7;
 		}
@@ -91,7 +93,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
 	@Redirect(method = "livingTick", at = @At(value = "INVOKE", target = "net/minecraft/entity/EntityLivingBase.isPotionActive(Lnet/minecraft/potion/Potion;)Z"))
 	private boolean blindlessSlowdownEvent(EntityLivingBase self) {
-		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Blindness).send();
+		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Blindness);
+		event.broadcast();
 		if (event.isCanceled()) {
 			return false;
 		}
@@ -100,7 +103,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
 	@Inject(method = "tick", at = @At("HEAD"), cancellable = true)
 	private void tick(CallbackInfo ci) {
-		EventUpdate event = new EventUpdate(posX, posY, posZ, rotationYaw, rotationPitch, onGround).send();
+		EventUpdate event = new EventUpdate(posX, posY, posZ, rotationYaw, rotationPitch, onGround);
+		event.broadcast();
 		if (event.isCanceled()) {
 			ci.cancel();
 		}
@@ -134,11 +138,12 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 				ci.cancel();
 				return;
 			}
-			new EventIRCMessage(message).send();
+			new EventIRCMessage(message).broadcast();
 			ci.cancel();
 			return;
 		}
-		EventChatSend event = new EventChatSend(message).send();
+		EventChatSend event = new EventChatSend(message);
+		event.broadcast();
 		if (event.isCanceled()) {
 			ci.cancel();
 		} else if (!event.getMessage().equals(message)) {
@@ -159,8 +164,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 	 */
 	@Overwrite
 	private void onUpdateWalkingPlayer() {
-		EventPlayerWalking event = new EventPlayerWalking(posX, posY, posZ, rotationYaw, rotationPitch, onGround)
-				.send();
+		EventPlayerWalking event = new EventPlayerWalking(posX, posY, posZ, rotationYaw, rotationPitch, onGround);
+		event.broadcast();
 		if (event.isCanceled()) {
 			return;
 		}
