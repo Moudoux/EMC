@@ -1,7 +1,6 @@
 package me.deftware.client.framework.main;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
 import me.deftware.client.framework.FrameworkConstants;
@@ -20,8 +19,12 @@ import org.apache.logging.log4j.Logger;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -76,12 +79,12 @@ public class Bootstrap {
                             new File(file.getAbsolutePath() + ".delete").delete();
                         } else {
                             // Update check
-                            File udpateJar = new File(emc_root.getAbsolutePath() + File.separator
+                            File updateJar = new File(emc_root.getAbsolutePath() + File.separator
                                     + file.getName().substring(0, file.getName().length() - ".jar".length())
                                     + "_update.jar");
-                            if (udpateJar.exists()) {
+                            if (updateJar.exists()) {
                                 file.delete();
-                                udpateJar.renameTo(file);
+                                updateJar.renameTo(file);
                             }
                             // Load the mod
                             Bootstrap.loadMod(file);
@@ -220,6 +223,32 @@ public class Bootstrap {
             clearChildren(child);
         }
         commandNode.getChildren().clear();
+    }
+
+    @SuppressWarnings("Duplicates")
+    public static void changeVersion(String newVersion) throws Exception {
+        File jsonFile = new File(OSUtils.getRunningFolder() + OSUtils.getVersion() + ".json");
+        if (!jsonFile.exists()) {
+            System.err.println("Could not find json file!");
+        } else {
+            JsonObject jsonObject = new Gson().fromJson(String.join("", Files.readAllLines(Paths.get(jsonFile.getAbsolutePath()), StandardCharsets.UTF_8)), JsonObject.class);
+            JsonArray array = jsonObject.get("libraries").getAsJsonArray();
+            array.forEach(jsonElement -> {
+                JsonObject entry = jsonElement.getAsJsonObject();
+                if (entry.get("name").getAsString().contains("me.deftware:EMC")) {
+                    String[] current = entry.get("name").getAsString().split(":");
+                    entry.addProperty("name", "me.deftware:" + current[1] + ":" + newVersion);
+                }
+            });
+            // Save
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            JsonParser jp = new JsonParser();
+            JsonElement je = jp.parse(jsonObject.toString());
+            String jsonContent = gson.toJson(je);
+            PrintWriter writer = new PrintWriter(jsonFile.getAbsolutePath(), "UTF-8");
+            writer.println(jsonContent);
+            writer.close();
+        }
     }
 
 }
