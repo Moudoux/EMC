@@ -5,12 +5,14 @@ import me.deftware.client.framework.utils.MultiMap;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashMap;
 
 public class EventBus {
     private static MultiMap<Class, Listener> listeners = new MultiMap<>();
+    public static final Object lock = new Object();
 
     public static synchronized void registerClass(Class clazz, Object instance) {
-        synchronized (listeners) {
+        synchronized (lock) {
             Bootstrap.logger.debug(String.format("Loading event handlers in class %s", clazz.getName()));
             for (Method method : clazz.getDeclaredMethods()) {
                 if (method.isAnnotationPresent(EventHandler.class)) {
@@ -29,22 +31,29 @@ public class EventBus {
     }
 
     public static synchronized void unRegisterClass(Class clazz) {
-        synchronized (listeners) {
+        synchronized (lock) {
+            HashMap<Class, Listener> removeList = new HashMap<>();
             for (Class event : listeners.keySet()) {
                 Collection<Listener> listenerCollection = listeners.get(event);
                 for (Listener listener : listenerCollection) {
                     if (listener.getClassInstance().getClass() == clazz) {
-                        listeners.remove(event, listener);
+                        removeList.put(event, listener);
                         System.out.println("Unregistered " + listener.getClassInstance().getClass().getName());
                     }
                 }
 
             }
+            removeList.forEach((key, value) -> {
+                listeners.remove(key, value);
+            });
+
         }
     }
 
     public static void clearEvents() {
-        listeners.clear();
+        synchronized (lock) {
+            listeners.clear();
+        }
         System.gc(); //Clear event instances left in the VM
     }
 
