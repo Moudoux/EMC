@@ -62,7 +62,11 @@ public class EventBus {
         if (listenerCollection != null) {
             try {
                 for (Listener listener : listenerCollection) {
-                    listener.getMethod().invoke(listener.getClassInstance(), event);
+                   try {
+                       listener.getMethod().invoke(listener.getClassInstance(), event);
+                   } catch (Exception ex) {
+                       ex.printStackTrace();
+                   }
                 }
             } catch (Exception e) {
                 Bootstrap.logger.error("Cannot invoke event listener " + e.getMessage());

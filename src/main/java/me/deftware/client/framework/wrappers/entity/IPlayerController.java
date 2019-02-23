@@ -27,7 +27,7 @@ public class IPlayerController {
      */
     public static int getSlot(String name) {
         InventoryPlayer in = Minecraft.getInstance().player.inventory;
-        for (int i = 0; i < in.mainInventory.size() + 1; i++) {
+        for (int i = 0; i < in.mainInventory.size(); i++) {
             ItemStack it = in.mainInventory.get(i);
             if (it.getItem().getTranslationKey().equals(name)) {
                 return i;
