@@ -17,7 +17,7 @@ public class MixinMouseHelper {
         if (windowPointer != MinecraftClient.getInstance().window.getHandle() || MinecraftClient.getInstance().currentScreen != null) {
             return;
         }
-        new EventMouseClick(button, action, modifiers).send();
+        new EventMouseClick(button, action, modifiers).broadcast();
     }
 
     @Inject(method = "onMouseScroll", at = @At("HEAD"))

@@ -98,7 +98,8 @@ public abstract class MixinEntity implements IMixinEntity {
 
     @Redirect(method = "move", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.isSneaking()Z", opcode = GETFIELD, ordinal = 0))
     private boolean sneakingCheck(Entity self) {
-        EventSneakingCheck event = new EventSneakingCheck(isSneaking()).send();
+        EventSneakingCheck event = new EventSneakingCheck(isSneaking());
+        event.broadcast();
         if (event.isSneaking()) {
             return true;
         }
@@ -107,7 +108,8 @@ public abstract class MixinEntity implements IMixinEntity {
 
     @Inject(method = "setVelocityClient", at = @At("HEAD"), cancellable = true)
     public void setVelocityClient(double double_1, double double_2, double double_3, CallbackInfo ci) {
-        EventKnockback event = new EventKnockback(double_1, double_2, double_3).send();
+        EventKnockback event = new EventKnockback(double_1, double_2, double_3);
+        event.broadcast();
         if (event.isCanceled()) {
             ci.cancel();
         }

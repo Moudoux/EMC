@@ -26,7 +26,8 @@ public class MixinMovementInputFromOptions {
         ((KeyboardInput) (Object) this).movementSideways = ((KeyboardInput) (Object) this).pressingLeft == ((KeyboardInput) (Object) this).pressingRight ? 0.0F : (float) (((KeyboardInput) (Object) this).pressingLeft ? 1 : -1);
         ((KeyboardInput) (Object) this).jumping = this.settings.keyJump.isPressed();
         ((KeyboardInput) (Object) this).sneaking = this.settings.keySneak.isPressed();
-        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Sneak).send();
+        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Sneak);
+        event.broadcast();
         if (((KeyboardInput) (Object) this).sneaking && !event.isCanceled()) {
             ((KeyboardInput) (Object) this).movementSideways = (float) ((double) ((KeyboardInput) (Object) this).movementSideways * 0.3D);
             ((KeyboardInput) (Object) this).movementForward = (float) ((double) ((KeyboardInput) (Object) this).movementForward * 0.3D);

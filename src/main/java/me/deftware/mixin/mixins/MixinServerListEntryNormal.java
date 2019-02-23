@@ -24,7 +24,8 @@ public class MixinServerListEntryNormal {
         if (serverEntry.ping > 1 && !sentEvent) {
             sentEvent = true;
             EventServerPinged event = new EventServerPinged(serverEntry.label, serverEntry.playerListSummary,
-                    serverEntry.version, serverEntry.playerCountLabel, serverEntry.protocolVersion, serverEntry.ping).send();
+                    serverEntry.version, serverEntry.playerCountLabel, serverEntry.protocolVersion, serverEntry.ping);
+            event.broadcast();
             serverEntry.label = event.getServerMOTD();
             serverEntry.playerListSummary = event.getPlayerList();
             serverEntry.version = event.getGameVersion();

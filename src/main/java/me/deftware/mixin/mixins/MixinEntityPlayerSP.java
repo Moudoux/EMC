@@ -61,7 +61,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
     @Redirect(method = "updateMovement", at = @At(value = "INVOKE", target = "net/minecraft/client/network/ClientPlayerEntity.isUsingItem()Z", ordinal = 0))
     private boolean itemUseSlowdownEvent(ClientPlayerEntity self) {
-        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Item_Use).send();
+        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Item_Use);
+        event.broadcast();
         if (event.isCanceled()) {
             return false;
         }
@@ -70,7 +71,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
     @Redirect(method = "updateMovement", at = @At(value = "INVOKE", target = "net/minecraft/entity/player/HungerManager.getFoodLevel()I"))
     private int hungerSlowdownEvent(HungerManager self) {
-        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Hunger).send();
+        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Hunger);
+        event.broadcast();
         if (event.isCanceled()) {
             return 7;
         }
@@ -79,7 +81,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
     @Inject(method = "update", at = @At("HEAD"), cancellable = true)
     private void update(CallbackInfo ci) {
-        EventUpdate event = new EventUpdate(x, y, z, yaw, pitch, onGround).send();
+        EventUpdate event = new EventUpdate(x, y, z, yaw, pitch, onGround);
+        event.broadcast();
         if (event.isCanceled()) {
             ci.cancel();
         }
@@ -113,11 +116,12 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
                 ci.cancel();
                 return;
             }
-            new EventIRCMessage(message).send();
+            new EventIRCMessage(message).broadcast();
             ci.cancel();
             return;
         }
-        EventChatSend event = new EventChatSend(message).send();
+        EventChatSend event = new EventChatSend(message);
+        event.broadcast();
         if (event.isCanceled()) {
             ci.cancel();
         } else if (!event.getMessage().equals(message)) {
@@ -138,8 +142,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
      */
     @Overwrite
     private void method_3136() {
-        EventPlayerWalking event = new EventPlayerWalking(x, y, z, yaw, pitch, onGround)
-                .send();
+        EventPlayerWalking event = new EventPlayerWalking(x, y, z, yaw, pitch, onGround);
+        event.broadcast();
         if (event.isCanceled()) {
             return;
         }

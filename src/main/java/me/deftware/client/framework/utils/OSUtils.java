@@ -1,5 +1,8 @@
 package me.deftware.client.framework.utils;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.debug.DebugRenderer;
+
 import java.io.File;
 
 public class OSUtils {
@@ -35,5 +38,14 @@ public class OSUtils {
 		}
 		return minecraft;
 	}
+
+	public static String getVersion() {
+		return MinecraftClient.getInstance().getGameVersion();
+	}
+
+	public static String getRunningFolder() {
+		return getMCDir() + "versions" + File.separator + getVersion() + File.separator;
+	}
+
 
 }

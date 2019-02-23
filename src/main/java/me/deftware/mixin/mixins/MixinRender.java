@@ -14,7 +14,8 @@ public class MixinRender<T extends Entity> {
     @Inject(method = "renderEntityLabel", at = @At("HEAD"), cancellable = true)
     private void renderEntityLabel(T entityIn, String str, double x, double y, double z, int maxDistance,
                                    CallbackInfo cb) {
-        EventNametagRender event = new EventNametagRender(entityIn).send();
+        EventNametagRender event = new EventNametagRender(entityIn);
+        event.broadcast();
         if (event.isCanceled()) {
             cb.cancel();
         }

@@ -63,7 +63,8 @@ public abstract class MixinBlock {
     @Inject(method = "calcBlockBreakingDelta", at = @At("HEAD"), cancellable = true)
     public void calcBlockBreakingDelta(BlockState blockState_1, PlayerEntity playerEntity_1, BlockView blockView_1, BlockPos blockPos_1, CallbackInfoReturnable<Float> ci) {
         float float_1 = blockState_1.getHardness(blockView_1, blockPos_1);
-        EventBlockhardness event = new EventBlockhardness().send();
+        EventBlockhardness event = new EventBlockhardness();
+        event.broadcast();
         if (float_1 < 0.0F) {
             ci.setReturnValue(0.0F);
         } else {

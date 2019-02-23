@@ -22,7 +22,8 @@ public class MixinNetHandlerPlayClient {
     @Inject(method = "onEntityStatus", at = @At("HEAD"), cancellable = true)
     public void onEntityStatus(EntityStatusS2CPacket packetIn, CallbackInfo ci) {
         if (packetIn.getStatus() == 35) {
-            EventAnimation event = new EventAnimation(EventAnimation.AnimationType.Totem).send();
+            EventAnimation event = new EventAnimation(EventAnimation.AnimationType.Totem);
+            event.broadcast();
             if (event.isCanceled()) {
                 ci.cancel();
             }
@@ -38,7 +39,8 @@ public class MixinNetHandlerPlayClient {
         NetworkThreadUtils.forceMainThread(explosionClientPacket_1, (ClientPlayNetworkHandler) (Object) this, MinecraftClient.getInstance());
         Explosion explosion_1 = new Explosion(MinecraftClient.getInstance().world, (Entity) null, explosionClientPacket_1.getX(), explosionClientPacket_1.getY(), explosionClientPacket_1.getZ(), explosionClientPacket_1.getRadius(), explosionClientPacket_1.getAffectedBlocks());
         explosion_1.affectWorld(true);
-        EventKnockback event = new EventKnockback(explosionClientPacket_1.getPlayerVelocityX(), explosionClientPacket_1.getPlayerVelocityY(), explosionClientPacket_1.getPlayerVelocityZ()).send();
+        EventKnockback event = new EventKnockback(explosionClientPacket_1.getPlayerVelocityX(), explosionClientPacket_1.getPlayerVelocityY(), explosionClientPacket_1.getPlayerVelocityZ());
+        event.broadcast();
         if (event.isCanceled()) {
             return;
         }

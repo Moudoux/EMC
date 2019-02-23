@@ -16,7 +16,7 @@ public class MixinGuiGameOver {
     private void initGui(CallbackInfo ci) {
         if (!flag) {
             flag = true;
-            new EventGameOver().send();
+            new EventGameOver().broadcast();
         }
     }
 

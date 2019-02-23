@@ -1,8 +1,6 @@
 package me.deftware.client.framework.event;
 
-import me.deftware.client.framework.event.events.EventUpdate;
 import me.deftware.client.framework.main.Bootstrap;
-import net.minecraft.client.MinecraftClient;
 
 /**
  * This class describes the way events are defined in EMC framework and handles the process of
@@ -31,15 +29,14 @@ public class Event {
     }
 
     /**
-     * Sends an event to all of the child-events and then to the loaded mods
+     * Broadcasts an event to all registered listeners
      */
-    public <T extends Event> T send() {
+    public void broadcast() {
         try {
             EventBus.sendEvent(this);
         } catch (Exception ex) {
             Bootstrap.logger.warn("Failed to send event {}", this, ex);
         }
-        return (T) this;
     }
 
 }

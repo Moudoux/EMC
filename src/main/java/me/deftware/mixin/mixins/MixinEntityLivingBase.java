@@ -34,7 +34,8 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
             return activePotionEffects.containsKey(statusEffect_1);
         }
         EventIsPotionActive event = new EventIsPotionActive(statusEffect_1.getTranslationKey(),
-                activePotionEffects.containsKey(statusEffect_1)).send();
+                activePotionEffects.containsKey(statusEffect_1));
+        event.broadcast();
         return event.isActive();
     }
 

@@ -32,7 +32,8 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Inject(method = "method_3198", at = @At("HEAD"), cancellable = true)
     private void hurtCameraEffect(float partialTicks, CallbackInfo ci) {
-        EventHurtcam event = new EventHurtcam().send();
+        EventHurtcam event = new EventHurtcam();
+        event.broadcast();
         if (event.isCanceled()) {
             ci.cancel();
         }
@@ -41,12 +42,13 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/hud/InGameHud.draw(F)V"))
     private void onRender2D(CallbackInfo cb) {
         ChatProcessor.sendMessages();
-        new EventRender2D(0f).send();
+        new EventRender2D(0f).broadcast();
     }
 
     @Inject(method = "method_3177", at = @At("HEAD"), cancellable = true)
     private void addRainParticles(CallbackInfo ci) {
-        EventWeather event = new EventWeather(EventWeather.WeatherType.Rain).send();
+        EventWeather event = new EventWeather(EventWeather.WeatherType.Rain);
+        event.broadcast();
         if (event.isCanceled()) {
             ci.cancel();
         }
@@ -54,7 +56,8 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Inject(method = "method_3170", at = @At("HEAD"), cancellable = true)
     private void renderRainSnow(float partialTicks, CallbackInfo ci) {
-        EventWeather event = new EventWeather(EventWeather.WeatherType.Rain).send();
+        EventWeather event = new EventWeather(EventWeather.WeatherType.Rain);
+        event.broadcast();
         if (event.isCanceled()) {
             ci.cancel();
         }
@@ -74,7 +77,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Redirect(method = "renderCenter", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;field_3992:Z", opcode = GETFIELD))
     private boolean updateCameraAndRender_renderHand(GameRenderer self) {
-        new EventRender3D(partialTicks).send();
+        new EventRender3D(partialTicks).broadcast();
         return field_3992;
     }
 

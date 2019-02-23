@@ -1,60 +1,77 @@
 package me.deftware.client.framework.event;
 
 import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.utils.MultiMap;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class EventBus {
 
-	private static ConcurrentHashMap<Class, ConcurrentHashMap<Class, ConcurrentHashMap<Method, Object>>> classes = new ConcurrentHashMap<>();
+    private static final Object lock = new Object();
+    private static MultiMap<Class, Listener> listeners = new MultiMap<>();
 
-	public static void clearEvents() {
-		classes.clear();
-	}
+    public static synchronized void registerClass(Class clazz, Object instance) {
+        synchronized (lock) {
+            Bootstrap.logger.debug(String.format("Loading event handlers in class %s", clazz.getName()));
+            for (Method method : clazz.getDeclaredMethods()) {
+                if (method.isAnnotationPresent(EventHandler.class)) {
+                    if (!method.isAccessible()) {
+                        Bootstrap.logger.debug(String.format("Making method %s accessible", method.getName()));
+                        method.setAccessible(true);
+                    }
+                    EventHandler annotation = method.getAnnotation(EventHandler.class);
+                    Class eventType = annotation.eventType();
+                    listeners.putIfAbsent(eventType, new Listener(method, instance));
+                    Bootstrap.logger.debug(String.format("Loaded event handler for method %s", method.getName()));
+                }
+            }
+        }
+    }
 
-	public static synchronized void registerClass(Class clazz, Object instance) {
-		Bootstrap.logger.debug(String.format("Loading event handlers in class %s", clazz.getName()));
-		for (Method method : clazz.getDeclaredMethods()) {
-			if (method.isAnnotationPresent(EventHandler.class)) {
-				if (!method.isAccessible()) {
-					Bootstrap.logger.debug(String.format("Making method %s accessible", method.getName()));
-					method.setAccessible(true);
-				}
-				EventHandler annotation = method.getAnnotation(EventHandler.class);
-				Class eventType = annotation.eventType();
-				if (!classes.containsKey(eventType)) {
-					classes.put(eventType, new ConcurrentHashMap<>());
-				}
-				if (!classes.get(eventType).containsKey(clazz)) {
-					classes.get(eventType).put(clazz, new ConcurrentHashMap<>());
-				}
-				classes.get(eventType).get(clazz).putIfAbsent(method, instance);
-				Bootstrap.logger.debug(String.format("Loaded event handler for method %s", method.getName()));
-			}
-		}
-	}
+    public static synchronized void unRegisterClass(Class clazz) {
+        synchronized (lock) {
+            HashMap<Class, Listener> removeList = new HashMap<>();
+            for (Class event : listeners.keySet()) {
+                Collection<Listener> listenerCollection = listeners.get(event);
+                for (Listener listener : listenerCollection) {
+                    if (listener.getClassInstance().getClass() == clazz) {
+                        removeList.put(event, listener);
+                        Bootstrap.logger.debug("Unregistered " + listener.getClassInstance().getClass().getName());
+                    }
+                }
 
-	public static synchronized void unRegisterClass(Class clazz) {
-		classes.forEach((event, map) -> {
-			if (map.containsKey(clazz)) {
-				classes.get(event).remove(clazz);
-			}
-		});
-	}
+            }
+            removeList.forEach((key, value) -> {
+                listeners.remove(key, value);
+            });
 
-	public static void sendEvent(Event event) {
-		if (classes.containsKey(event.getClass())) {
-			classes.get(event.getClass()).forEach((clazz, map) -> {
-				map.forEach((method, instance) -> {
-					try {
-						method.invoke(instance, event);
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				});
-			});
-		}
-	}
+        }
+    }
+
+    public static void clearEvents() {
+        synchronized (lock) {
+            listeners.clear();
+        }
+        System.gc(); //Clear event instances left in the VM
+    }
+
+    public static void sendEvent(Event event) {
+        Collection<Listener> listenerCollection = listeners.get(event.getClass());
+        if (listenerCollection != null) {
+            try {
+                for (Listener listener : listenerCollection) {
+                    try {
+                        listener.getMethod().invoke(listener.getClassInstance(), event);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                Bootstrap.logger.error("Cannot invoke event listener " + e.getMessage());
+            }
+        }
+    }
 
 }

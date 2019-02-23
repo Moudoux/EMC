@@ -44,7 +44,8 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
             float_1 *= 1.1F;
         }
 
-        EventFovModifier event = new EventFovModifier(float_1).send();
+        EventFovModifier event = new EventFovModifier(float_1);
+        event.broadcast();
         float_1 = event.getFov();
 
         EntityAttributeInstance entityAttributeInstance_1 = ((LivingEntity) (Object) this).getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);

@@ -18,7 +18,8 @@ public abstract class MixinAbstractHorse {
      */
     @Overwrite
     public boolean isSaddled() {
-        EventSaddleCheck event = new EventSaddleCheck(this.getHorseFlag(4)).send();
+        EventSaddleCheck event = new EventSaddleCheck(this.getHorseFlag(4));
+        event.broadcast();
         return event.isState();
     }
 

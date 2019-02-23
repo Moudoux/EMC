@@ -14,7 +14,7 @@ public class MixinGuiDisconnected {
 
     @Inject(method = "<init>*", at = @At("RETURN"))
     private void onConstructed(CallbackInfo ci) {
-        new EventDisconnected().send();
+        new EventDisconnected().broadcast();
     }
 
 }
