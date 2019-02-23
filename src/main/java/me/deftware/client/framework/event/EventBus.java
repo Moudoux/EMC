@@ -10,18 +10,20 @@ public class EventBus {
     private static MultiMap<Class, Listener> listeners = new MultiMap<>();
 
     public static synchronized void registerClass(Class clazz, Object instance) {
-        Bootstrap.logger.debug(String.format("Loading event handlers in class %s", clazz.getName()));
-        for (Method method : clazz.getDeclaredMethods()) {
-            if (method.isAnnotationPresent(EventHandler.class)) {
-                if (!method.isAccessible()) {
-                    Bootstrap.logger.debug(String.format("Making method %s accessible", method.getName()));
-                    method.setAccessible(true);
+        synchronized (listeners) {
+            Bootstrap.logger.debug(String.format("Loading event handlers in class %s", clazz.getName()));
+            for (Method method : clazz.getDeclaredMethods()) {
+                if (method.isAnnotationPresent(EventHandler.class)) {
+                    if (!method.isAccessible()) {
+                        Bootstrap.logger.debug(String.format("Making method %s accessible", method.getName()));
+                        method.setAccessible(true);
+                    }
+                    EventHandler annotation = method.getAnnotation(EventHandler.class);
+                    Class eventType = annotation.eventType();
+                    listeners.putIfAbsent(eventType, new Listener(method, instance));
+                    Bootstrap.logger.debug(String.format("Loaded event handler for method %s", method.getName()));
+                    System.out.println("Added event: " + clazz.getName());
                 }
-                EventHandler annotation = method.getAnnotation(EventHandler.class);
-                Class eventType = annotation.eventType();
-                listeners.putIfAbsent(eventType, new Listener(method, instance));
-                Bootstrap.logger.debug(String.format("Loaded event handler for method %s", method.getName()));
-                System.out.println("Added event: " + clazz.getName());
             }
         }
     }
