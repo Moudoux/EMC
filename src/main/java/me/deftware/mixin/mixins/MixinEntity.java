@@ -100,7 +100,8 @@ public abstract class MixinEntity implements IMixinEntity {
 
 	@Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;isInWeb:Z", opcode = GETFIELD))
 	private boolean webCheck(Entity self) {
-		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Web).send();
+		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Web);
+		event.broadcast();
 		if (event.isCanceled()) {
 			isInWeb = false;
 		}
@@ -109,7 +110,8 @@ public abstract class MixinEntity implements IMixinEntity {
 
 	@Redirect(method = "move", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.isSneaking()Z", opcode = GETFIELD, ordinal = 0))
 	private boolean sneakingCheck(Entity self) {
-		EventSneakingCheck event = new EventSneakingCheck(isSneaking()).send();
+		EventSneakingCheck event = new EventSneakingCheck(isSneaking());
+		event.broadcast();
 		if (event.isSneaking()) {
 			return true;
 		}
@@ -118,7 +120,8 @@ public abstract class MixinEntity implements IMixinEntity {
 
 	@Inject(method = "setVelocity", at = @At("HEAD"), cancellable = true)
 	private void setVelocity(double x, double y, double z, CallbackInfo ci) {
-		EventKnockback event = new EventKnockback(x, y, z).send();
+		EventKnockback event = new EventKnockback(x, y, z);
+		event.broadcast();
 		if (event.isCanceled()) {
 			ci.cancel();
 		}

@@ -7,6 +7,7 @@ import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.apis.marketplace.MarketplaceAPI;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.commands.*;
+import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.OSUtils;
 import me.deftware.client.framework.utils.Settings;
@@ -20,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
@@ -48,6 +50,8 @@ public class Bootstrap {
     public static String JSON_JARNAME_NOTE = "DYNAMIC_jarname";
     private static URLClassLoader modClassLoader;
     private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
+
+    public static final Runtime runtime = Runtime.getRuntime();
 
     public static void init() {
         try {
@@ -163,7 +167,8 @@ public class Bootstrap {
                 continue;
             }
             String className = je.getName().replace(".class", "").replace('/', '.');
-            Bootstrap.logger.info("Loaded class " + Bootstrap.modClassLoader.loadClass(className).getName());
+            WeakReference<Class> c = new WeakReference<>(Bootstrap.modClassLoader.loadClass(className));
+            Bootstrap.logger.info("Loaded class " + c.get().getName());
         }
 
         jarFile.close();

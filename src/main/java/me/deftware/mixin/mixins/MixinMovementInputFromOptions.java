@@ -14,7 +14,8 @@ public class MixinMovementInputFromOptions {
 
 	@Redirect(method = "updatePlayerMoveState", at = @At(value = "FIELD", target = "Lnet/minecraft/util/MovementInputFromOptions;sneak:Z", opcode = GETFIELD))
 	private boolean isSneaking(MovementInputFromOptions self) {
-		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Sneak).send();
+		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Sneak);
+		event.broadcast();
 		if (event.isCanceled()) {
 			return false;
 		}

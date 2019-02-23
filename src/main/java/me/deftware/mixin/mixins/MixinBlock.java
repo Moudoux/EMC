@@ -53,7 +53,8 @@ public abstract class MixinBlock {
 
 	@Inject(method = "isCollidable", at = @At("HEAD"), cancellable = true)
 	private void isCollidable(IBlockState state, CallbackInfoReturnable<Boolean> ci) {
-		EventCollideCheck event = new EventCollideCheck(new IBlock(state.getBlock()), isCollidable()).send();
+		EventCollideCheck event = new EventCollideCheck(new IBlock(state.getBlock()), isCollidable());
+		event.broadcast();
 		ci.setReturnValue(event.isCollidable());
 	}
 
@@ -61,7 +62,8 @@ public abstract class MixinBlock {
 	public void getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, IBlockReader reader, BlockPos pos,
 											   CallbackInfoReturnable<Float> ci) {
 		float f = state.getBlockHardness(reader, pos);
-		EventBlockhardness event = new EventBlockhardness().send();
+		EventBlockhardness event = new EventBlockhardness();
+		event.broadcast();
 		if (f < 0.0F) {
 			ci.setReturnValue(0.0F);
 		} else {

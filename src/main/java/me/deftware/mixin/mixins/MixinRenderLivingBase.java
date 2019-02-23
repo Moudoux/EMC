@@ -17,7 +17,8 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> {
 
 	@Inject(method = "isVisible", at = @At("HEAD"), cancellable = true)
 	private void isVisible(T p_193115_1_, CallbackInfoReturnable<Boolean> ci) {
-		EventRenderPlayerModel event = new EventRenderPlayerModel(p_193115_1_).send();
+		EventRenderPlayerModel event = new EventRenderPlayerModel(p_193115_1_);
+		event.broadcast();
 		if (event.isShouldRender()) {
 			ci.setReturnValue(true);
 		}

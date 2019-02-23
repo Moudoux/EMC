@@ -35,7 +35,8 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
 	@Inject(method = "hurtCameraEffect", at = @At("HEAD"), cancellable = true)
 	private void hurtCameraEffect(float partialTicks, CallbackInfo ci) {
-		EventHurtcam event = new EventHurtcam().send();
+		EventHurtcam event = new EventHurtcam();
+		event.broadcast();
 		if (event.isCanceled()) {
 			ci.cancel();
 		}
@@ -44,12 +45,13 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 	@Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/GuiIngame.renderGameOverlay(F)V"))
 	private void onRender2D(CallbackInfo cb) {
 		ChatProcessor.sendMessages();
-		new EventRender2D(0f).send();
+		new EventRender2D(0f).broadcast();
 	}
 
 	@Inject(method = "addRainParticles", at = @At("HEAD"), cancellable = true)
 	private void addRainParticles(CallbackInfo ci) {
-		EventWeather event = new EventWeather(EventWeather.WeatherType.Rain).send();
+		EventWeather event = new EventWeather(EventWeather.WeatherType.Rain);
+		event.broadcast();
 		if (event.isCanceled()) {
 			ci.cancel();
 		}
@@ -57,7 +59,8 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
 	@Inject(method = "renderRainSnow", at = @At("HEAD"), cancellable = true)
 	private void renderRainSnow(float partialTicks, CallbackInfo ci) {
-		EventWeather event = new EventWeather(EventWeather.WeatherType.Rain).send();
+		EventWeather event = new EventWeather(EventWeather.WeatherType.Rain);
+		event.broadcast();
 		if (event.isCanceled()) {
 			ci.cancel();
 		}
@@ -77,7 +80,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
 	@Redirect(method = "updateCameraAndRender(FJ)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/GameRenderer;renderHand:Z", opcode = GETFIELD))
 	private boolean updateCameraAndRender_renderHand(GameRenderer self) {
-		new EventRender3D(partialTicks).send();
+		new EventRender3D(partialTicks).broadcast();
 		return renderHand;
 	}
 

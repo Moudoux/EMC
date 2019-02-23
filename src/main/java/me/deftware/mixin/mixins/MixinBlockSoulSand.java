@@ -18,7 +18,8 @@ public class MixinBlockSoulSand {
 	 */
 	@Overwrite
 	public void onEntityCollision(IBlockState p_196262_1_, World p_196262_2_, BlockPos p_196262_3_, Entity entityIn) {
-		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Soulsand).send();
+		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Soulsand);
+		event.broadcast();
 		if (event.isCanceled()) {
 			return;
 		}

@@ -22,7 +22,7 @@ public class MixinGuiIngame {
 
 	@Inject(method = "renderHotbar", at = @At("HEAD"))
 	private void renderHotbar(float partialTicks, CallbackInfo ci) {
-		new EventRenderHotbar().send();
+		new EventRenderHotbar().broadcast();
 	}
 
 }
