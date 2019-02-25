@@ -2,14 +2,14 @@ package me.deftware.client.framework.utils;
 
 import java.util.*;
 
-public class MultiMap<K, V>
-{
+public class MultiMap<K, V> {
+
     private Map<K, Collection<V>> map = new HashMap<>();
 
     /**
      * Add the specified set to the map
      *
-     * @param key Entry identifier
+     * @param key   Entry identifier
      * @param value Entry value
      */
     public void put(K key, V value) {
@@ -83,7 +83,7 @@ public class MultiMap<K, V>
      */
     public int size() {
         int size = 0;
-        for (Collection<V> value: map.values()) {
+        for (Collection<V> value : map.values()) {
             size += value.size();
         }
         return size;
@@ -126,4 +126,5 @@ public class MultiMap<K, V>
         }
         return false;
     }
+
 }

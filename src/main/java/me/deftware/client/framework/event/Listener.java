@@ -3,8 +3,9 @@ package me.deftware.client.framework.event;
 import java.lang.reflect.Method;
 
 public class Listener {
-    Method method;
-    Object classInstance;
+
+    private Method method;
+    private Object classInstance;
 
     public Listener(Method method, Object classInstance) {
         this.method = method;
@@ -15,7 +16,8 @@ public class Listener {
         return method;
     }
 
-    public Object getClassInstance() {
+    Object getClassInstance() {
         return classInstance;
     }
+
 }

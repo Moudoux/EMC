@@ -8,8 +8,9 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class EventBus {
+
+    private static final Object lock = new Object();
     private static MultiMap<Class, Listener> listeners = new MultiMap<>();
-    public static final Object lock = new Object();
 
     public static synchronized void registerClass(Class clazz, Object instance) {
         synchronized (lock) {
@@ -24,7 +25,6 @@ public class EventBus {
                     Class eventType = annotation.eventType();
                     listeners.putIfAbsent(eventType, new Listener(method, instance));
                     Bootstrap.logger.debug(String.format("Loaded event handler for method %s", method.getName()));
-                    System.out.println("Added event: " + clazz.getName());
                 }
             }
         }
@@ -38,10 +38,9 @@ public class EventBus {
                 for (Listener listener : listenerCollection) {
                     if (listener.getClassInstance().getClass() == clazz) {
                         removeList.put(event, listener);
-                        System.out.println("Unregistered " + listener.getClassInstance().getClass().getName());
+                        Bootstrap.logger.debug("Unregistered " + listener.getClassInstance().getClass().getName());
                     }
                 }
-
             }
             removeList.forEach((key, value) -> {
                 listeners.remove(key, value);
@@ -62,15 +61,16 @@ public class EventBus {
         if (listenerCollection != null) {
             try {
                 for (Listener listener : listenerCollection) {
-                   try {
-                       listener.getMethod().invoke(listener.getClassInstance(), event);
-                   } catch (Exception ex) {
-                       ex.printStackTrace();
-                   }
+                    try {
+                        listener.getMethod().invoke(listener.getClassInstance(), event);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
             } catch (Exception e) {
                 Bootstrap.logger.error("Cannot invoke event listener " + e.getMessage());
             }
         }
     }
+
 }

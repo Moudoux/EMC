@@ -1,5 +1,7 @@
 package me.deftware.client.framework.wrappers.gui;
 
+import me.deftware.client.framework.utils.ResourceUtils;
+import me.deftware.client.framework.utils.render.Texture;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import net.minecraft.client.Minecraft;
@@ -11,18 +13,23 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.Util;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class IGuiScreen extends GuiScreen {
 
 	private boolean pause = true;
+	private HashMap<String, Texture> textureHashMap = new HashMap<>();
 
 	public IGuiScreen(boolean doesGuiPause) {
 		pause = doesGuiPause;
@@ -175,6 +182,27 @@ public abstract class IGuiScreen extends GuiScreen {
 		mc.getTextureManager().bindTexture(texture);
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GuiScreen.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
+	}
+
+	protected void drawTexture(String mod, String texture, int x, int y, int width, int height) {
+		GL11.glPushMatrix();
+		if (!textureHashMap.containsKey(texture)) {
+			try {
+				BufferedImage img = ImageIO.read(ResourceUtils.getStreamFromModResources(mod, texture));
+				Texture tex = new Texture(img.getWidth(), img.getHeight(), true);
+				tex.fillFromBufferedImageFlip(img);
+				tex.update();
+				tex.bind();
+				textureHashMap.put(texture, tex);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		} else {
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			textureHashMap.get(texture).updateTexture();
+		}
+		GuiScreen.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
+		GL11.glPopMatrix();
 	}
 
 	public static boolean isCtrlPressed() {

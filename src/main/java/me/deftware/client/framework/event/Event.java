@@ -1,9 +1,6 @@
 package me.deftware.client.framework.event;
 
-import me.deftware.client.framework.event.events.EventUpdate;
 import me.deftware.client.framework.main.Bootstrap;
-import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 
 /**
  * This class describes the way events are defined in EMC framework and handles the process of
@@ -30,25 +27,6 @@ public class Event {
         this.canceled = canceled;
         return (T) this;
     }
-
-    /**
-     * Create a method object and call broadcast() instead!
-     *
-     * Example:
-     * new Event().broadcast();
-     * @param <T>
-     * @return
-     */
-    /*@Deprecated
-    public <T extends Event> T send() {
-        try {
-            EventBus.sendEvent(this);
-        } catch (Exception ex) {
-            Bootstrap.logger.warn("Failed to send event {}", this, ex);
-        }
-        return (T) this;
-    }*/
-
 
     /**
      * Broadcasts an event to all registered listeners
