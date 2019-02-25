@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
 /**
- * This class describes the gui shown by the EMC freamwork when
+ * This class describes the gui shown by the EMC framework when
  * installed version is too low and update is necessary
  */
 
@@ -58,20 +58,23 @@ public class GuiUpdateLoader extends GuiScreen {
 
 		drawCenteredString(fontRenderer, "EMC update required", width / 2, 21, 16777215);
 
-		drawCenteredString(fontRenderer, "Client info:", width / 2 - 110, 70, 16777215);
+		drawCenteredString(fontRenderer, "Client info:", width / 4, 70, 16777215);
 
-		drawCenteredString(fontRenderer, "Name: " + get("name"), width / 2 - 110, 90, 16777215);
+		drawCenteredString(fontRenderer, "Name: " + get("name"), width / 4, 90, 16777215);
 
-		drawCenteredString(fontRenderer, "Version: " + getDouble("version"), width / 2 - 110, 105,
+		drawCenteredString(fontRenderer, "Version: " + getDouble("version"), width / 4, 105,
 				16777215);
 
-		drawCenteredString(fontRenderer, "Author: " + get("author"), width / 2 - 110, 120, 16777215);
+		drawCenteredString(fontRenderer, "Author: " + get("author"), width / 4, 120, 16777215);
 
 		// Right side
 
-		drawCenteredString(fontRenderer, "You need to update:", width / 2 + 70, 70, 16777215);
+		drawCenteredString(fontRenderer, "Problem description:", width / 2 + width / 4, 70, 16777215);
 
-		drawCenteredString(fontRenderer, "Your EMC version is too low.", width / 2 + 70, 90,
+		drawCenteredString(fontRenderer, "Your EMC version is too low", width / 2 + width / 4, 90,
+				16777215);
+
+		drawCenteredString(fontRenderer, get("name") + " requires " + get("minversion"), width / 2 + width / 4, 105,
 				16777215);
 
 		super.render(mouseX, mouseY, partialTicks);
