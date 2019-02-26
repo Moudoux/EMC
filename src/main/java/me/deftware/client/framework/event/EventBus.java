@@ -45,7 +45,6 @@ public class EventBus {
             removeList.forEach((key, value) -> {
                 listeners.remove(key, value);
             });
-
         }
     }
 

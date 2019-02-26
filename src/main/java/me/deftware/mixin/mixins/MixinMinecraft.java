@@ -10,10 +10,7 @@ import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.Session;
 import net.minecraft.util.Timer;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -52,6 +49,9 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 
 	@Shadow
 	public abstract void middleClickMouse();
+
+	@Shadow
+	public boolean isWindowFocused;
 
 	@ModifyVariable(method = "displayGuiScreen", at = @At("HEAD"))
 	private GuiScreen displayGuiScreenModifier(GuiScreen screen) {
@@ -120,6 +120,11 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 	@Override
 	public MainWindow getMainWindow() {
 		return Minecraft.getInstance().mainWindow;
+	}
+
+	@Override
+	public boolean getIsWindowFocused() {
+		return isWindowFocused;
 	}
 
 }

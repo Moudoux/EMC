@@ -27,4 +27,6 @@ public interface IMixinMinecraft {
 
 	void setRightClickDelayTimer(int delay);
 
+	boolean getIsWindowFocused();
+
 }

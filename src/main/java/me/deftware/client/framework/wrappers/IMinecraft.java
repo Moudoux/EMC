@@ -60,6 +60,10 @@ public class IMinecraft {
 				.getParent();
 	}
 
+	public static boolean isFocused() {
+		return ((IMixinMinecraft) Minecraft.getInstance()).getIsWindowFocused();
+	}
+
 	public static double getScaleFactor() {
 		return Minecraft.getInstance().mainWindow.getGuiScaleFactor();
 	}
