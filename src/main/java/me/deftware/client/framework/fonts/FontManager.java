@@ -1,10 +1,14 @@
 package me.deftware.client.framework.fonts;
 
+import me.deftware.client.framework.main.Bootstrap;
+
+import java.awt.*;
 import java.util.HashMap;
 
 public class FontManager {
 
     private static HashMap<String, EMCFont> fontStore = new HashMap<>();
+    public static HashMap<String, Font> customFonts = new HashMap<>();
 
     public static EMCFont getFont(String name, int size, int modifiers, Class<?> type) {
         String key = name + size + modifiers;
@@ -27,10 +31,13 @@ public class FontManager {
         return getFont(name, size, modifiers, DynamicFont.class);
     }
 
+    public static void registerCustomFont(Font font) {
+        customFonts.putIfAbsent(font.getFontName(), font);
+        Bootstrap.logger.info("Registered custom font " + font.getFontName());
+    }
+
     public static void removeFont(String name, int size, int modifiers) {
-        if (fontStore.containsKey(name + size + modifiers)) {
-            fontStore.remove(name + size + modifiers);
-        }
+        fontStore.remove(name + size + modifiers);
     }
 
     public static void clearCache() {

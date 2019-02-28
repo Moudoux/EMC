@@ -22,14 +22,14 @@ public class ResourceUtils {
         for (int mods = 0; mods < Bootstrap.modsInfo.size(); mods++) {
             if (Bootstrap.modsInfo.get(mods).get("name").getAsString().equals(modName)) {
                 jarName = Bootstrap.modsInfo.get(mods).get(Bootstrap.JSON_JARNAME_NOTE).getAsString();
-                System.out.println("Found a jar with a name " + jarName);
+                Bootstrap.logger.debug("Found a jar with a name " + jarName);
                 break;
             }
         }
         File modJar = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator
                 + IMinecraft.getMinecraftVersion() + File.separator + jarName);
 
-        System.out.println("Reading JAR file: " + modJar.getAbsolutePath());
+        Bootstrap.logger.debug("Reading JAR file: " + modJar.getAbsolutePath());
 
         InputStream in;
         try {
@@ -53,7 +53,7 @@ public class ResourceUtils {
     public static InputStream getStreamFromMinecraftResources(String resourcePath) {
         InputStream resource;
         try {
-            System.out.println("Getting resource from: " + IMinecraft.getRunningLocation() + File.separator + resourcePath);
+            Bootstrap.logger.debug("Getting resource from: " + IMinecraft.getRunningLocation() + File.separator + resourcePath);
             resource = new FileInputStream(IMinecraft.getRunningLocation() + File.separator + resourcePath);
         } catch (URISyntaxException | FileNotFoundException e) {
             Bootstrap.logger.warn("Requested resource does not exist", e);
@@ -76,7 +76,7 @@ public class ResourceUtils {
             } else { //Probably unix-like
                 resource = new FileInputStream("/home/" + System.getProperty("user.name") + File.separator + resourcePath);
             }
-            System.out.println("Getting resource from: " + System.getProperty("user.home") + File.separator + resourcePath);
+            Bootstrap.logger.debug("Getting resource from: " + System.getProperty("user.home") + File.separator + resourcePath);
 
         } catch (FileNotFoundException e) {
             Bootstrap.logger.warn("Requested resource does not exist", e);

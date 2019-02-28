@@ -1,6 +1,8 @@
 package me.deftware.client.framework.wrappers.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import me.deftware.client.framework.utils.ResourceUtils;
+import me.deftware.client.framework.utils.render.Texture;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import net.minecraft.client.MinecraftClient;
@@ -10,18 +12,23 @@ import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.util.SystemUtil;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class IGuiScreen extends Screen {
 
     private boolean pause = true;
+    private HashMap<String, Texture> textureHashMap = new HashMap<>();
 
     public IGuiScreen(boolean doesGuiPause) {
         pause = doesGuiPause;
@@ -192,6 +199,27 @@ public abstract class IGuiScreen extends Screen {
 
     public void setDoesGuiPauseGame(boolean state) {
         pause = state;
+    }
+
+    protected void drawTexture(String mod, String texture, int x, int y, int width, int height) {
+        GL11.glPushMatrix();
+        if (!textureHashMap.containsKey(texture)) {
+            try {
+                BufferedImage img = ImageIO.read(ResourceUtils.getStreamFromModResources(mod, texture));
+                Texture tex = new Texture(img.getWidth(), img.getHeight(), true);
+                tex.fillFromBufferedImageFlip(img);
+                tex.update();
+                tex.bind();
+                textureHashMap.put(texture, tex);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            textureHashMap.get(texture).updateTexture();
+        }
+        Screen.drawTexturedRect(x, y, 0, 0, width, height, width, height);
+        GL11.glPopMatrix();
     }
 
     protected void drawTexture(IResourceLocation texture, int x, int y, int width, int height) {

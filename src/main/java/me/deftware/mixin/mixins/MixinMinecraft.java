@@ -51,6 +51,9 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     public abstract void doAttack();
 
     @Shadow
+    public boolean isWindowFocused;
+
+    @Shadow
     public abstract void doItemUse();
 
     @Shadow
@@ -123,6 +126,11 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     @Override
     public Window getMainWindow() {
         return MinecraftClient.getInstance().window;
+    }
+
+    @Override
+    public boolean getIsWindowFocused() {
+        return isWindowFocused;
     }
 
 }

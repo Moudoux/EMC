@@ -41,12 +41,10 @@ public class EventBus {
                         Bootstrap.logger.debug("Unregistered " + listener.getClassInstance().getClass().getName());
                     }
                 }
-
             }
             removeList.forEach((key, value) -> {
                 listeners.remove(key, value);
             });
-
         }
     }
 

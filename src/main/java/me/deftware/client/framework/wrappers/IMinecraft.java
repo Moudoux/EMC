@@ -81,6 +81,10 @@ public class IMinecraft {
         return null;
     }
 
+    public static boolean isFocused() {
+        return ((IMixinMinecraft) MinecraftClient.getInstance()).getIsWindowFocused();
+    }
+
     public static float getRenderPartialTicks() {
         return MinecraftClient.getInstance().getTickDelta();
     }

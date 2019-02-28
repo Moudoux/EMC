@@ -53,7 +53,11 @@ public class BitmapFont implements EMCFont {
 
     protected void prepareStandardFont() {
         if (!bold && !italics) {
-            this.stdFont = new Font(fontName, Font.PLAIN, fontSize);
+            if (FontManager.customFonts.containsKey(fontName)) {
+                this.stdFont = FontManager.customFonts.get(fontName).deriveFont(Font.PLAIN, fontSize);
+            } else {
+                this.stdFont = new Font(fontName, Font.PLAIN, fontSize);
+            }
         } else {
             if (bold && italics) {
                 this.stdFont = new Font(fontName, Font.BOLD | java.awt.Font.ITALIC, fontSize);
