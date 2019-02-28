@@ -166,7 +166,7 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public void drawDarkOverlay() {
-        DrawableHelper.drawRect(0, 0, width, height, Integer.MIN_VALUE);
+        DrawableHelper.drawRect(0, 0, screenWidth, screenHeight, Integer.MIN_VALUE);
     }
 
     protected List<ButtonWidget> getButtonList() {
@@ -229,11 +229,11 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public int getIGuiScreenWidth() {
-        return width;
+        return screenWidth;
     }
 
     public int getIGuiScreenHeight() {
-        return height;
+        return screenHeight;
     }
 
     public void drawITintBackground(int tint) {

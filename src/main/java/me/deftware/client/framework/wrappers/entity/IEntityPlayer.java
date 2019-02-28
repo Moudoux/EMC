@@ -169,19 +169,19 @@ public class IEntityPlayer {
 
     public static void ridingEntityMotionTimesY(double y) {
         MinecraftClient.getInstance().player.getRiddenEntity().setVelocity(
-                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().method_18805(1, y, 1)
+                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().multiply(1, y, 1)
         );
     }
 
     public static void ridingEntityMotionTimesX(double x) {
         MinecraftClient.getInstance().player.getRiddenEntity().setVelocity(
-                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().method_18805(x, 1, 1)
+                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().multiply(x, 1, 1)
         );
     }
 
     public static void ridingEntityMotionTimesZ(double z) {
         MinecraftClient.getInstance().player.getRiddenEntity().setVelocity(
-                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().method_18805(1, 1, z)
+                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().multiply(1, 1, z)
         );
     }
 
@@ -313,7 +313,7 @@ public class IEntityPlayer {
             return;
         }
         MinecraftClient.getInstance().player.setVelocity(
-                MinecraftClient.getInstance().player.getVelocity().method_18805(x, 1, 1)
+                MinecraftClient.getInstance().player.getVelocity().multiply(x, 1, 1)
         );
     }
 
@@ -322,7 +322,7 @@ public class IEntityPlayer {
             return;
         }
         MinecraftClient.getInstance().player.setVelocity(
-                MinecraftClient.getInstance().player.getVelocity().method_18805(1, y, 1)
+                MinecraftClient.getInstance().player.getVelocity().multiply(1, y, 1)
         );
     }
 
@@ -331,7 +331,7 @@ public class IEntityPlayer {
             return;
         }
         MinecraftClient.getInstance().player.setVelocity(
-                MinecraftClient.getInstance().player.getVelocity().method_18805(1, 1, z)
+                MinecraftClient.getInstance().player.getVelocity().multiply(1, 1, z)
         );
     }
 

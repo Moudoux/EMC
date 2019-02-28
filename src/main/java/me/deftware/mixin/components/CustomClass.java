@@ -21,7 +21,7 @@ public class CustomClass extends ResourceTexture {
         customLogo = logo;
     }
 
-    protected class_4006 method_18153(ResourceManager resourceManager_1) {
+    protected TextureData loadTextureData(ResourceManager resourceManager_1) {
         MinecraftClient minecraftClient_1 = MinecraftClient.getInstance();
         DefaultResourcePack defaultResourcePack_1 = minecraftClient_1.getResourcePackDownloader().getPack();
 
@@ -29,9 +29,9 @@ public class CustomClass extends ResourceTexture {
             InputStream inputStream_1 = defaultResourcePack_1.open(ResourceType.ASSETS, customLogo);
             Throwable var5 = null;
 
-            class_4006 var6;
+            TextureData var6;
             try {
-                var6 = new class_4006((TextureResourceMetadata) null, NativeImage.fromInputStream(inputStream_1));
+                var6 = new TextureData((TextureResourceMetadata) null, NativeImage.fromInputStream(inputStream_1));
             } catch (Throwable var16) {
                 var5 = var16;
                 throw var16;
@@ -52,7 +52,8 @@ public class CustomClass extends ResourceTexture {
 
             return var6;
         } catch (IOException var18) {
-            return new class_4006(var18);
+            return new TextureData(var18);
         }
     }
+
 }

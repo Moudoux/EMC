@@ -71,11 +71,11 @@ public class EventGuiScreenDraw extends Event {
     }
 
     public int getWidth() {
-        return screen.width;
+        return screen.screenWidth;
     }
 
     public int getHeight() {
-        return screen.height;
+        return screen.screenHeight;
     }
 
     public enum CommonScreenTypes {
