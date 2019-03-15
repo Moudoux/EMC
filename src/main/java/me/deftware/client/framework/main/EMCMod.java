@@ -9,60 +9,52 @@ import me.deftware.client.framework.utils.Settings;
  */
 public abstract class EMCMod {
 
-	private Settings settings;
-	public JsonObject modInfo;
+    public JsonObject modInfo;
+    private Settings settings;
+    protected void init(JsonObject json) {
+        modInfo = json;
+        settings = new Settings();
+        settings.initialize(json);
+        initialize();
+    }
 
-	protected void init(JsonObject json) {
-		modInfo = json;
-		settings = new Settings();
-		settings.initialize(json);
-		initialize();
-	}
+    /**
+     * Called before any events are sent to your mod, do your initialization here
+     */
+    public abstract void initialize();
 
-	/**
-	 * Called before any events are sent to your mod, do your initialization here
-	 */
-	public abstract void initialize();
+    /**
+     * Unloads your mod from EMC
+     */
+    protected void disable() {
+        Bootstrap.getMods().remove(modInfo.get("name").getAsString());
+    }
 
-	/**
-	 * Called when EMC has tried to connect to the marketplace API, both successfully and unsuccessfully
-	 *
-	 * @param status Whether or not EMC has a successful connection with the EMC mod marketplace
-	 */
-	public void onMarketplaceAuth(boolean status) { }
+    /**
+     * Returns your main EMC mod settings handler
+     *
+     * @return Settings
+     */
+    public Settings getSettings() {
+        return settings;
+    }
 
-	/**
-	 * Unloads your mod from EMC
-	 */
-	protected void disable() {
-		Bootstrap.getMods().remove(modInfo.get("name").getAsString());
-	}
+    /**
+     * Called when Minecraft is closed, use this method to save anything in your mod
+     */
+    public void onUnload() {
+    }
 
-	/**
-	 * Returns your main EMC mod settings handler
-	 *
-	 * @return Settings
-	 */
-	public Settings getSettings() {
-		return settings;
-	}
+    /**
+     * By implementing this function you can call functions in other EMC mods
+     *
+     * @param method The method the caller wants to call
+     * @param caller The EMC mod that is calling your function
+     */
+    public void callMethod(String method, String caller) {
+    }
 
-	/**
-	 * Called when Minecraft is closed, use this method to save anything in your mod
-	 */
-	public void onUnload() {
-	}
-
-	/**
-	 * By implementing this function you can call functions in other EMC mods
-	 *
-	 * @param method The method the caller wants to call
-	 * @param caller The EMC mod that is calling your function
-	 */
-	public void callMethod(String method, String caller) {
-	}
-
-	public void postInit() {
-	}
+    public void postInit() {
+    }
 
 }

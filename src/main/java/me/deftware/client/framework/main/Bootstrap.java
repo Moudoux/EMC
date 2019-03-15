@@ -4,10 +4,8 @@ import com.google.gson.*;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
 import me.deftware.client.framework.FrameworkConstants;
-import me.deftware.client.framework.apis.marketplace.MarketplaceAPI;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.commands.*;
-import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.OSUtils;
 import me.deftware.client.framework.utils.Settings;
@@ -42,6 +40,7 @@ import java.util.stream.Collectors;
  */
 public class Bootstrap {
 
+    public static final Runtime runtime = Runtime.getRuntime();
     public static Logger logger = LogManager.getLogger();
     public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
     public static ArrayList<String> internalModClassNames = new ArrayList<>();
@@ -50,9 +49,6 @@ public class Bootstrap {
     public static String JSON_JARNAME_NOTE = "DYNAMIC_jarname";
     private static URLClassLoader modClassLoader;
     private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
-
-    public static final Runtime runtime = Runtime.getRuntime();
-
     public static void init() {
         try {
             Bootstrap.logger.info("Loading EMC...");
@@ -102,9 +98,6 @@ public class Bootstrap {
 
             // Register default EMC commands
             registerFrameworkCommands();
-
-            // Initialize the EMC marketplace API
-            MarketplaceAPI.init((status) -> Bootstrap.mods.forEach((name, mod) -> mod.onMarketplaceAuth(status)));
         } catch (Exception ex) {
             Bootstrap.logger.warn("Failed to load EMC", ex);
         }
