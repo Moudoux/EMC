@@ -64,13 +64,12 @@ public abstract class MixinGuiChat extends Screen {
         this.chatField = new InternalGuiTextField(((IMixinGuiScreen) this).getFontRenderer(), 4, ((Screen) (Object) this).screenHeight - 12, ((Screen) (Object) this).screenWidth - 4, 12);
         this.chatField.setMaxLength(256);
         this.chatField.setHasBorder(false);
-        this.chatField.setFocused(true);
         this.chatField.setText(this.field_2384);
-        this.chatField.method_1856(false);
         this.chatField.setRenderTextProvider(this::getRenderText);
         this.chatField.setChangedListener(this::onChatFieldChanged);
         this.listeners.add(this.chatField);
         this.updateCommand();
+        this.focusOn(this.chatField);
     }
 
     @Inject(method = "updateCommand", at = @At("RETURN"), cancellable = true)
