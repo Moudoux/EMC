@@ -2,15 +2,17 @@ package me.deftware.client.framework.wrappers.item.items;
 
 import me.deftware.client.framework.wrappers.item.IItemStack;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.container.CraftingContainer;
 import net.minecraft.container.GenericContainer;
+import net.minecraft.container.PlayerContainer;
 
 public class IChest {
 
-    private static GenericContainer.Generic9x3 getCurrent() {
+    private static GenericContainer getCurrent() {
         if (MinecraftClient.getInstance().player.container == null) {
             return null;
         }
-        return (GenericContainer.Generic9x3) MinecraftClient.getInstance().player.container;
+        return (GenericContainer) MinecraftClient.getInstance().player.container;
     }
 
     public static int getInventorySize() {

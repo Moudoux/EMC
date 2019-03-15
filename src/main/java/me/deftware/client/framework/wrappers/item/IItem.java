@@ -67,7 +67,7 @@ public class IItem {
         } else if (type.equals(IItemType.SplashPotion)) {
             return item == Items.SPLASH_POTION;
         } else if (type.equals(IItemType.ItemFood)) {
-            return item instanceof FoodItem;
+            return item.getItemGroup() == ItemGroup.FOOD;
         } else if (type.equals(IItemType.ItemSword)) {
             return item instanceof SwordItem;
         } else if (type.equals(IItemType.ItemTool)) {

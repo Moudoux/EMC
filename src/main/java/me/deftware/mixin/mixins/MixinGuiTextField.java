@@ -49,7 +49,7 @@ public class MixinGuiTextField implements IMixinGuiTextField {
 
     @Shadow
     @Final
-    private TextRenderer fontRenderer;
+    private TextRenderer textRenderer;
 
     @Override
     public int getHeight() {
@@ -63,7 +63,7 @@ public class MixinGuiTextField implements IMixinGuiTextField {
 
     @Override
     public TextRenderer getFontRendererInstance() {
-        return fontRenderer;
+        return textRenderer;
     }
 
     @Override
@@ -147,7 +147,7 @@ public class MixinGuiTextField implements IMixinGuiTextField {
             customFont.drawStringWithShadow((int) x, (int) y - 6, text, new Color(color));
             return (int) (x + customFont.getStringWidth(text) + 1f);
         } else {
-            return this.fontRenderer.drawWithShadow(text, x, y, color);
+            return this.textRenderer.drawWithShadow(text, x, y, color);
         }
     }
 

@@ -10,7 +10,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.InputListener;
 import net.minecraft.client.gui.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.TextComponent;
@@ -31,13 +31,13 @@ public class MixinGuiScreen implements IMixinGuiScreen {
     @Shadow
     protected TextRenderer fontRenderer;
     @Shadow
-    private List<ButtonWidget> buttons;
+    private List<AbstractButtonWidget> buttons;
     @Shadow
     @Final
     private List<InputListener> listeners;
 
     @Override
-    public List<ButtonWidget> getButtonList() {
+    public List<AbstractButtonWidget> getButtonList() {
         return buttons;
     }
 

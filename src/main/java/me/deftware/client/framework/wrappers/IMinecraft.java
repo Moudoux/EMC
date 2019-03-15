@@ -234,7 +234,7 @@ public class IMinecraft {
 
     public static boolean isChestOpen() {
         if (MinecraftClient.getInstance().player.container != null) {
-            if (MinecraftClient.getInstance().player.container instanceof GenericContainer.Generic9x3) {
+            if (MinecraftClient.getInstance().player.container instanceof GenericContainer) {
                 return true;
             }
         }

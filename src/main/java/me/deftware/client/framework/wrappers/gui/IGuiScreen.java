@@ -9,6 +9,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.InputListener;
 import net.minecraft.client.gui.Screen;
+import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.util.SystemUtil;
 import org.lwjgl.glfw.GLFW;
@@ -169,7 +170,7 @@ public abstract class IGuiScreen extends Screen {
         DrawableHelper.drawRect(0, 0, screenWidth, screenHeight, Integer.MIN_VALUE);
     }
 
-    protected List<ButtonWidget> getButtonList() {
+    protected List<AbstractButtonWidget> getButtonList() {
         return buttons;
     }
 
@@ -180,7 +181,7 @@ public abstract class IGuiScreen extends Screen {
 
     protected ArrayList<IGuiButton> getIButtonList() {
         ArrayList<IGuiButton> list = new ArrayList<>();
-        for (ButtonWidget b : buttons) {
+        for (AbstractButtonWidget b : buttons) {
             if (b instanceof IGuiButton) {
                 list.add((IGuiButton) b);
             }

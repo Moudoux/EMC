@@ -9,7 +9,7 @@ import net.minecraft.client.gui.ContainerScreen;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.menu.DisconnectedScreen;
 import net.minecraft.client.gui.menu.PauseMenuScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.AbstractButtonWidget;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class EventGuiScreenDraw extends Event {
 
     private Screen screen;
-    private int x,y;
+    private int x, y;
 
     public EventGuiScreenDraw(Screen screen, int x, int y) {
         this.screen = screen;
@@ -54,7 +54,7 @@ public class EventGuiScreenDraw extends Event {
 
     public ArrayList<IGuiButton> getIButtonList() {
         ArrayList<IGuiButton> list = new ArrayList<>();
-        for (ButtonWidget b : ((IMixinGuiScreen) screen).getButtonList()) {
+        for (AbstractButtonWidget b : ((IMixinGuiScreen) screen).getButtonList()) {
             if (b instanceof IGuiButton) {
                 list.add((IGuiButton) b);
             }

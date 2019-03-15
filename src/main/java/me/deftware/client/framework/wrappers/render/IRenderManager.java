@@ -25,16 +25,4 @@ public class IRenderManager {
         return MinecraftClient.getInstance().getEntityRenderManager().field_4677;
     }
 
-    public static double getViewerX() {
-        return MinecraftClient.getInstance().getEntityRenderManager().field_4695;
-    }
-
-    public static double getViewerY() {
-        return MinecraftClient.getInstance().getEntityRenderManager().field_4694;
-    }
-
-    public static double getViewerZ() {
-        return MinecraftClient.getInstance().getEntityRenderManager().field_4693;
-    }
-
 }

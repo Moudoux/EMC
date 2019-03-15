@@ -2,9 +2,9 @@ package me.deftware.client.framework.wrappers.gui;
 
 import me.deftware.mixin.imp.IMixinGuiButton;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.AbstractButtonWidget;
 
-public class IGuiButton extends ButtonWidget implements CustomIGuiEventListener {
+public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventListener {
 
     public IGuiButton(int id, int x, int y, String buttonText) {
         super(x, y, 200, 20, buttonText);
@@ -26,8 +26,21 @@ public class IGuiButton extends ButtonWidget implements CustomIGuiEventListener 
     }
 
     @Override
-    public void onPressed(double x, double y) {
-        onButtonClick(x, y);
+    public boolean mouseClicked(double double_1, double double_2, int int_1) {
+        if (this.enabled && this.visible) {
+            if (int_1 == 0) {
+                boolean boolean_1 = this.isSelected(double_1, double_2);
+                if (boolean_1) {
+                    this.playPressedSound(MinecraftClient.getInstance().getSoundLoader());
+                    onButtonClick(x, y);
+                    return true;
+                }
+            }
+
+            return false;
+        } else {
+            return false;
+        }
     }
 
     public void onButtonClick(double mouseX, double mouseY) {
