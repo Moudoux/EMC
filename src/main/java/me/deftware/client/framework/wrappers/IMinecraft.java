@@ -259,6 +259,13 @@ public class IMinecraft {
 		return new IEntity(Minecraft.getInstance().objectMouseOver.entity);
 	}
 
+	public static IEntity getRenderViewEntity() {
+		if(Minecraft.getInstance().getRenderViewEntity() == null) {
+			return null;
+		}
+		return new IEntity(Minecraft.getInstance().getRenderViewEntity());
+	}
+
 	public static boolean entityHitInstanceOf(EntityType type) {
 		if (!isMouseOver()) {
 			return false;
