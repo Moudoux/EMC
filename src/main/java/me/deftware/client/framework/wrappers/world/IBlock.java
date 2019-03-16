@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers.world;
 
+import me.deftware.client.framework.wrappers.math.IVoxelShape;
 import net.minecraft.block.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -53,6 +54,10 @@ public class IBlock {
 
 	public static boolean isReplaceable(IBlockPos pos) {
 		return IWorld.getStateFromPos(pos).getMaterial().isReplaceable();
+	}
+
+	public static IVoxelShape makeCuboidShape(double x1, double y1, double z1, double x2, double y2, double z2) {
+		return new IVoxelShape(Block.makeCuboidShape(x1, y1, z1, x2, y2, z2));
 	}
 
 	public boolean instanceOf(IBlockTypes type) {

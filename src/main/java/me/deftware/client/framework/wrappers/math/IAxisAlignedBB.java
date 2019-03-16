@@ -11,6 +11,10 @@ public class IAxisAlignedBB {
 		bb = new AxisAlignedBB(x, y, z, x1, y1, z1);
 	}
 
+	public IAxisAlignedBB(AxisAlignedBB aabb) {
+		bb = aabb;
+	}
+
 	public AxisAlignedBB getAABB() {
 		return bb;
 	}
