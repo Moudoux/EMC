@@ -31,6 +31,7 @@ public abstract class IGuiScreen extends Screen {
     private boolean pause = true;
     private HashMap<String, Texture> textureHashMap = new HashMap<>();
     protected IGuiScreen parent = null;
+    protected boolean escGoesBack = true;
 
     public IGuiScreen(boolean doesGuiPause) {
         pause = doesGuiPause;
@@ -158,8 +159,8 @@ public abstract class IGuiScreen extends Screen {
     @Override
     public boolean keyPressed(int keyCode, int action, int modifiers) {
         onKeyPressed(keyCode, action, modifiers);
-        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
-            IMinecraft.setGuiScreen(null);
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE && escGoesBack) {
+            IMinecraft.setGuiScreen(parent);
         }
         return true;
     }
