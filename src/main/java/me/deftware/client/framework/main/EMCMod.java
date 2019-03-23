@@ -9,8 +9,9 @@ import me.deftware.client.framework.utils.Settings;
  */
 public abstract class EMCMod {
 
-    public JsonObject modInfo;
     private Settings settings;
+    public JsonObject modInfo;
+
     protected void init(JsonObject json) {
         modInfo = json;
         settings = new Settings();
@@ -42,8 +43,7 @@ public abstract class EMCMod {
     /**
      * Called when Minecraft is closed, use this method to save anything in your mod
      */
-    public void onUnload() {
-    }
+    public void onUnload() { }
 
     /**
      * By implementing this function you can call functions in other EMC mods
@@ -51,10 +51,11 @@ public abstract class EMCMod {
      * @param method The method the caller wants to call
      * @param caller The EMC mod that is calling your function
      */
-    public void callMethod(String method, String caller) {
-    }
+    public void callMethod(String method, String caller, Object object) { }
 
-    public void postInit() {
-    }
+    @Deprecated
+    public void callMethod(String method, String caller) { }
+
+    public void postInit() { }
 
 }

@@ -27,6 +27,7 @@ public abstract class IGuiScreen extends GuiScreen {
 
 	private boolean pause = true;
 	private HashMap<String, Texture> textureHashMap = new HashMap<>();
+	protected IGuiScreen parent = null;
 
 	public IGuiScreen(boolean doesGuiPause) {
 		pause = doesGuiPause;
@@ -34,6 +35,11 @@ public abstract class IGuiScreen extends GuiScreen {
 
 	public IGuiScreen() {
 		this(true);
+	}
+
+	public IGuiScreen(IGuiScreen parent) {
+		this(true);
+		this.parent = parent;
 	}
 
 	@Override
