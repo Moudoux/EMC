@@ -221,6 +221,13 @@ public class IMinecraft {
         return false;
     }
 
+    public static IEntity getRenderViewEntity() {
+        if(MinecraftClient.getInstance().getCameraEntity() == null) {
+            return null;
+        }
+        return new IEntity(MinecraftClient.getInstance().getCameraEntity());
+    }
+
     public static boolean isInventoryOpen() {
         if (MinecraftClient.getInstance().currentScreen != null) {
             if (MinecraftClient.getInstance().currentScreen instanceof ContainerScreen

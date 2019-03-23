@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers.world;
 
+import me.deftware.client.framework.wrappers.math.IVoxelShape;
 import net.minecraft.block.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -30,6 +31,10 @@ public class IBlock {
             return Registry.BLOCK.get(lvt_1_1_);
         }
         return null;
+    }
+
+    public static IVoxelShape makeCuboidShape(double x1, double y1, double z1, double x2, double y2, double z2) {
+        return new IVoxelShape(Block.createCuboidShape(x1, y1, z1, x2, y2, z2));
     }
 
     public boolean isValidBlock() {

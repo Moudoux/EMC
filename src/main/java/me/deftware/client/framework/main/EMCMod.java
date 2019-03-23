@@ -51,6 +51,9 @@ public abstract class EMCMod {
 	 * @param method The method the caller wants to call
 	 * @param caller The EMC mod that is calling your function
 	 */
+	public void callMethod(String method, String caller, Object object) { }
+
+	@Deprecated
 	public void callMethod(String method, String caller) { }
 
 	public void postInit() { }

@@ -176,6 +176,10 @@ public class Bootstrap {
         });
     }
 
+    public static void callMethod(String mod, String method, String caller) {
+        callMethod(mod, method, caller, null);
+    }
+
     /**
      * Call a function in another EMC mod from your mod, using this you can call functions across EMC mods
      *
@@ -183,9 +187,10 @@ public class Bootstrap {
      * @param method The method name you want to call
      * @param caller The name of your mod
      */
-    public static void callMethod(String mod, String method, String caller) {
+    public static void callMethod(String mod, String method, String caller, Object object) {
         if (Bootstrap.mods.containsKey(mod)) {
             Bootstrap.mods.get(mod).callMethod(method, caller);
+            Bootstrap.mods.get(mod).callMethod(method, caller, object);
         } else {
             Bootstrap.logger.error(String.format("EMC mod %s tried to call method %s in mod %s", caller, method, mod));
         }
