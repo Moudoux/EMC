@@ -6,13 +6,14 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.OtherClientPlayerEntity;
+import net.minecraft.client.render.entity.PigZombieEntityRenderer;
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.sortme.Projectile;
+import net.minecraft.entity.projectile.Projectile;
 
 @SuppressWarnings("All")
 public class IEntity {
@@ -236,7 +237,7 @@ public class IEntity {
         } else if (e.equals(EntityType.ENTITY_SPIDER)) {
             return entity instanceof SpiderEntity;
         } else if (e.equals(EntityType.ENTITY_ZOMBIE_PIGMAN)) {
-            return entity instanceof PigZombieEntity;
+            return entity instanceof ZombiePigmanEntity;
         } else if (e.equals(EntityType.ENTITY_ENDERMAN)) {
             return entity instanceof EndermanEntity;
         } else if (e.equals(EntityType.ENTITY_WITHER_SKELETON)) {

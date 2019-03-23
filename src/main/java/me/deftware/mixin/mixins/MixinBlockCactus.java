@@ -18,7 +18,7 @@ public class MixinBlockCactus {
 
     @Shadow
     @Final
-    protected static VoxelShape field_10711;
+    protected static VoxelShape COLLISION_SHAPE;
 
     /**
      * @Author Deftware
@@ -29,7 +29,7 @@ public class MixinBlockCactus {
         if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "custom_cactus_voxel", false)) {
             return VoxelShapes.fullCube();
         }
-        return field_10711;
+        return COLLISION_SHAPE;
     }
 
 }

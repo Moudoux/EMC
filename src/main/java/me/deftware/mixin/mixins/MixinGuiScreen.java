@@ -30,8 +30,11 @@ public class MixinGuiScreen implements IMixinGuiScreen {
 
     @Shadow
     protected TextRenderer fontRenderer;
+
     @Shadow
+    @Final
     private List<AbstractButtonWidget> buttons;
+
     @Shadow
     @Final
     private List<InputListener> listeners;
@@ -51,12 +54,12 @@ public class MixinGuiScreen implements IMixinGuiScreen {
         return listeners;
     }
 
-    @Inject(method = "draw", at = @At("HEAD"))
+    @Inject(method = "render", at = @At("HEAD"))
     public void render(int x, int y, float p_render_3_, CallbackInfo ci) {
         new EventGuiScreenDraw((Screen) (Object) this, x, y).broadcast();
     }
 
-    @Inject(method = "draw", at = @At("RETURN"))
+    @Inject(method = "render", at = @At("RETURN"))
     public void render_return(int x, int y, float p_render_3_, CallbackInfo ci) {
         new EventGuiScreenPostDraw((Screen) (Object) this, x, y).broadcast();
     }

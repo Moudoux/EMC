@@ -5,11 +5,10 @@ import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.mixin.components.CustomClass;
-import net.minecraft.class_4071;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.Overlay;
 import net.minecraft.client.gui.SplashScreen;
-import net.minecraft.resource.ResourceReloadHandler;
 import net.minecraft.resource.ResourceReloadMonitor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.SystemUtil;
@@ -28,25 +27,42 @@ public abstract class MixinSplashScreen {
     @Final
     @Shadow
     public static Identifier LOGO = new Identifier("textures/gui/title/mojang.png");
+
     @Final
     @Shadow
     public MinecraftClient client;
+
     @Final
     @Shadow
     public ResourceReloadMonitor reloadMonitor;
+
     @Shadow
     @Final
     public Runnable field_18218;
+
     @Shadow
     @Final
     public boolean field_18219;
+
     @Shadow
     public float field_17770;
+
     @Shadow
     public long field_17771 = -1L;
+
     @Shadow
     public long field_18220 = -1L;
+
     private Identifier customLogo = null;
+
+    @Overwrite
+    public static void method_18819(MinecraftClient minecraftClient_1) {
+        Identifier customLogo = null;
+        if (SettingsMap.hasValue(SettingsMap.MapKeys.GAME_SETTINGS, "CUSTOM_LOGO_TEXTURE")) {
+            customLogo = new IResourceLocation((String) SettingsMap.getValue(SettingsMap.MapKeys.GAME_SETTINGS, "CUSTOM_LOGO_TEXTURE", ""));
+        }
+        MinecraftClient.getInstance().getTextureManager().registerTexture(customLogo == null ? LOGO : customLogo, new CustomClass(customLogo == null ? LOGO : customLogo));
+    }
 
     @Shadow
     public abstract void renderProgressBar(int int_1, int int_2, int int_3, int int_4, float float_1, float float_2);
@@ -59,16 +75,7 @@ public abstract class MixinSplashScreen {
     }
 
     @Overwrite
-    public static void method_18819(MinecraftClient minecraftClient_1) {
-        Identifier customLogo = null;
-        if (SettingsMap.hasValue(SettingsMap.MapKeys.GAME_SETTINGS, "CUSTOM_LOGO_TEXTURE")) {
-            customLogo = new IResourceLocation((String) SettingsMap.getValue(SettingsMap.MapKeys.GAME_SETTINGS, "CUSTOM_LOGO_TEXTURE", ""));
-        }
-        MinecraftClient.getInstance().getTextureManager().registerTexture(customLogo == null ? LOGO : customLogo, new CustomClass(customLogo == null ? LOGO : customLogo));
-    }
-
-    @Overwrite
-    public void draw(int int_1, int int_2, float float_1) {
+    public void render(int int_1, int int_2, float float_1) {
         int int_3 = this.client.window.getScaledWidth();
         int int_4 = this.client.window.getScaledHeight();
         long long_1 = SystemUtil.getMeasuringTimeMs();
@@ -82,7 +89,7 @@ public abstract class MixinSplashScreen {
         int int_6;
         if (float_2 >= 1.0F) {
             if (this.client.currentScreen != null) {
-                this.client.currentScreen.draw(0, 0, float_1);
+                this.client.currentScreen.render(0, 0, float_1);
             }
 
             int_6 = MathHelper.ceil((1.0F - MathHelper.clamp(float_2 - 1.0F, 0.0F, 1.0F)) * 255.0F);
@@ -90,7 +97,7 @@ public abstract class MixinSplashScreen {
             float_6 = 1.0F - MathHelper.clamp(float_2 - 1.0F, 0.0F, 1.0F);
         } else if (this.field_18219) {
             if (this.client.currentScreen != null && float_3 < 1.0F) {
-                this.client.currentScreen.draw(int_1, int_2, float_1);
+                this.client.currentScreen.render(int_1, int_2, float_1);
             }
 
             int_6 = MathHelper.ceil(MathHelper.clamp((double)float_3, 0.15D, 1.0D) * 255.0D);
@@ -103,7 +110,7 @@ public abstract class MixinSplashScreen {
 
         int_6 = (this.client.window.getScaledWidth() - 256) / 2;
         int int_8 = (this.client.window.getScaledHeight() - 256) / 2;
-        this.client.getTextureManager().registerTexture(customLogo == null ? LOGO : customLogo, new CustomClass(customLogo == null ? LOGO : customLogo));
+        this.client.getTextureManager().bindTexture(LOGO);
         GlStateManager.enableBlend();
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, float_6);
         ((SplashScreen) (Object) this).drawTexturedRect(int_6, int_8, 0, 0, 256, 256);
@@ -114,7 +121,7 @@ public abstract class MixinSplashScreen {
         }
 
         if (float_2 >= 2.0F) {
-            this.client.method_18502((class_4071)null);
+            this.client.method_18502((Overlay)null);
         }
 
         if (this.field_17771 == -1L && this.reloadMonitor.isApplyStageComplete() && (!this.field_18219 || float_3 >= 2.0F)) {

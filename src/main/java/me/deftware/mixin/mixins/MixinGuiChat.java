@@ -13,6 +13,7 @@ import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.ingame.ChatScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.server.command.CommandSource;
+import net.minecraft.text.TextComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,7 +31,7 @@ public abstract class MixinGuiChat extends Screen {
     protected TextFieldWidget chatField;
 
     @Shadow
-    private String field_2384;
+    private String field_18973;
 
     @Shadow
     private int field_2387;
@@ -53,6 +54,10 @@ public abstract class MixinGuiChat extends Screen {
     @Shadow
     public abstract void updateCommand();
 
+    protected MixinGuiChat(TextComponent textComponent_1) {
+        super(textComponent_1);
+    }
+
     /**
      * @Author Deftware
      * @reason
@@ -64,7 +69,7 @@ public abstract class MixinGuiChat extends Screen {
         this.chatField = new InternalGuiTextField(((IMixinGuiScreen) this).getFontRenderer(), 4, ((Screen) (Object) this).screenHeight - 12, ((Screen) (Object) this).screenWidth - 4, 12);
         this.chatField.setMaxLength(256);
         this.chatField.setHasBorder(false);
-        this.chatField.setText(this.field_2384);
+        this.chatField.setText(this.field_18973);
         this.chatField.setRenderTextProvider(this::getRenderText);
         this.chatField.setChangedListener(this::onChatFieldChanged);
         this.listeners.add(this.chatField);

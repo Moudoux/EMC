@@ -79,8 +79,8 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         return self.getFoodLevel();
     }
 
-    @Inject(method = "update", at = @At("HEAD"), cancellable = true)
-    private void update(CallbackInfo ci) {
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    private void tick(CallbackInfo ci) {
         EventUpdate event = new EventUpdate(x, y, z, yaw, pitch, onGround);
         event.broadcast();
         if (event.isCanceled()) {
