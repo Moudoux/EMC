@@ -15,9 +15,9 @@ public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventL
     }
 
     @Override
-    public void draw(int mouseX, int mouseY, float partialTicks) {
+    public void render(int mouseX, int mouseY, float float_1) {
         if (onDraw(mouseX, mouseY) == 0) {
-            super.draw(mouseX, mouseY, partialTicks);
+            super.render(mouseX, mouseY, float_1);
         }
     }
 
@@ -27,11 +27,11 @@ public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventL
 
     @Override
     public boolean mouseClicked(double double_1, double double_2, int int_1) {
-        if (this.enabled && this.visible) {
+        if (this.visible) {
             if (int_1 == 0) {
-                boolean boolean_1 = this.isSelected(double_1, double_2);
+                boolean boolean_1 = this.isButtonHovered();
                 if (boolean_1) {
-                    this.playPressedSound(MinecraftClient.getInstance().getSoundLoader());
+                    this.playDownSound(MinecraftClient.getInstance().getSoundManager());
                     onButtonClick(x, y);
                     return true;
                 }
@@ -56,14 +56,6 @@ public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventL
 
     public void setVisible(boolean state) {
         visible = state;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean state) {
-        enabled = state;
     }
 
     protected int getButtonX() {
@@ -107,11 +99,11 @@ public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventL
     }
 
     public String getButtonText() {
-        return getText();
+        return getMessage();
     }
 
     public void setButtonText(String text) {
-        setText(text);
+        setMessage(text);
     }
 
 }

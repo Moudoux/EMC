@@ -19,7 +19,7 @@ public class IGuiPasswordTextField extends IGuiTextField {
     }
 
     @Override
-    public void draw(int p_195608_1_, int p_195608_2_, float p_195608_3_) {
+    public void render(int p_195608_1_, int p_195608_2_, float p_195608_3_) {
         if (isVisible()) {
             if (hasBorder()) {
                 DrawableHelper.drawRect(((IMixinGuiTextField) this).getX() - 1, ((IMixinGuiTextField) this).getY() - 1, ((IMixinGuiTextField) this).getX() + ((IMixinGuiTextField) this).getWidth() + 1,

@@ -73,7 +73,7 @@ public class IInventoryWrapper {
             return new ArrayList<>();
         }
         ArrayList<ISlot> slots = new ArrayList<>();
-        for (Slot d : MinecraftClient.getInstance().player.containerPlayer.slotList) {
+        for (Slot d : MinecraftClient.getInstance().player.container.slotList) {
             slots.add(new ISlot(d));
         }
         return slots;

@@ -11,6 +11,8 @@ import net.minecraft.client.gui.InputListener;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.text.StringTextComponent;
+import net.minecraft.text.TextComponent;
 import net.minecraft.util.SystemUtil;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -33,16 +35,22 @@ public abstract class IGuiScreen extends Screen {
     protected IGuiScreen parent = null;
     protected boolean escGoesBack = true;
 
-    public IGuiScreen(boolean doesGuiPause) {
-        pause = doesGuiPause;
+    @Deprecated
+    public IGuiScreen(boolean pause) {
+        this("", true);
+    }
+
+    public IGuiScreen(String screenTitle, boolean escGoesBack) {
+        super(new StringTextComponent(screenTitle));
+        this.escGoesBack = escGoesBack;
     }
 
     public IGuiScreen() {
-        this(true);
+        this("", false);
     }
 
     public IGuiScreen(IGuiScreen parent) {
-        this(true);
+        this("", true);
         this.parent = parent;
     }
 
@@ -106,9 +114,9 @@ public abstract class IGuiScreen extends Screen {
     }
 
     @Override
-    public void draw(int mouseX, int mouseY, float partialTicks) {
+    public void render(int mouseX, int mouseY, float partialTicks) {
         onDraw(mouseX, mouseY, partialTicks);
-        super.draw(mouseX, mouseY, partialTicks);
+        super.render(mouseX, mouseY, partialTicks);
         onPostDraw(mouseX, mouseY, partialTicks);
     }
 
