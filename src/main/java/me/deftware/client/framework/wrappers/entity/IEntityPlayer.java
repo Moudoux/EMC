@@ -17,6 +17,7 @@ import net.minecraft.client.network.ScoreboardEntry;
 import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.passive.HorseEntity;
+import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScoreboardTeam;
@@ -594,7 +595,10 @@ public class IEntityPlayer {
         if (IEntityPlayer.isNull()) {
             return false;
         }
-        return MinecraftClient.getInstance().player.method_3144();
+        else if (MinecraftClient.getInstance().player.getRiddenEntity() instanceof BoatEntity) {
+                return true;
+        }
+        return false;
     }
 
     public static boolean isRiding() {

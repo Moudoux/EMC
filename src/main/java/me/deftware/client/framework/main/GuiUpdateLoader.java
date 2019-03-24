@@ -5,6 +5,7 @@ import me.deftware.client.framework.wrappers.gui.IGuiButton;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Screen;
+import net.minecraft.text.StringTextComponent;
 
 /**
  * This class describes the gui shown by the EMC freamwork when
@@ -16,6 +17,7 @@ public class GuiUpdateLoader extends Screen {
     private JsonObject clientInfo;
 
     public GuiUpdateLoader(JsonObject clientInfo) {
+        super(new StringTextComponent("Update required"));
         this.clientInfo = clientInfo;
     }
 
@@ -52,8 +54,8 @@ public class GuiUpdateLoader extends Screen {
     }
 
     @Override
-    public void draw(int mouseX, int mouseY, float partialTicks) {
-        super.draw(mouseX, mouseY, partialTicks);
+    public void render(int mouseX, int mouseY, float partialTicks) {
+        super.render(mouseX, mouseY, partialTicks);
         drawBackground();
 
         drawStringCentered(fontRenderer, "EMC update required", screenWidth / 2, 21, 16777215);
@@ -76,8 +78,7 @@ public class GuiUpdateLoader extends Screen {
 
         drawStringCentered(fontRenderer, get("name") + " requires " + get("minversion"), screenWidth / 2 + screenWidth / 4, 105,
                 16777215);
-
-        super.draw(mouseX, mouseY, partialTicks);
+        //super.render(mouseX, mouseY, partialTicks); //optional
     }
 
 }

@@ -46,7 +46,7 @@ public class ICamera {
     }
 
     public static double getDistance(double x, double y, double z) {
-        return ICamera.getRenderViewEntity().distanceTo(x, y, z);
+        return ICamera.getRenderViewEntity().squaredDistanceTo(x, y, z);
     }
 
 }

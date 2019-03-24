@@ -47,7 +47,7 @@ public abstract class IGuiSlot extends AbstractListWidget implements CustomIGuiE
     }
 
     public void doDraw(int mouseX, int mouseY, float partialTicks) {
-        draw(mouseX, mouseY, partialTicks);
+        render(mouseX, mouseY, partialTicks);
     }
 
     public void clickElement(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
