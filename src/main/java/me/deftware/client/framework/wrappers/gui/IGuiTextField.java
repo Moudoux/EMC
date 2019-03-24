@@ -47,7 +47,7 @@ public class IGuiTextField extends TextFieldWidget implements CustomIGuiEventLis
     }
 
     public void onDraw(int mouseX, int mouseY, float partialTicks) {
-        draw(mouseX, mouseY, partialTicks);
+        render(mouseX, mouseY, partialTicks);
     }
 
     public void doCursorTick() {
