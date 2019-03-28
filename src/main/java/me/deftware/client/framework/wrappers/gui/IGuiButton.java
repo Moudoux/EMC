@@ -54,8 +54,16 @@ public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventL
         return visible;
     }
 
+    public void setEnabled(boolean state) {
+        active = state;
+    }
+
     public void setVisible(boolean state) {
         visible = state;
+    }
+
+    public boolean isEnabled() {
+        return active;
     }
 
     protected int getButtonX() {
