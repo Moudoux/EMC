@@ -374,8 +374,8 @@ public class RenderUtils {
             MinecraftClient.getInstance().getTextureManager().bindTexture(AbstractClientPlayerEntity.getSkinId(name));
             glEnable(GL_BLEND);
             glColor4f(0.9F, 0.9F, 0.9F, 1.0F);
-            DrawableHelper.drawTexturedRect(x, y, 24, 24, w, h, 192, 192);
-            DrawableHelper.drawTexturedRect(x, y, 120, 24, w, h, 192, 192);
+            DrawableHelper.blit(x, y, 24, 24, w, h, 192, 192);
+            DrawableHelper.blit(x, y, 120, 24, w, h, 192, 192);
             glDisable(GL_BLEND);
         } catch (Exception e) {
         }

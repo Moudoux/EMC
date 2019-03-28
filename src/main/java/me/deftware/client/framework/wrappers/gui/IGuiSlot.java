@@ -13,28 +13,23 @@ public abstract class IGuiSlot extends AbstractListWidget implements CustomIGuiE
     }
 
     @Override
-    protected int getEntryCount() {
+    protected int getItemCount() {
         return getISize();
     }
 
     @Override
-    protected boolean selectEntry(int index, int p_195078_2_, double p_195078_3_, double p_195078_5_) {
+    protected boolean selectItem(int index, int p_195078_2_, double p_195078_3_, double p_195078_5_) {
         selectedSlot = index;
         return true;
     }
 
     @Override
-    protected void drawBackground() {
-
-    }
-
-    @Override
-    protected boolean isSelectedEntry(int slotIndex) {
+    protected boolean isSelectedItem(int slotIndex) {
         return selectedSlot == slotIndex;
     }
 
     @Override
-    protected void drawEntry(int slotIndex, int xPos, int yPos, int heightIn, int mouseXIn, int mouseYIn, float partialTicks) {
+    protected void renderItem(int slotIndex, int xPos, int yPos, int heightIn, int mouseXIn, int mouseYIn, float partialTicks) {
         drawISlot(slotIndex, xPos, yPos);
     }
 
@@ -51,7 +46,7 @@ public abstract class IGuiSlot extends AbstractListWidget implements CustomIGuiE
     }
 
     public void clickElement(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
-        selectEntry(slotIndex, GLFW.GLFW_MOUSE_BUTTON_LEFT, mouseX, mouseY);
+        selectItem(slotIndex, GLFW.GLFW_MOUSE_BUTTON_LEFT, mouseX, mouseY);
     }
 
 }

@@ -62,19 +62,19 @@ public abstract class MixinGuiChat extends Screen {
      * @Author Deftware
      * @reason
      */
-    @Overwrite
-    public void onInitialized() {
+    @Overwrite(remap = false)
+    public void init() {
         MinecraftClient.getInstance().keyboard.enableRepeatEvents(true);
         this.field_2387 = MinecraftClient.getInstance().inGameHud.getChatHud().method_1809().size();
-        this.chatField = new InternalGuiTextField(((IMixinGuiScreen) this).getFontRenderer(), 4, ((Screen) (Object) this).screenHeight - 12, ((Screen) (Object) this).screenWidth - 4, 12);
+        this.chatField = new InternalGuiTextField(((IMixinGuiScreen) this).getFont(), 4, ((Screen) (Object) this).height - 12, ((Screen) (Object) this).width - 4, 12);
         this.chatField.setMaxLength(256);
         this.chatField.setHasBorder(false);
         this.chatField.setText(this.field_18973);
         this.chatField.setRenderTextProvider(this::getRenderText);
         this.chatField.setChangedListener(this::onChatFieldChanged);
-        this.listeners.add(this.chatField);
+        this.children.add(this.chatField);
         this.updateCommand();
-        this.focusOn(this.chatField);
+        this.method_20085(this.chatField);
     }
 
     @Inject(method = "updateCommand", at = @At("RETURN"), cancellable = true)
@@ -86,14 +86,14 @@ public abstract class MixinGuiChat extends Screen {
                 stringReader_1.skip();
             }
             CommandDispatcher<CommandSource> commandDispatcher_1 = CommandRegister.getDispatcher();
-            this.parseResults = commandDispatcher_1.parse(stringReader_1, this.client.player.networkHandler.getCommandSource());
+            this.parseResults = commandDispatcher_1.parse(stringReader_1, this.minecraft.player.networkHandler.getCommandSource());
             if (!this.suggestionsTemporarilyDisabled) {
                 StringReader stringReader_2 = new StringReader(string_1.substring(0, Math.min(string_1.length(), this.chatField.getCursor())));
                 if (stringReader_2.canRead()) {
                     for (int triggerLength = 0; triggerLength < CommandRegister.getCommandTrigger().length(); triggerLength++) {
                         stringReader_2.skip();
                     }
-                    ParseResults<CommandSource> parseResults_1 = commandDispatcher_1.parse(stringReader_2, this.client.player.networkHandler.getCommandSource());
+                    ParseResults<CommandSource> parseResults_1 = commandDispatcher_1.parse(stringReader_2, this.minecraft.player.networkHandler.getCommandSource());
                     this.suggestionsFuture = commandDispatcher_1.getCompletionSuggestions(parseResults_1);
                     this.suggestionsFuture.thenRun(() -> {
                         if (this.suggestionsFuture.isDone()) {

@@ -49,7 +49,7 @@ public class IEntity {
     }
 
     public boolean isDead() {
-        return !entity.isValid();
+        return !entity.isAlive();
     }
 
     public boolean isMod() {

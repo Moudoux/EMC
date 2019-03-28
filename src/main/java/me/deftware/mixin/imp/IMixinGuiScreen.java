@@ -10,7 +10,7 @@ public interface IMixinGuiScreen {
 
     List<AbstractButtonWidget> getButtonList();
 
-    TextRenderer getFontRenderer();
+    TextRenderer getFont();
 
     List<InputListener> getEventList();
 

@@ -88,7 +88,7 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public static boolean isCtrlPressed() {
-        return isControlPressed();
+        return hasControlDown();
     }
 
     public static int getScaledHeight() {
@@ -126,22 +126,22 @@ public abstract class IGuiScreen extends Screen {
     }
 
     @Override
-    public void onScaleChanged(MinecraftClient mcIn, int w, int h) {
-        super.onScaleChanged(mcIn, w, h);
+    public void resize(MinecraftClient mcIn, int w, int h) {
+        super.resize(mcIn, w, h);
         onGuiResize(w, h);
     }
 
     @Override
-    public void update() {
-        super.update();
+    public void tick() {
+        super.tick();
         onUpdate();
     }
 
     @Override
-    public void onInitialized() {
-        super.onInitialized();
+    public void init() {
+        super.init();
         onInitGui();
-        listeners.add(new InputListener() {
+        children.add(new InputListener() {
 
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
@@ -159,9 +159,9 @@ public abstract class IGuiScreen extends Screen {
     }
 
     @Override
-    public void onClosed() {
+    public void removed() {
         onGuiClose();
-        super.onClosed();
+        super.removed();
     }
 
     @Override
@@ -174,15 +174,15 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public void addEventListener(CustomIGuiEventListener listener) {
-        this.listeners.add(listener);
+        this.children.add(listener);
     }
 
     protected void drawIDefaultBackground() {
-        drawBackground();
+        renderBackground();
     }
 
     public void drawDarkOverlay() {
-        DrawableHelper.drawRect(0, 0, screenWidth, screenHeight, Integer.MIN_VALUE);
+        DrawableHelper.fill(0, 0, width, height, Integer.MIN_VALUE);
     }
 
     protected List<AbstractButtonWidget> getButtonList() {
@@ -190,7 +190,7 @@ public abstract class IGuiScreen extends Screen {
     }
 
     protected void addButton(IGuiButton button) {
-        listeners.add(button);
+        children.add(button);
         buttons.add(button);
     }
 
@@ -234,26 +234,26 @@ public abstract class IGuiScreen extends Screen {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             textureHashMap.get(texture).updateTexture();
         }
-        Screen.drawTexturedRect(x, y, 0, 0, width, height, width, height);
+        Screen.blit(x, y, 0, 0, width, height, width, height);
         GL11.glPopMatrix();
     }
 
     protected void drawTexture(IResourceLocation texture, int x, int y, int width, int height) {
         MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Screen.drawTexturedRect(x, y, 0, 0, width, height, width, height);
+        Screen.blit(x, y, 0, 0, width, height, width, height);
     }
 
     public int getIGuiScreenWidth() {
-        return screenWidth;
+        return width;
     }
 
     public int getIGuiScreenHeight() {
-        return screenHeight;
+        return height;
     }
 
     public void drawITintBackground(int tint) {
-        drawTextureBackground(tint);
+        renderBackground(tint);
     }
 
     public void setFocusedComponent(CustomIGuiEventListener listener) {

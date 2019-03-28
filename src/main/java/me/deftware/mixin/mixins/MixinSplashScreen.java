@@ -74,7 +74,7 @@ public abstract class MixinSplashScreen {
         }
     }
 
-    @Overwrite
+    @Overwrite(remap = false)
     public void render(int int_1, int int_2, float float_1) {
         int int_3 = this.client.window.getScaledWidth();
         int int_4 = this.client.window.getScaledHeight();
@@ -93,7 +93,7 @@ public abstract class MixinSplashScreen {
             }
 
             int_6 = MathHelper.ceil((1.0F - MathHelper.clamp(float_2 - 1.0F, 0.0F, 1.0F)) * 255.0F);
-            DrawableHelper.drawRect(0, 0, int_3, int_4, 16777215 | int_6 << 24);
+            DrawableHelper.fill(0, 0, int_3, int_4, 16777215 | int_6 << 24);
             float_6 = 1.0F - MathHelper.clamp(float_2 - 1.0F, 0.0F, 1.0F);
         } else if (this.field_18219) {
             if (this.client.currentScreen != null && float_3 < 1.0F) {
@@ -101,10 +101,10 @@ public abstract class MixinSplashScreen {
             }
 
             int_6 = MathHelper.ceil(MathHelper.clamp((double)float_3, 0.15D, 1.0D) * 255.0D);
-            DrawableHelper.drawRect(0, 0, int_3, int_4, 16777215 | int_6 << 24);
+            DrawableHelper.fill(0, 0, int_3, int_4, 16777215 | int_6 << 24);
             float_6 = MathHelper.clamp(float_3, 0.0F, 1.0F);
         } else {
-            DrawableHelper.drawRect(0, 0, int_3, int_4, -1);
+            DrawableHelper.fill(0, 0, int_3, int_4, -1);
             float_6 = 1.0F;
         }
 
@@ -113,7 +113,7 @@ public abstract class MixinSplashScreen {
         this.client.getTextureManager().bindTexture(LOGO);
         GlStateManager.enableBlend();
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, float_6);
-        ((SplashScreen) (Object) this).drawTexturedRect(int_6, int_8, 0, 0, 256, 256);
+        ((SplashScreen) (Object) this).blit(int_6, int_8, 0, 0, 256, 256);
         float float_7 = this.reloadMonitor.getProgress();
         this.field_17770 = this.field_17770 * 0.95F + float_7 * 0.050000012F;
         if (float_2 < 1.0F) {
@@ -129,7 +129,7 @@ public abstract class MixinSplashScreen {
             this.field_17771 = SystemUtil.getMeasuringTimeMs();
             done();
             if (this.client.currentScreen != null) {
-                this.client.currentScreen.initialize(this.client, this.client.window.getScaledWidth(), this.client.window.getScaledHeight());
+                this.client.currentScreen.init(this.client, this.client.window.getScaledWidth(), this.client.window.getScaledHeight());
             }
         }
 

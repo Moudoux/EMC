@@ -28,16 +28,16 @@ import java.util.List;
 @Mixin(Screen.class)
 public class MixinGuiScreen implements IMixinGuiScreen {
 
-    @Shadow
-    protected TextRenderer fontRenderer;
+    @Shadow(remap = false)
+    protected TextRenderer font;
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
     private List<AbstractButtonWidget> buttons;
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
-    private List<InputListener> listeners;
+    private List<InputListener> children;
 
     @Override
     public List<AbstractButtonWidget> getButtonList() {
@@ -45,27 +45,27 @@ public class MixinGuiScreen implements IMixinGuiScreen {
     }
 
     @Override
-    public TextRenderer getFontRenderer() {
-        return fontRenderer;
+    public TextRenderer getFont() {
+        return font;
     }
 
     @Override
     public List<InputListener> getEventList() {
-        return listeners;
+        return children;
     }
 
-    @Inject(method = "render", at = @At("HEAD"))
+    @Inject(method = "render", at = @At("HEAD"), remap = false)
     public void render(int x, int y, float p_render_3_, CallbackInfo ci) {
         new EventGuiScreenDraw((Screen) (Object) this, x, y).broadcast();
     }
 
-    @Inject(method = "render", at = @At("RETURN"))
+    @Inject(method = "render", at = @At("RETURN"), remap = false)
     public void render_return(int x, int y, float p_render_3_, CallbackInfo ci) {
         new EventGuiScreenPostDraw((Screen) (Object) this, x, y).broadcast();
     }
 
-    @Overwrite
-    public List<String> getStackTooltip(ItemStack itemStack_1) {
+    @Overwrite(remap = false)
+    public List<String> getTooltipFromItem(ItemStack itemStack_1) {
         List<TextComponent> list_1 = itemStack_1.getTooltipText(MinecraftClient.getInstance().player, MinecraftClient.getInstance().options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL);
         List<String> list_2 = Lists.newArrayList();
         Iterator var4 = list_1.iterator();
@@ -82,7 +82,7 @@ public class MixinGuiScreen implements IMixinGuiScreen {
     }
 
     public boolean mouseReleased(double x, double y, int button) {
-        listeners.forEach((listener) -> listener.mouseReleased(x, y, button));
+        children.forEach((listener) -> listener.mouseReleased(x, y, button));
         return false;
     }
 

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(AbstractButtonWidget.class)
 public class MixinGuiButton implements IMixinGuiButton {
 
-    @Shadow
+    @Shadow(remap = false)
     private boolean isHovered;
 
     @Override

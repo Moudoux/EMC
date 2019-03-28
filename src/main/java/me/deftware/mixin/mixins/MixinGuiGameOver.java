@@ -12,7 +12,7 @@ public class MixinGuiGameOver {
 
     private boolean flag = false;
 
-    @Inject(method = "onInitialized", at = @At("HEAD"))
+    @Inject(method = "init", at = @At("HEAD"), remap = false)
     private void initGui(CallbackInfo ci) {
         if (!flag) {
             flag = true;

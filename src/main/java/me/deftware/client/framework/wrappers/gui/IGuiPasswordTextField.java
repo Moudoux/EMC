@@ -22,9 +22,9 @@ public class IGuiPasswordTextField extends IGuiTextField {
     public void render(int p_195608_1_, int p_195608_2_, float p_195608_3_) {
         if (isVisible()) {
             if (hasBorder()) {
-                DrawableHelper.drawRect(((IMixinGuiTextField) this).getX() - 1, ((IMixinGuiTextField) this).getY() - 1, ((IMixinGuiTextField) this).getX() + ((IMixinGuiTextField) this).getWidth() + 1,
+                DrawableHelper.fill(((IMixinGuiTextField) this).getX() - 1, ((IMixinGuiTextField) this).getY() - 1, ((IMixinGuiTextField) this).getX() + ((IMixinGuiTextField) this).getWidth() + 1,
                         ((IMixinGuiTextField) this).getY() + ((IMixinGuiTextField) this).getHeight() + 1, -6250336);
-                DrawableHelper.drawRect(((IMixinGuiTextField) this).getX(), ((IMixinGuiTextField) this).getY(), ((IMixinGuiTextField) this).getX() + ((IMixinGuiTextField) this).getWidth(), ((IMixinGuiTextField) this).getY() + ((IMixinGuiTextField) this).getHeight(),
+                DrawableHelper.fill(((IMixinGuiTextField) this).getX(), ((IMixinGuiTextField) this).getY(), ((IMixinGuiTextField) this).getX() + ((IMixinGuiTextField) this).getWidth(), ((IMixinGuiTextField) this).getY() + ((IMixinGuiTextField) this).getHeight(),
                         -16777216);
             }
             int var1 = hasBorder() ? enabledColor : disabledColor;
@@ -61,7 +61,7 @@ public class IGuiPasswordTextField extends IGuiTextField {
             }
             if (var6) {
                 if (var13) {
-                    DrawableHelper.drawRect(var11, var8 - 1, var11 + 1, var8 + 1 + ((IMixinGuiTextField) this).getFontRendererInstance().fontHeight,
+                    DrawableHelper.fill(var11, var8 - 1, var11 + 1, var8 + 1 + ((IMixinGuiTextField) this).getFontRendererInstance().fontHeight,
                             -3092272);
                 } else {
                     ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow("_", var11, var8, var1);

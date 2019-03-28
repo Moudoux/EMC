@@ -30,9 +30,9 @@ public class GuiUpdateLoader extends Screen {
     }
 
     @Override
-    public void onInitialized() {
+    public void init() {
         buttons.clear();
-        addButton(new IGuiButton(0,screenWidth / 2 - 100, screenHeight / 4 + 120 + 12 - 30,
+        addButton(new IGuiButton(0,width / 2 - 100, height / 4 + 120 + 12 - 30,
                 "Update " + (clientInfo.get("updateLinkOverride").getAsBoolean() ? clientInfo.get("name").getAsString()
                         : "EMC")) {
             @Override
@@ -45,7 +45,7 @@ public class GuiUpdateLoader extends Screen {
                 MinecraftClient.getInstance().stop();
             }
         });
-        addButton(new IGuiButton(0,screenWidth / 2 - 100, screenHeight / 4 + 144 + 12 - 30, "Cancel (Mod won't load)") {
+        addButton(new IGuiButton(0,width / 2 - 100, height / 4 + 144 + 12 - 30, "Cancel (Mod won't load)") {
             @Override
             public void onButtonClick(double mouseX, double mouseY) {
                 MinecraftClient.getInstance().openScreen(null);
@@ -56,27 +56,27 @@ public class GuiUpdateLoader extends Screen {
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         super.render(mouseX, mouseY, partialTicks);
-        drawBackground();
+        renderBackground();
 
-        drawStringCentered(fontRenderer, "EMC update required", screenWidth / 2, 21, 16777215);
+        drawCenteredString(font, "EMC update required", width / 2, 21, 16777215);
 
-        drawStringCentered(fontRenderer, "Client info:", screenWidth / 4, 70, 16777215);
+        drawCenteredString(font, "Client info:", width / 4, 70, 16777215);
 
-        drawStringCentered(fontRenderer, "Name: " + get("name"), screenWidth / 4, 90, 16777215);
+        drawCenteredString(font, "Name: " + get("name"), width / 4, 90, 16777215);
 
-        drawStringCentered(fontRenderer, "Version: " + getDouble("version"), screenWidth / 4, 105,
+        drawCenteredString(font, "Version: " + getDouble("version"), width / 4, 105,
                 16777215);
 
-        drawStringCentered(fontRenderer, "Author: " + get("author"), screenWidth / 4, 120, 16777215);
+        drawCenteredString(font, "Author: " + get("author"), width / 4, 120, 16777215);
 
         // Right side
 
-        drawStringCentered(fontRenderer, "Problem description:", screenWidth / 2 + screenWidth / 4, 70, 16777215);
+        drawCenteredString(font, "Problem description:", width / 2 + width / 4, 70, 16777215);
 
-        drawStringCentered(fontRenderer, "Your EMC version is too low", screenWidth / 2 + screenWidth / 4, 90,
+        drawCenteredString(font, "Your EMC version is too low", width / 2 + width / 4, 90,
                 16777215);
 
-        drawStringCentered(fontRenderer, get("name") + " requires " + get("minversion"), screenWidth / 2 + screenWidth / 4, 105,
+        drawCenteredString(font, get("name") + " requires " + get("minversion"), width / 2 + width / 4, 105,
                 16777215);
         //super.render(mouseX, mouseY, partialTicks); //optional
     }
