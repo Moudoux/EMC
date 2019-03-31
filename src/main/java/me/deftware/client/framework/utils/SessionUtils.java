@@ -7,7 +7,7 @@ import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
 import me.deftware.mixin.imp.IMixinMinecraft;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.Session;
+import net.minecraft.client.util.Session;
 
 import java.net.Proxy;
 import java.util.UUID;

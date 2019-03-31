@@ -1,6 +1,6 @@
 package me.deftware.client.framework.wrappers.gui;
 
-import net.minecraft.client.gui.InputListener;
+import net.minecraft.client.gui.Element;
 
-public interface CustomIGuiEventListener extends InputListener {
+public interface CustomIGuiEventListener extends Element {
 }

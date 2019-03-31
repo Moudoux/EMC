@@ -8,8 +8,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.MainMenuScreen;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.client.util.Session;
 import net.minecraft.client.util.Window;
-import net.minecraft.util.Session;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -19,40 +19,30 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-
 @Mixin(MinecraftClient.class)
 public abstract class MixinMinecraft implements IMixinMinecraft {
 
+    @Shadow
+    public boolean isWindowFocused;
     @Mutable
     @Shadow
     @Final
     private Session session;
-
     @Shadow
     @Final
     private RenderTickCounter renderTickCounter;
-
     @Shadow
     private Screen currentScreen;
-
     @Shadow
     private int itemUseCooldown;
-
-
     @Shadow
     public abstract void openScreen(Screen screen);
-
     @Override
     public void displayGuiScreen(Screen guiScreenIn) {
         openScreen(guiScreenIn);
     }
-
     @Shadow
     public abstract void doAttack();
-
-    @Shadow
-    public boolean isWindowFocused;
-
     @Shadow
     public abstract void doItemUse();
 

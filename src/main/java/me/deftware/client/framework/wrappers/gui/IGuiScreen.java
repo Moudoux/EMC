@@ -7,12 +7,10 @@ import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.gui.InputListener;
+import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.StringTextComponent;
-import net.minecraft.text.TextComponent;
 import net.minecraft.util.SystemUtil;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -141,7 +139,7 @@ public abstract class IGuiScreen extends Screen {
     public void init() {
         super.init();
         onInitGui();
-        children.add(new InputListener() {
+        children.add(new Element() {
 
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {

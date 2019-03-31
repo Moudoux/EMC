@@ -8,7 +8,7 @@ import me.deftware.client.framework.wrappers.item.IItem;
 import me.deftware.mixin.imp.IMixinGuiScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.InputListener;
+import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.item.TooltipContext;
@@ -37,7 +37,7 @@ public class MixinGuiScreen implements IMixinGuiScreen {
 
     @Shadow(remap = false)
     @Final
-    private List<InputListener> children;
+    private List<Element> children;
 
     @Override
     public List<AbstractButtonWidget> getButtonList() {
@@ -50,7 +50,7 @@ public class MixinGuiScreen implements IMixinGuiScreen {
     }
 
     @Override
-    public List<InputListener> getEventList() {
+    public List<Element> getEventList() {
         return children;
     }
 
