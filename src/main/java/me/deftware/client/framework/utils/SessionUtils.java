@@ -40,6 +40,7 @@ public class SessionUtils {
 
             return true;
         } catch (AuthenticationException e) {
+            e.printStackTrace();
         }
         return false;
     }

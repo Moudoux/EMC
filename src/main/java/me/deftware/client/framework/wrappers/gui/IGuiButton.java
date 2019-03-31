@@ -27,7 +27,7 @@ public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventL
 
     @Override
     public boolean mouseClicked(double double_1, double double_2, int int_1) {
-        if (this.visible) {
+        if (this.active) {
             if (int_1 == 0) {
                 boolean boolean_1 = this.isButtonHovered();
                 if (boolean_1) {

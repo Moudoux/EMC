@@ -20,7 +20,7 @@ public class MixinServerListEntryNormal {
     private ServerEntry server;
 
     @Inject(method = "render", at = @At("HEAD"))
-    private void render(int p_194999_1_, int p_194999_2_, int p_194999_3_, int p_194999_4_, boolean p_194999_5_, float p_194999_6_, CallbackInfo ci) {
+    public void render(int int_1, int int_2, int int_3, int int_4, int int_5, int int_6, int int_7, boolean boolean_1, float float_1, CallbackInfo ci) {
         if (server.ping > 1 && !sentEvent) {
             sentEvent = true;
             EventServerPinged event = new EventServerPinged(server.label, server.playerListSummary,
