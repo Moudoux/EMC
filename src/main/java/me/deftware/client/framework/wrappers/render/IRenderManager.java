@@ -18,11 +18,11 @@ public class IRenderManager {
     }
 
     public static float getPlayerViewY() {
-        return MinecraftClient.getInstance().getEntityRenderManager().field_4679;
+        return MinecraftClient.getInstance().getEntityRenderManager().cameraYaw;
     }
 
     public static float getPlayerViewX() {
-        return MinecraftClient.getInstance().getEntityRenderManager().field_4677;
+        return MinecraftClient.getInstance().getEntityRenderManager().cameraPitch;
     }
 
 }

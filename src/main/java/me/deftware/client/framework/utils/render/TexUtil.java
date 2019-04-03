@@ -13,7 +13,7 @@ public class TexUtil {
     }
 
     public static void drawModalRectWithCustomSizedTexture(int x, int y, float u, float v, int width, int height, float textureWidth, float textureHeight) {
-        DrawableHelper.blit(x, y, u, v, width, height, textureWidth, textureHeight);
+        DrawableHelper.blit(x, y, u, v, width, height, (int) textureWidth, (int) textureHeight);
     }
 
     public static int glGenTextures() {

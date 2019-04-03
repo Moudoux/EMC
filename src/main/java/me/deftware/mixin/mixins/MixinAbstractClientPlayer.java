@@ -5,7 +5,7 @@ import me.deftware.client.framework.event.events.EventSpectator;
 import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ScoreboardEntry;
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.Shadow;
 public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientPlayer {
 
     @Shadow
-    private ScoreboardEntry field_3901;
+    private PlayerListEntry cachedScoreboardEntry;
 
     /**
      * @Author Deftware
@@ -28,8 +28,8 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
      */
     @Overwrite
     public boolean isSpectator() {
-        ScoreboardEntry scoreboardEntry_1 = MinecraftClient.getInstance().getNetworkHandler().method_2871(((PlayerEntity) (Object) this).getGameProfile().getId());
-        EventSpectator event = new EventSpectator(scoreboardEntry_1 != null && scoreboardEntry_1.getGameMode() == GameMode.SPECTATOR);
+        PlayerListEntry playerListEntry_1 = MinecraftClient.getInstance().getNetworkHandler().getScoreboardEntry(MinecraftClient.getInstance().player.getGameProfile().getId());
+        EventSpectator event = new EventSpectator(playerListEntry_1 != null && playerListEntry_1.getGameMode() == GameMode.SPECTATOR);
         return event.isSpectator();
     }
 
@@ -70,8 +70,8 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
     }
 
     @Override
-    public ScoreboardEntry getPlayerNetworkInfo() {
-        return field_3901;
+    public PlayerListEntry getPlayerNetworkInfo() {
+        return cachedScoreboardEntry;
     }
 
 }

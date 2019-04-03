@@ -24,13 +24,13 @@ import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
 public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Shadow
-    private boolean field_3992;
+    private boolean renderHand;
     private float partialTicks = 0;
 
     @Shadow
     public abstract void loadShader(Identifier p_loadShader_1_);
 
-    @Inject(method = "method_3198", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "bobViewWhenHurt", at = @At("HEAD"), cancellable = true)
     private void hurtCameraEffect(float partialTicks, CallbackInfo ci) {
         EventHurtcam event = new EventHurtcam();
         event.broadcast();
@@ -45,7 +45,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
         new EventRender2D(0f).broadcast();
     }
 
-    @Inject(method = "method_3177", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "renderRain", at = @At("HEAD"), cancellable = true)
     private void addRainParticles(CallbackInfo ci) {
         EventWeather event = new EventWeather(EventWeather.WeatherType.Rain);
         event.broadcast();
@@ -54,7 +54,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
         }
     }
 
-    @Inject(method = "method_3170", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "renderWeather", at = @At("HEAD"), cancellable = true)
     private void renderRainSnow(float partialTicks, CallbackInfo ci) {
         EventWeather event = new EventWeather(EventWeather.WeatherType.Rain);
         event.broadcast();
@@ -75,10 +75,10 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
         this.partialTicks = partialTicks;
     }
 
-    @Redirect(method = "renderCenter", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;field_3992:Z", opcode = GETFIELD))
+    @Redirect(method = "renderCenter", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;renderHand:Z", opcode = GETFIELD))
     private boolean updateCameraAndRender_renderHand(GameRenderer self) {
         new EventRender3D(partialTicks).broadcast();
-        return field_3992;
+        return renderHand;
     }
 
     @Override

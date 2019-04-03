@@ -87,7 +87,7 @@ public class IEntity {
     public void reloadSkin() {
         if (entity instanceof AbstractClientPlayerEntity) {
             AbstractClientPlayerEntity abstractEntity = (AbstractClientPlayerEntity) entity;
-            if (abstractEntity.method_3125()) {
+            if (abstractEntity.hasScoreboardEntry()) {
                 ((IMixinNetworkPlayerInfo) ((IMixinAbstractClientPlayer) abstractEntity).getPlayerNetworkInfo()).reloadTextures();
             }
         }

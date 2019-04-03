@@ -1,7 +1,5 @@
 package me.deftware.client.framework.wrappers.entity;
 
-import com.google.common.collect.ComparisonChain;
-import com.google.common.collect.Ordering;
 import me.deftware.client.framework.wrappers.item.IItemStack;
 import me.deftware.client.framework.wrappers.math.IVec3d;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
@@ -12,15 +10,12 @@ import net.minecraft.block.AirBlock;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.ingame.PlayerInventoryScreen;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.ScoreboardEntry;
 import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.scoreboard.ScoreboardTeam;
 import net.minecraft.server.network.packet.HandSwingC2SPacket;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.ActionResult;
@@ -28,17 +23,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameMode;
 
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("All")
 public class IEntityPlayer {
-
-    private static int ping = 0;
 
     public static void drawPlayer(int posX, int posY, int scale) {
         PlayerInventoryScreen.drawEntity(posX, posY, scale, 0, 0, MinecraftClient.getInstance().player);
@@ -557,29 +547,6 @@ public class IEntityPlayer {
                 new Object[]{Double.valueOf(MinecraftClient.getInstance().getCameraEntity().z)});
     }
 
-    public static int getPing() {
-        if (IEntityPlayer.isNull()) {
-            return 0;
-        }
-        Ordering<ScoreboardEntry> ENTRY_ORDERING = Ordering.from(new PlayerComparator());
-        new Thread() {
-            @Override
-            public void run() {
-                ClientPlayNetworkHandler nethandlerplayclient = MinecraftClient.getInstance().player.networkHandler;
-                List<ScoreboardEntry> list = ENTRY_ORDERING
-                        .<ScoreboardEntry>sortedCopy(nethandlerplayclient.getScoreboardEntries());
-
-                for (ScoreboardEntry networkplayerinfo : list) {
-                    String uuid = networkplayerinfo.getProfile().getId().toString();
-                    if (uuid.equals(MinecraftClient.getInstance().player.getUuid().toString())) {
-                        IEntityPlayer.ping = networkplayerinfo.getLatency();
-                    }
-                }
-            }
-        }.start();
-        return IEntityPlayer.ping;
-    }
-
     /**
      * Which dimension the player is in (-1 = the Nether, 0 = normal world)
      *
@@ -595,9 +562,8 @@ public class IEntityPlayer {
     public static boolean isRowingBoat() {
         if (IEntityPlayer.isNull()) {
             return false;
-        }
-        else if (MinecraftClient.getInstance().player.getRiddenEntity() instanceof BoatEntity) {
-                return true;
+        } else if (MinecraftClient.getInstance().player.getRiddenEntity() instanceof BoatEntity) {
+            return true;
         }
         return false;
     }
@@ -757,17 +723,6 @@ public class IEntityPlayer {
 
     public enum HandItem {
         ItemBow
-    }
-
-    static class PlayerComparator implements Comparator<ScoreboardEntry> {
-
-        @Override
-        public int compare(ScoreboardEntry p_compare_1_, ScoreboardEntry p_compare_2_) {
-            ScoreboardTeam scoreplayerteam = p_compare_1_.getScoreboardTeam();
-            ScoreboardTeam scoreplayerteam1 = p_compare_2_.getScoreboardTeam();
-            return ComparisonChain.start().compareTrueFirst(p_compare_1_.getGameMode() != GameMode.SPECTATOR, p_compare_2_.getGameMode() != GameMode.SPECTATOR).compare(scoreplayerteam != null ? scoreplayerteam.getName() : "", scoreplayerteam1 != null ? scoreplayerteam1.getName() : "").compare(p_compare_1_.getProfile().getName(), p_compare_2_.getProfile().getName()).result();
-        }
-
     }
 
 }

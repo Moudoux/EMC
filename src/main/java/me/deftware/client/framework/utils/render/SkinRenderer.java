@@ -47,8 +47,8 @@ public class SkinRenderer {
             y = y + 0;
             int w = width / 2;
             int h = height / 4;
-            float fw = height * 2;
-            float fh = height * 2;
+            int fw = height * 2;
+            int fh = height * 2;
             float u = height / 4;
             float v = height / 4;
             Screen.blit(x, y, u, v, w, h, fw, fh);

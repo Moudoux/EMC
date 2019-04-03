@@ -28,8 +28,8 @@ public class MixinLayerDeadmau5Head {
                 }
             }
         }
-        if (abstractClientPlayerEntity_1.method_3127() && !abstractClientPlayerEntity_1.isInvisible() && flag) {
-            ((Deadmau5FeatureRenderer) (Object) this).bindTexture(abstractClientPlayerEntity_1.method_3117());
+        if (abstractClientPlayerEntity_1.hasSkinTexture() && !abstractClientPlayerEntity_1.isInvisible() && flag) {
+            ((Deadmau5FeatureRenderer) (Object) this).bindTexture(abstractClientPlayerEntity_1.getSkinTexture());
 
             for (int int_1 = 0; int_1 < 2; ++int_1) {
                 float float_8 = MathHelper.lerp(float_3, abstractClientPlayerEntity_1.prevYaw, abstractClientPlayerEntity_1.yaw) - MathHelper.lerp(float_3, abstractClientPlayerEntity_1.field_6220, abstractClientPlayerEntity_1.field_6283);
@@ -43,7 +43,7 @@ public class MixinLayerDeadmau5Head {
                 GlStateManager.rotatef(-float_8, 0.0F, 1.0F, 0.0F);
                 float float_10 = 1.3333334F;
                 GlStateManager.scalef(1.3333334F, 1.3333334F, 1.3333334F);
-                (((Deadmau5FeatureRenderer) (Object) this).getModel()).method_2824(0.0625F);
+                (((Deadmau5FeatureRenderer) (Object) this).getModel()).renderEars(0.0625F);
                 GlStateManager.popMatrix();
             }
 

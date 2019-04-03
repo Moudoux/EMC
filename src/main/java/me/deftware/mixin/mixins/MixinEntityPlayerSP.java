@@ -54,7 +54,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
     private float field_3922;
 
     @Shadow
-    protected abstract boolean method_3134();
+    protected abstract boolean isCamera();
 
     @Shadow
     public abstract boolean isUsingItem();
@@ -170,7 +170,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
             this.field_3936 = boolean_2;
         }
 
-        if (method_3134()) {
+        if (isCamera()) {
             BoundingBox axisalignedbb = getBoundingBox();
             double d0 = x - field_3926;
             double d1 = event.getPosY() - field_3940;
