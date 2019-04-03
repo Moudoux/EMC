@@ -147,7 +147,10 @@ public class Bootstrap {
                 "by " + jsonObject.get("author").getAsString());
 
         // Version check
-        if (jsonObject.get("minversion").getAsDouble() > FrameworkConstants.VERSION) {
+        String[] minVersion = (jsonObject.has("minVersion") ? jsonObject.get("minVersion").getAsString() : String.format("%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH)).split("\\.");
+        double version = Double.valueOf(String.format("%s.%s", minVersion[0], minVersion[1]));
+        int patch = Integer.valueOf(minVersion[2]);
+        if (version >= FrameworkConstants.VERSION && patch > FrameworkConstants.PATCH) {
             MinecraftClient.getInstance().openScreen(new GuiUpdateLoader(jsonObject));
             jarFile.close();
             return;
@@ -176,10 +179,6 @@ public class Bootstrap {
         });
     }
 
-    public static void callMethod(String mod, String method, String caller) {
-        callMethod(mod, method, caller, null);
-    }
-
     /**
      * Call a function in another EMC mod from your mod, using this you can call functions across EMC mods
      *
@@ -189,7 +188,6 @@ public class Bootstrap {
      */
     public static void callMethod(String mod, String method, String caller, Object object) {
         if (Bootstrap.mods.containsKey(mod)) {
-            Bootstrap.mods.get(mod).callMethod(method, caller);
             Bootstrap.mods.get(mod).callMethod(method, caller, object);
         } else {
             Bootstrap.logger.error(String.format("EMC mod %s tried to call method %s in mod %s", caller, method, mod));

@@ -53,9 +53,9 @@ public abstract class EMCMod {
 	 */
 	public void callMethod(String method, String caller, Object object) { }
 
-	@Deprecated
-	public void callMethod(String method, String caller) { }
-
+	/**
+	 * Called after Minecraft has been initialized, use this method to display an alternate main menu screen
+	 */
 	public void postInit() { }
 
 }
