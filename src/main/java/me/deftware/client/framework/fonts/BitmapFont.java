@@ -152,22 +152,17 @@ public class BitmapFont implements EMCFont {
             x *= NonScaledRenderer.getScale();
             y *= NonScaledRenderer.getScale();
         }
-
         char[] buffer = text.toCharArray();
-
         int screenWidth = 1;
         int screenHeight = 1;
-
         if (!IGuiScreen.isWindowMinimized()) {
             screenWidth = IGuiScreen.getDisplayWidth();
             screenHeight = IGuiScreen.getDisplayHeight();
         }
-
         GL11.glPushMatrix();
         GraphicsUtil.prepareMatrix(screenWidth, screenHeight);
         int offset = 0;
         for (int character = 0; character < buffer.length; character++) {
-
             if (buffer[character] == ' ') {
                 offset += getStringWidthNonScaled(" ");
                 continue;
@@ -181,21 +176,17 @@ public class BitmapFont implements EMCFont {
                 float alpha = color.getAlpha() > 0 ? color.getAlpha() * (1f / 255f) : 0;
                 GL11.glColor4f(red, green, blue, alpha);
             }
-
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureIDStore.get(buffer[character]));
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             int width = textureDimensionsStore.get(buffer[character])[0];
             int height = textureDimensionsStore.get(buffer[character])[1];
             GraphicsUtil.drawQuads(x + offset, y, width, height); //GL PART //8745
-
             offset += width;
         }
-
         GL11.glPopMatrix();
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         IMinecraft.triggerGuiRenderer();
-
         lastRenderedWidth = offset;
         return 0;
     }
