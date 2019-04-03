@@ -28,6 +28,8 @@ import java.util.List;
 @Mixin(Screen.class)
 public class MixinGuiScreen implements IMixinGuiScreen {
 
+    public boolean shouldSendPostRenderEvent = true;
+
     @Shadow(remap = false)
     protected TextRenderer font;
 
@@ -61,7 +63,9 @@ public class MixinGuiScreen implements IMixinGuiScreen {
 
     @Inject(method = "render", at = @At("RETURN"), remap = false)
     public void render_return(int x, int y, float p_render_3_, CallbackInfo ci) {
-        new EventGuiScreenPostDraw((Screen) (Object) this, x, y).broadcast();
+        if (shouldSendPostRenderEvent) {
+            new EventGuiScreenPostDraw((Screen) (Object) this, x, y).broadcast();
+        }
     }
 
     @Overwrite(remap = false)
