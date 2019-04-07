@@ -58,6 +58,8 @@ public class GraphicsUtil {
     }
 
     public static void prepareMatrix(int matrixWidth, int matrixHeight) {
+        matrixWidth = matrixWidth > 0 ? matrixWidth : 10;
+        matrixHeight = matrixHeight > 0 ? matrixHeight : 10;
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_BLEND);
