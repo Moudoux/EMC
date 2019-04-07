@@ -53,9 +53,6 @@ public abstract class EMCMod {
      */
     public void callMethod(String method, String caller, Object object) { }
 
-    @Deprecated
-    public void callMethod(String method, String caller) { }
-
     public void postInit() { }
 
 }

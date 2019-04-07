@@ -1,7 +1,5 @@
 package me.deftware.client.framework.wrappers.entity;
 
-import com.google.common.collect.ComparisonChain;
-import com.google.common.collect.Ordering;
 import me.deftware.client.framework.wrappers.item.IItemStack;
 import me.deftware.client.framework.wrappers.math.IVec3d;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
@@ -15,27 +13,19 @@ import net.minecraft.block.BlockFlowingFluid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketAnimation;
-import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameType;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
 
 public class IEntityPlayer {
-
-    private static int ping = 0;
 
     public static void drawPlayer(int posX, int posY, int scale) {
         GuiInventory.drawEntityOnScreen(posX, posY, scale, 0, 0, Minecraft.getInstance().player);
@@ -474,28 +464,7 @@ public class IEntityPlayer {
         return String.format("%.3f",
                 new Object[]{Double.valueOf(Minecraft.getInstance().getRenderViewEntity().posZ)});
     }
-    public static int getPing() {
-        if (IEntityPlayer.isNull()) {
-            return 0;
-        }
-        Ordering<NetworkPlayerInfo> ENTRY_ORDERING = Ordering.from(new PlayerComparator());
-        new Thread() {
-            @Override
-            public void run() {
-                NetHandlerPlayClient nethandlerplayclient = Minecraft.getInstance().player.connection;
-                List<NetworkPlayerInfo> list = ENTRY_ORDERING
-                        .<NetworkPlayerInfo>sortedCopy(nethandlerplayclient.getPlayerInfoMap());
 
-                for (NetworkPlayerInfo networkplayerinfo : list) {
-                    String uuid = networkplayerinfo.getGameProfile().getId().toString();
-                    if (uuid.equals(Minecraft.getInstance().player.getUniqueID().toString())) {
-                        IEntityPlayer.ping = networkplayerinfo.getResponseTime();
-                    }
-                }
-            }
-        }.start();
-        return IEntityPlayer.ping;
-    }
     /**
      * Which dimension the player is in (-1 = the Nether, 0 = normal world)
      *
@@ -649,16 +618,6 @@ public class IEntityPlayer {
 
     public enum HandItem {
         ItemBow
-    }
-    static class PlayerComparator implements Comparator<NetworkPlayerInfo> {
-
-        @Override
-        public int compare(NetworkPlayerInfo p_compare_1_, NetworkPlayerInfo p_compare_2_) {
-            ScorePlayerTeam scoreplayerteam = p_compare_1_.getPlayerTeam();
-            ScorePlayerTeam scoreplayerteam1 = p_compare_2_.getPlayerTeam();
-            return ComparisonChain.start().compareTrueFirst(p_compare_1_.getGameType() != GameType.SPECTATOR, p_compare_2_.getGameType() != GameType.SPECTATOR).compare(scoreplayerteam != null ? scoreplayerteam.getName() : "", scoreplayerteam1 != null ? scoreplayerteam1.getName() : "").compare(p_compare_1_.getGameProfile().getName(), p_compare_2_.getGameProfile().getName()).result();
-        }
-
     }
 
 }
