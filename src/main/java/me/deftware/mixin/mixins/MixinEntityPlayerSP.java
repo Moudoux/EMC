@@ -9,6 +9,8 @@ import me.deftware.mixin.imp.IMixinEntityPlayerSP;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.server.network.packet.ChatMessageC2SPacket;
 import net.minecraft.server.network.packet.ClientCommandC2SPacket;
@@ -30,28 +32,39 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
     @Shadow
     @Final
     public ClientPlayNetworkHandler networkHandler;
+
     @Shadow
-    private boolean field_3920;
+    private boolean lastOnGround;
+
     @Shadow
-    private boolean field_3919;
+    private boolean lastSprinting;
+
     @Shadow
-    private boolean field_3936;
+    private boolean lastIsHoldingSneakKey;
+
     @Shadow
-    private boolean field_3927;
+    private float lastYaw;
+
     @Shadow
-    private float field_3941;
+    private float lastPitch;
+
     @Shadow
-    private float field_3925;
+    private double lastX;
+
     @Shadow
-    private double field_3926;
+    private double lastBaseY;
+
     @Shadow
-    private double field_3940;
-    @Shadow
-    private double field_3924;
+    private double lastZ;
+
     @Shadow
     private int field_3923;
+
     @Shadow
     private float field_3922;
+
+    @Shadow
+    private boolean lastAutoJump = true;
 
     @Shadow
     protected abstract boolean isCamera();
@@ -141,7 +154,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
      * @reason
      */
     @Overwrite
-    private void method_3136() {
+    private void sendMovementPackets() {
         EventPlayerWalking event = new EventPlayerWalking(x, y, z, yaw, pitch, onGround);
         event.broadcast();
         if (event.isCanceled()) {
@@ -149,34 +162,34 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         }
 
         boolean boolean_1 = this.isSprinting();
-        if (boolean_1 != this.field_3919) {
+        if (boolean_1 != this.lastSprinting) {
             if (boolean_1) {
                 this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.START_SPRINTING));
             } else {
                 this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.STOP_SPRINTING));
             }
 
-            this.field_3919 = boolean_1;
+            this.lastSprinting = boolean_1;
         }
 
         boolean boolean_2 = this.isSneaking();
-        if (boolean_2 != this.field_3936) {
+        if (boolean_2 != this.lastIsHoldingSneakKey) {
             if (boolean_2) {
                 this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.START_SNEAKING));
             } else {
                 this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.STOP_SNEAKING));
             }
 
-            this.field_3936 = boolean_2;
+            this.lastIsHoldingSneakKey = boolean_2;
         }
 
         if (isCamera()) {
             BoundingBox axisalignedbb = getBoundingBox();
-            double d0 = x - field_3926;
-            double d1 = event.getPosY() - field_3940;
-            double d2 = z - field_3924;
-            double d3 = event.getRotationYaw() - field_3941;
-            double d4 = event.getRotationPitch() - field_3925;
+            double d0 = x - lastX;
+            double d1 = event.getPosY() - lastBaseY;
+            double d2 = z - lastZ;
+            double d3 = event.getRotationYaw() - lastYaw;
+            double d4 = event.getRotationPitch() - lastPitch;
             ++field_3923;
             boolean flag2 = d0 * d0 + d1 * d1 + d2 * d2 > 9.0E-4D || field_3923 >= 20;
             boolean flag3 = d3 != 0.0D || d4 != 0.0D;
@@ -194,24 +207,24 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
             } else if (flag3) {
                 this.networkHandler.sendPacket(new PlayerMoveServerMessage.LookOnly(event.getRotationYaw(), event.getRotationPitch(),
                         event.isOnGround()));
-            } else if (field_3920 != onGround) {
+            } else if (lastOnGround != onGround) {
                 this.networkHandler.sendPacket(new PlayerMoveServerMessage(event.isOnGround()));
             }
 
             if (flag2) {
-                this.field_3926 = this.x;
-                this.field_3940 = axisalignedbb.minY;
-                this.field_3924 = this.z;
+                this.lastX = this.x;
+                this.lastBaseY = axisalignedbb.minY;
+                this.lastZ = this.z;
                 this.field_3923 = 0;
             }
 
             if (flag3) {
-                this.field_3941 = this.yaw;
-                this.field_3925 = this.pitch;
+                this.lastYaw = this.yaw;
+                this.lastPitch = this.pitch;
             }
 
-            this.field_3920 = this.onGround;
-            this.field_3927 = MinecraftClient.getInstance().options.autoJump;
+            this.lastOnGround = this.onGround;
+            this.lastAutoJump = MinecraftClient.getInstance().options.autoJump;
         }
 
     }

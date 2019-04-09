@@ -78,7 +78,7 @@ public abstract class MixinEntity implements IMixinEntity {
     public abstract BoundingBox getBoundingBox();
 
     @Shadow
-    public abstract boolean getEntityFlag(int int_1);
+    public abstract boolean getFlag(int int_1);
 
     @Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;noClip:Z", opcode = GETFIELD))
     private boolean noClipCheck(Entity self) {
@@ -103,7 +103,7 @@ public abstract class MixinEntity implements IMixinEntity {
         if (event.isSneaking()) {
             return true;
         }
-        return getEntityFlag(1);
+        return getFlag(1);
     }
 
     @Inject(method = "setVelocityClient", at = @At("HEAD"), cancellable = true)
@@ -117,7 +117,7 @@ public abstract class MixinEntity implements IMixinEntity {
 
     @Override
     public boolean getAFlag(int flag) {
-        return getEntityFlag(flag);
+        return getFlag(flag);
     }
 
 }

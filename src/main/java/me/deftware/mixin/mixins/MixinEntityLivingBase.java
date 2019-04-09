@@ -19,7 +19,7 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
 
     @Shadow
     @Final
-    private Map<StatusEffect, StatusEffectInstance> activePotionEffects;
+    private Map<StatusEffect, StatusEffectInstance> activeStatusEffects;
 
     @Shadow
     private int field_6222;
@@ -29,12 +29,12 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
      * @reason
      */
     @Overwrite
-    public boolean hasPotionEffect(StatusEffect statusEffect_1) {
+    public boolean hasStatusEffect(StatusEffect statusEffect_1) {
         if (!((LivingEntity) (Object) this instanceof ClientPlayerEntity)) {
-            return activePotionEffects.containsKey(statusEffect_1);
+            return activeStatusEffects.containsKey(statusEffect_1);
         }
         EventIsPotionActive event = new EventIsPotionActive(statusEffect_1.getTranslationKey(),
-                activePotionEffects.containsKey(statusEffect_1));
+                activeStatusEffects.containsKey(statusEffect_1));
         event.broadcast();
         return event.isActive();
     }

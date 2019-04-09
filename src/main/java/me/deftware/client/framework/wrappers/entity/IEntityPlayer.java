@@ -108,11 +108,11 @@ public class IEntityPlayer {
     }
 
     public static float getMoveStrafing() {
-        return MinecraftClient.getInstance().player.movementInputSideways;
+        return MinecraftClient.getInstance().player.sidewaysSpeed;
     }
 
     public static float getMoveForward() {
-        return MinecraftClient.getInstance().player.movementInputForward;
+        return MinecraftClient.getInstance().player.upwardSpeed;
     }
 
     public static boolean isCollidedHorizontally() {
@@ -510,7 +510,7 @@ public class IEntityPlayer {
     }
 
     public static boolean hasPotionEffects() {
-        if (!MinecraftClient.getInstance().player.getPotionEffects().isEmpty()) {
+        if (!MinecraftClient.getInstance().player.getStatusEffects().isEmpty()) {
             return true;
         }
         return false;
@@ -653,7 +653,7 @@ public class IEntityPlayer {
         if (IEntityPlayer.isNull()) {
             return false;
         }
-        return MinecraftClient.getInstance().player.canClimb();
+        return MinecraftClient.getInstance().player.isClimbing();
     }
 
     public static boolean isNull() {
