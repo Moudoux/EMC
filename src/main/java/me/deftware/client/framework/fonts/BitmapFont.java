@@ -154,16 +154,8 @@ public class BitmapFont implements EMCFont {
 
         char[] buffer = text.toCharArray();
 
-        int screenWidth = 1;
-        int screenHeight = 1;
-
-        if (!IGuiScreen.isWindowMinimized()) {
-            screenWidth = IGuiScreen.getDisplayWidth();
-            screenHeight = IGuiScreen.getDisplayHeight();
-        }
-
         GL11.glPushMatrix();
-        GraphicsUtil.prepareMatrix(screenWidth, screenHeight);
+        GraphicsUtil.prepareMatrix(IGuiScreen.getDisplayWidth(), IGuiScreen.getDisplayHeight());
         int offset = 0;
         for (int character = 0; character < buffer.length; character++) {
 
