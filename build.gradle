@@ -27,7 +27,7 @@ if (OperatingSystem.current().isMacOsX()) {
 	minecraftRoot = System.getenv('HOME') + "/Library/Application Support/minecraft"
 }
 def mcVersion = "${project.minecraftVersion}"
-def mappingsVer = "${mcVersion}.${project.mappingsVer}"
+def mappingsVer = "${mcVersion}${project.mappingsVer}"
 archivesBaseName = "EMC"
 version = getVersionFromJava()
 
