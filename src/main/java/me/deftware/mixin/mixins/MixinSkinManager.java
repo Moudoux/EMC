@@ -36,7 +36,7 @@ public abstract class MixinSkinManager {
      * @reason
      */
     @Overwrite
-    public void method_4652(GameProfile player, PlayerSkinProvider.SkinTextureAvailableCallback callback, boolean requireSecure) {
+    public void loadSkin(GameProfile player, PlayerSkinProvider.SkinTextureAvailableCallback callback, boolean requireSecure) {
         EXECUTOR_SERVICE.submit(() -> {
             Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> textureMap = Maps.newHashMap();
 

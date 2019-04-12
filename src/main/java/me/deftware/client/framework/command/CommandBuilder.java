@@ -3,7 +3,7 @@ package me.deftware.client.framework.command;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.command.arguments.EntityArgumentType;
-import net.minecraft.server.command.ServerCommandManager;
+import net.minecraft.server.command.CommandManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class CommandBuilder<T> {
      * @return CommandBuilder
      */
     public CommandBuilder addCommand(String command, CommandExecution execution) {
-        return set(ServerCommandManager.literal(command).executes(source -> {
+        return set(CommandManager.literal(command).executes(source -> {
             execution.onExecute(new CommandResult(source));
             return 1;
         }));
@@ -75,7 +75,7 @@ public class CommandBuilder<T> {
      * @return
      */
     public ArgumentType<T> getEntityArgumentType() {
-        return (ArgumentType<T>) EntityArgumentType.multiplePlayer();
+        return (ArgumentType<T>) EntityArgumentType.players();
     }
 
     /**

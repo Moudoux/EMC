@@ -92,6 +92,17 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         return self.getFoodLevel();
     }
 
+    /*
+    @Redirect(method = "updateMovement", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z", remap = false))
+    private boolean blindlessSlowdownEvent(LivingEntity self) {
+        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Blindness);
+        event.broadcast();
+        if (event.isCanceled()) {
+            return false;
+        }
+        return self.hasStatusEffect(StatusEffects.BLINDNESS);
+    } */
+
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void tick(CallbackInfo ci) {
         EventUpdate event = new EventUpdate(x, y, z, yaw, pitch, onGround);

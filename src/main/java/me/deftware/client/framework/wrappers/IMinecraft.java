@@ -132,11 +132,11 @@ public class IMinecraft {
     }
 
     public static void addEntityToWorld(int id, IEntity entity) {
-        MinecraftClient.getInstance().world.method_2942(id, entity.getEntity());
+        MinecraftClient.getInstance().world.addEntity(id, entity.getEntity());
     }
 
     public static void removeEntityFromWorld(int id) {
-        MinecraftClient.getInstance().world.method_2945(id);
+        MinecraftClient.getInstance().world.removeEntity(id);
     }
 
     public static void connectToServer(IServerData server) {
@@ -144,7 +144,6 @@ public class IMinecraft {
                 .openScreen(new ServerConnectingScreen(new MultiplayerScreen(null), MinecraftClient.getInstance(), server));
     }
 
-    // TODO: Change this
     public static int thridPersonView() {
         return MinecraftClient.getInstance().options.perspective;
     }

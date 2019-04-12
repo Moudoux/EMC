@@ -23,26 +23,34 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinMinecraft implements IMixinMinecraft {
 
     @Shadow
-    public boolean isWindowFocused;
+    public boolean windowFocused;
+
     @Mutable
     @Shadow
     @Final
     private Session session;
+
     @Shadow
     @Final
     private RenderTickCounter renderTickCounter;
+
     @Shadow
     private Screen currentScreen;
+
     @Shadow
     private int itemUseCooldown;
+
     @Shadow
     public abstract void openScreen(Screen screen);
+
     @Override
     public void displayGuiScreen(Screen guiScreenIn) {
         openScreen(guiScreenIn);
     }
+
     @Shadow
     public abstract void doAttack();
+
     @Shadow
     public abstract void doItemUse();
 
@@ -120,7 +128,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 
     @Override
     public boolean getIsWindowFocused() {
-        return isWindowFocused;
+        return windowFocused;
     }
 
 }

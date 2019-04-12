@@ -139,27 +139,27 @@ public class ChatProcessor {
     private static Style formatChatStyle(Style chatStyle, char formattingChar) {
         switch (formattingChar) {
             case 'k':
-                chatStyle.setObfuscated(Boolean.valueOf(true));
+                chatStyle.setObfuscated(true);
                 break;
             case 'm':
-                chatStyle.setStrikethrough(Boolean.valueOf(true));
+                chatStyle.setStrikethrough(true);
                 break;
             case 'l':
-                chatStyle.setBold(Boolean.valueOf(true));
+                chatStyle.setBold(true);
                 break;
             case 'n':
-                chatStyle.setUnderline(Boolean.valueOf(true));
+                chatStyle.setUnderline(true);
                 break;
             case 'o':
-                chatStyle.setItalic(Boolean.valueOf(true));
+                chatStyle.setItalic(true);
                 break;
             case 'r':
-                chatStyle.setObfuscated(Boolean.valueOf(false));
-                chatStyle.setStrikethrough(Boolean.valueOf(false));
-                chatStyle.setBold(Boolean.valueOf(false));
-                chatStyle.setUnderline(Boolean.valueOf(false));
-                chatStyle.setItalic(Boolean.valueOf(false));
-                chatStyle.setColor(TextFormat.RESET);
+                chatStyle.setObfuscated(false);
+                chatStyle.setStrikethrough(false);
+                chatStyle.setBold(false);
+                chatStyle.setUnderline(false);
+                chatStyle.setItalic(false);
+                chatStyle.setColor(ChatProcessor.getTextFormattingByValue('r'));
                 break;
             case 'p':
             case 'q':

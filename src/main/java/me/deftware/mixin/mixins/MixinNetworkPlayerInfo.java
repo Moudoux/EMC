@@ -29,7 +29,7 @@ public class MixinNetworkPlayerInfo implements IMixinNetworkPlayerInfo {
     @Override
     public void reloadTextures() {
         textures.clear();
-        MinecraftClient.getInstance().getSkinProvider().method_4652(this.profile, (p_210250_1_, p_210250_2_, p_210250_3_) -> {
+        MinecraftClient.getInstance().getSkinProvider().loadSkin(this.profile, (p_210250_1_, p_210250_2_, p_210250_3_) -> {
             switch (p_210250_1_) {
                 case SKIN:
                     this.textures.put(MinecraftProfileTexture.Type.SKIN, p_210250_2_);

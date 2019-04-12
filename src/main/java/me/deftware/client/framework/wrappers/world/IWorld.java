@@ -47,7 +47,7 @@ public class IWorld {
     }
 
     public static void leaveWorld() {
-        MinecraftClient.getInstance().method_1481(null);
+        MinecraftClient.getInstance().joinWorld(null);
     }
 
     public static IBlock getBlockFromPos(IBlockPos pos) {
