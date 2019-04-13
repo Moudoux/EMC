@@ -126,6 +126,10 @@ public class Bootstrap {
             return;
         }
         JsonObject contents = new Gson().fromJson(String.join("", Files.readAllLines(Paths.get(jsonFile.getAbsolutePath()), StandardCharsets.UTF_8)), JsonObject.class);
+        if (!contents.has("emcMods")) {
+            Bootstrap.logger.warn("Could not find emcMods entry");
+            return;
+        }
         JsonArray array = contents.get("emcMods").getAsJsonArray();
         array.forEach(jsonElement -> {
             JsonObject element = jsonElement.getAsJsonObject();
