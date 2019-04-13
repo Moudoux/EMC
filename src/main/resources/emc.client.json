@@ -49,7 +49,8 @@
     "MixinNetworkPlayerInfo",
     "MixinGuiContainer",
     "MixinSplashScreen",
-    "MixinGuiButton"
+    "MixinGuiButton",
+    "MixinMain"
   ],
   "injectors": {
     "defaultRequire": 1

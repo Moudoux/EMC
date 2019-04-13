@@ -40,20 +40,25 @@ import java.util.stream.Collectors;
  */
 public class Bootstrap {
 
-    public static final Runtime runtime = Runtime.getRuntime();
     public static Logger logger = LogManager.getLogger();
     public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
-    public static ArrayList<String> internalModClassNames = new ArrayList<>();
     public static boolean isRunning = true;
     public static Settings EMCSettings;
     public static String JSON_JARNAME_NOTE = "DYNAMIC_jarname";
     public static ArrayList<Consumer> initList = new ArrayList<>();
     private static URLClassLoader modClassLoader;
     private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
+    public static JsonArray installList = new JsonArray();
+    public static File emc_root;
+
     public static void init() {
 
         try {
             Bootstrap.logger.info("Loading EMC...");
+            emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator);
+
+            // Load new EMC mods that needs to be installed
+            loadEmcMods(emc_root);
 
             File emc_configs = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator + "configs" + File.separator);
             if (!emc_configs.exists()) {
@@ -61,7 +66,6 @@ public class Bootstrap {
             }
 
             // EMC mods are stored in .minecraft/libraries/EMC
-            File emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator);
             if (!emc_root.exists()) {
                 emc_root.mkdir();
             }
@@ -72,37 +76,69 @@ public class Bootstrap {
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", EMCSettings.getFloat("RENDER_SCALE", 1.0f));
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
 
-            // Load all EMC mods
-            Arrays.stream(emc_root.listFiles()).forEach((file) -> {
-                if (!file.isDirectory() && file.getName().endsWith(".jar")) {
-                    try {
-                        if (new File(file.getAbsolutePath() + ".delete").exists()) {
-                            Bootstrap.logger.info("Deleting mod %s...", file.getName());
-                            new File(file.getAbsolutePath() + ".delete").delete();
-                        } else {
-                            // Update check
-                            File updateJar = new File(emc_root.getAbsolutePath() + File.separator
-                                    + file.getName().substring(0, file.getName().length() - ".jar".length())
-                                    + "_update.jar");
-                            if (updateJar.exists()) {
-                                file.delete();
-                                updateJar.renameTo(file);
-                            }
-                            // Load the mod
-                            Bootstrap.loadMod(file);
-                        }
-                    } catch (Exception ex) {
-                        Bootstrap.logger.warn("Failed to load EMC mod: " + file.getName());
-                        ex.printStackTrace();
-                    }
-                }
-            });
+            // Load mods
+            reloadMods();
 
             // Register default EMC commands
             registerFrameworkCommands();
+
+            if (installList.size() != 0) {
+                MinecraftClient.getInstance().openScreen(new GuiInstallMods(installList));
+            }
         } catch (Exception ex) {
             Bootstrap.logger.warn("Failed to load EMC", ex);
         }
+    }
+
+    public static void reloadMods() {
+        // Load all EMC mods
+        Arrays.stream(emc_root.listFiles()).forEach((file) -> {
+            if (!file.isDirectory() && file.getName().endsWith(".jar")) {
+                try {
+                    if (new File(file.getAbsolutePath() + ".delete").exists()) {
+                        Bootstrap.logger.info("Deleting mod %s...", file.getName());
+                        new File(file.getAbsolutePath() + ".delete").delete();
+                    } else {
+                        // Update check
+                        File updateJar = new File(emc_root.getAbsolutePath() + File.separator
+                                + file.getName().substring(0, file.getName().length() - ".jar".length())
+                                + "_update.jar");
+                        if (updateJar.exists()) {
+                            file.delete();
+                            updateJar.renameTo(file);
+                        }
+                        // Load the mod
+                        Bootstrap.loadMod(file);
+                    }
+                } catch (Exception ex) {
+                    Bootstrap.logger.warn("Failed to load EMC mod: " + file.getName());
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private static void loadEmcMods(File emcRoot) throws Exception {
+        File jsonFile = new File(OSUtils.getRunningFolder() + OSUtils.getVersion() + ".json");
+        if (!jsonFile.exists()) {
+            Bootstrap.logger.warn("Failed to read Minecraft json file " + jsonFile.getAbsolutePath() + " will not load additional EMC mods");
+            return;
+        }
+        JsonObject contents = new Gson().fromJson(String.join("", Files.readAllLines(Paths.get(jsonFile.getAbsolutePath()), StandardCharsets.UTF_8)), JsonObject.class);
+        JsonArray array = contents.get("emcMods").getAsJsonArray();
+        array.forEach(jsonElement -> {
+            JsonObject element = jsonElement.getAsJsonObject();
+            if (!element.get("installed").getAsBoolean()) {
+                installList.add(jsonElement);
+                // Delete jar if it already exists, for updates
+                File modFile = new File(emcRoot.getAbsolutePath() + File.separator + element.get("name").getAsString() + ".jar");
+                if (modFile.exists()) {
+                    if (!modFile.delete()) {
+                        Bootstrap.logger.warn("Could not delete " + element.get("name").getAsString());
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -135,6 +171,12 @@ public class Bootstrap {
         BufferedReader buffer = new BufferedReader(
                 new InputStreamReader(Bootstrap.modClassLoader.getResourceAsStream("client.json")));
         JsonObject jsonObject = new Gson().fromJson(buffer.lines().collect(Collectors.joining("\n")), JsonObject.class);
+
+        // Make sure the mod isnt already loaded
+        if (mods.containsKey(jsonObject.get("name").getAsString())) {
+            buffer.close();
+            return;
+        }
 
         //Add the name of Jar file to the corresponding jsonObject
         jsonObject.addProperty(JSON_JARNAME_NOTE, clientJar.getName());
