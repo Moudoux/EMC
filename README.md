@@ -4,16 +4,10 @@ The EMC (Easy Minecraft Client) Framework
 EMC (Easy Minecraft Client) is a framework for modifying Minecraft code without having to think about
 obfuscation as the framework will act as a middle man handling your calls to Minecraft.
 
-Unlike other mod loaders that require you to write your own Mixins to modify Minecraft code, EMC acts as an API that enables cross compatability with multiple Minecraft
+Unlike other mod loaders that require you to write your own Mixins to modify Minecraft code, EMC acts as an API that enables cross compatibility with multiple Minecraft
 versions and you don't have to write any Mixins on your own.
 
 This framework also allows you to write a mod once, then use it on Minecraft 1.12 and above.
-
-Discord
--------------------
-
-We now have an official Discord server for EMC related development, feel free to join us, [EMC Discord](https://discord.gg/jcPDsGT).
-
 
 How it works
 -------------------
@@ -55,7 +49,7 @@ public class UpdateListener extends EventListener {
 Minecraft versions currently supported
 -------------------
 
-* 19w06a
+* 1.14
 * 1.13.2
 * 1.13.1
 * 1.13
@@ -68,7 +62,7 @@ Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To
 
 ```
 {
-	"name": "me.deftware:EMC:13.7.5-1.13.2",
+	"name": "me.deftware:EMC:13.8.7-1.13.2",
 	"url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
 }
 ```
