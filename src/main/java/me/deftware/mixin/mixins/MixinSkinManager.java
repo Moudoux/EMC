@@ -9,7 +9,7 @@ import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.HashUtils;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.sortme.PlayerSkinProvider;
+import net.minecraft.client.texture.PlayerSkinProvider;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.*;
 

@@ -21,13 +21,13 @@ public class IGuiPasswordTextField extends IGuiTextField {
     @Override
     public void render(int p_195608_1_, int p_195608_2_, float p_195608_3_) {
         if (isVisible()) {
-            if (hasBorder()) {
+            if (isFocused()) {
                 DrawableHelper.fill(((IMixinGuiTextField) this).getX() - 1, ((IMixinGuiTextField) this).getY() - 1, ((IMixinGuiTextField) this).getX() + ((IMixinGuiTextField) this).getWidth() + 1,
                         ((IMixinGuiTextField) this).getY() + ((IMixinGuiTextField) this).getHeight() + 1, -6250336);
                 DrawableHelper.fill(((IMixinGuiTextField) this).getX(), ((IMixinGuiTextField) this).getY(), ((IMixinGuiTextField) this).getX() + ((IMixinGuiTextField) this).getWidth(), ((IMixinGuiTextField) this).getY() + ((IMixinGuiTextField) this).getHeight(),
                         -16777216);
             }
-            int var1 = hasBorder() ? enabledColor : disabledColor;
+            int var1 = isFocused() ? enabledColor : disabledColor;
             int var2 = getCursor() - ((IMixinGuiTextField) this).getLineScrollOffset();
             int var3 = ((IMixinGuiTextField) this).getSelectionEnd() - ((IMixinGuiTextField) this).getLineScrollOffset();
             String text = getText().substring(((IMixinGuiTextField) this).getLineScrollOffset());
@@ -38,8 +38,8 @@ public class IGuiPasswordTextField extends IGuiTextField {
             String var4 = ((IMixinGuiTextField) this).getFontRendererInstance().wrapStringToWidth(hidden, ((IMixinGuiTextField) this).getWidth());
             boolean var5 = (var2 >= 0) && (var2 <= var4.length());
             boolean var6 = (isFocused()) && (((IMixinGuiTextField) this).getCursorCounter() / 6 % 2 == 0) && (var5);
-            int var7 = hasBorder() ? ((IMixinGuiTextField) this).getX() + 4 : ((IMixinGuiTextField) this).getX();
-            int var8 = hasBorder() ? ((IMixinGuiTextField) this).getY() + (((IMixinGuiTextField) this).getHeight() - 8) / 2 : ((IMixinGuiTextField) this).getY();
+            int var7 = isFocused() ? ((IMixinGuiTextField) this).getX() + 4 : ((IMixinGuiTextField) this).getX();
+            int var8 = isFocused() ? ((IMixinGuiTextField) this).getY() + (((IMixinGuiTextField) this).getHeight() - 8) / 2 : ((IMixinGuiTextField) this).getY();
             int var9 = var7;
             if (var3 > var4.length()) {
                 var3 = var4.length();
@@ -48,7 +48,7 @@ public class IGuiPasswordTextField extends IGuiTextField {
                 String var10 = var5 ? var4.substring(0, var2) : var4;
                 var9 = ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(var10, var7, var8, var1);
             }
-            boolean var13 = (getCursor() < getText().length()) || (getText().length() >= getMaxLength());
+            boolean var13 = (getCursor() < getText().length()) || (getText().length() >= ((IMixinGuiTextField) this).getMaxTextLength());
             int var11 = var9;
             if (!var5) {
                 var11 = var2 > 0 ? var7 + ((IMixinGuiTextField) this).getWidth() : var7;

@@ -13,7 +13,7 @@ public class IServerData extends ServerEntry {
     }
 
     public boolean isIPinged() {
-        return field_3754;
+        return online;
     }
 
     public String getIIP() {

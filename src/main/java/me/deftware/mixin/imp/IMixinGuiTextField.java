@@ -35,4 +35,6 @@ public interface IMixinGuiTextField {
 
     void setCustomFont(EMCFont font);
 
+    int getMaxTextLength();
+
 }

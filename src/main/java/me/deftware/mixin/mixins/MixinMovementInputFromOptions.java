@@ -17,7 +17,7 @@ public class MixinMovementInputFromOptions {
     public GameOptions settings;
 
     @Overwrite
-    public void tick(boolean var) {
+    public void tick(boolean boolean_1, boolean boolean_2) {
         ((KeyboardInput) (Object) this).pressingForward = this.settings.keyForward.isPressed();
         ((KeyboardInput) (Object) this).pressingBack = this.settings.keyBack.isPressed();
         ((KeyboardInput) (Object) this).pressingLeft = this.settings.keyLeft.isPressed();
@@ -28,7 +28,7 @@ public class MixinMovementInputFromOptions {
         ((KeyboardInput) (Object) this).sneaking = this.settings.keySneak.isPressed();
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Sneak);
         event.broadcast();
-        if ((((KeyboardInput) (Object) this).sneaking || var) && !event.isCanceled()) {
+        if ((!boolean_2 && (((KeyboardInput) (Object) this).sneaking || boolean_1)) && !event.isCanceled()) {
             ((KeyboardInput) (Object) this).movementSideways = (float) ((double) ((KeyboardInput) (Object) this).movementSideways * 0.3D);
             ((KeyboardInput) (Object) this).movementForward = (float) ((double) ((KeyboardInput) (Object) this).movementForward * 0.3D);
         }

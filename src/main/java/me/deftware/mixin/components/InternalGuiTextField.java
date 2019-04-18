@@ -13,7 +13,7 @@ public class InternalGuiTextField extends TextFieldWidget {
     private String overlay = "";
 
     public InternalGuiTextField(TextRenderer fontrendererObj, int x, int y, int width, int height) {
-        super(fontrendererObj, x, y, width, height);
+        super(fontrendererObj, x, y, width, height, "");
     }
 
     @Override
@@ -21,8 +21,8 @@ public class InternalGuiTextField extends TextFieldWidget {
         super.render(int_1, int_2, float_1);
         String currentText = getText();
         int currentWidth = ((IMixinGuiTextField) this).getFontRendererInstance().getStringWidth(currentText);
-        int l = hasBorder() ? ((IMixinGuiTextField) this).getX() + 4 : ((IMixinGuiTextField) this).getX();
-        int i1 = hasBorder() ? ((IMixinGuiTextField) this).getY() + (((IMixinGuiTextField) this).getHeight() - 8) / 2 : ((IMixinGuiTextField) this).getY();
+        int l = isFocused() ? ((IMixinGuiTextField) this).getX() + 4 : ((IMixinGuiTextField) this).getX();
+        int i1 = isFocused() ? ((IMixinGuiTextField) this).getY() + (((IMixinGuiTextField) this).getHeight() - 8) / 2 : ((IMixinGuiTextField) this).getY();
         ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(overlay, l + currentWidth, i1, Color.GRAY.getRGB());
         WeakReference<EventChatboxType> event = new WeakReference<>(new EventChatboxType(getText(), overlay));
         event.get().broadcast();

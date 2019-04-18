@@ -1,7 +1,7 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventServerPinged;
-import net.minecraft.client.gui.widget.MultiplayerServerListWidget;
+import net.minecraft.client.gui.menu.MultiplayerServerListWidget;
 import net.minecraft.client.options.ServerEntry;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,7 +19,7 @@ public class MixinServerListEntryNormal {
     @Shadow
     private ServerEntry server;
 
-    @Inject(method = "render", at = @At("HEAD"))
+    @Inject(method = "render", at = @At("HEAD"), remap = false)
     public void render(int int_1, int int_2, int int_3, int int_4, int int_5, int int_6, int int_7, boolean boolean_1, float float_1, CallbackInfo ci) {
         if (server.ping > 1 && !sentEvent) {
             sentEvent = true;

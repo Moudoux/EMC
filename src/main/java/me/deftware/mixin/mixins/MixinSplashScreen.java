@@ -126,7 +126,7 @@ public abstract class MixinSplashScreen {
         }
 
         if (this.field_17771 == -1L && this.reloadMonitor.isApplyStageComplete() && (!this.field_18219 || float_3 >= 2.0F)) {
-            this.reloadMonitor.method_18849();
+            this.reloadMonitor.throwExceptions();
             this.field_17771 = SystemUtil.getMeasuringTimeMs();
             done();
             if (this.client.currentScreen != null) {

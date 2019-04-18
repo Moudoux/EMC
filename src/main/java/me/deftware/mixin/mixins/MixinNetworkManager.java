@@ -14,16 +14,16 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinNetworkManager {
 
     @Shadow
-    protected abstract void method_10764(Packet<?> packet_1, GenericFutureListener<? extends Future<? super Void>> genericFutureListener_1);
+    protected abstract void sendImmediately(Packet<?> packet_1, GenericFutureListener<? extends Future<? super Void>> genericFutureListener_1);
 
-    @Redirect(method = "sendPacket(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V", at = @At(value = "INVOKE", target = "net/minecraft/network/ClientConnection.method_10764(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V"))
+    @Redirect(method = "send(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V", at = @At(value = "INVOKE", target = "net/minecraft/network/ClientConnection.sendImmediately(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V"))
     private void sendPacket$dispatchPacket(ClientConnection connection, Packet<?> packetIn, final GenericFutureListener<? extends Future<? super Void>> futureListeners) {
         EventPacketSend event = new EventPacketSend(packetIn);
         event.broadcast();
         if (event.isCanceled()) {
             return;
         }
-        method_10764(event.getPacket(), futureListeners);
+        sendImmediately(event.getPacket(), futureListeners);
     }
 
 }

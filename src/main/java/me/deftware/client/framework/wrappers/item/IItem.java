@@ -2,7 +2,6 @@ package me.deftware.client.framework.wrappers.item;
 
 import me.deftware.mixin.imp.IMixinItemTool;
 import net.minecraft.item.*;
-import net.minecraft.item.block.BlockItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 

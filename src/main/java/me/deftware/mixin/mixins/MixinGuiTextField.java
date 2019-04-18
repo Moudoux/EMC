@@ -5,6 +5,7 @@ import me.deftware.client.framework.utils.render.GraphicsUtil;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import me.deftware.mixin.imp.IMixinGuiTextField;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Final;
@@ -18,19 +19,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.awt.*;
 
 @Mixin(TextFieldWidget.class)
-public class MixinGuiTextField implements IMixinGuiTextField {
+public abstract class MixinGuiTextField extends AbstractButtonWidget implements IMixinGuiTextField {
+
+    public MixinGuiTextField(int int_1, int int_2, String string_1) {
+        super(int_1, int_2, string_1);
+    }
 
     private boolean useMinecraftScaling = true;
     private boolean useCustomFont = false;
     private EMCFont customFont;
 
-    @Final
     @Shadow
-    private int height;
-
-    @Final
-    @Shadow
-    private int width;
+    private int maxLength;
 
     @Shadow
     private int focusedTicks;
@@ -42,18 +42,13 @@ public class MixinGuiTextField implements IMixinGuiTextField {
     private int field_2103;
 
     @Shadow
-    private int x;
-
-    @Shadow
-    private int y;
-
-    @Shadow
     @Final
     private TextRenderer textRenderer;
 
+
     @Override
     public int getHeight() {
-        return height;
+        return this.height;
     }
 
     @Override
@@ -141,7 +136,7 @@ public class MixinGuiTextField implements IMixinGuiTextField {
         }
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "net/minecraft/client/font/TextRenderer.drawWithShadow(Ljava/lang/String;FFI)I"))
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "net/minecraft/client/font/TextRenderer.drawWithShadow(Ljava/lang/String;FFI)I"), remap = false)
     public int render(TextRenderer self, String text, float x, float y, int color) {
         if (useCustomFont) {
             customFont.drawStringWithShadow((int) x, (int) y - 6, text, new Color(color));
@@ -149,6 +144,10 @@ public class MixinGuiTextField implements IMixinGuiTextField {
         } else {
             return this.textRenderer.drawWithShadow(text, x, y, color);
         }
+    }
+
+    public int getMaxTextLength() {
+        return maxLength;
     }
 
 

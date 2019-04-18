@@ -1,8 +1,8 @@
 package me.deftware.client.framework.wrappers.world;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.sortme.SpawnHelper;
-import net.minecraft.sortme.SpawnRestriction;
+import net.minecraft.entity.SpawnRestriction;
+import net.minecraft.world.SpawnHelper;
 
 public class IWorldEntitySpawner {
 

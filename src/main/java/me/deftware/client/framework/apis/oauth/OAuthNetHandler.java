@@ -27,8 +27,8 @@ public class OAuthNetHandler extends ClientLoginNetworkHandler {
 
     @Override
     public void onLoginSuccess(LoginSuccessS2CPacket packetIn) {
-        ((IMixinNetHandlerLoginClient) this).setGameProfile(packetIn.getPlayerProfile());
-        ((IMixinNetHandlerLoginClient) this).getNetworkManager().setState(NetworkState.GAME);
+        ((IMixinNetHandlerLoginClient) this).setGameProfile(packetIn.getProfile());
+        ((IMixinNetHandlerLoginClient) this).getNetworkManager().setState(NetworkState.PLAY);
         ((IMixinNetHandlerLoginClient) this).getNetworkManager().setPacketListener(new OAuthNetHandlerPlayClient(MinecraftClient.getInstance(), null,
                 ((IMixinNetHandlerLoginClient) this).getNetworkManager(), ((IMixinNetHandlerLoginClient) this).getGameProfile(), callback));
     }

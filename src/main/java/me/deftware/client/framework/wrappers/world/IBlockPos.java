@@ -33,7 +33,7 @@ public class IBlockPos {
 
     public static Iterable<IBlockPos> getAllInBox(IBlockPos pos1, IBlockPos pos2) {
         List<IBlockPos> newPos = new ArrayList<>();
-        Iterable<BlockPos> list = BlockPos.iterateBoxPositions(pos1.getPos(), pos2.getPos());
+        Iterable<BlockPos> list = BlockPos.iterate(pos1.getPos(), pos2.getPos());
         list.forEach(blockPos -> newPos.add(new IBlockPos(blockPos)));
         return newPos;
     }

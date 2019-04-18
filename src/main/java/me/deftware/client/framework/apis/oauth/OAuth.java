@@ -22,8 +22,8 @@ public class OAuth {
                 OAuthNetworkManager manager = OAuthNetworkManager.connect(inetaddress, OAuth.port,
                         MinecraftClient.getInstance().options.useNativeTransport, callback);
                 manager.setPacketListener(new OAuthNetHandler(manager, MinecraftClient.getInstance(), null, callback));
-                manager.sendPacket(new HandshakeC2SPacket(OAuth.ip, OAuth.port, NetworkState.LOGIN));
-                manager.sendPacket(new LoginHelloC2SPacket(MinecraftClient.getInstance().getSession().getProfile()));
+                manager.send(new HandshakeC2SPacket(OAuth.ip, OAuth.port, NetworkState.LOGIN));
+                manager.send(new LoginHelloC2SPacket(MinecraftClient.getInstance().getSession().getProfile()));
             } catch (Exception ex) {
                 callback.callback(false, "", "");
             }

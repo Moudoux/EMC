@@ -28,7 +28,7 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
      */
     @Overwrite
     public boolean isSpectator() {
-        PlayerListEntry playerListEntry_1 = MinecraftClient.getInstance().getNetworkHandler().getScoreboardEntry(MinecraftClient.getInstance().player.getGameProfile().getId());
+        PlayerListEntry playerListEntry_1 = MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(MinecraftClient.getInstance().player.getGameProfile().getId());
         EventSpectator event = new EventSpectator(playerListEntry_1 != null && playerListEntry_1.getGameMode() == GameMode.SPECTATOR);
         return event.isSpectator();
     }
@@ -38,7 +38,7 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
      * @reason
      */
     @Overwrite
-    public float method_3118() {
+    public float getSpeed() {
         float float_1 = 1.0F;
         if (((PlayerEntity) (Object) this).abilities.flying) {
             float_1 *= 1.1F;

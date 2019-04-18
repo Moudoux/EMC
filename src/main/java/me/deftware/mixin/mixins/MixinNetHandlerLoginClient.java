@@ -16,7 +16,7 @@ public class MixinNetHandlerLoginClient implements IMixinNetHandlerLoginClient {
     protected ClientConnection connection;
 
     @Shadow
-    private GameProfile playerProfile;
+    private GameProfile profile;
 
     @Override
     public ClientConnection getNetworkManager() {
@@ -25,12 +25,12 @@ public class MixinNetHandlerLoginClient implements IMixinNetHandlerLoginClient {
 
     @Override
     public GameProfile getGameProfile() {
-        return playerProfile;
+        return profile;
     }
 
     @Override
     public void setGameProfile(GameProfile profile) {
-        playerProfile = profile;
+        profile = profile;
     }
 
 }

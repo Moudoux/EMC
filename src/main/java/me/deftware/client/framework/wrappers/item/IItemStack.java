@@ -5,6 +5,7 @@ import me.deftware.client.framework.wrappers.world.IBlock;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Screen;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -16,8 +17,8 @@ import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.potion.PotionUtil;
-import net.minecraft.sortme.JsonLikeTagParser;
 import net.minecraft.text.StringTextComponent;
 import net.minecraft.text.TextComponent;
 import net.minecraft.util.Rarity;
@@ -63,7 +64,7 @@ public class IItemStack {
     }
 
     public void setNBT(String nbt) throws Exception {
-        stack.setTag(JsonLikeTagParser.parse(nbt));
+        stack.setTag(StringNbtReader.parse(nbt));
     }
 
     public void enchantAll(int level) {
