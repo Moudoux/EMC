@@ -1,11 +1,11 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.mixin.imp.IMixinCPacketPlayer;
-import net.minecraft.server.network.packet.PlayerMoveServerMessage;
+import net.minecraft.server.network.packet.PlayerMoveC2SPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(PlayerMoveServerMessage.class)
+@Mixin(PlayerMoveC2SPacket.class)
 public class MixinCPacketPlayer implements IMixinCPacketPlayer {
 
     @Shadow

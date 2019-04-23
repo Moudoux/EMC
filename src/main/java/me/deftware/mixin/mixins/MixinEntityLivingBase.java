@@ -22,7 +22,7 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
     private Map<StatusEffect, StatusEffectInstance> activeStatusEffects;
 
     @Shadow
-    private int field_6222;
+    private int itemUseTimeLeft;
 
     /**
      * @Author Deftware
@@ -50,7 +50,7 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
 
     @Override
     public int getActiveItemStackUseCount() {
-        return field_6222;
+        return itemUseTimeLeft;
     }
 
 }

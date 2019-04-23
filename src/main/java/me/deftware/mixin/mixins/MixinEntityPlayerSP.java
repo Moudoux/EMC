@@ -9,12 +9,10 @@ import me.deftware.mixin.imp.IMixinEntityPlayerSP;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.server.network.packet.ChatMessageC2SPacket;
 import net.minecraft.server.network.packet.ClientCommandC2SPacket;
-import net.minecraft.server.network.packet.PlayerMoveServerMessage;
+import net.minecraft.server.network.packet.PlayerMoveC2SPacket;
 import net.minecraft.util.math.BoundingBox;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Final;
@@ -72,7 +70,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
     @Shadow
     public abstract boolean isUsingItem();
 
-    @Redirect(method = "updateMovement", at = @At(value = "INVOKE", target = "net/minecraft/client/network/ClientPlayerEntity.isUsingItem()Z", ordinal = 0))
+    @Redirect(method = "updateState", at = @At(value = "INVOKE", target = "net/minecraft/client/network/ClientPlayerEntity.isUsingItem()Z", ordinal = 0))
     private boolean itemUseSlowdownEvent(ClientPlayerEntity self) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Item_Use);
         event.broadcast();
@@ -82,7 +80,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         return isUsingItem();
     }
 
-    @Redirect(method = "updateMovement", at = @At(value = "INVOKE", target = "net/minecraft/entity/player/HungerManager.getFoodLevel()I"))
+    @Redirect(method = "updateState", at = @At(value = "INVOKE", target = "net/minecraft/entity/player/HungerManager.getFoodLevel()I"))
     private int hungerSlowdownEvent(HungerManager self) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Hunger);
         event.broadcast();
@@ -207,19 +205,19 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
             if (hasVehicle()) {
                 Vec3d vec3d_1 = ((ClientPlayerEntity) (Object) this).getVelocity();
-                this.networkHandler.sendPacket(new PlayerMoveServerMessage.Both(vec3d_1.x, -999.0D, vec3d_1.z,
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Both(vec3d_1.x, -999.0D, vec3d_1.z,
                         event.getRotationYaw(), event.getRotationPitch(), event.isOnGround()));
                 flag2 = false;
             } else if ((flag2 && flag3)) {
-                this.networkHandler.sendPacket(new PlayerMoveServerMessage.Both(x, event.getPosY(), z,
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Both(x, event.getPosY(), z,
                         event.getRotationYaw(), event.getRotationPitch(), event.isOnGround()));
             } else if (flag2) {
-                this.networkHandler.sendPacket(new PlayerMoveServerMessage.PositionOnly(x, event.getPosY(), z, event.isOnGround()));
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionOnly(x, event.getPosY(), z, event.isOnGround()));
             } else if (flag3) {
-                this.networkHandler.sendPacket(new PlayerMoveServerMessage.LookOnly(event.getRotationYaw(), event.getRotationPitch(),
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookOnly(event.getRotationYaw(), event.getRotationPitch(),
                         event.isOnGround()));
             } else if (lastOnGround != onGround) {
-                this.networkHandler.sendPacket(new PlayerMoveServerMessage(event.isOnGround()));
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket(event.isOnGround()));
             }
 
             if (flag2) {

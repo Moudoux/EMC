@@ -69,8 +69,8 @@ public class IEntityPlayer {
     }
 
     public static IEntity getRidingEntity() {
-        if (MinecraftClient.getInstance().player.getRiddenEntity() != null) {
-            return new IEntity(MinecraftClient.getInstance().player.getRiddenEntity());
+        if (MinecraftClient.getInstance().player.getVehicle() != null) {
+            return new IEntity(MinecraftClient.getInstance().player.getVehicle());
         }
         return null;
     }
@@ -120,65 +120,65 @@ public class IEntityPlayer {
     }
 
     public static boolean isRidingEntityInWater() {
-        return MinecraftClient.getInstance().player.getRiddenEntity().isInsideWater();
+        return MinecraftClient.getInstance().player.getVehicle().isInsideWater();
     }
 
     public static double getRidingEntityMotionX() {
-        return MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().x;
+        return MinecraftClient.getInstance().player.getVehicle().getVelocity().x;
     }
 
     public static double getRidingEntityMotionY() {
-        return MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().y;
+        return MinecraftClient.getInstance().player.getVehicle().getVelocity().y;
     }
 
     public static double getRidingEntityMotionZ() {
-        return MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().z;
+        return MinecraftClient.getInstance().player.getVehicle().getVelocity().z;
     }
 
     public static void ridingEntityMotionY(double y) {
-        MinecraftClient.getInstance().player.getRiddenEntity().setVelocity(
-                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().x,
+        MinecraftClient.getInstance().player.getVehicle().setVelocity(
+                MinecraftClient.getInstance().player.getVehicle().getVelocity().x,
                 y,
-                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().z
+                MinecraftClient.getInstance().player.getVehicle().getVelocity().z
         );
     }
 
     public static void ridingEntityMotionX(double x) {
-        MinecraftClient.getInstance().player.getRiddenEntity().setVelocity(
+        MinecraftClient.getInstance().player.getVehicle().setVelocity(
                 x,
-                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().y,
-                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().z
+                MinecraftClient.getInstance().player.getVehicle().getVelocity().y,
+                MinecraftClient.getInstance().player.getVehicle().getVelocity().z
         );
     }
 
     public static void ridingEntityMotionZ(double z) {
-        MinecraftClient.getInstance().player.getRiddenEntity().setVelocity(
-                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().x,
-                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().y,
+        MinecraftClient.getInstance().player.getVehicle().setVelocity(
+                MinecraftClient.getInstance().player.getVehicle().getVelocity().x,
+                MinecraftClient.getInstance().player.getVehicle().getVelocity().y,
                 z
         );
     }
 
     public static void ridingEntityMotionTimesY(double y) {
-        MinecraftClient.getInstance().player.getRiddenEntity().setVelocity(
-                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().multiply(1, y, 1)
+        MinecraftClient.getInstance().player.getVehicle().setVelocity(
+                MinecraftClient.getInstance().player.getVehicle().getVelocity().multiply(1, y, 1)
         );
     }
 
     public static void ridingEntityMotionTimesX(double x) {
-        MinecraftClient.getInstance().player.getRiddenEntity().setVelocity(
-                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().multiply(x, 1, 1)
+        MinecraftClient.getInstance().player.getVehicle().setVelocity(
+                MinecraftClient.getInstance().player.getVehicle().getVelocity().multiply(x, 1, 1)
         );
     }
 
     public static void ridingEntityMotionTimesZ(double z) {
-        MinecraftClient.getInstance().player.getRiddenEntity().setVelocity(
-                MinecraftClient.getInstance().player.getRiddenEntity().getVelocity().multiply(1, 1, z)
+        MinecraftClient.getInstance().player.getVehicle().setVelocity(
+                MinecraftClient.getInstance().player.getVehicle().getVelocity().multiply(1, 1, z)
         );
     }
 
     public static boolean isRidingOnGround() {
-        return MinecraftClient.getInstance().player.getRiddenEntity().onGround;
+        return MinecraftClient.getInstance().player.getVehicle().onGround;
     }
 
     public static void attackEntity(IEntity entity) {
@@ -471,7 +471,7 @@ public class IEntityPlayer {
     }
 
     public static int getItemInUseMaxCount() {
-        return MinecraftClient.getInstance().player.method_6014();
+        return MinecraftClient.getInstance().player.getItemUseTimeLeft();
     }
 
     public static double getPrevPosX() {
@@ -562,7 +562,7 @@ public class IEntityPlayer {
     public static boolean isRowingBoat() {
         if (IEntityPlayer.isNull()) {
             return false;
-        } else if (MinecraftClient.getInstance().player.getRiddenEntity() instanceof BoatEntity) {
+        } else if (MinecraftClient.getInstance().player.getVehicle() instanceof BoatEntity) {
             return true;
         }
         return false;
@@ -576,7 +576,7 @@ public class IEntityPlayer {
         if (IEntityPlayer.isNull()) {
             return false;
         }
-        return MinecraftClient.getInstance().player.hasVehicle() && MinecraftClient.getInstance().player.getRiddenEntity() instanceof HorseEntity;
+        return MinecraftClient.getInstance().player.hasVehicle() && MinecraftClient.getInstance().player.getVehicle() instanceof HorseEntity;
     }
 
     public static boolean isInLiquid() {

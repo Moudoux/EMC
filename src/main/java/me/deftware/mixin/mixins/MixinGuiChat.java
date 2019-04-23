@@ -74,7 +74,7 @@ public abstract class MixinGuiChat extends Screen {
         this.chatField.setChangedListener(this::onChatFieldChanged);
         this.children.add(this.chatField);
         this.updateCommand();
-        this.method_20085(this.chatField);
+        this.setInitialFocus(this.chatField);
     }
 
     @Inject(method = "updateCommand", at = @At("RETURN"), cancellable = true)

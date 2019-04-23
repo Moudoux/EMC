@@ -55,7 +55,7 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
         }
 
         if (((LivingEntity) (Object) this).isUsingItem() && ((LivingEntity) (Object) this).getActiveItem().getItem() == Items.BOW) {
-            int int_1 = ((LivingEntity) (Object) this).method_6048();
+            int int_1 = ((LivingEntity) (Object) this).getItemUseTimeLeft();
             float float_2 = (float) int_1 / 20.0F;
             if (float_2 > 1.0F) {
                 float_2 = 1.0F;
