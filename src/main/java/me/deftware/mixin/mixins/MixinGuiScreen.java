@@ -30,14 +30,14 @@ public class MixinGuiScreen implements IMixinGuiScreen {
 
     public boolean shouldSendPostRenderEvent = true;
 
-    @Shadow(remap = false)
+    @Shadow
     protected TextRenderer font;
 
-    @Shadow(remap = false)
+    @Shadow
     @Final
     private List<AbstractButtonWidget> buttons;
 
-    @Shadow(remap = false)
+    @Shadow
     @Final
     private List<Element> children;
 
@@ -56,19 +56,19 @@ public class MixinGuiScreen implements IMixinGuiScreen {
         return children;
     }
 
-    @Inject(method = "render", at = @At("HEAD"), remap = false)
+    @Inject(method = "render", at = @At("HEAD"))
     public void render(int x, int y, float p_render_3_, CallbackInfo ci) {
         new EventGuiScreenDraw((Screen) (Object) this, x, y).broadcast();
     }
 
-    @Inject(method = "render", at = @At("RETURN"), remap = false)
+    @Inject(method = "render", at = @At("RETURN"))
     public void render_return(int x, int y, float p_render_3_, CallbackInfo ci) {
         if (shouldSendPostRenderEvent) {
             new EventGuiScreenPostDraw((Screen) (Object) this, x, y).broadcast();
         }
     }
 
-    @Overwrite(remap = false)
+    @Overwrite
     public List<String> getTooltipFromItem(ItemStack itemStack_1) {
         List<TextComponent> list_1 = itemStack_1.getTooltipText(MinecraftClient.getInstance().player, MinecraftClient.getInstance().options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL);
         List<String> list_2 = Lists.newArrayList();

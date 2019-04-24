@@ -735,8 +735,9 @@ public class RenderUtils {
 
         GL11.glBegin(1);
 
-        GL11.glVertex3d(eyes.x, MinecraftClient.getInstance().player.getEyeHeight(EntityPose.STANDING) + eyes.y, eyes.z);
+        GL11.glVertex3d(eyes.x, eyes.y, eyes.z);
         GL11.glVertex3d(x, y, z);
+
 
         GL11.glEnd();
         GL11.glEnable(3553);
@@ -768,7 +769,7 @@ public class RenderUtils {
 
         GL11.glBegin(1);
 
-        GL11.glVertex3d(eyes.x, MinecraftClient.getInstance().player.getEyeHeight(EntityPose.STANDING) + eyes.y, eyes.z);
+        GL11.glVertex3d(eyes.x, eyes.y, eyes.z);
         GL11.glVertex3d(x, y, z);
 
         GL11.glEnd();
@@ -800,7 +801,7 @@ public class RenderUtils {
 
         GL11.glBegin(1);
 
-        GL11.glVertex3d(eyes.x, MinecraftClient.getInstance().player.getEyeHeight(EntityPose.STANDING) + eyes.y, eyes.z);
+        GL11.glVertex3d(eyes.x, eyes.y, eyes.z);
         GL11.glVertex3d(x, y, z);
 
         GL11.glEnd();

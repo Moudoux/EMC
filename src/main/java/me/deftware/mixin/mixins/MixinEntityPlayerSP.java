@@ -91,7 +91,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
     }
 
     /*
-    @Redirect(method = "updateMovement", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z", remap = false))
+    @Redirect(method = "updateState", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
     private boolean blindlessSlowdownEvent(LivingEntity self) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Blindness);
         event.broadcast();
@@ -99,7 +99,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
             return false;
         }
         return self.hasStatusEffect(StatusEffects.BLINDNESS);
-    } */
+    }*/
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void tick(CallbackInfo ci) {

@@ -75,7 +75,7 @@ public abstract class MixinSplashScreen {
         }
     }
 
-    @Overwrite(remap = false)
+    @Overwrite
     public void render(int int_1, int int_2, float float_1) {
         int int_3 = this.client.window.getScaledWidth();
         int int_4 = this.client.window.getScaledHeight();

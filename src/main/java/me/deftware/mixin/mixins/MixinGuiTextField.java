@@ -121,7 +121,7 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
         customFont = font;
     }
 
-    @Inject(method = "renderButton", at = @At("HEAD"), remap = false)
+    @Inject(method = "renderButton", at = @At("HEAD"))
     public void drawTextField(int p_drawTextField_1_, int p_drawTextField_2_, float p_drawTextField_3_, CallbackInfo ci) {
         if (!useMinecraftScaling) {
             GL11.glPushMatrix();
@@ -129,7 +129,7 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
         }
     }
 
-    @Inject(method = "renderButton", at = @At("RETURN"), remap = false)
+    @Inject(method = "renderButton", at = @At("RETURN"))
     public void drawTextFieldReturn(int p_drawTextField_1_, int p_drawTextField_2_, float p_drawTextField_3_, CallbackInfo ci) {
         if (!useMinecraftScaling) {
             GL11.glPopMatrix();

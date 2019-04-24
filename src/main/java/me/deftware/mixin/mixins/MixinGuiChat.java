@@ -62,7 +62,7 @@ public abstract class MixinGuiChat extends Screen {
      * @Author Deftware
      * @reason
      */
-    @Overwrite(remap = false)
+    @Overwrite
     public void init() {
         MinecraftClient.getInstance().keyboard.enableRepeatEvents(true);
         this.field_2387 = MinecraftClient.getInstance().inGameHud.getChatHud().method_1809().size();

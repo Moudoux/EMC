@@ -63,7 +63,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
         }
     }
 
-    @Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "com/mojang/blaze3d/platform/GlStateManager.enableDepthTest()V", remap = false))
+    @Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "com/mojang/blaze3d/platform/GlStateManager.enableDepthTest()V"))
     private void renderWorld(CallbackInfo ci) {
         if (!((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "WORLD_DEPTH", true))) {
             GlStateManager.disableDepthTest();
