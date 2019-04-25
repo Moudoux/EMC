@@ -34,7 +34,7 @@ public class IVertexBuffer {
     }
 
     public void endVertex() {
-        vertexbuffer.end();
+        vertexbuffer.next();
     }
 
 }
