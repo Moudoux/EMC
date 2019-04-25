@@ -57,7 +57,7 @@ public class IEntity {
     }
 
     public boolean isPlayer() {
-        return entity instanceof ClientPlayerEntity;
+        return entity instanceof PlayerEntity;
     }
 
     public boolean isItem() {
@@ -73,7 +73,7 @@ public class IEntity {
     }
 
     public IPlayer getIPlayer() {
-        return new IPlayer((ClientPlayerEntity) entity);
+        return new IPlayer((PlayerEntity) entity);
     }
 
     public float getHealth() {

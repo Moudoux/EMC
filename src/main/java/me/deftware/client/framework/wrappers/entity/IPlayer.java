@@ -1,19 +1,18 @@
 package me.deftware.client.framework.wrappers.entity;
 
-
 import me.deftware.client.framework.wrappers.item.IItemStack;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class IPlayer {
 
-    private ClientPlayerEntity player;
+    private PlayerEntity player;
 
-    public IPlayer(ClientPlayerEntity player) {
+    public IPlayer(PlayerEntity player) {
         this.player = player;
     }
 
-    public ClientPlayerEntity getPlayer() {
+    public PlayerEntity getPlayer() {
         return player;
     }
 
