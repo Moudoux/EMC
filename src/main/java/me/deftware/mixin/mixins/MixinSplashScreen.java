@@ -2,7 +2,6 @@ package me.deftware.mixin.mixins;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import me.deftware.client.framework.main.Bootstrap;
-import me.deftware.client.framework.main.GuiInstallMods;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.mixin.components.CustomClass;
@@ -139,9 +138,7 @@ public abstract class MixinSplashScreen {
 
     public void done() {
         this.field_18218.run();
-        if (Bootstrap.installList.size() == 0) {
-            Bootstrap.initList.forEach(mod -> mod.accept("arg"));
-        }
+        Bootstrap.initList.forEach(mod -> mod.accept("arg"));
     }
 
 }

@@ -44,7 +44,7 @@ dependencies {
 	minecraft "com.mojang:minecraft:${mcVersion}"
 	mappings "net.fabricmc:yarn:${mappingsVer}"
 	modCompile "net.fabricmc:fabric-loader:0.3.7.109"
-	extraLibs "me.deftware:subsystem:0.3.8"
+	//extraLibs "me.deftware:subsystem:0.4.4+build3"
 }
 
 jar {

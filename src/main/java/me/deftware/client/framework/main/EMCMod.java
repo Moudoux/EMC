@@ -12,7 +12,7 @@ public abstract class EMCMod {
 	private Settings settings;
 	public JsonObject modInfo;
 
-	protected void init(JsonObject json) {
+	public void init(JsonObject json) {
 		modInfo = json;
 		settings = new Settings();
 		settings.initialize(json);
@@ -27,7 +27,7 @@ public abstract class EMCMod {
 	/**
 	 * Unloads your mod from EMC
 	 */
-	protected void disable() {
+	public void disable() {
 		Bootstrap.getMods().remove(modInfo.get("name").getAsString());
 	}
 
