@@ -49,7 +49,6 @@ public class Bootstrap {
     public static String JSON_JARNAME_NOTE = "DYNAMIC_jarname";
     private static URLClassLoader modClassLoader;
     private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
-    public static JsonArray installList = new JsonArray();
     public static File emc_root;
 
     public static void init() {
@@ -59,7 +58,7 @@ public class Bootstrap {
             emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator);
 
             // Load new EMC mods that needs to be installed
-            loadEmcMods(emc_root);
+            prepMods(emc_root);
 
             File emc_configs = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator + "configs" + File.separator);
             if (!emc_configs.exists()) {
@@ -82,10 +81,6 @@ public class Bootstrap {
 
             // Register default EMC commands
             registerFrameworkCommands();
-
-            if (installList.size() != 0) {
-                Minecraft.getInstance().displayGuiScreen(new GuiInstallMods(installList));
-            }
         } catch (Exception ex) {
             Bootstrap.logger.warn("Failed to load EMC", ex);
         }
@@ -119,7 +114,7 @@ public class Bootstrap {
         });
     }
 
-    private static void loadEmcMods(File emcRoot) throws Exception {
+    private static void prepMods(File emcRoot) throws Exception {
         File jsonFile = new File(OSUtils.getRunningFolder() + OSUtils.getVersion() + ".json");
         if (!jsonFile.exists()) {
             Bootstrap.logger.warn("Failed to read Minecraft json file " + jsonFile.getAbsolutePath() + " will not load additional EMC mods");
@@ -127,23 +122,11 @@ public class Bootstrap {
         }
         JsonObject contents = new Gson().fromJson(String.join("", Files.readAllLines(Paths.get(jsonFile.getAbsolutePath()), StandardCharsets.UTF_8)), JsonObject.class);
         if (!contents.has("emcMods")) {
-            Bootstrap.logger.warn("Could not find emcMods entry");
+            Bootstrap.logger.warn("Could not find emcMods entry, will not load additional EMC mods");
             return;
         }
-        JsonArray array = contents.get("emcMods").getAsJsonArray();
-        array.forEach(jsonElement -> {
-            JsonObject element = jsonElement.getAsJsonObject();
-            if (!element.get("installed").getAsBoolean()) {
-                installList.add(jsonElement);
-                // Delete jar if it already exists, for updates
-                File modFile = new File(emcRoot.getAbsolutePath() + File.separator + element.get("name").getAsString() + ".jar");
-                if (modFile.exists()) {
-                    if (!modFile.delete()) {
-                        Bootstrap.logger.warn("Could not delete " + element.get("name").getAsString());
-                    }
-                }
-            }
-        });
+        Bootstrap.logger.info("Refreshing additional EMC mods");
+        ModInstaller.load(contents.get("emcMods").getAsJsonArray());
     }
 
 
