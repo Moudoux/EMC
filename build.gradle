@@ -88,24 +88,33 @@ shadowJar {
     classifier = 'full'
 }
 
-task createPom << {
-    pom {
-        project {
-            groupId "me.deftware"
-            artifactId "EMC"
-            version "${version}-${project.minecraftVersion}"
-        }
-    }.writeTo("maven/me/deftware/EMC/${version}-${project.minecraftVersion}/EMC-${version}-${project.minecraftVersion}.pom")
+//noinspection GroovyAssignabilityCheck
+task createPom {
+    doLast {
+        pom {
+            //noinspection GroovyAssignabilityCheck
+            project {
+                groupId "me.deftware"
+                artifactId "EMC"
+                version "${version}-${project.minecraftVersion}"
+            }
+        }.writeTo("maven/me/deftware/EMC/${version}-${project.minecraftVersion}/EMC-${version}-${project.minecraftVersion}.pom")
+    }
 }
 
+//noinspection GroovyAssignabilityCheck
 task copyBuilds(type: Copy) {
     from "$rootDir/build/libs"
     into "$rootDir/maven/me/deftware/EMC/${version}-${project.minecraftVersion}/"
     rename { String fileName ->
-		fileName.replace(version, "${version}-${project.minecraftVersion}")
+		fileName.replace("${version}", "${version}-${project.minecraftVersion}")
 	}
+    doLast {
+        project.ant.checksum(file: "$rootDir/maven/me/deftware/EMC/${version}-${project.minecraftVersion}/EMC-${version}-${project.minecraftVersion}.jar", algorithm: "sha1", todir: "$rootDir/maven/me/deftware/EMC/${version}-${project.minecraftVersion}/")
+    }
 }
 
+//noinspection GroovyAssignabilityCheck
 task generateApiDocumentation(type: Javadoc) {
   source = ['src/main/java/me/deftware/client']
   title = "EMC Framework Documentation"
@@ -113,11 +122,12 @@ task generateApiDocumentation(type: Javadoc) {
   failOnError false
 }
 
+//noinspection GroovyAssignabilityCheck
 task copyToMinecraft(type: Copy) {
     from "$rootDir/build/libs/EMC-${version}.jar"
     into "${minecraftRoot}/libraries/me/deftware/EMC/${version}-${project.minecraftVersion}/"
     rename { String fileName ->
-        fileName.replace(version, "${version}-${project.minecraftVersion}")
+        fileName.replace("${version}", "${version}-${project.minecraftVersion}")
     }
 }
 
@@ -130,4 +140,4 @@ reobf {
 
 build.dependsOn(shadowJar)
 build.dependsOn(createPom)
-build.dependsOn(copyBuilds)
+build.finalizedBy(copyBuilds)

@@ -22,10 +22,7 @@ public class Settings {
 
 	public synchronized void initialize(JsonObject modInfo) {
 		try {
-			String modName = "EMC";
-			if (Bootstrap.modsInfo != null && modInfo != null) {
-				modName = modInfo.get("name").getAsString();
-			}
+			String modName = (Bootstrap.modsInfo != null && modInfo != null) ?  modInfo.get("name").getAsString() : "EMC";
 			String file = OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator + "configs" + File.separator + modName + "_config.json";
 			configFile = new File(file);
 			if (!configFile.exists()) {
@@ -39,20 +36,19 @@ public class Settings {
 				config = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
 			}
 			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-				System.out.println("EMC: Saving mod config");
+				Bootstrap.logger.info("Saving EMC config for mod " + modName);
 				saveConfig();
 			}));
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			System.out.println("Failed to load mod config, resetting it..");
+			Bootstrap.logger.warn("Failed to load mod config, resetting it..");
 			if (configFile != null) {
 				if (configFile.exists()) {
 					if (!configFile.delete()) {
-						System.err.println("Failed to delete config");
+						Bootstrap.logger.warn("Failed to delete config");
 					}
 				}
 			}
-			System.exit(0);
 			initialize(modInfo);
 		}
 	}

@@ -40,8 +40,7 @@ import java.util.stream.Collectors;
  */
 public class Bootstrap {
 
-    public static final Runtime runtime = Runtime.getRuntime();
-    public static Logger logger = LogManager.getLogger();
+    public static Logger logger = LogManager.getLogger(String.format("EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
     public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
     public static ArrayList<String> internalModClassNames = new ArrayList<>();
     public static boolean isRunning = true;
@@ -49,25 +48,28 @@ public class Bootstrap {
     public static String JSON_JARNAME_NOTE = "DYNAMIC_jarname";
     private static URLClassLoader modClassLoader;
     private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
-    public static File emc_root;
+    public static File emc_root, emc_configs;
 
     public static void init() {
         try {
-            Bootstrap.logger.info("Loading EMC...");
-
+            Bootstrap.logger.info(String.format("Loading EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
             emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator);
-
-            // Load new EMC mods that needs to be installed
-            prepMods(emc_root);
-
-            File emc_configs = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator + "configs" + File.separator);
-            if (!emc_configs.exists()) {
-                emc_configs.mkdirs();
-            }
 
             // EMC mods are stored in .minecraft/libraries/EMC
             if (!emc_root.exists()) {
-                emc_root.mkdir();
+                if (!emc_root.mkdirs()) {
+                    Bootstrap.logger.warn("Failed to create EMC mod dir");
+                }
+            }
+
+            // Load new EMC mods that needs to be installed from json
+            prepMods(emc_root);
+
+            emc_configs = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator + "configs" + File.separator);
+            if (!emc_configs.exists()) {
+                if (!emc_configs.mkdirs()) {
+                    Bootstrap.logger.warn("Failed to create EMC config dir");
+                }
             }
 
             // Settings
@@ -92,18 +94,24 @@ public class Bootstrap {
             if (!file.isDirectory() && file.getName().endsWith(".jar")) {
                 try {
                     if (new File(file.getAbsolutePath() + ".delete").exists()) {
-                        Bootstrap.logger.info("Deleting mod %s...", file.getName());
-                        new File(file.getAbsolutePath() + ".delete").delete();
+                        Bootstrap.logger.info("Deleting mod " + file.getName());
+                        if (!new File(file.getAbsolutePath() + ".delete").delete()) {
+                            Bootstrap.logger.warn("Failed to delete " + file.getName());
+                        }
                     } else {
                         // Update check
                         File updateJar = new File(emc_root.getAbsolutePath() + File.separator
                                 + file.getName().substring(0, file.getName().length() - ".jar".length())
                                 + "_update.jar");
                         if (updateJar.exists()) {
-                            file.delete();
-                            updateJar.renameTo(file);
+                            Bootstrap.logger.info("Updating " + file.getName());
+                            if (!file.delete()) {
+                                Bootstrap.logger.warn("Failed to delete " + file.getName());
+                            }
+                            if (!updateJar.renameTo(file)) {
+                                Bootstrap.logger.warn("Failed to rename " + updateJar.getName() + " to " + file.getName());
+                            }
                         }
-                        // Load the mod
                         Bootstrap.loadMod(file);
                     }
                 } catch (Exception ex) {
