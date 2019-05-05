@@ -10,10 +10,7 @@ import net.minecraft.client.gui.Screen;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.Session;
 import net.minecraft.client.util.Window;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -73,6 +70,11 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
                 displayGuiScreen(event.getScreen());
             }
         }
+    }
+
+    @Overwrite
+    public String getVersionType() {
+        return "release";
     }
 
     @Inject(method = "stop", at = @At("HEAD"))

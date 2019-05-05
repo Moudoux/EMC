@@ -33,26 +33,15 @@ version = getVersionFromJava()
 
 repositories {
 	mavenCentral()
-	maven { url "https://gitlab.com/EMC-Framework/maven/raw/master/" }
-}
-
-configurations {
-	extraLibs
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:${mcVersion}"
 	mappings "net.fabricmc:yarn:${mappingsVer}"
 	modCompile "net.fabricmc:fabric-loader:0.3.7.109"
-	//extraLibs "me.deftware:subsystem:0.4.4+build3"
 }
 
-jar {
-	from {
-		configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
-	}
-}
-
+//noinspection GroovyAssignabilityCheck
 task createPom {
 	doLast {
 		pom {
@@ -66,6 +55,7 @@ task createPom {
 	}
 }
 
+//noinspection GroovyAssignabilityCheck
 task generateApiDocumentation(type: Javadoc) {
 	source = ['src/main/java/me/deftware/client']
 	title = "EMC Framework Documentation"
@@ -73,24 +63,30 @@ task generateApiDocumentation(type: Javadoc) {
 	failOnError false
 }
 
+//noinspection GroovyAssignabilityCheck
 task sourcesJar(type: Jar, dependsOn: classes) {
 	classifier = 'sources'
 	from sourceSets.main.allSource
 }
 
+//noinspection GroovyAssignabilityCheck
 task copyBuilds(type: Copy) {
 	from "$rootDir/build/libs/EMC-${version}.jar"
 	into "$rootDir/maven/me/deftware/EMC-F/${version}-${mcVersion}/"
 	rename { String fileName ->
-		fileName.replace(version, "${version}-${mcVersion}").replace("EMC", "EMC-F")
+		fileName.replace("${version}", "${version}-${mcVersion}").replace("EMC", "EMC-F")
+	}
+	doLast {
+		project.ant.checksum(file: "$rootDir/maven/me/deftware/EMC-F/${version}-${mcVersion}/EMC-F-${version}-${mcVersion}.jar", algorithm: "sha1", todir: "$rootDir/maven/me/deftware/EMC-F/${version}-${mcVersion}/")
 	}
 }
 
+//noinspection GroovyAssignabilityCheck
 task copyToMinecraft(type: Copy) {
 	from "$rootDir/build/libs/EMC-${version}.jar"
 	into "${minecraftRoot}/libraries/me/deftware/EMC-F/${version}-${mcVersion}/"
 	rename { String fileName ->
-		fileName.replace(version, "${version}-${mcVersion}").replace("EMC", "EMC-F")
+		fileName.replace("${version}", "${version}-${mcVersion}").replace("EMC", "EMC-F")
 	}
 }
 

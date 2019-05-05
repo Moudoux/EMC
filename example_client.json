@@ -1,8 +1,8 @@
 {
     "inheritsFrom": "1.14",
     "id": "1.14-EMC",
-    "time": "2019-02-09T01:00:43+01:00",
-    "releaseTime": "2019-02-09T01:00:43+01:00",
+    "time": "2019-04-10T20:37:13+02:00",
+    "releaseTime": "2019-04-10T20:37:13+02:00",
     "type": "release",
     "arguments": {
         "game": []
@@ -10,15 +10,23 @@
     "mainClass": "net.fabricmc.loader.launch.knot.KnotClient",
     "libraries": [
         {
-            "name": "net.fabricmc:sponge-mixin:0.7.11.16",
+            "name": "net.fabricmc:sponge-mixin:0.7.11.27",
             "url": "https://maven.fabricmc.net/"
         },
         {
-            "name": "net.fabricmc:tiny-mappings-parser:0.1.0.6",
+            "name": "net.fabricmc:tiny-mappings-parser:0.1.1.8",
             "url": "https://maven.fabricmc.net/"
         },
         {
-            "name": "net.fabricmc:tiny-remapper:0.1.0.23",
+            "name": "net.fabricmc:tiny-remapper:0.1.0.33",
+            "url": "https://maven.fabricmc.net/"
+        },
+        {
+            "name": "net.fabricmc:fabric-loader-sat4j:2.3.5.4",
+            "url": "https://maven.fabricmc.net/"
+        },
+        {
+            "name": "com.google.jimfs:jimfs:1.1",
             "url": "https://maven.fabricmc.net/"
         },
         {
@@ -42,11 +50,15 @@
             "url": "https://maven.fabricmc.net/"
         },
         {
-            "name": "net.fabricmc:yarn:1.14.1",
+            "name": "net.fabricmc:yarn:1.14+build.1",
             "url": "https://maven.fabricmc.net/"
         },
         {
-            "name": "me.deftware:EMC-F:13.8.7-1.14",
+            "name": "me.deftware:subsystem:latest-separate",
+            "url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
+        },
+        {
+            "name": "me.deftware:EMC-F:latest-1.14",
             "url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
         }
     ]
