@@ -71,8 +71,6 @@ Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To
 
 Then change `mainClass` to `net.fabricmc.loader.launch.knot.KnotClient`. If you want to see an example on how to load EMC see [example_client.json](https://gitlab.com/EMC-Framework/EMC/blob/1.14/example_client.json)
 
-For using EMC with 1.13.2 see the [1.13.2 Readme](https://gitlab.com/EMC-Framework/EMC/blob/1.13.2/README.md)
-
 Making client mods with EMC 
 -------------------
 

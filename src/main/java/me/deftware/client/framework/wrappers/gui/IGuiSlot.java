@@ -36,12 +36,16 @@ public abstract class IGuiSlot extends AlwaysSelectedEntryListWidget implements 
     }
 
     public void buildItems() {
+        IGuiSlot.this.setSelected(null);
         children().clear();
         for (int i = 0; i < getISize(); i++) {
             addEntry(new CustomItem(i) {
                 @Override
                 public void render(int x, int y, int io, int i3, int i4, int i5, int i6, boolean b, float v) {
                     if (getISize() == 0) {
+                        return;
+                    }
+                    if (id == getISize()) {
                         return;
                     }
                     drawISlot(id, (IGuiSlot.this.width / 2) - 105, y);
