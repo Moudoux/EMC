@@ -12,8 +12,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.ingame.ChatScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.command.CommandSource;
-import net.minecraft.text.TextComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -40,7 +40,7 @@ public abstract class MixinGuiChat extends Screen {
     @Shadow
     private CompletableFuture<Suggestions> suggestionsFuture;
     @Shadow
-    private boolean suggestionsTemporarilyDisabled;
+    private boolean completingSuggestion;
 
     @Shadow
     public abstract String getRenderText(String p_195130_1_, int p_195130_2_);
@@ -49,7 +49,7 @@ public abstract class MixinGuiChat extends Screen {
     public abstract void onChatFieldChanged(String p_195128_2_);
 
     @Shadow
-    public abstract void updateSuggestionsAndExceptions();
+    public abstract void updateCommandFeedback();
 
     @Shadow
     public abstract void updateCommand();
@@ -87,7 +87,7 @@ public abstract class MixinGuiChat extends Screen {
             }
             CommandDispatcher<CommandSource> commandDispatcher_1 = CommandRegister.getDispatcher();
             this.parseResults = commandDispatcher_1.parse(stringReader_1, this.minecraft.player.networkHandler.getCommandSource());
-            if (!this.suggestionsTemporarilyDisabled) {
+            if (!this.completingSuggestion) {
                 StringReader stringReader_2 = new StringReader(string_1.substring(0, Math.min(string_1.length(), this.chatField.getCursor())));
                 if (stringReader_2.canRead()) {
                     for (int triggerLength = 0; triggerLength < CommandRegister.getCommandTrigger().length(); triggerLength++) {
@@ -97,7 +97,7 @@ public abstract class MixinGuiChat extends Screen {
                     this.suggestionsFuture = commandDispatcher_1.getCompletionSuggestions(parseResults_1);
                     this.suggestionsFuture.thenRun(() -> {
                         if (this.suggestionsFuture.isDone()) {
-                            this.updateSuggestionsAndExceptions();
+                            this.updateCommandFeedback();
                         }
                     });
                 }

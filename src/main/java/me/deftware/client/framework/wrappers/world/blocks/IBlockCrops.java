@@ -17,7 +17,7 @@ public class IBlockCrops extends IBlock {
     }
 
     public boolean isMaxAge(IBlockPos pos) {
-        return ((CropBlock) block).isValidState(IWorld.getStateFromPos(pos));
+        return ((CropBlock) block).isMature(IWorld.getStateFromPos(pos));
     }
 
 }

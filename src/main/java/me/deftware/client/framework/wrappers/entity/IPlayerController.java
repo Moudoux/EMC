@@ -73,7 +73,7 @@ public class IPlayerController {
     }
 
     public static void processRightClick(boolean offhand) {
-        MinecraftClient.getInstance().interactionManager.interactItem(MinecraftClient.getInstance().player, MinecraftClient.getInstance().world, offhand ? Hand.OFF : Hand.MAIN);
+        MinecraftClient.getInstance().interactionManager.interactItem(MinecraftClient.getInstance().player, MinecraftClient.getInstance().world, offhand ? Hand.OFF_HAND : Hand.MAIN_HAND);
     }
 
     public static void resetBlockRemoving() {

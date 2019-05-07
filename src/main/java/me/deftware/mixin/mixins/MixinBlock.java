@@ -6,7 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
-import net.minecraft.entity.VerticalEntityPosition;
+import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.StateFactory;
 import net.minecraft.util.math.BlockPos;
@@ -83,7 +83,7 @@ public abstract class MixinBlock {
     }
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
-    public void getCollisionShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, VerticalEntityPosition verticalEntityPosition_1, CallbackInfoReturnable<VoxelShape> ci) {
+    public void getCollisionShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, EntityContext context, CallbackInfoReturnable<VoxelShape> ci) {
         if ((Object) this instanceof FluidBlock) {
             ci.setReturnValue((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "LIQUID_VOXEL_FULL", false)
                     ? VoxelShapes.fullCube()

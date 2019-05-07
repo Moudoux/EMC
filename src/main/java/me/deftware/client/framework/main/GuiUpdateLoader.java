@@ -5,7 +5,7 @@ import me.deftware.client.framework.wrappers.gui.IGuiButton;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Screen;
-import net.minecraft.text.StringTextComponent;
+import net.minecraft.network.chat.TextComponent;
 
 /**
  * This class describes the gui shown by the EMC freamwork when
@@ -17,7 +17,7 @@ public class GuiUpdateLoader extends Screen {
     private JsonObject clientInfo;
 
     public GuiUpdateLoader(JsonObject clientInfo) {
-        super(new StringTextComponent("Update required"));
+        super(new TextComponent("Update required"));
         this.clientInfo = clientInfo;
     }
 

@@ -70,7 +70,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
     @Shadow
     public abstract boolean isUsingItem();
 
-    @Redirect(method = "updateState", at = @At(value = "INVOKE", target = "net/minecraft/client/network/ClientPlayerEntity.isUsingItem()Z", ordinal = 0))
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "net/minecraft/client/network/ClientPlayerEntity.isUsingItem()Z", ordinal = 0))
     private boolean itemUseSlowdownEvent(ClientPlayerEntity self) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Item_Use);
         event.broadcast();
@@ -80,7 +80,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         return isUsingItem();
     }
 
-    @Redirect(method = "updateState", at = @At(value = "INVOKE", target = "net/minecraft/entity/player/HungerManager.getFoodLevel()I"))
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "net/minecraft/entity/player/HungerManager.getFoodLevel()I"))
     private int hungerSlowdownEvent(HungerManager self) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Hunger);
         event.broadcast();
@@ -91,7 +91,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
     }
 
     /*
-    @Redirect(method = "updateState", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
     private boolean blindlessSlowdownEvent(LivingEntity self) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Blindness);
         event.broadcast();

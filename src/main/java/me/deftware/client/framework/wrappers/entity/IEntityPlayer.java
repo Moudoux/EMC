@@ -42,7 +42,7 @@ public class IEntityPlayer {
     public static boolean processRightClickBlock(IBlockPos pos, IEnumFacing facing, IVec3d vec) {
         BlockHitResult customHitResult = new BlockHitResult(vec.getVector(), IEnumFacing.getFacing(facing), pos.getPos(), false);
         return MinecraftClient.getInstance().interactionManager.interactBlock(MinecraftClient.getInstance().player,
-                MinecraftClient.getInstance().world, Hand.MAIN, customHitResult) == ActionResult.SUCCESS;
+                MinecraftClient.getInstance().world, Hand.MAIN_HAND, customHitResult) == ActionResult.SUCCESS;
     }
 
     public static void doJump() {
@@ -392,7 +392,7 @@ public class IEntityPlayer {
         if (IEntityPlayer.isNull()) {
             return;
         }
-        MinecraftClient.getInstance().player.swingHand(Hand.MAIN);
+        MinecraftClient.getInstance().player.swingHand(Hand.MAIN_HAND);
     }
 
     public static float getSaturationLevel() {
@@ -406,14 +406,14 @@ public class IEntityPlayer {
         if (IEntityPlayer.isNull()) {
             return;
         }
-        MinecraftClient.getInstance().player.networkHandler.sendPacket(new HandSwingC2SPacket(Hand.MAIN));
+        MinecraftClient.getInstance().player.networkHandler.sendPacket(new HandSwingC2SPacket(Hand.MAIN_HAND));
     }
 
     public static float getCooldown() {
         if (IEntityPlayer.isNull()) {
             return 0;
         }
-        return MinecraftClient.getInstance().player.method_7261(0);
+        return MinecraftClient.getInstance().player.getAttackCooldownProgress(0);
     }
 
     public static float getRotationYaw() {
@@ -583,7 +583,7 @@ public class IEntityPlayer {
         if (IEntityPlayer.isNull()) {
             return false;
         }
-        return MinecraftClient.getInstance().player.isInsideWater() || MinecraftClient.getInstance().player.isTouchingLava();
+        return MinecraftClient.getInstance().player.isInsideWater() || MinecraftClient.getInstance().player.isInLava();
     }
 
     public static boolean isFlying() {
@@ -679,7 +679,7 @@ public class IEntityPlayer {
     }
 
     public static boolean isInAir() {
-        return MinecraftClient.getInstance().player.isInFluid(new FluidTags.class_3487(new Identifier("air")));
+        return MinecraftClient.getInstance().player.isInFluid(new FluidTags.CachingTag(new Identifier("air")));
     }
 
     public static boolean isTouchingLiquid() {

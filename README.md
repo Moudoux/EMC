@@ -49,6 +49,7 @@ public class UpdateListener extends EventListener {
 Minecraft versions currently supported
 -------------------
 
+* 1.14.1
 * 1.14
 * 1.13.2
 * 1.13.1

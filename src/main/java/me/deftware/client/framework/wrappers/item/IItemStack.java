@@ -5,7 +5,6 @@ import me.deftware.client.framework.wrappers.world.IBlock;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Screen;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -18,9 +17,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.StringNbtReader;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.potion.PotionUtil;
-import net.minecraft.text.StringTextComponent;
-import net.minecraft.text.TextComponent;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 
@@ -82,7 +80,7 @@ public class IItemStack {
 
     public void setStackDisplayName(String name) {
         CompoundTag nbttagcompound = stack.getOrCreateSubCompoundTag("display");
-        nbttagcompound.putString("Name", TextComponent.Serializer.toJson(new StringTextComponent(name)).toString());
+        nbttagcompound.putString("Name", TextComponent.Serializer.toJson(new TextComponent(name)).toString());
     }
 
     public boolean hasCompoundTag() {

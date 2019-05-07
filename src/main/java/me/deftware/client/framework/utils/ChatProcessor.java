@@ -2,12 +2,11 @@ package me.deftware.client.framework.utils;
 
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.mixin.imp.IMixinGuiNewChat;
+import net.minecraft.ChatFormat;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.StringTextComponent;
-import net.minecraft.text.Style;
-import net.minecraft.text.TextComponent;
-import net.minecraft.text.TextFormat;
-import net.minecraft.text.event.ClickEvent;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -50,12 +49,12 @@ public class ChatProcessor {
     }
 
     public static TextComponent getTextComponent(String chatMessage) {
-        TextComponent textComponent = new StringTextComponent("");
+        TextComponent textComponent = new TextComponent("");
         String[] messageParts = chatMessage.split(" ");
         int pathIndex = 0;
 
         for (String messagePart : messageParts) {
-            TextComponent append = new StringTextComponent(messagePart);
+            TextComponent append = new TextComponent(messagePart);
             Style chatStyle = new Style();
 
             if (ChatProcessor.URL_PATTERN.matcher(ChatColor.stripColor(messagePart)).matches()) {
@@ -120,7 +119,7 @@ public class ChatProcessor {
         }
     }
 
-    private static TextFormat getTextFormattingByValue(char value) {
+    private static ChatFormat getTextFormattingByValue(char value) {
         int index = 0;
         for (ChatColor color : ChatColor.values()) {
             if (color.code == value) {
@@ -128,7 +127,7 @@ public class ChatProcessor {
                 break;
             }
         }
-        for (TextFormat textFormatting : TextFormat.values()) {
+        for (ChatFormat textFormatting : ChatFormat.values()) {
             if (textFormatting.getId() == index) {
                 return textFormatting;
             }

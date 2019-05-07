@@ -4,7 +4,7 @@ import me.deftware.mixin.imp.IMixinGuiEditSign;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.ingame.EditSignScreen;
-import net.minecraft.text.StringTextComponent;
+import net.minecraft.network.chat.TextComponent;
 
 /**
  * Allows direct access to modify data in classes
@@ -59,7 +59,7 @@ public class IClassHandler {
         }
 
         public void setText(String text, int line) {
-            ((IMixinGuiEditSign) screen).getTileSign().text[line] = new StringTextComponent(text);
+            ((IMixinGuiEditSign) screen).getTileSign().text[line] = new TextComponent(text);
         }
 
         public void save() {

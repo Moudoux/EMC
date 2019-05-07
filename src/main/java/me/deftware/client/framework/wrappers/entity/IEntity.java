@@ -7,6 +7,8 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.client.render.entity.PigZombieEntityRenderer;
+import net.minecraft.client.render.entity.SnowmanEntityRenderer;
+import net.minecraft.client.render.entity.model.SnowmanEntityModel;
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
@@ -299,7 +301,7 @@ public class IEntity {
         } else if (e.equals(EntityType.ENTITY_IRON_GOLEM)) {
             return entity instanceof IronGolemEntity;
         } else if (e.equals(EntityType.ENTITY_SNOW_GOLEM)) {
-            return entity instanceof SnowmanEntity;
+            return entity instanceof SnowGolemEntity;
         } else if (e.equals(EntityType.ENTITY_PUFFERFISH)) {
             return entity instanceof PufferfishEntity;
         }

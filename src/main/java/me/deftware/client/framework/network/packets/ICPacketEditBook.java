@@ -13,7 +13,7 @@ public class ICPacketEditBook extends IPacket {
     }
 
     public ICPacketEditBook(IItemStack book) {
-        super(new BookUpdateC2SPacket(book.getStack(), true, Hand.MAIN));
+        super(new BookUpdateC2SPacket(book.getStack(), true, Hand.MAIN_HAND));
     }
 
 }

@@ -66,7 +66,7 @@ public class IVec3d {
 
 	public static boolean rayTraceBlocks(IVec3d vec1, IVec3d vec2) {
         HitResult hitResult_1 = MinecraftClient.getInstance().world.rayTrace(new RayTraceContext(vec1.getVector(), vec2.getVector(), RayTraceContext.ShapeType.OUTLINE, RayTraceContext.FluidHandling.NONE, ICamera.getRenderViewEntity()));
-        return hitResult_1.getType() != HitResult.Type.NONE;
+        return hitResult_1.getType() != HitResult.Type.MISS;
 	}
 
     public double squareDistanceTo(IVec3d vec) {

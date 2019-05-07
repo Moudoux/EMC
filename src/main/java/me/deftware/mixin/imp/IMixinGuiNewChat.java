@@ -1,7 +1,7 @@
 package me.deftware.mixin.imp;
 
 
-import net.minecraft.text.TextComponent;
+import net.minecraft.network.chat.TextComponent;
 
 public interface IMixinGuiNewChat {
 

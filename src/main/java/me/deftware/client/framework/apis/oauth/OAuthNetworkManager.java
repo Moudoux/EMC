@@ -21,7 +21,7 @@ public class OAuthNetworkManager extends ClientConnection {
     }
 
     public static OAuthNetworkManager connect(InetAddress inetAddress_1, int int_1, boolean boolean_1, OAuth.OAuthCallback callback) {
-        final OAuthNetworkManager clientConnection_1 = new OAuthNetworkManager(NetworkSide.CLIENT, callback);
+        final OAuthNetworkManager clientConnection_1 = new OAuthNetworkManager(NetworkSide.CLIENTBOUND, callback);
         Class class_2;
         Lazy lazy_2;
         if (Epoll.isAvailable() && boolean_1) {
@@ -39,7 +39,7 @@ public class OAuthNetworkManager extends ClientConnection {
                 } catch (ChannelException var3) {
                 }
 
-                channel_1.pipeline().addLast("timeout", new ReadTimeoutHandler(30)).addLast("splitter", new SplitterHandler()).addLast("decoder", new DecoderHandler(NetworkSide.CLIENT)).addLast("prepender", new SizePrepender()).addLast("encoder", new PacketEncoder(NetworkSide.SERVER)).addLast("packet_handler", clientConnection_1);
+                channel_1.pipeline().addLast("timeout", new ReadTimeoutHandler(30)).addLast("splitter", new SplitterHandler()).addLast("decoder", new DecoderHandler(NetworkSide.CLIENTBOUND)).addLast("prepender", new SizePrepender()).addLast("encoder", new PacketEncoder(NetworkSide.SERVERBOUND)).addLast("packet_handler", clientConnection_1);
             }
         })).channel(class_2)).connect(inetAddress_1, int_1).syncUninterruptibly();
         return clientConnection_1;

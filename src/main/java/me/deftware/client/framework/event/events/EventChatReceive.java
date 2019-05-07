@@ -2,24 +2,24 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.utils.ChatProcessor;
-import net.minecraft.text.TextComponent;
+import net.minecraft.network.chat.Component;
 
 /**
  * Triggered by Minecraft chat listener at the moment the message is drawn to screen
  */
 public class EventChatReceive extends Event {
 
-    private TextComponent itc;
+    private Component itc;
 
-    public EventChatReceive(TextComponent itc) {
+    public EventChatReceive(Component itc) {
         this.itc = itc;
     }
 
-    public TextComponent getItc() {
+    public Component getItc() {
         return itc;
     }
 
-    public void setItc(TextComponent itc) {
+    public void setItc(Component itc) {
         this.itc = itc;
     }
 

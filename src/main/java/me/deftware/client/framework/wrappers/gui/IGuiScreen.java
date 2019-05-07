@@ -10,7 +10,7 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.text.StringTextComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.SystemUtil;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -39,7 +39,7 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public IGuiScreen(String screenTitle, boolean escGoesBack) {
-        super(new StringTextComponent(screenTitle));
+        super(new TextComponent(screenTitle));
         this.escGoesBack = escGoesBack;
     }
 

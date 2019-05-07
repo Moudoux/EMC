@@ -26,7 +26,7 @@ public class CustomClass extends ResourceTexture {
         DefaultResourcePack defaultResourcePack_1 = minecraftClient_1.getResourcePackDownloader().getPack();
 
         try {
-            InputStream inputStream_1 = defaultResourcePack_1.open(ResourceType.ASSETS, customLogo);
+            InputStream inputStream_1 = defaultResourcePack_1.open(ResourceType.CLIENT_RESOURCES, customLogo);
             Throwable var5 = null;
 
             TextureData var6;
