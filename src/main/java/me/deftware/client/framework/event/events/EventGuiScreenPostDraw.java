@@ -1,6 +1,7 @@
 package me.deftware.client.framework.event.events;
 
-import net.minecraft.client.gui.Screen;
+
+import net.minecraft.client.gui.screen.Screen;
 
 public class EventGuiScreenPostDraw extends EventGuiScreenDraw {
 

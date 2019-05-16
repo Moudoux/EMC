@@ -1,7 +1,7 @@
 package me.deftware.client.framework.wrappers.gui;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.menu.AlwaysSelectedEntryListWidget;
+import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 
 @SuppressWarnings("all")
 public abstract class IGuiSlot extends AlwaysSelectedEntryListWidget implements CustomIGuiEventListener {

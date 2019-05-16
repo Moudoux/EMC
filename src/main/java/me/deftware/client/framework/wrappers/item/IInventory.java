@@ -3,7 +3,7 @@ package me.deftware.client.framework.wrappers.item;
 import me.deftware.client.framework.wrappers.entity.IEntity;
 import me.deftware.mixin.imp.IMixinEntityLivingBase;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.ingame.PlayerInventoryScreen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.server.network.packet.PlayerActionC2SPacket;
 import net.minecraft.util.math.BlockPos;
@@ -40,7 +40,7 @@ public class IInventory {
 
     public static void onRender() {
         if (IInventory.entity != null) {
-            MinecraftClient.getInstance().openScreen(new PlayerInventoryScreen((OtherClientPlayerEntity) IInventory.entity.getEntity()));
+            MinecraftClient.getInstance().openScreen(new InventoryScreen((OtherClientPlayerEntity) IInventory.entity.getEntity()));
             IInventory.entity = null;
         }
     }

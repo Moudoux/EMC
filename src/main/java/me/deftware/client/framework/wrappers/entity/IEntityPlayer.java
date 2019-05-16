@@ -9,7 +9,7 @@ import me.deftware.mixin.imp.IMixinEntityPlayerSP;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.ingame.PlayerInventoryScreen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.passive.HorseEntity;
@@ -31,7 +31,7 @@ import java.util.Set;
 public class IEntityPlayer {
 
     public static void drawPlayer(int posX, int posY, int scale) {
-        PlayerInventoryScreen.drawEntity(posX, posY, scale, 0, 0, MinecraftClient.getInstance().player);
+        InventoryScreen.drawEntity(posX, posY, scale, 0, 0, MinecraftClient.getInstance().player);
     }
 
     public static boolean isAtEdge() {

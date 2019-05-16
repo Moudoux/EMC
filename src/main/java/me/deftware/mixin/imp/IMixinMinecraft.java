@@ -1,6 +1,6 @@
 package me.deftware.mixin.imp;
 
-import net.minecraft.client.gui.Screen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.Session;
 import net.minecraft.client.util.Window;

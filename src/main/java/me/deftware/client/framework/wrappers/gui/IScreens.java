@@ -1,22 +1,22 @@
 package me.deftware.client.framework.wrappers.gui;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.MainMenuScreen;
-import net.minecraft.client.gui.menu.LevelSelectScreen;
-import net.minecraft.client.gui.menu.MultiplayerScreen;
-import net.minecraft.client.gui.menu.SettingsScreen;
+import net.minecraft.client.gui.screen.SettingsScreen;
+import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.realms.RealmsBridge;
 
 public class IScreens {
 
-    public static net.minecraft.client.gui.Screen translate(Screen type, IGuiScreen parent) {
-        net.minecraft.client.gui.Screen screen = null;
+    public static net.minecraft.client.gui.screen.Screen translate(Screen type, IGuiScreen parent) {
+        net.minecraft.client.gui.screen.Screen screen = null;
         if (type.equals(Screen.Multiplayer)) {
             screen = new MultiplayerScreen(parent);
         } else if (type.equals(Screen.MainMenu)) {
-            screen = new MainMenuScreen();
+            screen = new TitleScreen();
         } else if (type.equals(Screen.WorldSelection)) {
-            screen = new LevelSelectScreen(parent);
+            screen = new SelectWorldScreen(parent);
         } else if (type.equals(Screen.Options)) {
             screen = new SettingsScreen(parent, MinecraftClient.getInstance().options);
         }

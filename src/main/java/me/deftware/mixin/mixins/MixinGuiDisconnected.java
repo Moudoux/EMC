@@ -1,9 +1,7 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventDisconnected;
-import me.deftware.client.framework.event.events.EventGuiScreenDraw;
-import net.minecraft.client.gui.Screen;
-import net.minecraft.client.gui.menu.DisconnectedScreen;
+import net.minecraft.client.gui.screen.DisconnectedScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

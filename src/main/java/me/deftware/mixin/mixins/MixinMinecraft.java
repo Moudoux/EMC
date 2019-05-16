@@ -5,8 +5,8 @@ import me.deftware.client.framework.event.events.EventShutdown;
 import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.mixin.imp.IMixinMinecraft;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.MainMenuScreen;
-import net.minecraft.client.gui.Screen;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.Session;
 import net.minecraft.client.util.Window;
@@ -63,10 +63,10 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void runTick(CallbackInfo ci) {
-        if (MinecraftClient.getInstance().currentScreen instanceof MainMenuScreen) {
+        if (MinecraftClient.getInstance().currentScreen instanceof TitleScreen) {
             EventGuiScreenDisplay event = new EventGuiScreenDisplay(MinecraftClient.getInstance().currentScreen);
             event.broadcast();
-            if (!(event.getScreen() instanceof MainMenuScreen)) {
+            if (!(event.getScreen() instanceof TitleScreen)) {
                 displayGuiScreen(event.getScreen());
             }
         }
