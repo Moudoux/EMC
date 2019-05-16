@@ -28,10 +28,10 @@ import java.util.List;
 
 public abstract class IGuiScreen extends Screen {
 
-    private boolean pause = true;
-    private HashMap<String, Texture> textureHashMap = new HashMap<>();
     protected IGuiScreen parent = null;
     protected boolean escGoesBack = true;
+    private boolean pause = true;
+    private HashMap<String, Texture> textureHashMap = new HashMap<>();
 
     @Deprecated
     public IGuiScreen(boolean pause) {
