@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.awt.*;
+import java.util.function.BiFunction;
 
 @Mixin(TextFieldWidget.class)
 public abstract class MixinGuiTextField extends AbstractButtonWidget implements IMixinGuiTextField {
@@ -36,7 +37,16 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
     private int focusedTicks;
 
     @Shadow
+    private String suggestion;
+
+    @Shadow
+    public boolean focused;
+
+    @Shadow
     private int cursorMin;
+
+    @Shadow
+    private int cursorMax;
 
     @Shadow
     private int field_2103;
@@ -45,6 +55,11 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
     @Final
     private TextRenderer textRenderer;
 
+    @Shadow
+    private BiFunction<String, Integer, String> renderTextProvider;
+
+    @Shadow
+    private boolean editable;
 
     @Override
     public int getHeight() {
@@ -150,5 +165,29 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
         return maxLength;
     }
 
+    @Override
+    public boolean getHasBorder() {
+        return focused;
+    }
+
+    @Override
+    public boolean getIsEditble() {
+        return editable;
+    }
+
+    @Override
+    public BiFunction<String, Integer, String> getRenderTextProvider() {
+        return renderTextProvider;
+    }
+
+    @Override
+    public String getSuggestion() {
+        return suggestion;
+    }
+
+    @Override
+    public int getCursorMax() {
+        return cursorMax;
+    }
 
 }

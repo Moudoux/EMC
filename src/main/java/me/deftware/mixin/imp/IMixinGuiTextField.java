@@ -3,6 +3,8 @@ package me.deftware.mixin.imp;
 import me.deftware.client.framework.fonts.EMCFont;
 import net.minecraft.client.font.TextRenderer;
 
+import java.util.function.BiFunction;
+
 public interface IMixinGuiTextField {
 
     int getHeight();
@@ -36,5 +38,15 @@ public interface IMixinGuiTextField {
     void setCustomFont(EMCFont font);
 
     int getMaxTextLength();
+
+    boolean getHasBorder();
+
+    boolean getIsEditble();
+
+    BiFunction<String, Integer, String> getRenderTextProvider();
+
+    String getSuggestion();
+
+    int getCursorMax();
 
 }
