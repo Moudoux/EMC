@@ -98,6 +98,9 @@ public class Bootstrap {
                     if (new File(file.getAbsolutePath() + ".delete").exists()) {
                         Bootstrap.logger.info("Deleting mod " + file.getName());
                         if (!new File(file.getAbsolutePath() + ".delete").delete()) {
+                            Bootstrap.logger.warn("Failed to delete " + file.getName() + ".delete");
+                        }
+                        if (!file.delete()) {
                             Bootstrap.logger.warn("Failed to delete " + file.getName());
                         }
                     } else {
