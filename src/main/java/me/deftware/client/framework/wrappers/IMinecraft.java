@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers;
 
+import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.entity.IEntity;
 import me.deftware.client.framework.wrappers.entity.IEntity.EntityType;
 import me.deftware.client.framework.wrappers.gui.IGuiInventory;
@@ -17,6 +18,7 @@ import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.main.Main;
+import net.minecraft.client.options.AoOption;
 import net.minecraft.client.options.ServerEntry;
 import net.minecraft.container.GenericContainer;
 import net.minecraft.entity.Entity;
@@ -34,6 +36,7 @@ public class IMinecraft {
 
     public static IServerData lastServer = null;
     private static IServerData iServerCache = null;
+    public static AoOption ao = null;
 
     public static File getMinecraftFile() throws URISyntaxException {
         return new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
@@ -124,6 +127,15 @@ public class IMinecraft {
     }
 
     public static void reloadRenderers() {
+        if (ao == null) {
+            ao = MinecraftClient.getInstance().options.ao;
+        }
+        if (SettingsMap.isOverrideMode()) {
+            ao = MinecraftClient.getInstance().options.ao;
+            MinecraftClient.getInstance().options.ao = AoOption.OFF;
+        } else {
+            MinecraftClient.getInstance().options.ao = ao;
+        }
         MinecraftClient.getInstance().worldRenderer.reload();
     }
 
