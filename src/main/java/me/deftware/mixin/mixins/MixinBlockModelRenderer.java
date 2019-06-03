@@ -2,6 +2,7 @@ package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.FluidBlock;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.block.BlockModelRenderer;
 import net.minecraft.client.render.model.BakedModel;
@@ -28,9 +29,13 @@ public abstract class MixinBlockModelRenderer {
 
     @Inject(method = "tesselate", at = @At("HEAD"), cancellable = true)
     public void tesselate(ExtendedBlockView extendedBlockView_1, BakedModel bakedModel_1, BlockState blockState_1, BlockPos blockPos_1, BufferBuilder bufferBuilder_1, boolean boolean_1, Random random_1, long long_1, CallbackInfoReturnable<Boolean> ci) {
-        if (SettingsMap.isOverrideMode()) {
-            if (!(boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "render", false)) {
-                ci.setReturnValue(false);
+        if (blockState_1.getBlock() instanceof FluidBlock) {
+            ci.setReturnValue(((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "FLUIDS", true)));
+        } else {
+            if (SettingsMap.isOverrideMode()) {
+                if (!(boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "render", false)) {
+                    ci.setReturnValue(false);
+                }
             }
         }
     }

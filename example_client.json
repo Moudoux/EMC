@@ -1,6 +1,6 @@
 {
-    "inheritsFrom": "1.14",
-    "id": "1.14-EMC",
+    "inheritsFrom": "1.14.3",
+    "id": "1.14.3-EMC",
     "time": "2019-04-10T20:37:13+02:00",
     "releaseTime": "2019-04-10T20:37:13+02:00",
     "type": "release",
@@ -50,7 +50,7 @@
             "url": "https://maven.fabricmc.net/"
         },
         {
-            "name": "net.fabricmc:yarn:1.14+build.1",
+            "name": "net.fabricmc:yarn:1.14.3+build.1",
             "url": "https://maven.fabricmc.net/"
         },
         {
@@ -58,7 +58,7 @@
             "url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
         },
         {
-            "name": "me.deftware:EMC-F:latest-1.14",
+            "name": "me.deftware:EMC-F:latest-1.14.3",
             "url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
         }
     ]
