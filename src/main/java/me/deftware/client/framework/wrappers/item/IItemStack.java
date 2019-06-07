@@ -17,8 +17,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.StringNbtReader;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.potion.PotionUtil;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 
@@ -33,7 +33,7 @@ public class IItemStack {
     }
 
     public IItemStack(IBlock block) {
-        stack = new ItemStack(Item.getItemFromBlock(block.getBlock()));
+        stack = new ItemStack(Item.fromBlock(block.getBlock()));
     }
 
     public IItemStack(IItem item) {
@@ -53,7 +53,7 @@ public class IItemStack {
     }
 
     public static IItemStack cloneWithoutEffects(IItemStack stack) {
-        return new IItemStack(new ItemStack(Item.byRawId(Item.getRawIdByItem(stack.getStack().getItem())),
+        return new IItemStack(new ItemStack(Item.byRawId(Item.getRawId(stack.getStack().getItem())),
                 Integer.valueOf(stack.getStack().toString().split("x")[0])));
     }
 
@@ -79,8 +79,8 @@ public class IItemStack {
     }
 
     public void setStackDisplayName(String name) {
-        CompoundTag nbttagcompound = stack.getOrCreateSubCompoundTag("display");
-        nbttagcompound.putString("Name", TextComponent.Serializer.toJson(new TextComponent(name)).toString());
+        CompoundTag nbttagcompound = stack.getOrCreateSubTag("display");
+        nbttagcompound.putString("Name", LiteralText.Serializer.toJson(new LiteralText(name)).toString());
     }
 
     public boolean hasCompoundTag() {
@@ -88,27 +88,27 @@ public class IItemStack {
     }
 
     public void setTagInfo(String key, INBTTagList compound) {
-        stack.setChildTag(key, compound.list);
+        stack.putSubTag(key, compound.list);
     }
 
     public int getMaxStackSize() {
-        return stack.getMaxAmount();
+        return stack.getMaxCount();
     }
 
     public static boolean areItemStackTagsEqual(IItemStack one, IItemStack two) {
-        return ItemStack.areEqualIgnoreTags(one.getStack(), two.getStack());
+        return ItemStack.areEqualIgnoreDamage(one.getStack(), two.getStack());
     }
 
     public boolean isItemEqual(IItemStack stack) {
-        return this.stack.isEqualIgnoreTags(stack.getStack());
+        return this.stack.isItemEqualIgnoreDamage(stack.getStack());
     }
 
     public void setCount(int count) {
-        stack.setAmount(count);
+        stack.setCount(count);
     }
 
     public int getCount() {
-        return stack.getAmount();
+        return stack.getCount();
     }
 
     public INBTTagCompound getTagCompound() {
@@ -120,19 +120,19 @@ public class IItemStack {
     }
 
     public String getDisplayName() {
-        return stack.getDisplayName().getString();
+        return stack.getName().getString();
     }
 
     public int getItemID() {
-        return Item.getRawIdByItem(stack.getItem());
+        return Item.getRawId(stack.getItem());
     }
 
     public float getStrVsBlock(IBlockPos pos) {
-        return stack.getBlockBreakingSpeed(MinecraftClient.getInstance().world.getBlockState(pos.getPos()));
+        return stack.getMiningSpeed(MinecraftClient.getInstance().world.getBlockState(pos.getPos()));
     }
 
     public boolean isEmpty() {
-        return stack.getItem() == Item.getItemFromBlock(Blocks.AIR);
+        return stack.getItem() == Item.fromBlock(Blocks.AIR);
     }
 
     public IItem getIItem() {

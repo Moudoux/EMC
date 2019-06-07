@@ -13,7 +13,7 @@ public class EventRenderPlayerModel extends Event {
 	private String name;
 
 	public EventRenderPlayerModel(Entity entity) {
-		this.name = entity.getName().getFormattedText();
+		this.name = entity.getName().asFormattedString();
 	}
 
 	public String getName() {

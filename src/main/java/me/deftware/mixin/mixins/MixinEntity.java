@@ -1,13 +1,12 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventKnockback;
-import me.deftware.client.framework.event.events.EventSlowdown;
 import me.deftware.client.framework.event.events.EventSneakingCheck;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.mixin.imp.IMixinEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BoundingBox;
+import net.minecraft.util.math.Box;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -75,7 +74,7 @@ public abstract class MixinEntity implements IMixinEntity {
     public abstract boolean hasVehicle();
 
     @Shadow
-    public abstract BoundingBox getBoundingBox();
+    public abstract Box getBoundingBox();
 
     @Shadow
     public abstract boolean getFlag(int int_1);

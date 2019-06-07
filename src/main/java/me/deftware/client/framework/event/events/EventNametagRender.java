@@ -15,7 +15,7 @@ public class EventNametagRender extends Event {
     public EventNametagRender(Entity entity) {
         isPlayer = entity instanceof PlayerEntity;
         if (isPlayer) {
-            name = entity.getName().getFormattedText();
+            name = entity.getName().asFormattedString();
         }
     }
 

@@ -54,7 +54,7 @@ public class IBlock {
     }
 
     public String getLocalizedName() {
-        return block.getTextComponent().getText();
+        return block.getName().getString();
     }
 
     public String getBlockKey() {

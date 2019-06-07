@@ -25,7 +25,7 @@ public class IPlayer {
     }
 
     public String getFormattedDisplayName() {
-        return player.getDisplayName().getFormattedText();
+        return player.getDisplayName().asFormattedString();
     }
 
     public float getNametagSize() {

@@ -12,8 +12,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.command.CommandSource;
+import net.minecraft.text.LiteralText;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -54,7 +54,7 @@ public abstract class MixinGuiChat extends Screen {
     @Shadow
     public abstract void updateCommand();
 
-    protected MixinGuiChat(TextComponent textComponent_1) {
+    protected MixinGuiChat(LiteralText textComponent_1) {
         super(textComponent_1);
     }
 

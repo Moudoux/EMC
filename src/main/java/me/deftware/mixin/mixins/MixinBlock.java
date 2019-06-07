@@ -2,10 +2,7 @@ package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventBlockhardness;
 import me.deftware.client.framework.maps.SettingsMap;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderLayer;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FluidBlock;
+import net.minecraft.block.*;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.StateFactory;
@@ -88,6 +85,10 @@ public abstract class MixinBlock {
             ci.setReturnValue((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "LIQUID_VOXEL_FULL", false)
                     ? VoxelShapes.fullCube()
                     : VoxelShapes.empty());
+        } else if ((Object) this instanceof SweetBerryBushBlock) {
+            if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "custom_berry_voxel", false)) {
+                ci.setReturnValue(VoxelShapes.fullCube());
+            }
         }
     }
 

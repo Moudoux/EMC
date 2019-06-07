@@ -13,7 +13,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.chat.Component;
+import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -70,13 +70,13 @@ public class MixinGuiScreen implements IMixinGuiScreen {
 
     @Overwrite
     public List<String> getTooltipFromItem(ItemStack itemStack_1) {
-        List<Component> list_1 = itemStack_1.getTooltipText(MinecraftClient.getInstance().player, MinecraftClient.getInstance().options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL);
+        List<Text> list_1 = itemStack_1.getTooltip(MinecraftClient.getInstance().player, MinecraftClient.getInstance().options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL);
         List<String> list_2 = Lists.newArrayList();
         Iterator var4 = list_1.iterator();
 
         while (var4.hasNext()) {
-            Component textComponent_1 = (Component) var4.next();
-            list_2.add(textComponent_1.getFormattedText());
+            Text textComponent_1 = (Text) var4.next();
+            list_2.add(textComponent_1.asFormattedString());
         }
 
         EventGetItemToolTip event = new EventGetItemToolTip(list_2, new IItem(itemStack_1.getItem()));

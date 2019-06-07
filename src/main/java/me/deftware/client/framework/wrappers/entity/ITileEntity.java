@@ -15,7 +15,8 @@ public class ITileEntity {
         chestType = entity instanceof ChestBlockEntity
                 ? entity instanceof TrappedChestBlockEntity ? IChestType.TRAPPED_CHEST : IChestType.CHEST
                 : entity instanceof EnderChestBlockEntity ? IChestType.ENDER_CHEST
-                : entity instanceof ShulkerBoxBlockEntity ? IChestType.SHULKER_BOX : null;
+                : entity instanceof ShulkerBoxBlockEntity ? IChestType.SHULKER_BOX
+                : entity instanceof BarrelBlockEntity ? IChestType.BARREL : null;
         if (chestType != null) {
             color = chestType.equals(IChestType.TRAPPED_CHEST) ? Color.RED
                     : chestType.equals(IChestType.CHEST) ? Color.ORANGE
@@ -41,7 +42,7 @@ public class ITileEntity {
     }
 
     public static enum IChestType {
-        TRAPPED_CHEST, CHEST, ENDER_CHEST, SHULKER_BOX
+        TRAPPED_CHEST, CHEST, ENDER_CHEST, SHULKER_BOX, BARREL
     }
 
 }

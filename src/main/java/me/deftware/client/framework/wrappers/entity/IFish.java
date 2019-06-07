@@ -1,11 +1,11 @@
 package me.deftware.client.framework.wrappers.entity;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.projectile.FishHookEntity;
+import net.minecraft.entity.projectile.FishingBobberEntity;
 
 public class IFish {
 
-    private static FishHookEntity getEntity() {
+    private static FishingBobberEntity getEntity() {
         return MinecraftClient.getInstance().player.fishHook;
     }
 

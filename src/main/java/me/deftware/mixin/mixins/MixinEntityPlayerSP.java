@@ -13,7 +13,7 @@ import net.minecraft.entity.player.HungerManager;
 import net.minecraft.server.network.packet.ChatMessageC2SPacket;
 import net.minecraft.server.network.packet.ClientCommandC2SPacket;
 import net.minecraft.server.network.packet.PlayerMoveC2SPacket;
-import net.minecraft.util.math.BoundingBox;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -193,7 +193,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         }
 
         if (isCamera()) {
-            BoundingBox axisalignedbb = getBoundingBox();
+            Box axisalignedbb = getBoundingBox();
             double d0 = x - lastX;
             double d1 = event.getPosY() - lastBaseY;
             double d2 = z - lastZ;

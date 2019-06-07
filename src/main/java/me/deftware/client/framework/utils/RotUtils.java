@@ -4,7 +4,7 @@ import me.deftware.client.framework.wrappers.entity.IEntity;
 import me.deftware.client.framework.wrappers.math.IVec3d;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityPose;
-import net.minecraft.util.math.BoundingBox;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -18,7 +18,7 @@ public class RotUtils {
         Vec3d eyesPos = RotUtils.getEyesPos();
         Vec3d lookVec = RotUtils.getServerLookVec();
 
-        BoundingBox bb = entity.getEntity().getBoundingBox();
+        Box bb = entity.getEntity().getBoundingBox();
         if (RotUtils.faceVectorPacket(bb.getCenter())) {
             return true;
         }
@@ -31,7 +31,7 @@ public class RotUtils {
         Vec3d eyesPos = RotUtils.getEyesPos();
         Vec3d lookVec = RotUtils.getServerLookVec();
 
-        BoundingBox bb = entity.getEntity().getBoundingBox();
+        Box bb = entity.getEntity().getBoundingBox();
         if (RotUtils.faceVectorClient(bb.getCenter())) {
             return true;
         }

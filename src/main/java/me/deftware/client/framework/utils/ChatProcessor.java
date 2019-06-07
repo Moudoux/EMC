@@ -2,11 +2,11 @@ package me.deftware.client.framework.utils;
 
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.mixin.imp.IMixinGuiNewChat;
-import net.minecraft.ChatFormat;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Style;
+import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -48,13 +48,13 @@ public class ChatProcessor {
         return message;
     }
 
-    public static TextComponent getTextComponent(String chatMessage) {
-        TextComponent textComponent = new TextComponent("");
+    public static LiteralText getLiteralText(String chatMessage) {
+        LiteralText LiteralText = new LiteralText("");
         String[] messageParts = chatMessage.split(" ");
         int pathIndex = 0;
 
         for (String messagePart : messageParts) {
-            TextComponent append = new TextComponent(messagePart);
+            LiteralText append = new LiteralText(messagePart);
             Style chatStyle = new Style();
 
             if (ChatProcessor.URL_PATTERN.matcher(ChatColor.stripColor(messagePart)).matches()) {
@@ -72,12 +72,12 @@ public class ChatProcessor {
             }
 
             append.setStyle(chatStyle);
-            textComponent.append(append);
-            textComponent.append(" ");
+            LiteralText.append(append);
+            LiteralText.append(" ");
             pathIndex += messagePart.length() - 1;
         }
 
-        return textComponent;
+        return LiteralText;
     }
 
     public static void sendMessages() {
@@ -94,8 +94,8 @@ public class ChatProcessor {
             history.add(chatMessage);
             return;
         }
-        TextComponent textComponent = getTextComponent(chatMessage);
-        ((IMixinGuiNewChat) MinecraftClient.getInstance().inGameHud.getChatHud()).setTheChatLine(textComponent, 0,
+        LiteralText LiteralText = getLiteralText(chatMessage);
+        ((IMixinGuiNewChat) MinecraftClient.getInstance().inGameHud.getChatHud()).setTheChatLine(LiteralText, 0,
                 MinecraftClient.getInstance().inGameHud.getTicks(), false);
     }
 
@@ -119,7 +119,7 @@ public class ChatProcessor {
         }
     }
 
-    private static ChatFormat getTextFormattingByValue(char value) {
+    private static Formatting getTextFormattingByValue(char value) {
         int index = 0;
         for (ChatColor color : ChatColor.values()) {
             if (color.code == value) {
@@ -127,8 +127,8 @@ public class ChatProcessor {
                 break;
             }
         }
-        for (ChatFormat textFormatting : ChatFormat.values()) {
-            if (textFormatting.getId() == index) {
+        for (Formatting textFormatting : Formatting.values()) {
+            if (textFormatting.getColorIndex() == index) {
                 return textFormatting;
             }
         }

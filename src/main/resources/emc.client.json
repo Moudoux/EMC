@@ -49,7 +49,8 @@
     "MixinNetworkPlayerInfo",
     "MixinGuiContainer",
     "MixinSplashScreen",
-    "MixinGuiButton"
+    "MixinGuiButton",
+    "MixinSweetBerryBushBlock"
   ],
   "injectors": {
     "defaultRequire": 1

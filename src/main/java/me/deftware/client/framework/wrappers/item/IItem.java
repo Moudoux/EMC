@@ -22,7 +22,7 @@ public class IItem {
     }
 
     public String getName() {
-        return item.getTextComponent().getString();
+        return item.getName().getString();
     }
 
     public String getTranslationKey() {
@@ -34,7 +34,7 @@ public class IItem {
     }
 
     public int getID() {
-        return Item.getRawIdByItem(item);
+        return Item.getRawId(item);
     }
 
     public boolean isValidItem() {
@@ -42,7 +42,7 @@ public class IItem {
     }
 
     public float getAttackDamage() {
-        return ((SwordItem) item).getWeaponDamage() + 3.0F;
+        return ((SwordItem) item).getAttackDamage() + 3.0F;
     }
 
     public float getDamageVsEntity() {
@@ -66,7 +66,7 @@ public class IItem {
         } else if (type.equals(IItemType.SplashPotion)) {
             return item == Items.SPLASH_POTION;
         } else if (type.equals(IItemType.ItemFood)) {
-            return item.getItemGroup() == ItemGroup.FOOD;
+            return item.getGroup() == ItemGroup.FOOD;
         } else if (type.equals(IItemType.ItemSword)) {
             return item instanceof SwordItem;
         } else if (type.equals(IItemType.ItemTool)) {

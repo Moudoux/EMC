@@ -58,21 +58,21 @@ Minecraft versions currently supported
 * 1.13
 * 1.12.2
 
-Loading EMC (1.14.2)
+Loading EMC (1.14.3)
 -------------------
 
-Some versions of EMC are loaded differently and use a small library to load, these builds are appended with an F, such as `EMC-F` for the 1.14.2 version of EMC.
+Some versions of EMC are loaded differently and use a small library to load, these builds are appended with an F, such as `EMC-F` for the 1.14.3 version of EMC.
 
 Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To load EMC in Minecraft add the following in the `libraries` array to your Minecraft json file:
 
 ```
 {
-	"name": "me.deftware:EMC-F:latest-1.14.2",
+	"name": "me.deftware:EMC-F:latest-1.14.3",
 	"url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
 }
 ```
 
-Then change `mainClass` to `net.fabricmc.loader.launch.knot.KnotClient`. If you want to see an example on how to load EMC see [example_client.json](https://gitlab.com/EMC-Framework/EMC/blob/1.14.2/example_client.json)
+Then change `mainClass` to `net.fabricmc.loader.launch.knot.KnotClient`. If you want to see an example on how to load EMC see [example_client.json](https://gitlab.com/EMC-Framework/EMC/blob/1.14.3/example_client.json)
 
 Making client mods with EMC 
 -------------------

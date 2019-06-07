@@ -108,7 +108,7 @@ public class IMinecraft {
 
     public static IEntity getPointedEntity() {
         Entity pointedEntity = MinecraftClient.getInstance().targetedEntity;
-        if ((pointedEntity != null) && ((pointedEntity instanceof PlayerEntity))) {
+        if (pointedEntity != null && pointedEntity instanceof LivingEntity) {
             return new IEntity(pointedEntity);
         }
         return null;

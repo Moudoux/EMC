@@ -7,7 +7,7 @@ import net.minecraft.client.network.ClientLoginNetworkHandler;
 import net.minecraft.client.network.packet.LoginSuccessS2CPacket;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkState;
-import net.minecraft.network.chat.Component;
+import net.minecraft.text.Text;
 
 public class OAuthNetHandler extends ClientLoginNetworkHandler {
 
@@ -21,7 +21,7 @@ public class OAuthNetHandler extends ClientLoginNetworkHandler {
     }
 
     @Override
-    public void onDisconnected(Component reason) {
+    public void onDisconnected(Text reason) {
         callback.callback(false, "", "");
     }
 
