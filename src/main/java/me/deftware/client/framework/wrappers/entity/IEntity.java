@@ -76,11 +76,21 @@ public class IEntity {
     }
 
     public float getHealth() {
-
         if (entity instanceof LivingEntity) {
             return ((LivingEntity) entity).getHealth();
         }
         return 0;
+    }
+
+    public int getEntityID() {
+        return entity.getEntityId();
+    }
+
+    public INetworkPlayerInfo getPlayerNetworkInfo() {
+        if (entity instanceof AbstractClientPlayerEntity) {
+            return new INetworkPlayerInfo(((IMixinAbstractClientPlayer) (AbstractClientPlayerEntity) entity).getPlayerNetworkInfo());
+        }
+        return null;
     }
 
     public void reloadSkin() {
