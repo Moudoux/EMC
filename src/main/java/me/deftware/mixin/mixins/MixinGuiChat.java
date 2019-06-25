@@ -65,7 +65,7 @@ public abstract class MixinGuiChat extends Screen {
     @Overwrite
     public void init() {
         MinecraftClient.getInstance().keyboard.enableRepeatEvents(true);
-        this.field_2387 = MinecraftClient.getInstance().inGameHud.getChatHud().method_1809().size();
+        this.field_2387 = MinecraftClient.getInstance().inGameHud.getChatHud().getMessageHistory().size();
         this.chatField = new InternalGuiTextField(((IMixinGuiScreen) this).getFont(), 4, ((Screen) (Object) this).height - 12, ((Screen) (Object) this).width - 4, 12);
         this.chatField.setMaxLength(256);
         this.chatField.setHasBorder(false);
