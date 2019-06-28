@@ -160,7 +160,7 @@ public class IEntity {
     }
 
     public boolean isHostile() {
-        if (entity instanceof MobEntity) {
+        if (entity instanceof HostileEntity) {
             return true;
         } else if (entity instanceof ChickenEntity) {
             if (((ChickenEntity) entity).jockey) {
