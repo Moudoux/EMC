@@ -31,7 +31,7 @@ public abstract class IGuiSlot extends AlwaysSelectedEntryListWidget implements 
 
     public void clickElement(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
         if (children().size() + 1 > slotIndex && slotIndex >= 0) {
-            setSelected((Entry) children().get(slotIndex));
+            setSelected((net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget.Entry) children().get(slotIndex));
         }
     }
 
@@ -64,7 +64,7 @@ public abstract class IGuiSlot extends AlwaysSelectedEntryListWidget implements 
         }
     }
 
-    public abstract class CustomItem extends Entry {
+    public abstract class CustomItem extends net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget.Entry {
 
         protected int id;
 

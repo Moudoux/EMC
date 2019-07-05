@@ -52,7 +52,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
         }
     }
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/hud/InGameHud.draw(F)V"))
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/hud/InGameHud.render(F)V"))
     private void onRender2D(CallbackInfo cb) {
         ChatProcessor.sendMessages();
         new EventRender2D(0f).broadcast();

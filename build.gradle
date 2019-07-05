@@ -1,7 +1,7 @@
 import org.gradle.internal.os.OperatingSystem
 
 plugins {
-	id 'fabric-loom' version '0.2.0-SNAPSHOT'
+	id 'fabric-loom' version '0.2.4-SNAPSHOT'
 }
 
 apply plugin: 'maven'
@@ -38,7 +38,7 @@ repositories {
 dependencies {
 	minecraft "com.mojang:minecraft:${mcVersion}"
 	mappings "net.fabricmc:yarn:${mappingsVer}"
-	modCompile "net.fabricmc:fabric-loader:0.4.4+build.139"
+	modCompile "net.fabricmc:fabric-loader:0.4.8+build.155"
 }
 
 //noinspection GroovyAssignabilityCheck

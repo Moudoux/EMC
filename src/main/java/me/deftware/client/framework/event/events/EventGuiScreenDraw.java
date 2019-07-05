@@ -6,7 +6,7 @@ import me.deftware.client.framework.wrappers.gui.imp.GuiContainerInstance;
 import me.deftware.client.framework.wrappers.gui.imp.ScreenInstance;
 import me.deftware.mixin.imp.IMixinGuiScreen;
 import net.minecraft.client.gui.screen.DisconnectedScreen;
-import net.minecraft.client.gui.screen.PauseScreen;
+import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.AbstractContainerScreen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
@@ -32,7 +32,7 @@ public class EventGuiScreenDraw extends Event {
         if (type.equals(CommonScreenTypes.GuiDisconnected)) {
             return screen instanceof DisconnectedScreen;
         } else if (type.equals(CommonScreenTypes.GuiIngameMenu)) {
-            return screen instanceof PauseScreen;
+            return screen instanceof GameMenuScreen;
         } else if (type.equals(CommonScreenTypes.GuiContainer)) {
             return screen instanceof AbstractContainerScreen;
         }

@@ -2,7 +2,7 @@
   "id": "emc",
   "name": "EMC Framework",
   "description": "Provides an API for EMC with Fabric",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "side": "client",
   "initializers": [
     "me.deftware.launch.FabricLauncher"
