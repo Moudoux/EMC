@@ -138,7 +138,10 @@ public abstract class MixinSplashScreen {
 
     public void done() {
         this.field_18218.run();
-        Bootstrap.initList.forEach(mod -> mod.accept("arg"));
+        if (!Bootstrap.initialized) {
+            Bootstrap.initialized = true;
+            Bootstrap.initList.forEach(mod -> mod.accept("arg"));
+        }
     }
 
 }
