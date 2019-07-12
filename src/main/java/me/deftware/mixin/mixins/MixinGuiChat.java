@@ -31,14 +31,17 @@ public abstract class MixinGuiChat extends Screen {
     protected TextFieldWidget chatField;
 
     @Shadow
-    private String field_18973;
+    private String originalChatText;
 
     @Shadow
-    private int field_2387;
+    private int messageHistorySize;
+
     @Shadow
     private ParseResults<CommandSource> parseResults;
+
     @Shadow
     private CompletableFuture<Suggestions> suggestionsFuture;
+
     @Shadow
     private boolean completingSuggestion;
 
@@ -65,11 +68,11 @@ public abstract class MixinGuiChat extends Screen {
     @Overwrite
     public void init() {
         MinecraftClient.getInstance().keyboard.enableRepeatEvents(true);
-        this.field_2387 = MinecraftClient.getInstance().inGameHud.getChatHud().getMessageHistory().size();
+        this.messageHistorySize = MinecraftClient.getInstance().inGameHud.getChatHud().getMessageHistory().size();
         this.chatField = new InternalGuiTextField(((IMixinGuiScreen) this).getFont(), 4, ((Screen) (Object) this).height - 12, ((Screen) (Object) this).width - 4, 12);
         this.chatField.setMaxLength(256);
         this.chatField.setHasBorder(false);
-        this.chatField.setText(this.field_18973);
+        this.chatField.setText(this.originalChatText);
         this.chatField.setRenderTextProvider(this::getRenderText);
         this.chatField.setChangedListener(this::onChatFieldChanged);
         this.children.add(this.chatField);
