@@ -1,5 +1,5 @@
 before_script:
-  - apt-get update && apt-get install -y openjdk-8-jdk && chmod +x gradlew
+  - apt-get update && add-apt-repository ppa:openjdk-r/ppa && apt-get update && apt-get install -y openjdk-8-jdk && chmod +x gradlew
 
 ebuild:
   script:
