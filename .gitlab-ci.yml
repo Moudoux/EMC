@@ -1,6 +1,12 @@
-before_script:
-  - apt-get update && add-apt-repository ppa:openjdk-r/ppa && apt-get update && apt-get install -y openjdk-8-jdk && chmod +x gradlew
+image: openjdk:8
 
-ebuild:
-  script:
-    - ./gradlew build
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+build:
+  stage: build
+  script: ./gradlew build
+  artifacts:
+    paths: 
+      - maven
+    name: "emc-$CI_COMMIT_SHORT_SHA-snapshot"

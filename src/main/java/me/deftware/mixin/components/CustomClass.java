@@ -31,7 +31,7 @@ public class CustomClass extends ResourceTexture {
 
             TextureData var6;
             try {
-                var6 = new TextureData((TextureResourceMetadata) null, NativeImage.fromInputStream(inputStream_1));
+                var6 = new TextureData((TextureResourceMetadata) null, NativeImage.read(inputStream_1));
             } catch (Throwable var16) {
                 var5 = var16;
                 throw var16;

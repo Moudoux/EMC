@@ -85,7 +85,7 @@ public class Texture {
     public int fillFromBufferedFormatImage(BufferedImage img, NativeImage.Format pixelFormat) {
         byte[] imageBytes = ((DataBufferByte) img.getData().getDataBuffer()).getData();
         try {
-            this.nativeImage = NativeImage.fromInputStream(pixelFormat, new ByteArrayInputStream(imageBytes));
+            this.nativeImage = NativeImage.read(pixelFormat, new ByteArrayInputStream(imageBytes));
             this.dynamicTexture.setImage(nativeImage);
             this.refreshParameters();
         } catch (IOException ioe) {
@@ -150,7 +150,7 @@ public class Texture {
     }
 
     public byte getAlpha(int x, int y) {
-        return this.nativeImage.getAlphaOrLuminance(x, y);
+        return this.nativeImage.getPixelOpacity(x, y);
     }
 
     public int updatePixels() {
