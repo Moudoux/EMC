@@ -33,12 +33,17 @@ version = getVersionFromJava()
 
 repositories {
 	mavenCentral()
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:${mcVersion}"
 	mappings "net.fabricmc:yarn:${mappingsVer}"
 	modCompile "net.fabricmc:fabric-loader:0.4.8+build.155"
+	modCompile 'com.github.Chocohead:Fabric-ASM:9af0ebe992'
+	include 'com.github.Chocohead:Fabric-ASM:9af0ebe992'
+
+	compile files("deps/optifine.jar")
 }
 
 //noinspection GroovyAssignabilityCheck

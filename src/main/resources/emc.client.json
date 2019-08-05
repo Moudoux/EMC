@@ -2,6 +2,7 @@
   "required": true,
   "package": "me.deftware.mixin.mixins",
   "compatibilityLevel": "JAVA_8",
+  "refmap": "emc-refmap.json",
   "mixins": [
     "MixinMinecraft",
     "MixinRenderManager",
@@ -51,8 +52,5 @@
     "MixinSplashScreen",
     "MixinGuiButton",
     "MixinSweetBerryBushBlock"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+  ]
 }

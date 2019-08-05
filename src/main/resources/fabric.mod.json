@@ -1,13 +1,26 @@
 {
+  "schemaVersion": 1,
   "id": "emc",
   "name": "EMC Framework",
   "description": "Provides an API for EMC with Fabric",
   "version": "2.0.0",
-  "side": "client",
-  "initializers": [
-    "me.deftware.launch.FabricLauncher"
+  "environment": "client",
+  "authors": [
+    "deftware"
   ],
-  "mixins": {
-    "client": "emc.client.json"
+  "contact": {
+    "homepage": "https://emc-framework.gitlab.io/",
+    "sources": "https://gitlab.com/EMC-Framework/EMC"
+  },
+  "entrypoints": {
+    "main": [
+      "me.deftware.launch.FabricLauncher"
+    ]
+  },
+  "license": "GPL-3.0",
+  "custom": {
+    "mm:early_risers": [
+      "me.deftware.launch.EarlyRiser"
+    ]
   }
 }
