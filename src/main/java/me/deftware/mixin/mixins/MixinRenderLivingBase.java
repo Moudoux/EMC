@@ -1,6 +1,6 @@
 package me.deftware.mixin.mixins;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.event.events.EventRenderPlayerModel;
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
@@ -30,7 +30,7 @@ public abstract class MixinRenderLivingBase<T extends LivingEntity> {
      */
     @Overwrite
     public void method_4048(T entityLivingBaseIn, double x, double y, double z) {
-        GlStateManager.translatef((float) x, (float) y, (float) z);
+        RenderSystem.translatef((float) x, (float) y, (float) z);
         if (!(entityLivingBaseIn instanceof PlayerEntity)) {
             return;
         }
@@ -49,8 +49,8 @@ public abstract class MixinRenderLivingBase<T extends LivingEntity> {
                 flip = names.equals(s);
             }
             if (flip) {
-                GlStateManager.translatef(0.0F, entityLivingBaseIn.getHeight() + 0.1F, 0.0F);
-                GlStateManager.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
+                RenderSystem.translatef(0.0F, entityLivingBaseIn.getHeight() + 0.1F, 0.0F);
+                RenderSystem.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
             }
         }
     }

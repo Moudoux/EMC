@@ -184,9 +184,9 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         boolean boolean_2 = this.isSneaking();
         if (boolean_2 != this.lastIsHoldingSneakKey) {
             if (boolean_2) {
-                this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.START_SNEAKING));
+                this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY));
             } else {
-                this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.STOP_SNEAKING));
+                this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
             }
 
             this.lastIsHoldingSneakKey = boolean_2;

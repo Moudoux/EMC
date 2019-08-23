@@ -1,6 +1,6 @@
 package me.deftware.mixin.mixins;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.IResourceLocation;
@@ -111,8 +111,8 @@ public abstract class MixinSplashScreen {
         int_6 = (this.client.window.getScaledWidth() - 256) / 2;
         int int_8 = (this.client.window.getScaledHeight() - 256) / 2;
         this.client.getTextureManager().bindTexture(LOGO);
-        GlStateManager.enableBlend();
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, float_6);
+        RenderSystem.enableBlend();
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, float_6);
         ((SplashScreen) (Object) this).blit(int_6, int_8, 0, 0, 256, 256);
         float float_7 = this.reloadMonitor.getProgress();
         this.field_17770 = this.field_17770 * 0.95F + float_7 * 0.050000012F;

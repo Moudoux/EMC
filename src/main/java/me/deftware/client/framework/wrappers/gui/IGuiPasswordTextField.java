@@ -1,7 +1,8 @@
 package me.deftware.client.framework.wrappers.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.mixin.imp.IMixinGuiTextField;
+import net.minecraft.class_4493;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.BufferBuilder;
@@ -120,18 +121,18 @@ public class IGuiPasswordTextField extends IGuiTextField {
 
         Tessellator tessellator_1 = Tessellator.getInstance();
         BufferBuilder bufferBuilder_1 = tessellator_1.getBufferBuilder();
-        GlStateManager.color4f(0.0F, 0.0F, 255.0F, 255.0F);
-        GlStateManager.disableTexture();
-        GlStateManager.enableColorLogicOp();
-        GlStateManager.logicOp(GlStateManager.LogicOp.OR_REVERSE);
+        RenderSystem.color4f(0.0F, 0.0F, 255.0F, 255.0F);
+        RenderSystem.disableTexture();
+        RenderSystem.enableColorLogicOp();
+        RenderSystem.logicOp(class_4493.LogicOp.OR_REVERSE);
         bufferBuilder_1.begin(7, VertexFormats.POSITION);
         bufferBuilder_1.vertex((double)int_1, (double)int_4, 0.0D).next();
         bufferBuilder_1.vertex((double)int_3, (double)int_4, 0.0D).next();
         bufferBuilder_1.vertex((double)int_3, (double)int_2, 0.0D).next();
         bufferBuilder_1.vertex((double)int_1, (double)int_2, 0.0D).next();
         tessellator_1.draw();
-        GlStateManager.disableColorLogicOp();
-        GlStateManager.enableTexture();
+        RenderSystem.disableColorLogicOp();
+        RenderSystem.enableTexture();
     }
 
 }

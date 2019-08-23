@@ -1,6 +1,6 @@
 package me.deftware.client.framework.wrappers.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.utils.ResourceUtils;
 import me.deftware.client.framework.utils.render.Texture;
 import me.deftware.client.framework.wrappers.IMinecraft;
@@ -238,7 +238,7 @@ public abstract class IGuiScreen extends Screen {
 
     protected void drawTexture(IResourceLocation texture, int x, int y, int width, int height) {
         MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         Screen.blit(x, y, 0, 0, width, height, width, height);
     }
 

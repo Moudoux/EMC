@@ -1,6 +1,6 @@
 package me.deftware.mixin.mixins;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.feature.Deadmau5FeatureRenderer;
@@ -32,19 +32,19 @@ public class MixinLayerDeadmau5Head {
             ((Deadmau5FeatureRenderer) (Object) this).bindTexture(abstractClientPlayerEntity_1.getSkinTexture());
 
             for (int int_1 = 0; int_1 < 2; ++int_1) {
-                float float_8 = MathHelper.lerp(float_3, abstractClientPlayerEntity_1.prevYaw, abstractClientPlayerEntity_1.yaw) - MathHelper.lerp(float_3, abstractClientPlayerEntity_1.field_6220, abstractClientPlayerEntity_1.field_6283);
+                float float_8 = MathHelper.lerp(float_3, abstractClientPlayerEntity_1.prevYaw, abstractClientPlayerEntity_1.yaw) - MathHelper.lerp(float_3, abstractClientPlayerEntity_1.prevBodyYaw, abstractClientPlayerEntity_1.bodyYaw);
                 float float_9 = MathHelper.lerp(float_3, abstractClientPlayerEntity_1.prevPitch, abstractClientPlayerEntity_1.pitch);
-                GlStateManager.pushMatrix();
-                GlStateManager.rotatef(float_8, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotatef(float_9, 1.0F, 0.0F, 0.0F);
-                GlStateManager.translatef(0.375F * (float) (int_1 * 2 - 1), 0.0F, 0.0F);
-                GlStateManager.translatef(0.0F, -0.375F, 0.0F);
-                GlStateManager.rotatef(-float_9, 1.0F, 0.0F, 0.0F);
-                GlStateManager.rotatef(-float_8, 0.0F, 1.0F, 0.0F);
+                RenderSystem.pushMatrix();
+                RenderSystem.rotatef(float_8, 0.0F, 1.0F, 0.0F);
+                RenderSystem.rotatef(float_9, 1.0F, 0.0F, 0.0F);
+                RenderSystem.translatef(0.375F * (float) (int_1 * 2 - 1), 0.0F, 0.0F);
+                RenderSystem.translatef(0.0F, -0.375F, 0.0F);
+                RenderSystem.rotatef(-float_9, 1.0F, 0.0F, 0.0F);
+                RenderSystem.rotatef(-float_8, 0.0F, 1.0F, 0.0F);
                 float float_10 = 1.3333334F;
-                GlStateManager.scalef(1.3333334F, 1.3333334F, 1.3333334F);
+                RenderSystem.scalef(1.3333334F, 1.3333334F, 1.3333334F);
                 (((Deadmau5FeatureRenderer) (Object) this).getModel()).renderEars(0.0625F);
-                GlStateManager.popMatrix();
+                RenderSystem.popMatrix();
             }
 
         }

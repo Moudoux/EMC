@@ -1,6 +1,6 @@
 package me.deftware.client.framework.wrappers.render;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.utils.render.TexUtil;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.client.framework.wrappers.entity.IEntityPlayer;
@@ -16,9 +16,9 @@ public class IBeaconRenderer {
         if (height < 1) {
             throw new IllegalArgumentException("Height cannot be less than 1");
         }
-        GlStateManager.alphaFunc(516, 0.1F);
+        RenderSystem.alphaFunc(516, 0.1F);
         TexUtil.bindTexture(TEXTURE_BEACON_BEAM);
-        GlStateManager.disableFog();
+        RenderSystem.disableFog();
         x -= (IEntityPlayer.getPrevPosX() + (IEntityPlayer.getPosX() - IEntityPlayer.getPrevPosX()) * (double) partialTicks);
         y -= (IEntityPlayer.getPrevPosY() + (IEntityPlayer.getPosY() - IEntityPlayer.getPrevPosY()) * (double) partialTicks);
         z -= (IEntityPlayer.getPrevPosZ() + (IEntityPlayer.getPosZ() - IEntityPlayer.getPrevPosZ()) * (double) partialTicks);

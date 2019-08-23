@@ -222,14 +222,14 @@ public class IEntityPlayer {
         if (IEntityPlayer.isNull()) {
             return;
         }
-        MinecraftClient.getInstance().player.field_6281 = speed;
+        MinecraftClient.getInstance().player.flyingSpeed = speed;
     }
 
     public static void setJumpMovementFactorTimes(float speed) {
         if (IEntityPlayer.isNull()) {
             return;
         }
-        MinecraftClient.getInstance().player.field_6281 *= speed;
+        MinecraftClient.getInstance().player.flyingSpeed *= speed;
     }
 
     public static void setNoClip(boolean state) {

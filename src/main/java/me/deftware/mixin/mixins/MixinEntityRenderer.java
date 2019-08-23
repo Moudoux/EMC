@@ -1,6 +1,6 @@
 package me.deftware.mixin.mixins;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.event.events.EventHurtcam;
 import me.deftware.client.framework.event.events.EventRender2D;
 import me.deftware.client.framework.event.events.EventRender3D;
@@ -76,10 +76,10 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
         }
     }
 
-    @Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "com/mojang/blaze3d/platform/GlStateManager.enableDepthTest()V"))
+    @Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "com/mojang/blaze3d/systems/RenderSystem.enableDepthTest()V"))
     private void renderWorld(CallbackInfo ci) {
         if (!((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "WORLD_DEPTH", true))) {
-            GlStateManager.disableDepthTest();
+            RenderSystem.disableDepthTest();
         }
     }
 
