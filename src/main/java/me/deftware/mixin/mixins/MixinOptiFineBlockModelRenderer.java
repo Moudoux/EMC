@@ -13,6 +13,7 @@ import net.minecraftforge.client.model.data.IModelData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Random;
@@ -32,6 +33,30 @@ public abstract class MixinOptiFineBlockModelRenderer {
                 }
             }
         }
+    }
+
+    @ModifyArg(method = {"renderModel"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/BlockModelRenderer;tesselateFlat(Lnet/minecraft/world/ExtendedBlockView;Lnet/minecraft/client/render/model/BakedModel;Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/client/render/BufferBuilder;ZLjava/util/Random;J)Z"))
+    private boolean renderModelFlat1(boolean checkSides) {
+        try {
+            if (SettingsMap.isOverrideMode()) {
+                if (SettingsMap.isOverrideMode()) {
+                    return false;
+                }
+            }
+        } catch (Exception exception) {}
+
+        return checkSides;
+    }
+
+    @ModifyArg(method = {"renderModel"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/BlockModelRenderer;tesselateSmooth(Lnet/minecraft/world/ExtendedBlockView;Lnet/minecraft/client/render/model/BakedModel;Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/client/render/BufferBuilder;ZLjava/util/Random;J)Z"))
+    private boolean renderModelSmooth1(boolean checkSides) {
+        try {
+            if (SettingsMap.isOverrideMode()) {
+                return false;
+            }
+        } catch (Exception exception) {}
+
+        return checkSides;
     }
 
 }
