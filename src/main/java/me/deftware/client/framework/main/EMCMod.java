@@ -1,7 +1,9 @@
 package me.deftware.client.framework.main;
 
 import com.google.gson.JsonObject;
+import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.utils.Settings;
+import net.minecraft.client.MinecraftClient;
 
 /**
  * This is a parent class for all of the mods loaded by EMC.
@@ -38,6 +40,18 @@ public abstract class EMCMod {
 	 */
 	public Settings getSettings() {
 		return settings;
+	}
+
+	/**
+	 * Returns your current EMC Version from FrameworkConstants
+	 *
+	 * PLEASE USE THIS INSTEAD OF YOUR OWN METHOD FOR COMPATIBILITY SAKES
+	 * NOT DOING SO WILL BREAK YOUR MOD ON OTHER LAUNCHERS
+	 *
+	 * @return String version
+	 */
+	public String getEMCVersion() {
+		return FrameworkConstants.VERSION + "." + FrameworkConstants.PATCH;
 	}
 
 	/**
