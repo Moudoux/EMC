@@ -51,6 +51,7 @@
     "MixinGuiContainer",
     "MixinSplashScreen",
     "MixinGuiButton",
-    "MixinSweetBerryBushBlock"
+    "MixinSweetBerryBushBlock",
+    "MixinPlayerListEntry"
   ]
 }
