@@ -1,7 +1,5 @@
 package me.deftware.client.framework.main;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -9,12 +7,8 @@ import javafx.stage.FileChooser;
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.utils.OSUtils;
 import me.deftware.client.framework.utils.Settings;
-import net.minecraft.client.MinecraftClient;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 /**
  * This is a parent class for all of the mods loaded by EMC.
