@@ -58,7 +58,11 @@ public class OSUtils {
 	}
 
 	public static String getRunningFolder() {
-		return getMCDir() + "versions" + File.separator + getVersion() + File.separator;
+		if (new File(getMCDir() + "versions").exists()) {
+			return getMCDir() + "versions" + File.separator + getVersion() + File.separator;
+		} else {
+			return MinecraftClient.getInstance().runDirectory.getAbsolutePath();
+		}
 	}
 
 
