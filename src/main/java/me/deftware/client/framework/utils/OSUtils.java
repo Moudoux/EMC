@@ -1,5 +1,6 @@
 package me.deftware.client.framework.utils;
 
+import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.debug.DebugRenderer;
 
@@ -24,17 +25,30 @@ public class OSUtils {
 	/**
 	 * Returns the .minecraft directory, on all supported OSes
 	 *
-	 * @return
+	 * @return .minecraft Directory
 	 */
 	public static String getMCDir() {
 		String minecraft = "";
-		if (OSUtils.isWindows()) {
-			minecraft = System.getenv("APPDATA") + File.separator + ".minecraft" + File.separator;
-		} else if (OSUtils.isLinux()) {
-			minecraft = System.getProperty("user.home") + File.separator + ".minecraft" + File.separator;
-		} else if (OSUtils.isMac()) {
-			minecraft = System.getProperty("user.home") + File.separator + "Library" + File.separator
-					+ "Application Support" + File.separator + "minecraft" + File.separator;
+		try {
+			if (IMinecraft.getRunningLocation() != null) {
+				String splitter = OSUtils.isMac() ? "minecraft" : ".minecraft";
+				if (IMinecraft.getRunningLocation().contains(splitter)) {
+					minecraft = IMinecraft.getRunningLocation().split(splitter, 2)[0] + splitter + File.separator;
+				}
+			}
+		} catch (Exception ex) {
+			//
+		}
+
+		if (minecraft == null) {
+			if (OSUtils.isWindows()) {
+				minecraft = System.getenv("APPDATA") + File.separator + ".minecraft" + File.separator;
+			} else if (OSUtils.isLinux()) {
+				minecraft = System.getProperty("user.home") + File.separator + ".minecraft" + File.separator;
+			} else if (OSUtils.isMac()) {
+				minecraft = System.getProperty("user.home") + File.separator + "Library" + File.separator
+						+ "Application Support" + File.separator + "minecraft" + File.separator;
+			}
 		}
 		return minecraft;
 	}
@@ -44,7 +58,11 @@ public class OSUtils {
 	}
 
 	public static String getRunningFolder() {
-		return getMCDir() + "versions" + File.separator + getVersion() + File.separator;
+		if (new File(getMCDir() + "versions").exists()) {
+			return getMCDir() + "versions" + File.separator + getVersion() + File.separator;
+		} else {
+			return MinecraftClient.getInstance().runDirectory.getAbsolutePath();
+		}
 	}
 
 
