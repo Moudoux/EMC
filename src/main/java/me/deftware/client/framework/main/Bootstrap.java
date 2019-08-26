@@ -21,9 +21,6 @@ import java.io.PrintWriter;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -54,7 +51,7 @@ public class Bootstrap {
     public static void init() {
         try {
             Bootstrap.logger.info(String.format("Loading EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
-            emc_root = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator);
+            emc_root = new File(OSUtils.getMCDir(false) + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator);
 
             // EMC mods are stored in .minecraft/libraries/EMC
             if (!emc_root.exists()) {
@@ -127,13 +124,13 @@ public class Bootstrap {
     }
 
     private static void prepMods(File emcRoot) throws Exception {
-        File jsonFile = new File(OSUtils.getRunningFolder() + OSUtils.getVersion() + ".json");
+        File jsonFile = EMCMod.getEMCJsonFile();
         if (!jsonFile.exists()) {
             Bootstrap.logger.warn("Failed to read Minecraft json file " + jsonFile.getAbsolutePath() + " will not load additional EMC mods");
             return;
         }
-        JsonObject contents = new Gson().fromJson(String.join("", Files.readAllLines(Paths.get(jsonFile.getAbsolutePath()), StandardCharsets.UTF_8)), JsonObject.class);
-        if (!contents.has("emcMods")) {
+        JsonObject contents = EMCMod.getJsonDataAsObject(jsonFile);
+        if (contents == null || !contents.has("emcMods")) {
             Bootstrap.logger.warn("Could not find emcMods entry, will not load additional EMC mods");
             return;
         }
@@ -277,27 +274,32 @@ public class Bootstrap {
 
     @SuppressWarnings("Duplicates")
     public static void changeVersion(String newVersion) throws Exception {
-        File jsonFile = new File(OSUtils.getRunningFolder() + OSUtils.getVersion() + ".json");
+        File jsonFile = EMCMod.getEMCJsonFile();
         if (!jsonFile.exists()) {
             System.err.println("Could not find json file!");
         } else {
-            JsonObject jsonObject = new Gson().fromJson(String.join("", Files.readAllLines(Paths.get(jsonFile.getAbsolutePath()), StandardCharsets.UTF_8)), JsonObject.class);
-            JsonArray array = jsonObject.get("libraries").getAsJsonArray();
-            array.forEach(jsonElement -> {
-                JsonObject entry = jsonElement.getAsJsonObject();
-                if (entry.get("name").getAsString().contains("me.deftware:EMC")) {
-                    String[] current = entry.get("name").getAsString().split(":");
-                    entry.addProperty("name", "me.deftware:" + current[1] + ":" + newVersion);
-                }
-            });
+            JsonElement libraries = EMCMod.lookupElementInJson(jsonFile, "libraries");
+            if (libraries != null) {
+                JsonArray array = libraries.getAsJsonArray();
+                array.forEach(jsonElement -> {
+                    JsonObject entry = jsonElement.getAsJsonObject();
+                    if (entry.get("name").getAsString().contains("me.deftware:EMC")) {
+                        String[] current = entry.get("name").getAsString().split(":");
+                        entry.addProperty("name", "me.deftware:" + current[1] + ":" + newVersion);
+                    }
+                });
+            }
+
             // Save
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            JsonParser jp = new JsonParser();
-            JsonElement je = jp.parse(jsonObject.toString());
-            String jsonContent = gson.toJson(je);
-            PrintWriter writer = new PrintWriter(jsonFile.getAbsolutePath(), "UTF-8");
-            writer.println(jsonContent);
-            writer.close();
+            if (EMCMod.getJsonDataAsObject(jsonFile) != null) {
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                JsonParser jp = new JsonParser();
+                JsonElement je = jp.parse(EMCMod.getJsonDataAsObject(jsonFile).toString());
+                String jsonContent = gson.toJson(je);
+                PrintWriter writer = new PrintWriter(jsonFile.getAbsolutePath(), "UTF-8");
+                writer.println(jsonContent);
+                writer.close();
+            }
         }
     }
 

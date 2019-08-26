@@ -1,5 +1,7 @@
 package me.deftware.client.framework.main;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -7,8 +9,12 @@ import javafx.stage.FileChooser;
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.utils.OSUtils;
 import me.deftware.client.framework.utils.Settings;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This is a parent class for all of the mods loaded by EMC.
@@ -18,7 +24,7 @@ public abstract class EMCMod {
 
 	private Settings settings;
 	public JsonObject modInfo;
-	private String manualJsonLocation;
+	private static String manualJsonLocation;
 
 	public void init(JsonObject json) {
 		modInfo = json;
@@ -51,8 +57,7 @@ public abstract class EMCMod {
 	/**
 	 * Returns your current EMC Version from FrameworkConstants
 	 *
-	 * PLEASE USE THIS INSTEAD OF YOUR OWN METHOD FOR COMPATIBILITY SAKES
-	 * NOT DOING SO WILL BREAK YOUR MOD ON OTHER LAUNCHERS
+	 * Helper Method.
 	 *
 	 * @return String version
 	 */
@@ -62,13 +67,13 @@ public abstract class EMCMod {
 
 	/**
 	 * Manually Select an EMC Json File
-	 * Used if unable to locate automatically
+	 * Useful if unable to locate automatically by other means
 	 *
 	 * @return A Valid EMC Json File
 	 */
-	public File getEMCJsonFile() {
+	public static File getEMCJsonFile() {
 		File jsonFile = new File(OSUtils.getRunningFolder() + OSUtils.getVersion() + ".json");
-		String version = null;
+
 		if (!jsonFile.exists()) {
 			if (manualJsonLocation != null && new File(manualJsonLocation).exists()) {
 				return new File(manualJsonLocation);
@@ -101,6 +106,83 @@ public abstract class EMCMod {
 		} else {
 			return jsonFile;
 		}
+	}
+
+	/**
+	 * Search for a specified JsonElement within a Json File
+	 *
+	 * @param jsonFile Json File Data
+	 * @param searchTarget Element Name to look for
+	 *
+	 * @return The Matching JsonElement found in the Json File
+	 */
+	public static JsonElement lookupElementInJson(File jsonFile, String searchTarget) {
+		try {
+			return lookupElementInJson(FileUtils.readFileToString(jsonFile, StandardCharsets.UTF_8), searchTarget);
+		} catch (Exception ex) {
+			return null;
+		}
+	}
+
+	/**
+	 * Retrieves Json Data as a JsonObject
+	 *
+	 * @param jsonFile Json File Location
+	 * @return a JsonObject derived from Json Data
+	 */
+	public static JsonObject getJsonDataAsObject(File jsonFile) {
+		try {
+			return getJsonDataAsObject(FileUtils.readFileToString(jsonFile, StandardCharsets.UTF_8));
+		} catch (Exception ex) {
+			return null;
+		}
+	}
+
+	/**
+	 * Retrieves Json Data as a JsonObject
+	 *
+	 * @param jsonData Json Data
+	 * @return a JsonObject derived from Json Data
+	 */
+	public static JsonObject getJsonDataAsObject(String jsonData) {
+		return new Gson().fromJson(jsonData, JsonObject.class);
+	}
+
+	/**
+	 * Search for a specified JsonElement within a Json File
+	 *
+	 * @param jsonFileData Json File Data
+	 * @param searchTarget Element Name to look for
+	 *
+	 * @return The Matching JsonElement found in the Json File
+	 */
+	public static JsonElement lookupElementInJson(String jsonFileData, String searchTarget) {
+		JsonElement resultingElement = null;
+		JsonObject jsonData;
+
+		try {
+			if (!jsonFileData.isEmpty()) {
+				jsonData = getJsonDataAsObject(jsonFileData);
+
+				if (jsonData != null) {
+					Set<Map.Entry<String, JsonElement>> entries = jsonData.entrySet();
+					for (Map.Entry<String, JsonElement> entry: entries) {
+						if (entry.getKey().contains(searchTarget)) {
+							resultingElement = entry.getValue();
+						}
+					}
+				} else {
+					System.out.println("Json Data returned null, looking for " + searchTarget);
+				}
+			} else {
+				System.out.println("Json File Data is invalid, please correct your parameters!");
+			}
+		} catch (Exception ex) {
+			System.out.println("Failed to lookup " + searchTarget + " in json file...");
+			ex.printStackTrace();;
+		}
+
+		return resultingElement;
 	}
 
 	/**
