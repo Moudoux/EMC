@@ -25,13 +25,14 @@ public class OSUtils {
 	/**
 	 * Returns the .minecraft directory, on all supported OSes
 	 *
+	 * @param useOSOnly Check this to only use OS Detection (versions or libraries folder checks in most cases)
 	 * @return .minecraft Directory
 	 */
-	public static String getMCDir() {
+	public static String getMCDir(boolean useOSOnly) {
 		String minecraft = "";
 		try {
 			if (IMinecraft.getRunningLocation() != null) {
-				String splitter = OSUtils.isMac() ? "minecraft" : ".minecraft";
+				String splitter = OSUtils.isMac() ? "minecraft" : "\\.minecraft";
 				if (IMinecraft.getRunningLocation().contains(splitter)) {
 					minecraft = IMinecraft.getRunningLocation().split(splitter, 2)[0] + splitter + File.separator;
 				}
@@ -40,7 +41,7 @@ public class OSUtils {
 			//
 		}
 
-		if (minecraft == null) {
+		if (minecraft.equals("") || useOSOnly) {
 			if (OSUtils.isWindows()) {
 				minecraft = System.getenv("APPDATA") + File.separator + ".minecraft" + File.separator;
 			} else if (OSUtils.isLinux()) {
@@ -58,8 +59,8 @@ public class OSUtils {
 	}
 
 	public static String getRunningFolder() {
-		if (new File(getMCDir() + "versions").exists()) {
-			return getMCDir() + "versions" + File.separator + getVersion() + File.separator;
+		if (new File(getMCDir(false) + "versions").exists()) {
+			return getMCDir(false) + "versions" + File.separator + getVersion() + File.separator;
 		} else {
 			return MinecraftClient.getInstance().runDirectory.getAbsolutePath();
 		}
