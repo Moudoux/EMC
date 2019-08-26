@@ -26,7 +26,7 @@ public class ResourceUtils {
                 break;
             }
         }
-        File modJar = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator
+        File modJar = new File(OSUtils.getMCDir(false) + "libraries" + File.separator + "EMC" + File.separator
                 + IMinecraft.getMinecraftVersion() + File.separator + jarName);
 
         Bootstrap.logger.debug("Reading JAR file: " + modJar.getAbsolutePath());
