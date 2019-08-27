@@ -25,6 +25,7 @@ public abstract class EMCMod {
 	private Settings settings;
 	public JsonObject modInfo;
 	private static String manualJsonLocation;
+	private static boolean isFileDialogOpen = false;
 
 	public void init(JsonObject json) {
 		modInfo = json;
@@ -71,7 +72,7 @@ public abstract class EMCMod {
 	 *
 	 * @return A Valid EMC Json File
 	 */
-	public static File getEMCJsonFile() {
+	public static File getEMCJsonFile() throws InterruptedException {
 		File jsonFile = new File(OSUtils.getRunningFolder() + OSUtils.getVersion() + ".json");
 
 		if (!jsonFile.exists()) {
@@ -80,13 +81,13 @@ public abstract class EMCMod {
 			} else {
 				System.out.println("Opening File Open Dialog, as JSON Cannot be found");
 
-				new JFXPanel(); // Initialize JavaFX Environment
+				JFXPanel frame = new JFXPanel(); // Initialize JavaFX Environment
+				isFileDialogOpen = true;
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
 						FileChooser fileChooser = new FileChooser();
 						fileChooser.setTitle("Open EMC Json File");
-						fileChooser.setInitialDirectory(new File(OSUtils.getRunningFolder()));
 						fileChooser.getExtensionFilters().addAll(
 								new FileChooser.ExtensionFilter("Json", "*.json")
 						);
@@ -96,16 +97,21 @@ public abstract class EMCMod {
 						if (resultFile != null) {
 							manualJsonLocation = resultFile.getAbsolutePath();
 						} else {
-							System.out.println("JSON not found, things will break ith other addons using this!");
+							System.out.println("JSON not found, things will break if other addons are using this!");
 						}
+						isFileDialogOpen = false;
 					}
 				});
-
-				return new File(manualJsonLocation);
 			}
 		} else {
 			return jsonFile;
 		}
+
+		while (isFileDialogOpen) {
+			Thread.sleep(1000);
+		}
+
+		return new File(manualJsonLocation);
 	}
 
 	/**
