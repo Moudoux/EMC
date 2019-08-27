@@ -30,27 +30,29 @@ public class OSUtils {
 	 */
 	public static String getMCDir(boolean useOSOnly) {
 		String minecraft = "";
-		try {
-			if (IMinecraft.getRunningLocation() != null) {
-				String splitter = OSUtils.isMac() ? "minecraft" : "\\.minecraft";
-				if (IMinecraft.getRunningLocation().contains(splitter)) {
-					minecraft = IMinecraft.getRunningLocation().split(splitter, 2)[0] + splitter + File.separator;
-				}
-			}
-		} catch (Exception ex) {
-			//
+
+		if (OSUtils.isWindows()) {
+			minecraft = System.getenv("APPDATA") + File.separator + ".minecraft" + File.separator;
+		} else if (OSUtils.isLinux()) {
+			minecraft = System.getProperty("user.home") + File.separator + ".minecraft" + File.separator;
+		} else if (OSUtils.isMac()) {
+			minecraft = System.getProperty("user.home") + File.separator + "Library" + File.separator
+					+ "Application Support" + File.separator + "minecraft" + File.separator;
 		}
 
-		if (minecraft.equals("") || useOSOnly) {
-			if (OSUtils.isWindows()) {
-				minecraft = System.getenv("APPDATA") + File.separator + ".minecraft" + File.separator;
-			} else if (OSUtils.isLinux()) {
-				minecraft = System.getProperty("user.home") + File.separator + ".minecraft" + File.separator;
-			} else if (OSUtils.isMac()) {
-				minecraft = System.getProperty("user.home") + File.separator + "Library" + File.separator
-						+ "Application Support" + File.separator + "minecraft" + File.separator;
+		if (!useOSOnly || (minecraft.equals("") || !new File(minecraft).exists())) {
+			try {
+				if (IMinecraft.getRunningLocation() != null) {
+					String splitter = OSUtils.isMac() ? "minecraft" : "\\.minecraft";
+					if (IMinecraft.getRunningLocation().contains(splitter)) {
+						minecraft = IMinecraft.getRunningLocation().split(splitter, 2)[0] + splitter + File.separator;
+					}
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
 		}
+
 		return minecraft;
 	}
 
@@ -59,10 +61,10 @@ public class OSUtils {
 	}
 
 	public static String getRunningFolder() {
-		if (new File(getMCDir(false) + "versions").exists()) {
-			return getMCDir(false) + "versions" + File.separator + getVersion() + File.separator;
+		if (new File(getMCDir(true) + "versions").exists()) {
+			return getMCDir(true) + "versions" + File.separator + getVersion() + File.separator;
 		} else {
-			return MinecraftClient.getInstance().runDirectory.getAbsolutePath();
+			return MinecraftClient.getInstance().runDirectory.getAbsolutePath() + File.separator;
 		}
 	}
 
