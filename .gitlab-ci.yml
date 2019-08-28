@@ -12,7 +12,7 @@ build:
 
 # Based on https://gitlab.com/gitlab-examples/ssh-private-key
 deploy:
-  image: alpine
+  image: node:latest
   stage: deploy
   dependencies: 
     - build
@@ -20,7 +20,8 @@ deploy:
     GIT_EMAIL: "ci@gitlab.com"
     GIT_NAME: "GitLab CI"
   before_script:
-    - apk --no-cache add git openssh-client rsync
+    - apt update
+    - apt install -y git openssh-client rsync
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
@@ -33,6 +34,7 @@ deploy:
     - git clone git@gitlab.com:EMC-Framework/maven.git maven-remote
     - rsync -r -I maven/* maven-remote
     - cd maven-remote
+    - node update-latest.js
     - git add .
     - git commit -m "EMC snapshot $CI_COMMIT_SHORT_SHA"
     - git push
