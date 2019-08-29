@@ -13,7 +13,7 @@ build:
   script: ./gradlew build
   artifacts:
     paths: 
-      - maven
+      - emc/maven
     name: "emc-$CI_COMMIT_SHORT_SHA-snapshot"
 
 # Based on https://gitlab.com/gitlab-examples/ssh-private-key
