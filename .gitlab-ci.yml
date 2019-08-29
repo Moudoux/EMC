@@ -4,6 +4,12 @@ build:
   stage: build
   variables:
     GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  # build script expects lowercase name
+  before_script:
+    - mkdir emc
+    # suppress error for moving self in subdirectory
+    - mv * emc || true
+    - cd emc
   script: ./gradlew build
   artifacts:
     paths: 
