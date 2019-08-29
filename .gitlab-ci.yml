@@ -1,12 +1,40 @@
-image: kaiwinter/docker-java8-maven
-
-variables:
-  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 build:
+  image: kaiwinter/docker-java8-maven
   stage: build
+  variables:
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
   script: ./gradlew build
   artifacts:
     paths: 
       - maven
     name: "emc-$CI_COMMIT_SHORT_SHA-snapshot"
+
+# Based on https://gitlab.com/gitlab-examples/ssh-private-key
+deploy:
+  image: node:latest
+  stage: deploy
+  dependencies: 
+    - build
+  variables:
+    GIT_EMAIL: "ci@gitlab.com"
+    GIT_NAME: "GitLab CI"
+  before_script:
+    - apt update
+    - apt install -y git openssh-client rsync
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - git config --global user.email "$GIT_EMAIL"
+    - git config --global user.name "$GIT_NAME"
+  script:
+    - git clone git@gitlab.com:EMC-Framework/maven.git maven-remote
+    - rsync -r -I maven/* maven-remote
+    - cd maven-remote
+    - node update-latest.js
+    - git add .
+    - git commit -m "EMC snapshot $CI_COMMIT_SHORT_SHA"
+    - git push
