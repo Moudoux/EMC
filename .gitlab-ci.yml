@@ -34,7 +34,7 @@ deploy:
     - git clone git@gitlab.com:EMC-Framework/maven.git maven-remote
     - rsync -r -I maven/* maven-remote
     - cd maven-remote
-    - node update-latest.js
+    # - node update-latest.js
     - git add .
     - git commit -m "EMC snapshot $CI_COMMIT_SHORT_SHA"
     - git push
