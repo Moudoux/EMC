@@ -42,7 +42,7 @@ public class Bootstrap {
 
     public static Logger logger = LogManager.getLogger(String.format("EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
     public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
-    public static boolean isRunning = true;
+    public static boolean isRunning = true, initialized = false;
     public static Settings EMCSettings;
     public static String JSON_JARNAME_NOTE = "DYNAMIC_jarname";
     public static ArrayList<Consumer> initList = new ArrayList<>();
