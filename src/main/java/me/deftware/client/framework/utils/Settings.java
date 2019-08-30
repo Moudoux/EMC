@@ -23,7 +23,7 @@ public class Settings {
 	public synchronized void initialize(JsonObject modInfo) {
 		try {
 			String modName = (Bootstrap.modsInfo != null && modInfo != null) ?  modInfo.get("name").getAsString() : "EMC";
-			String file = OSUtils.getMCDir(false) + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator + "configs" + File.separator + modName + "_config.json";
+			String file = OSUtils.getMCDir(true) + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator + "configs" + File.separator + modName + "_config.json";
 			configFile = new File(file);
 			if (!configFile.exists()) {
 				if (!configFile.createNewFile()) {
