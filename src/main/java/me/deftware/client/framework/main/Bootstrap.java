@@ -6,9 +6,11 @@ import com.mojang.brigadier.tree.RootCommandNode;
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.commands.*;
+import me.deftware.client.framework.main.ModFileWatcher;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.OSUtils;
 import me.deftware.client.framework.utils.Settings;
+import me.deftware.client.framework.wrappers.IChat;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
@@ -23,9 +25,10 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.jar.JarEntry;
@@ -39,16 +42,16 @@ import java.util.stream.Collectors;
  */
 public class Bootstrap {
 
-    public static boolean initialized = false;
     public static Logger logger = LogManager.getLogger(String.format("EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
     public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
-    public static boolean isRunning = true;
+    public static boolean isRunning = true, initialized = false;
     public static Settings EMCSettings;
     public static String JSON_JARNAME_NOTE = "DYNAMIC_jarname";
     public static ArrayList<Consumer> initList = new ArrayList<>();
     public static File emc_root, emc_configs;
     private static URLClassLoader modClassLoader;
     private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String, Timer> timers = new ConcurrentHashMap<>();
 
     public static void init() {
         try {
@@ -79,7 +82,7 @@ public class Bootstrap {
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
 
             // Load mods
-            reloadMods();
+            loadMods();
 
             // Register default EMC commands
             registerFrameworkCommands();
@@ -88,7 +91,7 @@ public class Bootstrap {
         }
     }
 
-    public static void reloadMods() {
+    public static void loadMods() {
         // Load all EMC mods
         Arrays.stream(emc_root.listFiles()).forEach((file) -> {
             if (!file.isDirectory() && file.getName().endsWith(".jar")) {
@@ -125,6 +128,13 @@ public class Bootstrap {
         });
     }
 
+    public static void reloadMods() {
+        // Eject all EMC mods
+        ejectMods();
+        // Load all mods again
+        loadMods();
+    }
+
     private static void prepMods(File emcRoot) throws Exception {
         File jsonFile = EMCMod.getEMCJsonFile();
         if (!jsonFile.exists()) {
@@ -152,6 +162,7 @@ public class Bootstrap {
         CommandRegister.registerCommand(new CommandTrigger());
         CommandRegister.registerCommand(new CommandReload());
         CommandRegister.registerCommand(new CommandScale());
+        CommandRegister.registerCommand(new CommandReloadMods());
     }
 
     /**
@@ -211,6 +222,31 @@ public class Bootstrap {
             Bootstrap.logger.info("Loaded class " + c.get().getName());
         }
 
+        // Check if FileWatcher is needed and if so add it
+        if (jsonObject.has("autoModUpdate") && jsonObject.get("autoModUpdate").getAsBoolean()) {
+            TimerTask task = new ModFileWatcher(clientJar) {
+                @Override
+                public void run() {
+                    Bootstrap.logger.info("Mod " + jsonObject.get("name").getAsString() + " has changed automatically ejecting and loading it again");
+                    IChat.sendClientMessage("Automatically reloading mod " + jsonObject.get("name").getAsString() + "...");
+                    unLoad(jsonObject.get("name").getAsString());
+                    try {
+                        loadMod(clientJar);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            };
+
+
+            Timer timer = new Timer();
+            // repeat the check every second
+            timer.schedule(task, new Date(), 1000);
+            timers.put(jsonObject.get("name").getAsString(), timer);
+        }
+
+        // Close jar file and mod loader
+        Bootstrap.modClassLoader.close();
         jarFile.close();
 
         Bootstrap.mods.get(jsonObject.get("name").getAsString()).init(jsonObject);
@@ -241,6 +277,19 @@ public class Bootstrap {
      */
     public static ConcurrentHashMap<String, EMCMod> getMods() {
         return Bootstrap.mods;
+    }
+
+    /**
+     * Unloads a specific EMC Mod but not it's commands
+     * to fully eject the EMC mods use ejectMods()
+     */
+    public static void unLoad(String name) {
+        Bootstrap.mods.get(name).onUnload();
+        Bootstrap.mods.remove(name);
+
+        // Remove mod from auto update list
+        Bootstrap.timers.get(name).cancel();
+        Bootstrap.timers.remove(name);
     }
 
     /**
