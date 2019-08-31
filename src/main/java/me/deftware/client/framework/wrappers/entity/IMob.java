@@ -51,4 +51,8 @@ public class IMob {
         return new IWorld(mob.world);
     }
 
+    public String getName() {
+        return mob.getEntityName();
+    }
+
 }
