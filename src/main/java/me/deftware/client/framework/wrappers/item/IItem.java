@@ -30,7 +30,13 @@ public class IItem {
     }
 
     public String getItemKey() {
-        return getTranslationKey().substring("item.minecraft.".length());
+        String key = getTranslationKey();
+        if (key.startsWith("item.minecraft")) {
+            key = key.substring("item.minecraft.".length());
+        } else if (key.startsWith("block.minecraft")) {
+            key = key.substring("block.minecraft.".length());
+        }
+        return key;
     }
 
     public int getID() {
