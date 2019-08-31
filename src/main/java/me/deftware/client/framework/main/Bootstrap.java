@@ -61,7 +61,11 @@ public class Bootstrap {
             }
 
             // Load new EMC mods that needs to be installed from json
-            prepMods(emc_root);
+            try {
+                prepMods(emc_root);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
 
             emc_configs = new File(emc_root.getAbsolutePath() + File.separator + "configs" + File.separator);
             if (!emc_configs.exists()) {
