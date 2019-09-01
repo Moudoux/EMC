@@ -66,6 +66,10 @@ public class IMinecraft {
                 .getParent();
     }
 
+    public static long getWindowHandle() {
+        return MinecraftClient.getInstance().window.getHandle();
+    }
+
     public static double getScaleFactor() {
         return MinecraftClient.getInstance().window.getScaleFactor();
     }
