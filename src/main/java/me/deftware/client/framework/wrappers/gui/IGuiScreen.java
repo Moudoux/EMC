@@ -89,6 +89,10 @@ public abstract class IGuiScreen extends Screen {
         return hasControlDown();
     }
 
+    public static boolean isShiftPressed() {
+        return hasShiftDown();
+    }
+
     public static int getScaledHeight() {
         return MinecraftClient.getInstance().window.getScaledHeight();
     }
