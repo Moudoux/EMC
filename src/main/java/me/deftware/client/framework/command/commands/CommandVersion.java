@@ -15,7 +15,8 @@ public class CommandVersion extends EMCModCommand {
 			ChatProcessor.printFrameworkMessage("You are running " + FrameworkConstants.FRAMEWORK_NAME
 					+ " version " + FrameworkConstants.VERSION + "." + FrameworkConstants.PATCH + " built by " + FrameworkConstants.AUTHOR);
 			ChatProcessor.printFrameworkMessage("Minecraft version " + IMinecraft.getMinecraftVersion() + " protocol " + IMinecraft.getMinecraftProtocolVersion());
-			ChatProcessor.printFrameworkMessage("EMC mappings system is " + FrameworkConstants.MAPPING_SYSTEM.name());
+			ChatProcessor.printFrameworkMessage("EMC mappings is " + FrameworkConstants.MAPPING_LOADER.name());
+			ChatProcessor.printFrameworkMessage("EMC mapper is " + FrameworkConstants.MAPPING_SYSTEM.name());
 		});
 	}
 

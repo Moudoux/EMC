@@ -7,10 +7,15 @@ public class FrameworkConstants {
 
     public static String AUTHOR = "Deftware";
     public static String FRAMEWORK_NAME = "EMC";
+    public static MappingsLoader MAPPING_LOADER = MappingsLoader.Fabric;
     public static MappingSystem MAPPING_SYSTEM = MappingSystem.Yarn;
 
     public static enum MappingSystem {
-        Yarn, MCP, MOJANG
+        Yarn, MCPConfig, MOJANG
+    }
+
+    public static enum MappingsLoader {
+        Fabric, MCP
     }
 
 }

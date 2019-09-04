@@ -52,6 +52,7 @@ public class IMob {
         return new IWorld(mob.world);
     }
 
+    @Deprecated
     public String getName() {
         return ((MobEntity) mob).getType().getName().asFormattedString();
     }
