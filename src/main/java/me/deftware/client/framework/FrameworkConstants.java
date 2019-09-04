@@ -9,12 +9,8 @@ public class FrameworkConstants {
     public static String FRAMEWORK_NAME = "EMC";
     public static MappingSystem MAPPING_SYSTEM = MappingSystem.Yarn;
 
-	/*
-		Mod info
-	 */
-
     public static enum MappingSystem {
-        Yarn, MCP
+        Yarn, MCP, MOJANG
     }
 
 }
