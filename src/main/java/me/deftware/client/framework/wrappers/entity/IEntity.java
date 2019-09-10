@@ -51,7 +51,12 @@ public class IEntity {
         return !entity.isAlive();
     }
 
+    @Deprecated
     public boolean isMod() {
+        return entity instanceof MobEntity || entity instanceof LivingEntity;
+    }
+
+    public boolean isMob() {
         return entity instanceof MobEntity || entity instanceof LivingEntity;
     }
 

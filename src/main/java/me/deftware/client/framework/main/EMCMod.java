@@ -87,7 +87,7 @@ public abstract class EMCMod {
 					@Override
 					public void run() {
 						FileChooser fileChooser = new FileChooser();
-						fileChooser.setTitle("Open EMC Json File");
+						fileChooser.setTitle("Open EMC Json File (Required)");
 						fileChooser.getExtensionFilters().addAll(
 								new FileChooser.ExtensionFilter("Json", "*.json")
 						);
