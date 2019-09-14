@@ -249,6 +249,7 @@ public class Bootstrap {
      * Unloads all loaded EMC mods
      */
     public static void ejectMods() {
+
         Bootstrap.mods.forEach((key, mod) -> mod.onUnload());
         Bootstrap.mods.clear();
 
