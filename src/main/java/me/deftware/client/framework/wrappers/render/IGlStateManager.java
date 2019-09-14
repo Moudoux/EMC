@@ -1,7 +1,6 @@
 package me.deftware.client.framework.wrappers.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.gui.DrawableHelper;
 import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
