@@ -10,13 +10,12 @@ build:
     # suppress error for moving self in subdirectory
     - mv * emc || true
     - cd emc
-  script: ./gradlew build
+  script: ./gradlew build --stacktrace
   artifacts:
     paths: 
       - emc/maven
     name: "emc-$CI_COMMIT_SHORT_SHA-snapshot"
 
-# Based on https://gitlab.com/gitlab-examples/ssh-private-key
 deploy:
   image: node:latest
   stage: deploy
