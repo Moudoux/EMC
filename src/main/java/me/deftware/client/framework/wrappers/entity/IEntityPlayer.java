@@ -36,7 +36,7 @@ public class IEntityPlayer {
 
     public static boolean isAtEdge() {
         // TODO: Is this right?
-        return MinecraftClient.getInstance().world.getCollisionShapes(MinecraftClient.getInstance().player, MinecraftClient.getInstance().player.getBoundingBox().offset(0, -0.5, 0).expand(-0.001, 0, -0.001), Collections.emptySet()).count() == 0;
+        return MinecraftClient.getInstance().world.getCollisions(MinecraftClient.getInstance().player, MinecraftClient.getInstance().player.getBoundingBox().offset(0, -0.5, 0).expand(-0.001, 0, -0.001), Collections.emptySet()).count() == 0;
     }
 
     public static boolean processRightClickBlock(IBlockPos pos, IEnumFacing facing, IVec3d vec) {

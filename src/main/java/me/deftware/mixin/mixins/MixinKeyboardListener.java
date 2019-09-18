@@ -19,7 +19,7 @@ public class MixinKeyboardListener {
 
     @Inject(method = "onChar", at = @At("HEAD"))
     private void onCharEvent(long windowPointer, int codePoint, int modifiers, CallbackInfo ci) {
-        if (windowPointer != MinecraftClient.getInstance().window.getHandle() || MinecraftClient.getInstance().currentScreen != null) {
+        if (windowPointer != MinecraftClient.getInstance().method_22683().getHandle() || MinecraftClient.getInstance().currentScreen != null) {
             return;
         } else {
             if (Character.charCount(codePoint) == 1) {

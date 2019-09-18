@@ -76,8 +76,8 @@ public abstract class MixinSplashScreen {
 
     @Overwrite
     public void render(int int_1, int int_2, float float_1) {
-        int int_3 = this.client.window.getScaledWidth();
-        int int_4 = this.client.window.getScaledHeight();
+        int int_3 = this.client.method_22683().getScaledWidth();
+        int int_4 = this.client.method_22683().getScaledHeight();
         long long_1 = SystemUtil.getMeasuringTimeMs();
         if (this.field_18219 && (this.reloadMonitor.isLoadStageComplete() || this.client.currentScreen != null) && this.field_18220 == -1L) {
             this.field_18220 = long_1;
@@ -108,9 +108,9 @@ public abstract class MixinSplashScreen {
             float_6 = 1.0F;
         }
 
-        int_6 = (this.client.window.getScaledWidth() - 256) / 2;
-        int int_8 = (this.client.window.getScaledHeight() - 256) / 2;
-        this.client.getTextureManager().bindTexture(LOGO);
+        int_6 = (this.client.method_22683().getScaledWidth() - 256) / 2;
+        int int_8 = (this.client.method_22683().getScaledHeight() - 256) / 2;
+        this.client.getTextureManager().method_22813(LOGO);
         RenderSystem.enableBlend();
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, float_6);
         ((SplashScreen) (Object) this).blit(int_6, int_8, 0, 0, 256, 256);
@@ -129,7 +129,7 @@ public abstract class MixinSplashScreen {
             this.field_17771 = SystemUtil.getMeasuringTimeMs();
             done();
             if (this.client.currentScreen != null) {
-                this.client.currentScreen.init(this.client, this.client.window.getScaledWidth(), this.client.window.getScaledHeight());
+                this.client.currentScreen.init(this.client, this.client.method_22683().getScaledWidth(), this.client.method_22683().getScaledHeight());
             }
         }
 

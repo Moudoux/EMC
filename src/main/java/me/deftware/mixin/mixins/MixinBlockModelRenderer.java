@@ -10,7 +10,7 @@ import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.ExtendedBlockView;
+import net.minecraft.world.BlockRenderView;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,7 +28,7 @@ public abstract class MixinBlockModelRenderer {
     protected abstract void renderQuad(float float_1, float float_2, float float_3, float float_4, List<BakedQuad> list_1);
 
     @Inject(method = "tesselate", at = @At("HEAD"), cancellable = true)
-    public void tesselate(ExtendedBlockView extendedBlockView_1, BakedModel bakedModel_1, BlockState blockState_1, BlockPos blockPos_1, BufferBuilder bufferBuilder_1, boolean boolean_1, Random random_1, long long_1, CallbackInfoReturnable<Boolean> ci) {
+    public void tesselate(BlockRenderView extendedBlockView_1, BakedModel bakedModel_1, BlockState blockState_1, BlockPos blockPos_1, BufferBuilder bufferBuilder_1, boolean boolean_1, Random random_1, long long_1, CallbackInfoReturnable<Boolean> ci) {
         if (blockState_1.getBlock() instanceof FluidBlock) {
             ci.setReturnValue(((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "FLUIDS", true)));
         } else {

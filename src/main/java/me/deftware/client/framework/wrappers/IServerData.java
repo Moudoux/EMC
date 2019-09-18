@@ -1,8 +1,9 @@
 package me.deftware.client.framework.wrappers;
 
-import net.minecraft.client.options.ServerEntry;
 
-public class IServerData extends ServerEntry {
+import net.minecraft.client.network.ServerInfo;
+
+public class IServerData extends ServerInfo {
 
     public IServerData(String name, String ip, boolean isLan) {
         super(name, ip, isLan);

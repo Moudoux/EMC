@@ -3,18 +3,19 @@ package me.deftware.client.framework;
 public class FrameworkConstants {
 
     public static double VERSION = 13.9;
-    public static int PATCH = 3;
+    public static int PATCH = 4;
 
     public static String AUTHOR = "Deftware";
     public static String FRAMEWORK_NAME = "EMC";
+    public static MappingsLoader MAPPING_LOADER = MappingsLoader.Fabric;
     public static MappingSystem MAPPING_SYSTEM = MappingSystem.Yarn;
 
-	/*
-		Mod info
-	 */
-
     public static enum MappingSystem {
-        Yarn, MCP
+        Yarn, MCPConfig, MOJANG
+    }
+
+    public static enum MappingsLoader {
+        Fabric, MCP
     }
 
 }

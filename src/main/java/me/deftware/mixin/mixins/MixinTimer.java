@@ -13,13 +13,13 @@ import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
 public class MixinTimer implements IMixinTimer {
 
     @Shadow
-    private float timeScale;
+    private float tickTime;
 
     private float speed = 1;
 
     @Redirect(method = "beginRenderTick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/RenderTickCounter;timeScale:F", opcode = GETFIELD))
     private float getTickLength(RenderTickCounter self) {
-        return timeScale / speed;
+        return tickTime / speed;
     }
 
     @Override

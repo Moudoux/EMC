@@ -14,7 +14,7 @@ public class MixinMouseHelper {
 
     @Inject(method = "onMouseButton", at = @At("HEAD"))
     private void mouseButtonCallback(long windowPointer, int button, int action, int modifiers, CallbackInfo ci) {
-        if (windowPointer != MinecraftClient.getInstance().window.getHandle() || MinecraftClient.getInstance().currentScreen != null) {
+        if (windowPointer != MinecraftClient.getInstance().method_22683().getHandle() || MinecraftClient.getInstance().currentScreen != null) {
             return;
         }
         new EventMouseClick(button, action, modifiers).broadcast();
@@ -22,7 +22,7 @@ public class MixinMouseHelper {
 
     @Inject(method = "onMouseScroll", at = @At("HEAD"))
     private void scrollCallback(long windowPointer, double xoffset, double yoffset, CallbackInfo ci) {
-        if (windowPointer != MinecraftClient.getInstance().window.getHandle()) {
+        if (windowPointer != MinecraftClient.getInstance().method_22683().getHandle()) {
             return;
         }
         IMouse.onScroll(xoffset, yoffset);

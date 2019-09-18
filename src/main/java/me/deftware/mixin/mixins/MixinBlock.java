@@ -70,15 +70,6 @@ public abstract class MixinBlock {
         }
     }
 
-    @Inject(method = "getRenderLayer", at = @At("HEAD"), cancellable = true)
-    private void getRenderLayer(CallbackInfoReturnable<BlockRenderLayer> ci) {
-        if (SettingsMap.isOverrideMode()) {
-            if ((boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(stateFactory.getBaseObject()), "translucent", true)) {
-                ci.setReturnValue(BlockRenderLayer.TRANSLUCENT);
-            }
-        }
-    }
-
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     public void getCollisionShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, EntityContext context, CallbackInfoReturnable<VoxelShape> ci) {
         if ((Object) this instanceof FluidBlock) {

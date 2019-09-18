@@ -18,12 +18,11 @@ import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.main.Main;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.options.AoOption;
-import net.minecraft.client.options.ServerEntry;
 import net.minecraft.container.GenericContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.packet.ChatMessageC2SPacket;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -55,7 +54,7 @@ public class IMinecraft {
                 return iServerCache;
             }
         }
-        ServerEntry sd = MinecraftClient.getInstance().getCurrentServerEntry();
+        ServerInfo sd = MinecraftClient.getInstance().getCurrentServerEntry();
         iServerCache = new IServerData(sd.name, sd.address, sd.isLocal());
         iServerCache.version = sd.version;
         return iServerCache;
@@ -67,7 +66,7 @@ public class IMinecraft {
     }
 
     public static double getScaleFactor() {
-        return MinecraftClient.getInstance().window.getScaleFactor();
+        return MinecraftClient.getInstance().method_22683().getScaleFactor();
     }
 
     public static void setScaleFactor(int factor) {
@@ -82,6 +81,10 @@ public class IMinecraft {
             }
         }
         return null;
+    }
+
+    public static long getWindowHandle() {
+        return MinecraftClient.getInstance().method_22683().getHandle();
     }
 
     public static boolean isFocused() {
@@ -140,7 +143,7 @@ public class IMinecraft {
     }
 
     public static void triggerGuiRenderer() {
-        MinecraftClient.getInstance().window.method_4493(false);
+        MinecraftClient.getInstance().method_22683().method_4493(false);
     }
 
     public static void addEntityToWorld(int id, IEntity entity) {
@@ -152,8 +155,7 @@ public class IMinecraft {
     }
 
     public static void connectToServer(IServerData server) {
-        MinecraftClient.getInstance()
-                .openScreen(new ConnectScreen(new MultiplayerScreen(null), MinecraftClient.getInstance(), server));
+        MinecraftClient.getInstance().openScreen(new ConnectScreen(new MultiplayerScreen(null), MinecraftClient.getInstance(), server));
     }
 
     public static int thridPersonView() {
@@ -165,7 +167,7 @@ public class IMinecraft {
     }
 
     public static int getGuiScale() {
-        int factor = MinecraftClient.getInstance().window.calculateScaleFactor(MinecraftClient.getInstance().options.guiScale, MinecraftClient.getInstance().forcesUnicodeFont());
+        int factor = MinecraftClient.getInstance().method_22683().calculateScaleFactor(MinecraftClient.getInstance().options.guiScale, MinecraftClient.getInstance().forcesUnicodeFont());
         if (factor == 0) {
             factor = 4;
         }

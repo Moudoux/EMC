@@ -11,7 +11,7 @@ public class IGameSettings {
 
     public static void setLimitFramerate(int framerate) {
         MinecraftClient.getInstance().options.maxFps = framerate;
-        MinecraftClient.getInstance().window.setFramerateLimit(framerate);
+        MinecraftClient.getInstance().method_22683().setFramerateLimit(framerate);
     }
 
 }

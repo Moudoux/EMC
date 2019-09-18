@@ -10,6 +10,7 @@ import me.deftware.client.framework.utils.ChatProcessor;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -43,6 +44,25 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     @Shadow
     public abstract void loadShader(Identifier p_loadShader_1_);
 
+    /* TODO: FIX
+    @Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "com/mojang/blaze3d/systems/RenderSystem.enableDepthTest()V"))
+    private void renderWorld(CallbackInfo ci) {
+        if (!((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "WORLD_DEPTH", true))) {
+            RenderSystem.disableDepthTest();
+        }
+    }*/
+
+    @Redirect(method = "renderWorld", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;renderHand:Z", opcode = GETFIELD))
+    private boolean updateCameraAndRender_renderHand(GameRenderer self) {
+        new EventRender3D(partialTicks).broadcast();
+        return renderHand;
+    }
+
+    @Inject(method = "renderWorld", at = @At("HEAD"))
+    private void updateCameraAndRender(float partialTicks, long finishTimeNano, CallbackInfo ci) {
+        this.partialTicks = partialTicks;
+    }
+
     @Inject(method = "bobViewWhenHurt", at = @At("HEAD"), cancellable = true)
     private void hurtCameraEffect(float partialTicks, CallbackInfo ci) {
         EventHurtcam event = new EventHurtcam();
@@ -56,42 +76,6 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     private void onRender2D(CallbackInfo cb) {
         ChatProcessor.sendMessages();
         new EventRender2D(0f).broadcast();
-    }
-
-    @Inject(method = "renderRain", at = @At("HEAD"), cancellable = true)
-    private void addRainParticles(CallbackInfo ci) {
-        EventWeather event = new EventWeather(EventWeather.WeatherType.Rain);
-        event.broadcast();
-        if (event.isCanceled()) {
-            ci.cancel();
-        }
-    }
-
-    @Inject(method = "renderWeather", at = @At("HEAD"), cancellable = true)
-    private void renderRainSnow(float partialTicks, CallbackInfo ci) {
-        EventWeather event = new EventWeather(EventWeather.WeatherType.Rain);
-        event.broadcast();
-        if (event.isCanceled()) {
-            ci.cancel();
-        }
-    }
-
-    @Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "com/mojang/blaze3d/systems/RenderSystem.enableDepthTest()V"))
-    private void renderWorld(CallbackInfo ci) {
-        if (!((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "WORLD_DEPTH", true))) {
-            RenderSystem.disableDepthTest();
-        }
-    }
-
-    @Inject(method = "renderCenter", at = @At("HEAD"))
-    private void updateCameraAndRender(float partialTicks, long finishTimeNano, CallbackInfo ci) {
-        this.partialTicks = partialTicks;
-    }
-
-    @Redirect(method = "renderCenter", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;renderHand:Z", opcode = GETFIELD))
-    private boolean updateCameraAndRender_renderHand(GameRenderer self) {
-        new EventRender3D(partialTicks).broadcast();
-        return renderHand;
     }
 
     @Override

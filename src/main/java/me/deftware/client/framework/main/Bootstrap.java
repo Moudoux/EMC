@@ -19,8 +19,6 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -251,6 +249,7 @@ public class Bootstrap {
      * Unloads all loaded EMC mods
      */
     public static void ejectMods() {
+
         Bootstrap.mods.forEach((key, mod) -> mod.onUnload());
         Bootstrap.mods.clear();
 

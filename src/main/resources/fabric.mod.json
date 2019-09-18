@@ -12,11 +12,6 @@
     "homepage": "https://emc-framework.gitlab.io/",
     "sources": "https://gitlab.com/EMC-Framework/EMC"
   },
-  "entrypoints": {
-    "main": [
-      "me.deftware.launch.FabricLauncher"
-    ]
-  },
   "license": "GPL-3.0",
   "custom": {
     "mm:early_risers": [

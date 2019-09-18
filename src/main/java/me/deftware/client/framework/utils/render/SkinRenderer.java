@@ -19,7 +19,7 @@ public class SkinRenderer {
     private static void downloadAndBindSkinTexture(String name) {
         Identifier location = AbstractClientPlayerEntity.getSkinId(name);
         if (loaded.contains(name)) {
-            MinecraftClient.getInstance().getTextureManager().bindTexture(location);
+            MinecraftClient.getInstance().getTextureManager().method_22813(location);
             return;
         }
         loaded.add(name);
@@ -30,7 +30,7 @@ public class SkinRenderer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        MinecraftClient.getInstance().getTextureManager().bindTexture(location);
+        MinecraftClient.getInstance().getTextureManager().method_22813(location);
     }
 
     public static void drawAltBody(String name, int x, int y, int width, int height) {

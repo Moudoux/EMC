@@ -55,7 +55,7 @@ public class IGuiTextField extends TextFieldWidget implements CustomIGuiEventLis
     }
 
     public void setTextboxEnabled(boolean state) {
-        setIsEditable(state);
+        setEditable(state);
     }
 
     public int getPosX() {

@@ -51,6 +51,9 @@
     "MixinGuiContainer",
     "MixinSplashScreen",
     "MixinGuiButton",
-    "MixinSweetBerryBushBlock"
+    "MixinSweetBerryBushBlock",
+    "MixinWorldRenderer",
+    "MixinPlayerEntity",
+    "MixinPlayerListEntry"
   ]
 }

@@ -89,20 +89,24 @@ public abstract class IGuiScreen extends Screen {
         return hasControlDown();
     }
 
+    public static boolean isShiftPressed() {
+        return hasShiftDown();
+    }
+
     public static int getScaledHeight() {
-        return MinecraftClient.getInstance().window.getScaledHeight();
+        return MinecraftClient.getInstance().method_22683().getScaledHeight();
     }
 
     public static int getScaledWidth() {
-        return MinecraftClient.getInstance().window.getScaledWidth();
+        return MinecraftClient.getInstance().method_22683().getScaledWidth();
     }
 
     public static int getDisplayHeight() {
-        return MinecraftClient.getInstance().window.getHeight();
+        return MinecraftClient.getInstance().method_22683().getHeight();
     }
 
     public static int getDisplayWidth() {
-        return MinecraftClient.getInstance().window.getWidth();
+        return MinecraftClient.getInstance().method_22683().getWidth();
     }
 
     public static boolean isWindowMinimized() {
@@ -237,7 +241,7 @@ public abstract class IGuiScreen extends Screen {
     }
 
     protected void drawTexture(IResourceLocation texture, int x, int y, int width, int height) {
-        MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
+        MinecraftClient.getInstance().getTextureManager().method_22813(texture);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         Screen.blit(x, y, 0, 0, width, height, width, height);
     }

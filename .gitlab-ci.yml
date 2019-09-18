@@ -10,17 +10,16 @@ build:
     # suppress error for moving self in subdirectory
     - mv * emc || true
     - cd emc
-  script: ./gradlew build
+  script: ./gradlew build --stacktrace
   artifacts:
-    paths: 
+    paths:
       - emc/maven
     name: "emc-$CI_COMMIT_SHORT_SHA-snapshot"
 
-# Based on https://gitlab.com/gitlab-examples/ssh-private-key
 deploy:
   image: node:latest
   stage: deploy
-  dependencies: 
+  dependencies:
     - build
   variables:
     GIT_EMAIL: "ci@gitlab.com"
@@ -44,3 +43,5 @@ deploy:
     - git add .
     - git commit -m "EMC snapshot $CI_COMMIT_SHORT_SHA"
     - git push
+  only:
+    - 1.15

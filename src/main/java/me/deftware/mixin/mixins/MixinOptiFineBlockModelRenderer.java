@@ -8,7 +8,7 @@ import net.minecraft.client.render.block.BlockModelRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.ExtendedBlockView;
+import net.minecraft.world.BlockRenderView;
 import net.minecraftforge.client.model.data.IModelData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,7 +23,7 @@ import java.util.Random;
 public abstract class MixinOptiFineBlockModelRenderer {
 
     @Inject(method = "renderModel", at = @At("HEAD"), cancellable = true)
-    public void tesselate(ExtendedBlockView extendedBlockView_1, BakedModel bakedModel_1, BlockState blockState_1, BlockPos blockPos_1, BufferBuilder bufferBuilder_1, boolean boolean_1, Random random_1, long long_1, IModelData modelData, CallbackInfoReturnable<Boolean> ci) {
+    public void tesselate(BlockRenderView extendedBlockView_1, BakedModel bakedModel_1, BlockState blockState_1, BlockPos blockPos_1, BufferBuilder bufferBuilder_1, boolean boolean_1, Random random_1, long long_1, IModelData modelData, CallbackInfoReturnable<Boolean> ci) {
         if (blockState_1.getBlock() instanceof FluidBlock) {
             ci.setReturnValue(((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "FLUIDS", true)));
         } else {

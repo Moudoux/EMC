@@ -1,9 +1,8 @@
 package me.deftware.client.framework.wrappers.gui;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.mixin.imp.IMixinGuiTextField;
-import net.minecraft.class_4493;
-import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
@@ -39,7 +38,7 @@ public class IGuiPasswordTextField extends IGuiTextField {
             }
             text = hidden;
 
-            String string_1 = ((IMixinGuiTextField) this).getFontRendererInstance().trimToWidth(text.substring(((IMixinGuiTextField) this).getLineScrollOffset()), this.method_1859());
+            String string_1 = ((IMixinGuiTextField) this).getFontRendererInstance().trimToWidth(text.substring(((IMixinGuiTextField) this).getLineScrollOffset()), this.getInnerWidth());
             boolean boolean_1 = int_4 >= 0 && int_4 <= string_1.length();
             boolean boolean_2 = this.isFocused() && ((IMixinGuiTextField) this).getCursorCounter() / 6 % 2 == 0 && boolean_1;
             int int_6 = ((IMixinGuiTextField) this).getHasBorder() ? this.x + 4 : this.x;
@@ -124,7 +123,7 @@ public class IGuiPasswordTextField extends IGuiTextField {
         RenderSystem.color4f(0.0F, 0.0F, 255.0F, 255.0F);
         RenderSystem.disableTexture();
         RenderSystem.enableColorLogicOp();
-        RenderSystem.logicOp(class_4493.LogicOp.OR_REVERSE);
+        RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
         bufferBuilder_1.begin(7, VertexFormats.POSITION);
         bufferBuilder_1.vertex((double)int_1, (double)int_4, 0.0D).next();
         bufferBuilder_1.vertex((double)int_3, (double)int_4, 0.0D).next();

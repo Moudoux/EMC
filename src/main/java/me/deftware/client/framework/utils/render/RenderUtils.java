@@ -64,7 +64,9 @@ public class RenderUtils {
         GL11.glDisable(2929);
         GL11.glDepthMask(false);
         GL11.glEnable(2884);
-        MinecraftClient.getInstance().gameRenderer.disableLightmap();
+        RenderSystem.activeTexture(33985);
+        RenderSystem.disableTexture();
+        RenderSystem.activeTexture(33984);
         GL11.glEnable(2848);
         GL11.glHint(3154, 4354);
         GL11.glHint(3155, 4354);
@@ -371,7 +373,7 @@ public class RenderUtils {
         try {
             AbstractClientPlayerEntity.loadSkin(AbstractClientPlayerEntity.getSkinId(name), name)
                     .load(MinecraftClient.getInstance().getResourceManager());
-            MinecraftClient.getInstance().getTextureManager().bindTexture(AbstractClientPlayerEntity.getSkinId(name));
+            MinecraftClient.getInstance().getTextureManager().method_22813(AbstractClientPlayerEntity.getSkinId(name));
             glEnable(GL_BLEND);
             glColor4f(0.9F, 0.9F, 0.9F, 1.0F);
             DrawableHelper.blit(x, y, 24, 24, w, h, 192, 192);

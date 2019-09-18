@@ -60,6 +60,10 @@ public class IEntity {
         return entity instanceof MobEntity || entity instanceof LivingEntity;
     }
 
+    public String getEntityTypeName() {
+        return entity.getType().getName().asFormattedString();
+    }
+
     public boolean isPlayer() {
         return entity instanceof PlayerEntity;
     }

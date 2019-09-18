@@ -14,7 +14,7 @@ public class IPlayerController {
     }
 
     public static void windowClick(int windowID, int id, int next, IClickType type) {
-        MinecraftClient.getInstance().interactionManager.method_2906(windowID, id, next,
+        MinecraftClient.getInstance().interactionManager.clickSlot(windowID, id, next,
                 type.equals(IClickType.THROW) ? SlotActionType.THROW :
                         type.equals(IClickType.QUICK_MOVE) ? SlotActionType.QUICK_MOVE :
                                 SlotActionType.PICKUP,
@@ -41,9 +41,9 @@ public class IPlayerController {
      */
     @SuppressWarnings("Duplicates")
     public static void swapStack(int one, int two, int windowId) {
-        MinecraftClient.getInstance().interactionManager.method_2906(windowId, one, 0, SlotActionType.SWAP,
+        MinecraftClient.getInstance().interactionManager.clickSlot(windowId, one, 0, SlotActionType.SWAP,
                 MinecraftClient.getInstance().player);
-        MinecraftClient.getInstance().interactionManager.method_2906(windowId, two, 0, SlotActionType.SWAP,
+        MinecraftClient.getInstance().interactionManager.clickSlot(windowId, two, 0, SlotActionType.SWAP,
                 MinecraftClient.getInstance().player);
         MinecraftClient.getInstance().interactionManager.tick();
     }
@@ -53,22 +53,22 @@ public class IPlayerController {
      */
     @SuppressWarnings("Duplicates")
     public static void swapStack(int srcInventoryId, int dstInventoryId, int srcSlot, int dstSlot) {
-        MinecraftClient.getInstance().interactionManager.method_2906(srcInventoryId, srcSlot, 0,
+        MinecraftClient.getInstance().interactionManager.clickSlot(srcInventoryId, srcSlot, 0,
                 SlotActionType.SWAP, MinecraftClient.getInstance().player);
-        MinecraftClient.getInstance().interactionManager.method_2906(dstInventoryId, dstSlot, 0,
+        MinecraftClient.getInstance().interactionManager.clickSlot(dstInventoryId, dstSlot, 0,
                 SlotActionType.SWAP, MinecraftClient.getInstance().player);
         MinecraftClient.getInstance().interactionManager.tick();
     }
 
     public static void moveStack(int srcInventoryId, int dstInventoryId, int srcSlot, int dstSlot) {
-        MinecraftClient.getInstance().interactionManager.method_2906(srcInventoryId, srcSlot, 0,
+        MinecraftClient.getInstance().interactionManager.clickSlot(srcInventoryId, srcSlot, 0,
                 SlotActionType.QUICK_MOVE, MinecraftClient.getInstance().player);
-        MinecraftClient.getInstance().interactionManager.method_2906(dstInventoryId, dstSlot, 0,
+        MinecraftClient.getInstance().interactionManager.clickSlot(dstInventoryId, dstSlot, 0,
                 SlotActionType.QUICK_MOVE, MinecraftClient.getInstance().player);
     }
 
     public static void moveItem(int slotId) {
-        MinecraftClient.getInstance().interactionManager.method_2906(0, slotId, 0, SlotActionType.QUICK_MOVE,
+        MinecraftClient.getInstance().interactionManager.clickSlot(0, slotId, 0, SlotActionType.QUICK_MOVE,
                 MinecraftClient.getInstance().player);
     }
 

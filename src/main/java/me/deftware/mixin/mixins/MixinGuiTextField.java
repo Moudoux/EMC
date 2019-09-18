@@ -43,10 +43,10 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
     public boolean focused;
 
     @Shadow
-    private int cursorMin;
+    private int selectionEnd;
 
     @Shadow
-    private int cursorMax;
+    private int selectionStart;
 
     @Shadow
     private int field_2103;
@@ -83,7 +83,7 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
 
     @Override
     public int getSelectionEnd() {
-        return cursorMin;
+        return selectionEnd;
     }
 
     @Override
@@ -187,7 +187,7 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
 
     @Override
     public int getCursorMax() {
-        return cursorMax;
+        return selectionStart;
     }
 
 }
