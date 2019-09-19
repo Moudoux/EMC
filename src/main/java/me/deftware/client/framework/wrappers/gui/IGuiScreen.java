@@ -109,6 +109,11 @@ public abstract class IGuiScreen extends Screen {
         return MinecraftClient.getInstance().method_22683().getWidth();
     }
 
+    public boolean mouseReleased(double x, double y, int button) {
+        children.forEach((listener) -> listener.mouseReleased(x, y, button));
+        return false;
+    }
+
     public static boolean isWindowMinimized() {
         if (getDisplayWidth() == 0 || getDisplayHeight() == 0)
             return true;
@@ -147,6 +152,7 @@ public abstract class IGuiScreen extends Screen {
 
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+                System.out.println("Click");
                 onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
                 return false;
             }

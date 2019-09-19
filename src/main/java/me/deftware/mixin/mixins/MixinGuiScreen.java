@@ -82,12 +82,6 @@ public class MixinGuiScreen implements IMixinGuiScreen {
         EventGetItemToolTip event = new EventGetItemToolTip(list_2, new IItem(itemStack_1.getItem()));
         event.broadcast();
         return event.getList();
-
-    }
-
-    public boolean mouseReleased(double x, double y, int button) {
-        children.forEach((listener) -> listener.mouseReleased(x, y, button));
-        return false;
     }
 
 }
