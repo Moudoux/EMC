@@ -79,6 +79,7 @@ public class Bootstrap {
             EMCSettings.initialize(null);
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", EMCSettings.getFloat("RENDER_SCALE", 1.0f));
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
+            SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "EMC_JSON_LOCATION", EMCSettings.getString("EMC_JSON_LOCATION", OSUtils.getRunningFolder() + OSUtils.getVersion() + ".json"));
 
             // Load mods
             reloadMods();
