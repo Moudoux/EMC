@@ -15,6 +15,7 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.BowItem;
+import net.minecraft.item.EnderPearlItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.packet.HandSwingC2SPacket;
 import net.minecraft.tag.FluidTags;
