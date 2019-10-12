@@ -1,7 +1,9 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventBlockhardness;
+import me.deftware.client.framework.event.events.EventCollideCheck;
 import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.wrappers.world.IBlock;
 import net.minecraft.block.*;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,18 +32,16 @@ public abstract class MixinBlock {
     @Final
     private int lightLevel;
 
-    /* TODO: Removed in 1.14?
-    @Shadow
-    protected abstract boolean isCollidable();
-    */
-
-    /* TODO: Removed in 1.14?
-    @Inject(method = "isCollidable", at = @At("HEAD"), cancellable = true)
-    private void isCollidable(IBlockState state, CallbackInfoReturnable<Boolean> ci) {
-        EventCollideCheck event = new EventCollideCheck(new IBlock(state.getBlock()), isCollidable()).send();
-        ci.setReturnValue(event.isCollidable());
+    @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
+    public void getOutlineShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, EntityContext entityContext_1, CallbackInfoReturnable<VoxelShape> ci) {
+        EventCollideCheck event = new EventCollideCheck(new IBlock(blockState_1.getBlock()));
+        event.broadcast();
+        if (event.updated) {
+            if (event.canCollide) {
+                ci.setReturnValue(VoxelShapes.empty());
+            }
+        }
     }
-    */
 
     @Inject(method = "shouldDrawSide", at = @At("HEAD"), cancellable = true)
     private static void shouldDrawSide(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, Direction direction_1, CallbackInfoReturnable<Boolean> callback) {
@@ -59,6 +59,7 @@ public abstract class MixinBlock {
 
     @Inject(method = "calcBlockBreakingDelta", at = @At("HEAD"), cancellable = true)
     public void calcBlockBreakingDelta(BlockState blockState_1, PlayerEntity playerEntity_1, BlockView blockView_1, BlockPos blockPos_1, CallbackInfoReturnable<Float> ci) {
+
         float float_1 = blockState_1.getHardness(blockView_1, blockPos_1);
         EventBlockhardness event = new EventBlockhardness();
         event.broadcast();
