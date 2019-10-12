@@ -1,12 +1,15 @@
 package me.deftware.client.framework.utils.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.client.framework.wrappers.entity.*;
 import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
+import me.deftware.mixin.imp.IMixinRenderManager;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.BufferBuilder;
@@ -100,9 +103,9 @@ public class RenderUtils {
     }
 
     public static void blockEspBox(IBlockPos IBlockPos, double red, double green, double blue) {
-        double x = IBlockPos.getX();
-        double y = IBlockPos.getY();
-        double z = IBlockPos.getZ();
+        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(GL_BLEND);
         GL11.glLineWidth(2.0F);
@@ -274,6 +277,12 @@ public class RenderUtils {
 
     public static void box(double x, double y, double z, double x2, double y2, double z2, float red, float green,
                            float blue, float alpha) {
+        x -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        y -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        z -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        x2 -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        y2 -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        z2 -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(2.0F);
@@ -289,10 +298,16 @@ public class RenderUtils {
         GL11.glEnable(2929);
         GL11.glDepthMask(true);
         GL11.glDisable(3042);
-        RenderSystem.clearCurrentColor();
+        GlStateManager.clearCurrentColor();
     }
 
     public static void frame(double x, double y, double z, double x2, double y2, double z2, Color color) {
+        x -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        y -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        z -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        x2 -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        y2 -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        z2 -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(2.0F);
@@ -308,9 +323,9 @@ public class RenderUtils {
     }
 
     public static void blockESPBox(IBlockPos IBlockPos) {
-        double x = IBlockPos.getX();
-        double y = IBlockPos.getY();
-        double z = IBlockPos.getZ();
+        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(1.0F);
@@ -329,10 +344,10 @@ public class RenderUtils {
 
     public static void blockESPBox(IBlockPos IBlockPos, float red, float green, float blue) {
         RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
-        double x = IBlockPos.getX();
-        double y = IBlockPos.getY();
-        double z = IBlockPos.getZ();
+        GlStateManager.clearCurrentColor();
+        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(1.0F);
@@ -347,11 +362,11 @@ public class RenderUtils {
         GL11.glEnable(2929);
         GL11.glDepthMask(true);
         GL11.glDisable(3042);
-        RenderSystem.clearCurrentColor();
+        GlStateManager.clearCurrentColor();
     }
 
     public static void fixDarkLight() {
-        RenderSystem.enableLighting();
+        GlStateManager.enableLighting();
         GuiLighting.disable();
     }
 
@@ -371,11 +386,11 @@ public class RenderUtils {
 
     public static void blockESPBox(IBlockPos IBlockPos, Color c) {
         RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
+        GlStateManager.clearCurrentColor();
         float red = c.getRed(), green = c.getGreen(), blue = c.getBlue();
-        double x = IBlockPos.getX();
-        double y = IBlockPos.getY();
-        double z = IBlockPos.getZ();
+        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(1.0F);
@@ -390,15 +405,15 @@ public class RenderUtils {
         GL11.glEnable(2929);
         GL11.glDepthMask(true);
         GL11.glDisable(3042);
-        RenderSystem.clearCurrentColor();
+        GlStateManager.clearCurrentColor();
     }
 
     public static void framelessBlockESP(IBlockPos IBlockPos, float red, float green, float blue) {
         RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
-        double x = IBlockPos.getX();
-        double y = IBlockPos.getY();
-        double z = IBlockPos.getZ();
+        GlStateManager.clearCurrentColor();
+        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(2.0F);
@@ -411,15 +426,15 @@ public class RenderUtils {
         GL11.glEnable(2929);
         GL11.glDepthMask(true);
         GL11.glDisable(3042);
-        RenderSystem.clearCurrentColor();
+        GlStateManager.clearCurrentColor();
     }
 
     public static void emptyBlockESPBox(IBlockPos IBlockPos) {
         RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
-        double x = IBlockPos.getX();
-        double y = IBlockPos.getY();
-        double z = IBlockPos.getZ();
+        GlStateManager.clearCurrentColor();
+        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(2.0F);
@@ -436,7 +451,7 @@ public class RenderUtils {
 
     public static void entityESPBox(Entity entity, int mode) {
         RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
+        GlStateManager.clearCurrentColor();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(2.0F);
@@ -455,13 +470,14 @@ public class RenderUtils {
         } else if (mode == 4) {
             GL11.glColor4d(0.0D, 1.0D, 0.0D, 0.5D);
         }
+        IMixinRenderManager renderManager = (IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager();
         RenderUtils.drawSelectionBoundingBox(new Box(
-                entity.getBoundingBox().minX - 0.05D - entity.getX() + (entity.getX()),
-                entity.getBoundingBox().minY - entity.getY() + (entity.getY()),
-                entity.getBoundingBox().minZ - 0.05D - entity.getZ() + (entity.getZ()),
-                entity.getBoundingBox().maxX + 0.05D - entity.getX() + (entity.getX()),
-                entity.getBoundingBox().maxY + 0.1D - entity.getY() + (entity.getY()),
-                entity.getBoundingBox().maxZ + 0.05D - entity.getZ() + (entity.getZ())));
+                entity.getBoundingBox().minX - 0.05D - entity.getX() + (entity.getX() - renderManager.getRenderPosX()),
+                entity.getBoundingBox().minY - entity.getY() + (entity.getY() - renderManager.getRenderPosY()),
+                entity.getBoundingBox().minZ - 0.05D - entity.getZ() + (entity.getZ() - renderManager.getRenderPosZ()),
+                entity.getBoundingBox().maxX + 0.05D - entity.getX() + (entity.getX() - renderManager.getRenderPosX()),
+                entity.getBoundingBox().maxY + 0.1D - entity.getY() + (entity.getY() - renderManager.getRenderPosY()),
+                entity.getBoundingBox().maxZ + 0.05D - entity.getZ() + (entity.getZ() - renderManager.getRenderPosZ())));
         GL11.glEnable(3553);
         GL11.glEnable(2929);
         GL11.glDepthMask(true);
@@ -470,10 +486,10 @@ public class RenderUtils {
 
     public static void nukerBox(IBlockPos IBlockPos, float damage) {
         RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
-        double x = IBlockPos.getX();
-        double y = IBlockPos.getY();
-        double z = IBlockPos.getZ();
+        GlStateManager.clearCurrentColor();
+        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(1.0F);
@@ -497,10 +513,10 @@ public class RenderUtils {
 
     public static void searchBox(IBlockPos IBlockPos) {
         RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
-        double x = IBlockPos.getX();
-        double y = IBlockPos.getY();
-        double z = IBlockPos.getZ();
+        GlStateManager.clearCurrentColor();
+        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(1.0F);
@@ -608,20 +624,69 @@ public class RenderUtils {
     }
 
     public static void drawColorBox(Box BoundingBox, float red, float green, float blue, float alpha) {
+        float T1 = 0, T2 = 0;
         Tessellator ts = Tessellator.getInstance();
         BufferBuilder vb = ts.getBufferBuilder();
-        vb.begin(7, VertexFormats.POSITION_COLOR);
-        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.end();
+        vb.begin(7, VertexFormats.POSITION_UV);
+        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
         ts.draw();
-
+        vb.begin(7, VertexFormats.POSITION_UV);
+        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        ts.draw();
+        vb.begin(7, VertexFormats.POSITION_UV);
+        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        ts.draw();
+        vb.begin(7, VertexFormats.POSITION_UV);
+        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        ts.draw();
+        vb.begin(7, VertexFormats.POSITION_UV);
+        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        ts.draw();
+        vb.begin(7, VertexFormats.POSITION_UV);
+        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.minZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.maxZ).texture(T1, T2).color(red, green, blue, alpha).next();
+        ts.draw();
     }
 
     public static void tracerLine(IItemEntity entity, int mode) {
@@ -646,10 +711,10 @@ public class RenderUtils {
 
     public static void tracerLine(Entity entity, int mode) {
         RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
-        double x = entity.getX();
-        double y = entity.getY() + entity.getHeight() / 2.0F;
-        double z = entity.getZ();
+        GlStateManager.clearCurrentColor();
+        double x = entity.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        double y = entity.getY() + entity.getHeight() / 2.0F - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        double z = entity.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(2.0F);
@@ -687,11 +752,11 @@ public class RenderUtils {
 
     public static void tracerLine(Entity entity, Color color) {
         RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
+        GlStateManager.clearCurrentColor();
 
-        double x = entity.getX();
-        double y = entity.getY() + entity.getHeight() / 2.0F;
-        double z = entity.getZ();
+        double x = entity.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        double y = entity.getY() + entity.getHeight() / 2.0F - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        double z = entity.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
 
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
@@ -720,10 +785,10 @@ public class RenderUtils {
 
     public static void tracerLine(Entity entity, Color color, float alpha) {
         RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
-        double x = entity.getX() + 0.5f;
-        double y = entity.getY() + entity.getHeight() / 2.0F - 0.5f;
-        double z = entity.getZ() + 0.5f;
+        GlStateManager.clearCurrentColor();
+        double x = entity.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX() + 0.5f;
+        double y = entity.getY() + entity.getHeight() / 2.0F - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY() - 0.5f;
+        double z = entity.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ() + 0.5f;
 
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
@@ -749,7 +814,7 @@ public class RenderUtils {
         GL11.glDepthMask(true);
         GL11.glDisable(3042);
 
-        RenderSystem.clearCurrentColor();
+        GlStateManager.clearCurrentColor();
     }
 
     public static void enableGL2D() {
@@ -834,6 +899,9 @@ public class RenderUtils {
     }
 
     public static void tracerLine(int x, int y, int z, Color color) {
+        x = (int) (x + (0.5D - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX()));
+        y = (int) (y + (0.5D - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY()));
+        z = (int) (z + (0.5D - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ()));
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(2.0F);

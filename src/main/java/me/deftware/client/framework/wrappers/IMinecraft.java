@@ -22,6 +22,8 @@ import net.minecraft.client.main.Main;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.options.AoOption;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.container.GenericContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

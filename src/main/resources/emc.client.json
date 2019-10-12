@@ -53,6 +53,7 @@
     "MixinSweetBerryBushBlock",
     "MixinWorldRenderer",
     "MixinPlayerEntity",
-    "MixinPlayerListEntry"
+    "MixinPlayerListEntry",
+    "MixinRenderManager"
   ]
 }

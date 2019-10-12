@@ -6,6 +6,7 @@ import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.ChatProcessor;
 import me.deftware.client.framework.wrappers.IChat;
 import me.deftware.mixin.imp.IMixinEntityPlayerSP;
+import me.deftware.mixin.imp.IMixinRenderManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -103,6 +104,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void tick(CallbackInfo ci) {
+        System.out.println(((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX() + " " + ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY() + " " + ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ());
         EventUpdate event = new EventUpdate(((ClientPlayerEntity) (Object) this).getX(), ((ClientPlayerEntity) (Object) this).getY(), ((ClientPlayerEntity) (Object) this).getZ(), yaw, pitch, onGround);
         event.broadcast();
         if (event.isCanceled()) {
