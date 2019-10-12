@@ -1,11 +1,14 @@
 package me.deftware.client.framework.fonts;
 
+import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.render.GraphicsUtil;
 import me.deftware.client.framework.utils.render.NonScaledRenderer;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.math.MatrixStack;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -153,7 +156,6 @@ public class BitmapFont implements EMCFont {
         }
 
         char[] buffer = text.toCharArray();
-
         GL11.glPushMatrix();
         GraphicsUtil.prepareMatrix(IGuiScreen.getDisplayWidth(), IGuiScreen.getDisplayHeight());
         int offset = 0;
@@ -172,7 +174,6 @@ public class BitmapFont implements EMCFont {
                 float alpha = color.getAlpha() > 0 ? color.getAlpha() * (1f / 255f) : 0;
                 GL11.glColor4f(red, green, blue, alpha);
             }
-
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureIDStore.get(buffer[character]));
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             int width = textureDimensionsStore.get(buffer[character])[0];
@@ -181,12 +182,11 @@ public class BitmapFont implements EMCFont {
 
             offset += width;
         }
-
         GL11.glPopMatrix();
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
+        NonScaledRenderer.resetScale();
         IMinecraft.triggerGuiRenderer();
-
         lastRenderedWidth = offset;
         return 0;
     }

@@ -1,16 +1,13 @@
 package me.deftware.mixin.mixins;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.event.events.EventHurtcam;
 import me.deftware.client.framework.event.events.EventRender2D;
 import me.deftware.client.framework.event.events.EventRender3D;
-import me.deftware.client.framework.event.events.EventWeather;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.ChatProcessor;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

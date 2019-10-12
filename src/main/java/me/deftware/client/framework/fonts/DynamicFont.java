@@ -1,8 +1,10 @@
 package me.deftware.client.framework.fonts;
 
+import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.utils.render.GraphicsUtil;
 import me.deftware.client.framework.utils.render.NonScaledRenderer;
 import me.deftware.client.framework.utils.render.Texture;
+import net.minecraft.util.math.MatrixStack;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -165,6 +167,7 @@ public class DynamicFont implements EMCFont {
         prepareForRendering(); //BINDING
         GraphicsUtil.drawQuads(x, y, getLastRenderedWidth(), getLastRenderedHeight());
         GL11.glPopMatrix();
+        NonScaledRenderer.resetScale();
         return 0;
     }
 

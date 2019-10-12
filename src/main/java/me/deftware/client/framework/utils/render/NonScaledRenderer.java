@@ -1,10 +1,13 @@
 package me.deftware.client.framework.utils.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.event.events.EventScaleChange;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.math.MatrixStack;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -70,6 +73,7 @@ public class NonScaledRenderer {
         GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         IMinecraft.triggerGuiRenderer();
+        resetScale();
     }
 
     public static void drawFilledCircle(int xx, int yy, float radius, int col) {
@@ -107,6 +111,17 @@ public class NonScaledRenderer {
         GL11.glDisable(3042);
         GL11.glDisable(2848);
         GL11.glPopMatrix();
+        resetScale();
+    }
+
+    public static void resetScale() {
+        GlStateManager.clear(256, false);
+        GlStateManager.matrixMode(5889);
+        GlStateManager.loadIdentity();
+        GlStateManager.ortho(0.0D, MinecraftClient.getInstance().getWindow().getFramebufferWidth() / MinecraftClient.getInstance().getWindow().getScaleFactor(), MinecraftClient.getInstance().getWindow().getFramebufferHeight() / MinecraftClient.getInstance().getWindow().getScaleFactor(), 0.0D, 1000.0D, 3000.0D);
+        GlStateManager.matrixMode(5888);
+        GlStateManager.loadIdentity();
+        GlStateManager.translatef(0.0F, 0.0F, -2000.0F);
     }
 
     public static void drawLine(float x1, float y1, float x2, float y2) {
@@ -130,6 +145,7 @@ public class NonScaledRenderer {
         GL11.glEnable(3553);
         GL11.glDisable(3042);
         GL11.glDisable(2848);
+        resetScale();
     }
 
     public static int getMouseX() {

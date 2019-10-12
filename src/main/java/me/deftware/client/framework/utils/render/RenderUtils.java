@@ -610,7 +610,7 @@ public class RenderUtils {
     public static void drawColorBox(Box BoundingBox, float red, float green, float blue, float alpha) {
         Tessellator ts = Tessellator.getInstance();
         BufferBuilder vb = ts.getBufferBuilder();
-        vb.begin(7, VertexFormats.POSITION_UV);
+        vb.begin(7, VertexFormats.POSITION_COLOR);
         vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.minZ).color(red, green, blue, alpha).next();
         vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.minZ).color(red, green, blue, alpha).next();
         vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.minZ).color(red, green, blue, alpha).next();
@@ -619,57 +619,9 @@ public class RenderUtils {
         vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
         vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
         vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
+        vb.end();
         ts.draw();
-        vb.begin(7, VertexFormats.POSITION_UV);
-        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        ts.draw();
-        vb.begin(7, VertexFormats.POSITION_UV);
-        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        ts.draw();
-        vb.begin(7, VertexFormats.POSITION_UV);
-        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        ts.draw();
-        vb.begin(7, VertexFormats.POSITION_UV);
-        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        ts.draw();
-        vb.begin(7, VertexFormats.POSITION_UV);
-        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.maxY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.minX, BoundingBox.minY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.minZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.maxY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        vb.vertex(BoundingBox.maxX, BoundingBox.minY, BoundingBox.maxZ).color(red, green, blue, alpha).next();
-        ts.draw();
+
     }
 
     public static void tracerLine(IItemEntity entity, int mode) {

@@ -3,6 +3,7 @@ package me.deftware.mixin.mixins;
 import me.deftware.client.framework.event.events.EventBlockhardness;
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.block.*;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.StateManager;
