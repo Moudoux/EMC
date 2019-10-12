@@ -12,7 +12,7 @@ public class INBTTagList {
     }
 
     public void appendTag(String tag) {
-        list.add(new StringTag(tag));
+        list.add(StringTag.of(tag));
     }
 
 }

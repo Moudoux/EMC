@@ -94,19 +94,19 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public static int getScaledHeight() {
-        return MinecraftClient.getInstance().method_22683().getScaledHeight();
+        return MinecraftClient.getInstance().getWindow().getScaledHeight();
     }
 
     public static int getScaledWidth() {
-        return MinecraftClient.getInstance().method_22683().getScaledWidth();
+        return MinecraftClient.getInstance().getWindow().getScaledWidth();
     }
 
     public static int getDisplayHeight() {
-        return MinecraftClient.getInstance().method_22683().getHeight();
+        return MinecraftClient.getInstance().getWindow().getHeight();
     }
 
     public static int getDisplayWidth() {
-        return MinecraftClient.getInstance().method_22683().getWidth();
+        return MinecraftClient.getInstance().getWindow().getWidth();
     }
 
     public boolean mouseReleased(double x, double y, int button) {
@@ -152,7 +152,6 @@ public abstract class IGuiScreen extends Screen {
 
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-                System.out.println("Click");
                 onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
                 return false;
             }
@@ -247,7 +246,7 @@ public abstract class IGuiScreen extends Screen {
     }
 
     protected void drawTexture(IResourceLocation texture, int x, int y, int width, int height) {
-        MinecraftClient.getInstance().getTextureManager().method_22813(texture);
+        MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         Screen.blit(x, y, 0, 0, width, height, width, height);
     }

@@ -1,13 +1,17 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventKnockback;
+import me.deftware.client.framework.event.events.EventSlowdown;
 import me.deftware.client.framework.event.events.EventSneakingCheck;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.mixin.imp.IMixinEntity;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,15 +28,6 @@ public abstract class MixinEntity implements IMixinEntity {
 
     @Shadow
     public boolean onGround;
-
-    @Shadow
-    public double x;
-
-    @Shadow
-    public double y;
-
-    @Shadow
-    public double z;
 
     @Shadow
     public double prevX;
@@ -79,21 +74,32 @@ public abstract class MixinEntity implements IMixinEntity {
     @Shadow
     public abstract boolean getFlag(int int_1);
 
+    @Shadow
+    public float fallDistance;
+
+    @Shadow
+    public Vec3d movementMultiplier;
+
     @Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;noClip:Z", opcode = GETFIELD))
     private boolean noClipCheck(Entity self) {
         boolean noClipCheck = (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "NOCLIP", false);
         return noClip || noClipCheck && self instanceof ClientPlayerEntity;
     }
 
-    /* Fix
-    @Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;applyMovementMultiplier:Z", opcode = GETFIELD))
-    private boolean webCheck(Entity self) {
-        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Web).send();
+    @Overwrite
+    public void slowMovement(BlockState blockState_1, Vec3d vec3d_1) {
+        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Web);
+        event.broadcast();
         if (event.isCanceled()) {
-            applyMovementMultiplier = false;
+            Vec3d cobSlowness = new Vec3d(0.25D, 0.05000000074505806D, 0.25D);
+            if (vec3d_1.x == cobSlowness.x && vec3d_1.y == cobSlowness.y && vec3d_1.z == cobSlowness.z) {
+                this.movementMultiplier = Vec3d.ZERO;
+                return;
+            }
         }
-        return applyMovementMultiplier;
-    }*/
+        this.fallDistance = 0.0F;
+        this.movementMultiplier = vec3d_1;
+    }
 
     @Redirect(method = "move", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.isSneaking()Z", opcode = GETFIELD, ordinal = 0))
     private boolean sneakingCheck(Entity self) {

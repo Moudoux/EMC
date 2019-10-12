@@ -1,22 +1,23 @@
 package me.deftware.mixin.mixins;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.event.events.EventRenderPlayerModel;
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
+import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.MatrixStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntityRenderer.class)
 public abstract class MixinRenderLivingBase<T extends LivingEntity> {
 
     @Inject(method = "method_4056", at = @At("HEAD"), cancellable = true)
-    private void isVisible(T p_193115_1_, CallbackInfoReturnable<Boolean> ci) {
+    private void isVisible(T p_193115_1_, boolean b, CallbackInfoReturnable<Boolean> ci) {
         EventRenderPlayerModel event = new EventRenderPlayerModel(p_193115_1_);
         event.broadcast();
         if (event.isShouldRender()) {
@@ -24,17 +25,12 @@ public abstract class MixinRenderLivingBase<T extends LivingEntity> {
         }
     }
 
-    /**
-     * @Author Deftware
-     * @reason
-     */
-    @Overwrite
-    public void method_4048(T entityLivingBaseIn, double x, double y, double z) {
-        RenderSystem.translatef((float) x, (float) y, (float) z);
-        if (!(entityLivingBaseIn instanceof PlayerEntity)) {
+    @Inject(method = "setupTransforms", at = @At("RETURN"))
+    protected void setupTransforms(T livingEntity_1, MatrixStack matrixStack_1, float x, float y, float z, CallbackInfo ci) {
+        if (!(livingEntity_1 instanceof PlayerEntity)) {
             return;
         }
-        String s = ((PlayerEntity) entityLivingBaseIn).getGameProfile().getName(); //TextFormatting.getTextWithoutFormattingCodes(((EntityPlayer) entityLivingBaseIn).getGameProfile().getName());
+        String s = ((PlayerEntity) livingEntity_1).getGameProfile().getName(); //TextFormatting.getTextWithoutFormattingCodes(((EntityPlayer) entityLivingBaseIn).getGameProfile().getName());
         String names = (String) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "FLIP_USERNAMES", "");
         if (s != null && !names.equals("")) {
             boolean flip = false;
@@ -49,8 +45,8 @@ public abstract class MixinRenderLivingBase<T extends LivingEntity> {
                 flip = names.equals(s);
             }
             if (flip) {
-                RenderSystem.translatef(0.0F, entityLivingBaseIn.getHeight() + 0.1F, 0.0F);
-                RenderSystem.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
+                matrixStack_1.translate(0.0D, (double)(livingEntity_1.getHeight() + 0.1F), 0.0D);
+                matrixStack_1.multiply(Vector3f.POSITIVE_Z.getRotationQuaternion(180.0F));
             }
         }
     }

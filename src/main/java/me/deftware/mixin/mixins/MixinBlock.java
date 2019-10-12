@@ -5,7 +5,7 @@ import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.block.*;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
@@ -24,7 +24,7 @@ public abstract class MixinBlock {
 
     @Shadow
     @Final
-    protected StateFactory<Block, BlockState> stateFactory;
+    protected StateManager<Block, BlockState> stateFactory;
 
     @Shadow
     @Final

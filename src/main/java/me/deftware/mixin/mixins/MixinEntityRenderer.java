@@ -19,10 +19,7 @@ import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -59,12 +56,12 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     }
 
     @Inject(method = "renderWorld", at = @At("HEAD"))
-    private void updateCameraAndRender(float partialTicks, long finishTimeNano, CallbackInfo ci) {
+    private void updateCameraAndRender(float partialTicks, long finishTimeNano, MatrixStack stack, CallbackInfo ci) {
         this.partialTicks = partialTicks;
     }
 
     @Inject(method = "bobViewWhenHurt", at = @At("HEAD"), cancellable = true)
-    private void hurtCameraEffect(float partialTicks, CallbackInfo ci) {
+    private void hurtCameraEffect(MatrixStack stack, float partialTicks, CallbackInfo ci) {
         EventHurtcam event = new EventHurtcam();
         event.broadcast();
         if (event.isCanceled()) {

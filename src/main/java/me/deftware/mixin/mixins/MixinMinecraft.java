@@ -125,7 +125,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
 
     @Override
     public Window getMainWindow() {
-        return MinecraftClient.getInstance().method_22683();
+        return MinecraftClient.getInstance().getWindow();
     }
 
     @Override

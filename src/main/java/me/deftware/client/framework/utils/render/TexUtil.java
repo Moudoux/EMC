@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 public class TexUtil {
 
     public static void bindTexture(IResourceLocation texture) {
-        MinecraftClient.getInstance().getTextureManager().method_22813(texture);
+        MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
     }
 
     public static void drawModalRectWithCustomSizedTexture(int x, int y, float u, float v, int width, int height, float textureWidth, float textureHeight) {

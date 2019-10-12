@@ -14,7 +14,7 @@ public class IFish {
     }
 
     public static int getPosY() {
-        return (int) IFish.getEntity().y;
+        return (int) IFish.getEntity().getY();
     }
 
 }

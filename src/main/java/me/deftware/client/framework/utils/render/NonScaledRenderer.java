@@ -144,7 +144,7 @@ public class NonScaledRenderer {
         double[] pos = new double[2];
         DoubleBuffer posX = BufferUtils.createDoubleBuffer(1),
                 posY = BufferUtils.createDoubleBuffer(1);
-        GLFW.glfwGetCursorPos(MinecraftClient.getInstance().method_22683().getHandle(), posX, posY);
+        GLFW.glfwGetCursorPos(MinecraftClient.getInstance().getWindow().getHandle(), posX, posY);
         pos[0] = posX.get(0);
         pos[1] = posY.get(0);
         return pos;

@@ -23,8 +23,9 @@ public class IVertexBuffer {
         return this;
     }
 
+    @Deprecated
     public IVertexBuffer tex(double u, double v) {
-        vertexbuffer.texture(u, v);
+        //vertexbuffer.texture(u, v);
         return this;
     }
 

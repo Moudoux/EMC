@@ -141,15 +141,15 @@ public class IEntity {
     }
 
     public double getPosX() {
-        return entity.x;
+        return entity.getX();
     }
 
     public double getPosY() {
-        return entity.y;
+        return entity.getY();
     }
 
     public double getPosZ() {
-        return entity.z;
+        return entity.getZ();
     }
 
     public double getPrevPosX() {

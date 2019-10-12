@@ -60,13 +60,7 @@ public class Bootstrap {
                 }
             }
 
-            // Load new EMC mods that needs to be installed from json
-            try {
-                prepMods(emc_root);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
+            // Prepare and Check EMC Configs Folder
             emc_configs = new File(emc_root.getAbsolutePath() + File.separator + "configs" + File.separator);
             if (!emc_configs.exists()) {
                 if (!emc_configs.mkdirs()) {
@@ -74,13 +68,21 @@ public class Bootstrap {
                 }
             }
 
-            // EMC Settings
+            // EMC Settings (Prepare before prepMods
             EMCSettings = new Settings();
             EMCSettings.initialize(null);
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", EMCSettings.getFloat("RENDER_SCALE", 1.0f));
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
+            SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "EMC_JSON_LOCATION", EMCSettings.getString("EMC_JSON_LOCATION", OSUtils.getRunningFolder() + OSUtils.getVersion() + ".json"));
 
-            // Load mods
+            // Load new EMC mods that needs to be installed from json
+            try {
+                prepMods(emc_root);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            // Load other EMC mods
             reloadMods();
 
             // Register default EMC commands

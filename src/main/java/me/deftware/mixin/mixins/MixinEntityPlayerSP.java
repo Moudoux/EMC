@@ -103,7 +103,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void tick(CallbackInfo ci) {
-        EventUpdate event = new EventUpdate(x, y, z, yaw, pitch, onGround);
+        EventUpdate event = new EventUpdate(((ClientPlayerEntity) (Object) this).getX(), ((ClientPlayerEntity) (Object) this).getY(), ((ClientPlayerEntity) (Object) this).getZ(), yaw, pitch, onGround);
         event.broadcast();
         if (event.isCanceled()) {
             ci.cancel();
@@ -164,7 +164,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
      */
     @Overwrite
     private void sendMovementPackets() {
-        EventPlayerWalking event = new EventPlayerWalking(x, y, z, yaw, pitch, onGround);
+        EventPlayerWalking event = new EventPlayerWalking(((ClientPlayerEntity) (Object) this).getX(), ((ClientPlayerEntity) (Object) this).getY(), ((ClientPlayerEntity) (Object) this).getZ(), yaw, pitch, onGround);
         event.broadcast();
         if (event.isCanceled()) {
             return;
@@ -194,9 +194,9 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
         if (isCamera()) {
             Box axisalignedbb = getBoundingBox();
-            double d0 = x - lastX;
+            double d0 = ((ClientPlayerEntity) (Object) this).getX() - lastX;
             double d1 = event.getPosY() - lastBaseY;
-            double d2 = z - lastZ;
+            double d2 = ((ClientPlayerEntity) (Object) this).getZ() - lastZ;
             double d3 = event.getRotationYaw() - lastYaw;
             double d4 = event.getRotationPitch() - lastPitch;
             ++field_3923;
@@ -209,10 +209,10 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
                         event.getRotationYaw(), event.getRotationPitch(), event.isOnGround()));
                 flag2 = false;
             } else if ((flag2 && flag3)) {
-                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Both(x, event.getPosY(), z,
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Both(((ClientPlayerEntity) (Object) this).getX(), event.getPosY(), ((ClientPlayerEntity) (Object) this).getZ(),
                         event.getRotationYaw(), event.getRotationPitch(), event.isOnGround()));
             } else if (flag2) {
-                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionOnly(x, event.getPosY(), z, event.isOnGround()));
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionOnly(((ClientPlayerEntity) (Object) this).getX(), event.getPosY(), ((ClientPlayerEntity) (Object) this).getZ(), event.isOnGround()));
             } else if (flag3) {
                 this.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookOnly(event.getRotationYaw(), event.getRotationPitch(),
                         event.isOnGround()));
@@ -221,9 +221,9 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
             }
 
             if (flag2) {
-                this.lastX = this.x;
+                this.lastX = ((ClientPlayerEntity) (Object) this).getX();
                 this.lastBaseY = axisalignedbb.minY;
-                this.lastZ = this.z;
+                this.lastZ = ((ClientPlayerEntity) (Object) this).getZ();
                 this.field_3923 = 0;
             }
 

@@ -6,10 +6,12 @@ import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.client.framework.wrappers.entity.IEntityPlayer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.block.entity.BeaconBlockEntityRenderer;
+import net.minecraft.client.render.block.entity.EndGatewayBlockEntityRenderer;
 import net.minecraft.util.DyeColor;
 
 public class IBeaconRenderer {
 
+    /*
     public static final IResourceLocation TEXTURE_BEACON_BEAM = new IResourceLocation("textures/entity/beacon_beam.png");
 
     public static void renderBeamAt(double x, double y, double z, float r, float g, float b, int height, float partialTicks) {
@@ -28,6 +30,6 @@ public class IBeaconRenderer {
     public static void renderBeamAt(double x, double y, double z, int height, float partialTicks) {
         float[] white = DyeColor.WHITE.getColorComponents();
         renderBeamAt(x, y, z, white[0], white[1], white[2], height, partialTicks);
-    }
+    }*/
 
 }

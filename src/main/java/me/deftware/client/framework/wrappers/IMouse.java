@@ -29,10 +29,10 @@ public class IMouse {
 
     public static boolean isButtonDown(int button) {
         if (button == 0) {
-            return GLFW.glfwGetMouseButton(MinecraftClient.getInstance().method_22683().getHandle(),
+            return GLFW.glfwGetMouseButton(MinecraftClient.getInstance().getWindow().getHandle(),
                     GLFW.GLFW_MOUSE_BUTTON_1) == 1 ? true : false;
         } else if (button == 1) {
-            return GLFW.glfwGetMouseButton(MinecraftClient.getInstance().method_22683().getHandle(),
+            return GLFW.glfwGetMouseButton(MinecraftClient.getInstance().getWindow().getHandle(),
                     GLFW.GLFW_MOUSE_BUTTON_2) == 1 ? true : false;
         }
         return false;

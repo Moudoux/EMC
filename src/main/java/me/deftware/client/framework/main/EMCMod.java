@@ -72,45 +72,59 @@ public abstract class EMCMod {
 	 *
 	 * @return A Valid EMC Json File
 	 */
-	public static File getEMCJsonFile() throws InterruptedException {
-		File jsonFile = new File(OSUtils.getRunningFolder() + OSUtils.getVersion() + ".json");
+	public static File getEMCJsonFile() {
+		String defaultJsonName = OSUtils.getRunningFolder() + OSUtils.getVersion() + ".json";
+		File jsonFile = new File(Bootstrap.EMCSettings != null ? Bootstrap.EMCSettings.getString("EMC_JSON_LOCATION", defaultJsonName) : defaultJsonName);
 
 		if (!jsonFile.exists()) {
 			if (manualJsonLocation != null && new File(manualJsonLocation).exists()) {
 				return new File(manualJsonLocation);
 			} else {
-				System.out.println("Opening File Open Dialog, as JSON Cannot be found");
+				System.out.println("Opening File Open Dialog, as JSON Cannot be found...");
 
-				JFXPanel frame = new JFXPanel(); // Initialize JavaFX Environment
-				isFileDialogOpen = true;
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						FileChooser fileChooser = new FileChooser();
-						fileChooser.setTitle("Open EMC Json File (Required)");
-						fileChooser.getExtensionFilters().addAll(
-								new FileChooser.ExtensionFilter("Json", "*.json")
-						);
+				try {
+					JFXPanel frame = new JFXPanel(); // Initialize JavaFX Environment
+					isFileDialogOpen = true;
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							FileChooser fileChooser = new FileChooser();
+							fileChooser.setTitle("Open EMC Json File (Required)");
+							fileChooser.getExtensionFilters().addAll(
+									new FileChooser.ExtensionFilter("Json", "*.json")
+							);
 
-						File resultFile = fileChooser.showOpenDialog(null);
+							File resultFile = fileChooser.showOpenDialog(null);
 
-						if (resultFile != null) {
-							manualJsonLocation = resultFile.getAbsolutePath();
-						} else {
-							System.out.println("JSON not found, things will break if other addons are using this!");
+							if (resultFile != null) {
+								manualJsonLocation = resultFile.getAbsolutePath();
+							} else {
+								System.out.println("JSON not found, things will break if other addons are using this!");
+							}
+							isFileDialogOpen = false;
 						}
-						isFileDialogOpen = false;
-					}
-				});
+					});
+				} catch (Exception | Error ex) {
+					System.out.println("Error: EMC Json File Open Dialog failed to open, please Input your EMC Json Location manually in your EMC Config @ emcJsonLocation");
+					ex.printStackTrace();
+				}
 			}
 		} else {
 			return jsonFile;
 		}
 
 		while (isFileDialogOpen) {
-			Thread.sleep(1000);
+			try {
+				Thread.sleep(1000);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 
+		// Save as New Json Location if Settings Available
+		if (Bootstrap.EMCSettings != null) {
+			Bootstrap.EMCSettings.saveString("EMC_JSON_LOCATION", manualJsonLocation);
+		}
 		return new File(manualJsonLocation);
 	}
 

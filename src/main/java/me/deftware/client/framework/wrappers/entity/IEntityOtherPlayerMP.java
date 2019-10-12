@@ -10,7 +10,7 @@ public class IEntityOtherPlayerMP extends OtherClientPlayerEntity {
     public IEntityOtherPlayerMP() {
         super(MinecraftClient.getInstance().world, MinecraftClient.getInstance().player.getGameProfile());
         clonePlayer(MinecraftClient.getInstance().player, true);
-        setPositionAndAngles(MinecraftClient.getInstance().player.x, MinecraftClient.getInstance().player.y, MinecraftClient.getInstance().player.z, MinecraftClient.getInstance().player.yaw, MinecraftClient.getInstance().player.pitch);
+        setPositionAndAngles(MinecraftClient.getInstance().player.getX(), MinecraftClient.getInstance().player.getY(), MinecraftClient.getInstance().player.getZ(), MinecraftClient.getInstance().player.yaw, MinecraftClient.getInstance().player.pitch);
         headYaw = MinecraftClient.getInstance().player.headYaw;
     }
 

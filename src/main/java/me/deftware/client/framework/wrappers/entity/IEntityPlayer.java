@@ -200,8 +200,8 @@ public class IEntityPlayer {
         if (IEntityPlayer.isNull()) {
             return;
         }
-        MinecraftClient.getInstance().player.setPosition(MinecraftClient.getInstance().player.x,
-                MinecraftClient.getInstance().player.y + y, MinecraftClient.getInstance().player.z);
+        MinecraftClient.getInstance().player.setPosition(MinecraftClient.getInstance().player.getX(),
+                MinecraftClient.getInstance().player.getY() + y, MinecraftClient.getInstance().player.getZ());
     }
 
     public static void setPosition(double x, double y, double z) {
@@ -448,21 +448,21 @@ public class IEntityPlayer {
         if (IEntityPlayer.isNull()) {
             return 0;
         }
-        return MinecraftClient.getInstance().player.x;
+        return MinecraftClient.getInstance().player.getX();
     }
 
     public static double getPosY() {
         if (IEntityPlayer.isNull()) {
             return 0;
         }
-        return MinecraftClient.getInstance().player.y;
+        return MinecraftClient.getInstance().player.getY();
     }
 
     public static double getPosZ() {
         if (IEntityPlayer.isNull()) {
             return 0;
         }
-        return MinecraftClient.getInstance().player.z;
+        return MinecraftClient.getInstance().player.getZ();
     }
 
     public static double getEyeHeight() {
@@ -528,7 +528,7 @@ public class IEntityPlayer {
             return "0";
         }
         return String.format("%.3f",
-                new Object[]{Double.valueOf(MinecraftClient.getInstance().getCameraEntity().x)});
+                new Object[]{Double.valueOf(MinecraftClient.getInstance().getCameraEntity().getX())});
     }
 
     public static String getDisplayY() {
@@ -536,7 +536,7 @@ public class IEntityPlayer {
             return "0";
         }
         return String.format("%.5f",
-                new Object[]{Double.valueOf(MinecraftClient.getInstance().getCameraEntity().y)});
+                new Object[]{Double.valueOf(MinecraftClient.getInstance().getCameraEntity().getY())});
     }
 
     public static String getDisplayZ() {
@@ -544,7 +544,7 @@ public class IEntityPlayer {
             return "0";
         }
         return String.format("%.3f",
-                new Object[]{Double.valueOf(MinecraftClient.getInstance().getCameraEntity().z)});
+                new Object[]{Double.valueOf(MinecraftClient.getInstance().getCameraEntity().getZ())});
     }
 
     /**

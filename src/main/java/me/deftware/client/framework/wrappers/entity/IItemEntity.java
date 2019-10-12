@@ -11,15 +11,15 @@ public class IItemEntity {
     }
 
     public double getPosX() {
-        return item.x;
+        return item.getX();
     }
 
     public double getPosY() {
-        return item.y;
+        return item.getY();
     }
 
     public double getPosZ() {
-        return item.z;
+        return item.getZ();
     }
 
     public double getLastTickPosX() {

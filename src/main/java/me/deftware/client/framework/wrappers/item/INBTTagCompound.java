@@ -15,11 +15,11 @@ public class INBTTagCompound {
     }
 
     public boolean contains(String key) {
-        return compound.containsKey(key);
+        return compound.contains(key);
     }
 
     public boolean contains(String key, int i) {
-        return compound.containsKey(key, i);
+        return compound.contains(key, i);
     }
 
     public INBTTagCompound get(String key) {

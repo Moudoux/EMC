@@ -12,15 +12,15 @@ public class IMob {
     }
 
     public double getPosX() {
-        return mob.x;
+        return mob.getX();
     }
 
     public double getPosY() {
-        return mob.y;
+        return mob.getY();
     }
 
     public double getPosZ() {
-        return mob.z;
+        return mob.getZ();
     }
 
     public double getLastTickPosX() {

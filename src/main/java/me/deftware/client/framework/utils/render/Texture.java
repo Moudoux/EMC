@@ -189,7 +189,7 @@ public class Texture {
 
 
     public void blindBind() {
-        this.dynamicTexture.bindTexture();
+        this.dynamicTexture.method_23207();
     }
 
 

@@ -49,15 +49,15 @@ public class IPlayer {
     }
 
     public double getPosX() {
-        return player.x;
+        return player.getX();
     }
 
     public double getPosY() {
-        return player.y;
+        return player.getY();
     }
 
     public double getPosZ() {
-        return player.z;
+        return player.getZ();
     }
 
     public double getLastTickPosX() {

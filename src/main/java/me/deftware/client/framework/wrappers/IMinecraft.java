@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.entity.IEntity;
 import me.deftware.client.framework.wrappers.entity.IEntity.EntityType;
@@ -20,6 +21,7 @@ import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.main.Main;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.options.AoOption;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.container.GenericContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -66,7 +68,7 @@ public class IMinecraft {
     }
 
     public static double getScaleFactor() {
-        return MinecraftClient.getInstance().method_22683().getScaleFactor();
+        return MinecraftClient.getInstance().getWindow().getScaleFactor();
     }
 
     public static void setScaleFactor(int factor) {
@@ -84,7 +86,7 @@ public class IMinecraft {
     }
 
     public static long getWindowHandle() {
-        return MinecraftClient.getInstance().method_22683().getHandle();
+        return MinecraftClient.getInstance().getWindow().getHandle();
     }
 
     public static boolean isFocused() {
@@ -143,7 +145,7 @@ public class IMinecraft {
     }
 
     public static void triggerGuiRenderer() {
-        MinecraftClient.getInstance().method_22683().method_4493(false);
+        RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
     }
 
     public static void addEntityToWorld(int id, IEntity entity) {
@@ -167,7 +169,7 @@ public class IMinecraft {
     }
 
     public static int getGuiScale() {
-        int factor = MinecraftClient.getInstance().method_22683().calculateScaleFactor(MinecraftClient.getInstance().options.guiScale, MinecraftClient.getInstance().forcesUnicodeFont());
+        int factor = MinecraftClient.getInstance().getWindow().calculateScaleFactor(MinecraftClient.getInstance().options.guiScale, MinecraftClient.getInstance().forcesUnicodeFont());
         if (factor == 0) {
             factor = 4;
         }

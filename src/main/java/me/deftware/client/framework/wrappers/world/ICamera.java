@@ -10,27 +10,27 @@ public class ICamera {
     }
 
     public static double getPosX() {
-        return ICamera.getRenderViewEntity().x;
+        return ICamera.getRenderViewEntity().getX();
     }
 
     public static void setPosX(double pos) {
-        ICamera.getRenderViewEntity().x = pos;
+        ICamera.getRenderViewEntity().setPosition(pos, ICamera.getRenderViewEntity().getY(), ICamera.getRenderViewEntity().getZ());
     }
 
     public static double getPosY() {
-        return ICamera.getRenderViewEntity().y;
+        return ICamera.getRenderViewEntity().getY();
     }
 
     public static void setPosY(double pos) {
-        ICamera.getRenderViewEntity().y = pos;
+        ICamera.getRenderViewEntity().setPosition(ICamera.getRenderViewEntity().getX(), pos, ICamera.getRenderViewEntity().getZ());
     }
 
     public static double getPosZ() {
-        return ICamera.getRenderViewEntity().z;
+        return ICamera.getRenderViewEntity().getZ();
     }
 
     public static void setPosZ(double pos) {
-        ICamera.getRenderViewEntity().z = pos;
+        ICamera.getRenderViewEntity().setPosition(ICamera.getRenderViewEntity().getY(), ICamera.getRenderViewEntity().getY(), pos);
     }
 
     public static double getPrevPosX() {

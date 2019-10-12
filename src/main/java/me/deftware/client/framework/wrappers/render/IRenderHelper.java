@@ -1,6 +1,7 @@
 package me.deftware.client.framework.wrappers.render;
 
 import net.minecraft.client.render.GuiLighting;
+import net.minecraft.client.util.math.Matrix4f;
 
 public class IRenderHelper {
 
@@ -9,11 +10,11 @@ public class IRenderHelper {
     }
 
     public static void enableStandardItemLighting() {
-        GuiLighting.enable();
+        GuiLighting.method_22890();
     }
 
     public static void enableGUIStandardItemLighting() {
-        GuiLighting.enableForItems();
+        GuiLighting.enableForItems(new Matrix4f());
     }
 
 }

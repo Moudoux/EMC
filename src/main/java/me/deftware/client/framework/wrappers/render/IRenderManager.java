@@ -1,20 +1,19 @@
 package me.deftware.client.framework.wrappers.render;
 
-import me.deftware.mixin.imp.IMixinRenderManager;
 import net.minecraft.client.MinecraftClient;
 
 public class IRenderManager {
 
     public static double getRenderPosX() {
-        return ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
+        return 0;
     }
 
     public static double getRenderPosY() {
-        return ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
+        return 0;
     }
 
     public static double getRenderPosZ() {
-        return ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        return 0;
     }
 
     public static float getPlayerViewY() {
