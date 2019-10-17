@@ -104,7 +104,6 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void tick(CallbackInfo ci) {
-        System.out.println(((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX() + " " + ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY() + " " + ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ());
         EventUpdate event = new EventUpdate(((ClientPlayerEntity) (Object) this).getX(), ((ClientPlayerEntity) (Object) this).getY(), ((ClientPlayerEntity) (Object) this).getZ(), yaw, pitch, onGround);
         event.broadcast();
         if (event.isCanceled()) {

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InGameHud.class)
 public class MixinGuiIngame {
 
-    @Inject(method = "renderCrosshair", at = @At(value = "INVOKE", target = "com/mojang/blaze3d/systems/RenderSystem.blendFuncSeparate(Lcom/mojang/blaze3d/platform/RenderSystem$SourceFactor;Lcom/mojang/blaze3d/platform/RenderSystem$DestFactor;Lcom/mojang/blaze3d/platform/RenderSystem$SourceFactor;Lcom/mojang/blaze3d/platform/RenderSystem$DestFactor;)V"), cancellable = true)
+    @Inject(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;blendFuncSeparate(Lcom/mojang/blaze3d/systems/RenderSystem$class_4535;Lcom/mojang/blaze3d/systems/RenderSystem$class_4534;Lcom/mojang/blaze3d/systems/RenderSystem$class_4535;Lcom/mojang/blaze3d/systems/RenderSystem$class_4534;)V"), cancellable = true)
     private void crosshairEvent(CallbackInfo ci) {
         if (!((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "CROSSHAIR", true))) {
             RenderSystem.enableAlphaTest();
