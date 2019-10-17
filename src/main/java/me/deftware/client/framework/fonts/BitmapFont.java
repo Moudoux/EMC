@@ -183,7 +183,7 @@ public class BitmapFont implements EMCFont {
             offset += width;
         }
         GL11.glPopMatrix();
-        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         NonScaledRenderer.resetScale();
         IMinecraft.triggerGuiRenderer();

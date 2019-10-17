@@ -1,9 +1,11 @@
 package me.deftware.mixin.mixins;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.deftware.client.framework.event.events.EventRender2D;
 import me.deftware.client.framework.event.events.EventRenderHotbar;
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.gui.hud.InGameHud;
+import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,5 +26,5 @@ public class MixinGuiIngame {
     private void renderHotbar(float partialTicks, CallbackInfo ci) {
         new EventRenderHotbar().broadcast();
     }
-
+    
 }

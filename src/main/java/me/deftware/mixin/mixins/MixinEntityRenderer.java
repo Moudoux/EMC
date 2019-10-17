@@ -12,6 +12,8 @@ import me.deftware.mixin.imp.IMixinEntityRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.GuiLighting;
+import net.minecraft.client.util.Window;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ProjectileUtil;
@@ -20,6 +22,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.*;
+import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -38,6 +41,8 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     private boolean renderHand;
     private float partialTicks = 0;
 
+    private MatrixStack stack;
+
     @Shadow
     public abstract void loadShader(Identifier p_loadShader_1_);
 
@@ -49,11 +54,14 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
         }
     }*/
 
-    @Redirect(method = "renderWorld", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;renderHand:Z", opcode = GETFIELD))
-    private boolean updateCameraAndRender_renderHand(GameRenderer self) {
-        RenderSystem.viewport(0, 0, this.client.getWindow().getFramebufferWidth(), this.client.getWindow().getFramebufferHeight());
+    @Inject(method = "renderHand", at = @At("HEAD"))
+    private void renderHand(MatrixStack matrixStack_1, Camera camera_1, float float_1, CallbackInfo ci) {
+        stack = matrixStack_1;
+        RenderSystem.pushMatrix();
+        RenderSystem.loadIdentity();
+        RenderSystem.multMatrix(matrixStack_1.peek());
         new EventRender3D(partialTicks).broadcast();
-        return renderHand;
+        RenderSystem.popMatrix();
     }
 
     @Inject(method = "renderWorld", at = @At("HEAD"))
@@ -72,7 +80,6 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/hud/InGameHud.render(F)V"))
     private void onRender2D(CallbackInfo cb) {
-        ChatProcessor.sendMessages();
         new EventRender2D(0f).broadcast();
     }
 
