@@ -55,8 +55,12 @@ public abstract class MixinSplashScreen {
 
     private Identifier customLogo = null;
 
+    /**
+     * @author Deftware
+     * @reason
+     */
     @Overwrite
-    public static void method_18819(MinecraftClient minecraftClient_1) {
+    public static void init(MinecraftClient minecraftClient_1) {
         Identifier customLogo = null;
         if (SettingsMap.hasValue(SettingsMap.MapKeys.GAME_SETTINGS, "CUSTOM_LOGO_TEXTURE")) {
             customLogo = new IResourceLocation((String) SettingsMap.getValue(SettingsMap.MapKeys.GAME_SETTINGS, "CUSTOM_LOGO_TEXTURE", ""));
@@ -74,6 +78,10 @@ public abstract class MixinSplashScreen {
         }
     }
 
+    /**
+     * @author Deftware
+     * @reason
+     */
     @Overwrite
     public void render(int int_1, int int_2, float float_1) {
         int int_3 = this.client.getWindow().getScaledWidth();

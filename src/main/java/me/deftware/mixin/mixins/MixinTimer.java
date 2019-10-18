@@ -17,7 +17,7 @@ public class MixinTimer implements IMixinTimer {
 
     private float speed = 1;
 
-    @Redirect(method = "beginRenderTick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/RenderTickCounter;timeScale:F", opcode = GETFIELD))
+    @Redirect(method = "beginRenderTick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/RenderTickCounter;tickTime:F", opcode = GETFIELD))
     private float getTickLength(RenderTickCounter self) {
         return tickTime / speed;
     }

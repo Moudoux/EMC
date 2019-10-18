@@ -23,7 +23,7 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
     private PlayerListEntry cachedScoreboardEntry;
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite
@@ -34,7 +34,7 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
     }
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite

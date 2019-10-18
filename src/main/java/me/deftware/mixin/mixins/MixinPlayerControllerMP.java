@@ -18,7 +18,7 @@ public class MixinPlayerControllerMP implements IMixinPlayerControllerMP {
     private boolean breakingBlock;
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite
@@ -27,7 +27,7 @@ public class MixinPlayerControllerMP implements IMixinPlayerControllerMP {
     }
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite

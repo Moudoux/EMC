@@ -86,6 +86,10 @@ public abstract class MixinEntity implements IMixinEntity {
         return noClip || noClipCheck && self instanceof ClientPlayerEntity;
     }
 
+    /**
+     * @author Deftware
+     * @reason
+     */
     @Overwrite
     public void slowMovement(BlockState blockState_1, Vec3d vec3d_1) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Web);

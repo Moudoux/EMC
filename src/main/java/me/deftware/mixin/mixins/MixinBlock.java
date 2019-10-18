@@ -50,6 +50,10 @@ public abstract class MixinBlock {
         }
     }
 
+    /**
+     * @author Deftware
+     * @reason
+     */
     @Overwrite
     public float method_23349() {
         if (field_21207 != 1.0f) {

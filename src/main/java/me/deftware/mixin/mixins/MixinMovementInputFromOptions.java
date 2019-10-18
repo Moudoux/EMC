@@ -16,6 +16,10 @@ public class MixinMovementInputFromOptions {
     @Final
     public GameOptions settings;
 
+    /**
+     * @author Deftware
+     * @reason
+     */
     @Overwrite
     public void tick(boolean boolean_1) {
         ((KeyboardInput) (Object) this).pressingForward = this.settings.keyForward.isPressed();

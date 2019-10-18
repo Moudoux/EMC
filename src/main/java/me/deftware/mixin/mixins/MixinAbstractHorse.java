@@ -13,7 +13,7 @@ public abstract class MixinAbstractHorse {
     protected abstract boolean getHorseFlag(int int_19);
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite

@@ -49,7 +49,7 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
     private int selectionStart;
 
     @Shadow
-    private int field_2103;
+    private int firstCharacter;
 
     @Shadow
     @Final
@@ -88,7 +88,7 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
 
     @Override
     public int getLineScrollOffset() {
-        return field_2103;
+        return firstCharacter;
     }
 
     @Override

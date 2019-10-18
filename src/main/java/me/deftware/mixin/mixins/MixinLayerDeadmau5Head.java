@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 public class MixinLayerDeadmau5Head {
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite

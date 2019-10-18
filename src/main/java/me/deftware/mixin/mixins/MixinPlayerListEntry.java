@@ -14,6 +14,10 @@ public class MixinPlayerListEntry {
     @Shadow
     private GameMode gameMode;
 
+    /**
+     * @author Deftware
+     * @reason
+     */
     @Overwrite
     public GameMode getGameMode() {
         if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "FAKE_SPEC", false)) {

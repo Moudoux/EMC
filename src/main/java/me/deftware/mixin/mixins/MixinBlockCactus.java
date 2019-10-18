@@ -21,7 +21,7 @@ public class MixinBlockCactus {
     protected static VoxelShape COLLISION_SHAPE;
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite

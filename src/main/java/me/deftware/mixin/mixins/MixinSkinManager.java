@@ -28,7 +28,7 @@ public abstract class MixinSkinManager {
     public abstract Identifier loadSkin( MinecraftProfileTexture minecraftProfileTexture_1, MinecraftProfileTexture.Type minecraftProfileTexture$Type_1, PlayerSkinProvider.SkinTextureAvailableCallback playerSkinProvider$class_1072_1);
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite

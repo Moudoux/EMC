@@ -10,6 +10,10 @@ import me.deftware.mixin.imp.IMixinRenderManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.server.network.packet.ChatMessageC2SPacket;
 import net.minecraft.server.network.packet.ClientCommandC2SPacket;
@@ -91,16 +95,15 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         return self.getFoodLevel();
     }
 
-    /*
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
-    private boolean blindlessSlowdownEvent(LivingEntity self) {
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
+    private boolean blindlessSlowdownEvent(LivingEntity self, StatusEffect effect) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Blindness);
         event.broadcast();
         if (event.isCanceled()) {
             return false;
         }
         return self.hasStatusEffect(StatusEffects.BLINDNESS);
-    }*/
+    }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void tick(CallbackInfo ci) {
@@ -160,7 +163,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
     }
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite
