@@ -118,7 +118,7 @@ public abstract class MixinSplashScreen {
 
         int_6 = (this.client.window.getScaledWidth() - 256) / 2;
         int int_8 = (this.client.window.getScaledHeight() - 256) / 2;
-        this.client.getTextureManager().bindTexture(LOGO);
+        this.client.getTextureManager().bindTexture(customLogo == null ? LOGO : customLogo);
         GlStateManager.enableBlend();
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, float_6);
         ((SplashScreen) (Object) this).blit(int_6, int_8, 0, 0, 256, 256);
