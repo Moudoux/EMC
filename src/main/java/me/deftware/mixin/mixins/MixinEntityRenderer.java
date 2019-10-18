@@ -7,6 +7,7 @@ import me.deftware.client.framework.event.events.EventRender3D;
 import me.deftware.client.framework.event.events.EventWeather;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.ChatProcessor;
+import me.deftware.client.framework.utils.render.NonScaledRenderer;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
 import net.minecraft.client.MinecraftClient;
@@ -80,6 +81,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/hud/InGameHud.render(F)V"))
     private void onRender2D(CallbackInfo cb) {
+        ChatProcessor.sendMessages();
         new EventRender2D(0f).broadcast();
     }
 

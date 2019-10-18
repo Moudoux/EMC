@@ -1,7 +1,11 @@
 package me.deftware.mixin.mixins;
 
+import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.event.events.EventBlockhardness;
+import me.deftware.client.framework.event.events.EventCollideCheck;
+import me.deftware.client.framework.event.events.EventSlowdown;
 import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.wrappers.world.IBlock;
 import net.minecraft.block.*;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.EntityContext;
@@ -15,6 +19,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,21 +33,41 @@ public abstract class MixinBlock {
     protected StateManager<Block, BlockState> stateFactory;
 
     @Shadow
+    private float field_21207;
+
+    @Shadow
     @Final
     private int lightLevel;
 
-    /* TODO: Removed in 1.14?
-    @Shadow
-    protected abstract boolean isCollidable();
-    */
-
-    /* TODO: Removed in 1.14?
-    @Inject(method = "isCollidable", at = @At("HEAD"), cancellable = true)
-    private void isCollidable(IBlockState state, CallbackInfoReturnable<Boolean> ci) {
-        EventCollideCheck event = new EventCollideCheck(new IBlock(state.getBlock()), isCollidable()).send();
-        ci.setReturnValue(event.isCollidable());
+    @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
+    public void getOutlineShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, EntityContext entityContext_1, CallbackInfoReturnable<VoxelShape> ci) {
+        EventCollideCheck event = new EventCollideCheck(new IBlock(blockState_1.getBlock()));
+        event.broadcast();
+        if (event.updated) {
+            if (event.canCollide) {
+                ci.setReturnValue(VoxelShapes.empty());
+            }
+        }
     }
-    */
+
+    @Overwrite
+    public float method_23349() {
+        if (field_21207 != 1.0f) {
+            Event event = null;
+            if (((Block) (Object) this) instanceof HoneyBlock) {
+                event = new EventSlowdown(EventSlowdown.SlowdownType.Honey);
+            } else if (((Block) (Object) this) instanceof SoulSandBlock) {
+                event = new EventSlowdown(EventSlowdown.SlowdownType.Soulsand);
+            }
+            if (event != null) {
+                event.broadcast();
+                if (event.isCanceled()) {
+                    return 1.0f;
+                }
+            }
+        }
+        return this.field_21207;
+    }
 
     @Inject(method = "shouldDrawSide", at = @At("HEAD"), cancellable = true)
     private static void shouldDrawSide(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, Direction direction_1, CallbackInfoReturnable<Boolean> callback) {
