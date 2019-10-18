@@ -41,7 +41,7 @@ public abstract class MixinBlockModelRenderer {
     }
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite

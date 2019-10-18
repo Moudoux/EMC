@@ -25,7 +25,7 @@ public abstract class MixinRenderLivingBase<T extends LivingEntity> {
     }
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite

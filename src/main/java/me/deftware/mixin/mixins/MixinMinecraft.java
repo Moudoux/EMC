@@ -72,6 +72,10 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
         }
     }
 
+    /**
+     * @author Deftware
+     * @reason
+     */
     @Overwrite
     public String getVersionType() {
         return "release";

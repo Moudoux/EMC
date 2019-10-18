@@ -31,7 +31,7 @@ public class MixinNetHandlerPlayClient {
     }
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite

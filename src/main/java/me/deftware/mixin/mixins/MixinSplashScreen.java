@@ -55,6 +55,10 @@ public abstract class MixinSplashScreen {
 
     private Identifier customLogo = null;
 
+    /**
+     * @author Deftware
+     * @reason
+     */
     @Overwrite
     public static void method_18819(MinecraftClient minecraftClient_1) {
         Identifier customLogo = null;
@@ -74,6 +78,10 @@ public abstract class MixinSplashScreen {
         }
     }
 
+    /**
+     * @author Deftware
+     * @reason
+     */
     @Overwrite
     public void render(int int_1, int int_2, float float_1) {
         int int_3 = this.client.window.getScaledWidth();

@@ -25,7 +25,7 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
     private int itemUseTimeLeft;
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite
@@ -40,7 +40,7 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
     }
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite

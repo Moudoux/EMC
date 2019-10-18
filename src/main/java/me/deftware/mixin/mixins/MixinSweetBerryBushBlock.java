@@ -24,6 +24,10 @@ public class MixinSweetBerryBushBlock {
     @Shadow
     static IntProperty AGE;
 
+    /**
+     * @author Deftware
+     * @reason
+     */
     @Overwrite
     public void onEntityCollision(BlockState blockState_1, World world_1, BlockPos blockPos_1, Entity entity_1) {
         EventSlowdown eventSlowdown = new EventSlowdown(EventSlowdown.SlowdownType.BerryBush);

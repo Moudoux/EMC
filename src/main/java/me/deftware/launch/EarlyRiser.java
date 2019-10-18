@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.Mixins;
 
 public class EarlyRiser implements Runnable {
 
+    @SuppressWarnings("deprecation")
     @Override
     public void run() {
         Mixins.addConfiguration("emc.client.json");

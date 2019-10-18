@@ -68,6 +68,10 @@ public class MixinGuiScreen implements IMixinGuiScreen {
         }
     }
 
+    /**
+     * @author Deftware
+     * @reason
+     */
     @Overwrite
     public List<String> getTooltipFromItem(ItemStack itemStack_1) {
         List<Text> list_1 = itemStack_1.getTooltip(MinecraftClient.getInstance().player, MinecraftClient.getInstance().options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL);

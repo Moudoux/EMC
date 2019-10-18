@@ -103,6 +103,10 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     @Final
     public MinecraftClient client;
 
+    /**
+     * @author Deftware
+     * @reason
+     */
     @Overwrite
     public void updateTargetedEntity(float float_1) {
         Entity entity_1 = this.client.getCameraEntity();

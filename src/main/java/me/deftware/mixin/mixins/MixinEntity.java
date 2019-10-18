@@ -102,6 +102,10 @@ public abstract class MixinEntity implements IMixinEntity {
     @Shadow
     public Vec3d movementMultiplier;
 
+    /**
+     * @author Deftware
+     * @reason
+     */
     @Overwrite
     public EntityPose getPose() {
         if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "SWIMMING_MODE_OVERRIDE", false)) {
@@ -116,6 +120,10 @@ public abstract class MixinEntity implements IMixinEntity {
         return noClip || noClipCheck && self instanceof ClientPlayerEntity;
     }
 
+    /**
+     * @author Deftware
+     * @reason
+     */
     @Overwrite
     public void slowMovement(BlockState blockState_1, Vec3d vec3d_1) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Web);

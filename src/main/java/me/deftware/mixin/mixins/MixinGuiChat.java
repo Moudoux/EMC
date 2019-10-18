@@ -62,7 +62,7 @@ public abstract class MixinGuiChat extends Screen {
     }
 
     /**
-     * @Author Deftware
+     * @author Deftware
      * @reason
      */
     @Overwrite
