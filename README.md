@@ -60,7 +60,7 @@ Minecraft versions currently supported
 * 1.13
 * 1.12.2
 
-Loading EMC (1.14.3)
+Loading EMC (1.15)
 -------------------
 
 Some versions of EMC are loaded differently and use a small library to load, these builds are appended with an F, such as `EMC-F` for the 1.15 version of EMC.
@@ -91,9 +91,9 @@ You can also type `.unload` to eject loaded mods.
 Why use EMC?
 -------------------
 
+* Your mod will be cross compatible with Minecraft 1.12.2 through 1.15
 * Easy to use (You don't have to think about Minecraft obfuscation or Mixins)
 * Completely compliant with the Minecraft EULA (You don't have to worry about DMCA takedown requests)
-* Write once, use on multiple Minecraft versions
 * Less code (This requires less code than writing your client with Minecraft)
 
 EULA compliant
