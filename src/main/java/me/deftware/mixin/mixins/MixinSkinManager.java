@@ -11,7 +11,7 @@ import me.deftware.client.framework.utils.HashUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.PlayerSkinProvider;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.SystemUtil;
+import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.*;
 
 import java.util.Map;
@@ -33,7 +33,7 @@ public abstract class MixinSkinManager {
      */
     @Overwrite
     public void loadSkin(GameProfile player, PlayerSkinProvider.SkinTextureAvailableCallback callback, boolean requireSecure) {
-        SystemUtil.getServerWorkerExecutor().execute(() -> {
+        Util.getServerWorkerExecutor().execute(() -> {
             Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> textureMap = Maps.newHashMap();
 
             try {

@@ -11,7 +11,7 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.text.LiteralText;
-import net.minecraft.util.SystemUtil;
+import net.minecraft.util.Util;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -82,7 +82,7 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public static void openLink(String url) {
-        SystemUtil.getOperatingSystem().open(url);
+        Util.getOperatingSystem().open(url);
     }
 
     public static boolean isCtrlPressed() {

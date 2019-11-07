@@ -227,7 +227,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
             if (flag2) {
                 this.lastX = ((ClientPlayerEntity) (Object) this).getX();
-                this.lastBaseY = axisalignedbb.minY;
+                this.lastBaseY = axisalignedbb.y1;
                 this.lastZ = ((ClientPlayerEntity) (Object) this).getZ();
                 this.field_3923 = 0;
             }

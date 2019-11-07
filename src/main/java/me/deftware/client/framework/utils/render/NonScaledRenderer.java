@@ -7,7 +7,6 @@ import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.math.MatrixStack;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;

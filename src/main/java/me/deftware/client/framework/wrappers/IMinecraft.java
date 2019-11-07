@@ -107,8 +107,8 @@ public class IMinecraft {
         if (!IMinecraft.isMouseOver()) {
             return null;
         }
-        if (MinecraftClient.getInstance().hitResult != null && MinecraftClient.getInstance().hitResult instanceof BlockHitResult && ((BlockHitResult) MinecraftClient.getInstance().hitResult).getBlockPos() != null) {
-            return new IBlockPos(((BlockHitResult) MinecraftClient.getInstance().hitResult).getBlockPos());
+        if (MinecraftClient.getInstance().crosshairTarget != null && MinecraftClient.getInstance().crosshairTarget instanceof BlockHitResult && ((BlockHitResult) MinecraftClient.getInstance().crosshairTarget).getBlockPos() != null) {
+            return new IBlockPos(((BlockHitResult) MinecraftClient.getInstance().crosshairTarget).getBlockPos());
         }
         return null;
     }
@@ -122,7 +122,7 @@ public class IMinecraft {
     }
 
     public static boolean isEntityHit() {
-        return MinecraftClient.getInstance().hitResult != null && MinecraftClient.getInstance().hitResult instanceof EntityHitResult && ((EntityHitResult) MinecraftClient.getInstance().hitResult).getEntity() != null;
+        return MinecraftClient.getInstance().crosshairTarget != null && MinecraftClient.getInstance().crosshairTarget instanceof EntityHitResult && ((EntityHitResult) MinecraftClient.getInstance().crosshairTarget).getEntity() != null;
     }
 
     public static int getFPS() {
@@ -274,7 +274,7 @@ public class IMinecraft {
     }
 
     public static boolean isMouseOver() {
-        if (MinecraftClient.getInstance().hitResult != null) {
+        if (MinecraftClient.getInstance().crosshairTarget != null) {
             return true;
         }
         return false;
@@ -284,7 +284,7 @@ public class IMinecraft {
         if (!isEntityHit()) {
             return null;
         }
-        return new IEntity(((EntityHitResult) MinecraftClient.getInstance().hitResult).getEntity());
+        return new IEntity(((EntityHitResult) MinecraftClient.getInstance().crosshairTarget).getEntity());
     }
 
     public static boolean entityHitInstanceOf(EntityType type) {
@@ -292,7 +292,7 @@ public class IMinecraft {
             return false;
         }
         if (type.equals(EntityType.ENTITY_LIVING_BASE)) {
-            return ((EntityHitResult) MinecraftClient.getInstance().hitResult).getEntity() instanceof LivingEntity;
+            return ((EntityHitResult) MinecraftClient.getInstance().crosshairTarget).getEntity() instanceof LivingEntity;
         }
         return false;
     }

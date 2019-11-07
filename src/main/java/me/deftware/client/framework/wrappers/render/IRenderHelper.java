@@ -10,7 +10,7 @@ public class IRenderHelper {
     }
 
     public static void enableStandardItemLighting() {
-        GuiLighting.method_22890();
+        GuiLighting.enable();
     }
 
     public static void enableGUIStandardItemLighting() {

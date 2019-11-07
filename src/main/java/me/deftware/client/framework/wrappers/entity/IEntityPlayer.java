@@ -685,9 +685,9 @@ public class IEntityPlayer {
     public static boolean isTouchingLiquid() {
         MinecraftClient mc = MinecraftClient.getInstance();
         boolean inLiquid = false;
-        int y = (int) mc.player.getBoundingBox().minY;
-        for (int x = IEntityPlayer.floor_double(mc.player.getBoundingBox().minX); x < IEntityPlayer.floor_double(mc.player.getBoundingBox().maxX) + 1; x++) {
-            for (int z = IEntityPlayer.floor_double(mc.player.getBoundingBox().minZ); z < IEntityPlayer.floor_double(mc.player.getBoundingBox().maxZ)
+        int y = (int) mc.player.getBoundingBox().y1;
+        for (int x = IEntityPlayer.floor_double(mc.player.getBoundingBox().x1); x < IEntityPlayer.floor_double(mc.player.getBoundingBox().x2) + 1; x++) {
+            for (int z = IEntityPlayer.floor_double(mc.player.getBoundingBox().z1); z < IEntityPlayer.floor_double(mc.player.getBoundingBox().z2)
                     + 1; z++) {
                 net.minecraft.block.Block block = mc.world.getBlockState(new BlockPos(x, y, z)).getBlock();
                 if ((block != null) && (!(block instanceof AirBlock))) {

@@ -11,7 +11,7 @@ import net.minecraft.client.gui.screen.Overlay;
 import net.minecraft.client.gui.screen.SplashScreen;
 import net.minecraft.resource.ResourceReloadMonitor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.SystemUtil;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -86,7 +86,7 @@ public abstract class MixinSplashScreen {
     public void render(int int_1, int int_2, float float_1) {
         int int_3 = this.client.getWindow().getScaledWidth();
         int int_4 = this.client.getWindow().getScaledHeight();
-        long long_1 = SystemUtil.getMeasuringTimeMs();
+        long long_1 = Util.getMeasuringTimeMs();
         if (this.field_18219 && (this.reloadMonitor.isLoadStageComplete() || this.client.currentScreen != null) && this.field_18220 == -1L) {
             this.field_18220 = long_1;
         }
@@ -134,7 +134,7 @@ public abstract class MixinSplashScreen {
 
         if (this.field_17771 == -1L && this.reloadMonitor.isApplyStageComplete() && (!this.field_18219 || float_3 >= 2.0F)) {
             this.reloadMonitor.throwExceptions();
-            this.field_17771 = SystemUtil.getMeasuringTimeMs();
+            this.field_17771 = Util.getMeasuringTimeMs();
             done();
             if (this.client.currentScreen != null) {
                 this.client.currentScreen.init(this.client, this.client.getWindow().getScaledWidth(), this.client.getWindow().getScaledHeight());

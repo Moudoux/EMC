@@ -8,7 +8,6 @@ import me.deftware.client.framework.utils.render.NonScaledRenderer;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.math.MatrixStack;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.opengl.GL11;
 
