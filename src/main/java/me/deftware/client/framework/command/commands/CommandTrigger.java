@@ -10,7 +10,8 @@ import me.deftware.client.framework.main.Bootstrap;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.IChat;
 
-@SuppressWarnings("ALL") public class CommandTrigger extends EMCModCommand {
+@SuppressWarnings("ALL")
+public class CommandTrigger extends EMCModCommand {
 
     @Override
     public CommandBuilder getCommandBuilder() {
@@ -21,6 +22,10 @@ import me.deftware.client.framework.wrappers.IChat;
                                         RequiredArgumentBuilder.argument("prefix", StringArgumentType.string())
                                                 .executes(c -> {
                                                     CommandResult r = new CommandResult(c);
+                                                    if (r.getString("prefix").trim().isEmpty()) {
+                                                        IChat.sendClientMessage("Please enter a valid trigger prefix");
+                                                        return 1;
+                                                    }
                                                     SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", r.getString("prefix"));
                                                     Bootstrap.EMCSettings.saveString("commandtrigger", r.getString("prefix"));
                                                     IChat.sendClientMessage("Set command trigger to \"" + r.getString("prefix") + "\"");

@@ -37,7 +37,6 @@ public class IItem {
             key = key.substring("block.minecraft.".length());
         }
         return key;
-
     }
 
     public int getID() {

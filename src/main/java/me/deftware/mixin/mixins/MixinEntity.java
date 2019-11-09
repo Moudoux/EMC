@@ -8,6 +8,9 @@ import me.deftware.mixin.imp.IMixinEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
@@ -58,6 +61,14 @@ public abstract class MixinEntity implements IMixinEntity {
 
     @Shadow
     public float yaw;
+
+    @Shadow
+    @Final
+    public DataTracker dataTracker;
+
+    @Shadow
+    @Final
+    public static TrackedData<EntityPose> POSE;
 
     @Shadow
     public abstract boolean isSneaking();

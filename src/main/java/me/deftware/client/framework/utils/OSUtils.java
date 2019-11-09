@@ -26,6 +26,7 @@ public class OSUtils {
 		return getMCDir(true);
 	}
 
+
 	/**
 	 * Returns the .minecraft directory, on all supported OSes
 	 *
