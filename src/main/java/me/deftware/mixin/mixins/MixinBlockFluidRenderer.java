@@ -15,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(FluidRenderer.class)
 public class MixinBlockFluidRenderer {
 
-    @Inject(method = "tesselate", at = @At("HEAD"), cancellable = true)
-    public void tesselate(BlockRenderView blockRenderView_1, BlockPos blockPos_1, VertexConsumer vertexConsumer_1, FluidState fluidState_1, CallbackInfoReturnable<Boolean> ci) {
+    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
+    public void render(BlockRenderView blockRenderView_1, BlockPos blockPos_1, VertexConsumer vertexConsumer_1, FluidState fluidState_1, CallbackInfoReturnable<Boolean> ci) {
         if (!((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "FLUIDS", true))) {
             ci.cancel();
         }

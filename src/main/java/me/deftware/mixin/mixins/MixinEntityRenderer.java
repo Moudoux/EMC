@@ -15,6 +15,7 @@ import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.GuiLighting;
 import net.minecraft.client.util.Window;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ProjectileUtil;
@@ -60,7 +61,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
         stack = matrixStack_1;
         RenderSystem.pushMatrix();
         RenderSystem.loadIdentity();
-        RenderSystem.multMatrix(matrixStack_1.peek());
+        RenderSystem.multMatrix(matrixStack_1.method_23760().method_23761()); // TODO: Verify in 19w45a
         new EventRender3D(partialTicks).broadcast();
         RenderSystem.popMatrix();
     }
@@ -109,7 +110,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
                 this.client.getProfiler().push("pick");
                 this.client.targetedEntity = null;
                 double double_1 = (double)this.client.interactionManager.getReachDistance();
-                this.client.hitResult = entity_1.rayTrace(double_1, float_1, false);
+                this.client.crosshairTarget = entity_1.rayTrace(double_1, float_1, false);
                 Vec3d vec3d_1 = entity_1.getCameraPosVec(float_1);
                 boolean boolean_1 = false;
                 double double_2 = double_1;
@@ -126,8 +127,8 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
                 }
 
                 double_2 *= double_2;
-                if (this.client.hitResult != null) {
-                    double_2 = this.client.hitResult.getPos().squaredDistanceTo(vec3d_1);
+                if (this.client.crosshairTarget != null) {
+                    double_2 = this.client.crosshairTarget.getPos().squaredDistanceTo(vec3d_1);
                 }
 
                 Vec3d vec3d_2 = entity_1.getRotationVec(1.0F);
@@ -142,9 +143,9 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
                     Vec3d vec3d_4 = entityHitResult_1.getPos();
                     double double_3 = bypassReach ? 2D : vec3d_1.squaredDistanceTo(vec3d_4);
                     if (boolean_1 && double_3 > 9.0D) {
-                        this.client.hitResult = BlockHitResult.createMissed(vec3d_4, Direction.getFacing(vec3d_2.x, vec3d_2.y, vec3d_2.z), new BlockPos(vec3d_4));
-                    } else if (double_3 < double_2 || this.client.hitResult == null) {
-                        this.client.hitResult = entityHitResult_1;
+                        this.client.crosshairTarget = BlockHitResult.createMissed(vec3d_4, Direction.getFacing(vec3d_2.x, vec3d_2.y, vec3d_2.z), new BlockPos(vec3d_4));
+                    } else if (double_3 < double_2 || this.client.crosshairTarget == null) {
+                        this.client.crosshairTarget = entityHitResult_1;
                         if (entity_2 instanceof LivingEntity || entity_2 instanceof ItemFrameEntity) {
                             this.client.targetedEntity = entity_2;
                         }

@@ -9,10 +9,9 @@ import net.minecraft.client.render.block.BlockModelRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.util.math.Matrix4f;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Matrix3f;
-import net.minecraft.util.math.MatrixStack;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockRenderView;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,8 +31,8 @@ import java.util.Random;
 @Mixin(BlockModelRenderer.class)
 public abstract class MixinBlockModelRenderer {
 
-    @Inject(method = "tesselate", at = @At("HEAD"), cancellable = true)
-    public void tesselate(BlockRenderView blockRenderView_1, BakedModel bakedModel_1, BlockState blockState_1, BlockPos blockPos_1, MatrixStack matrixStack_1, VertexConsumer vertexConsumer_1, boolean boolean_1, Random random_1, long long_1, int int_1, CallbackInfoReturnable<Boolean> ci) {
+    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
+    public void render(BlockRenderView blockRenderView_1, BakedModel bakedModel_1, BlockState blockState_1, BlockPos blockPos_1, MatrixStack matrixStack_1, VertexConsumer vertexConsumer_1, boolean boolean_1, Random random_1, long long_1, int int_1, CallbackInfoReturnable<Boolean> ci) {
         if (blockState_1.getBlock() instanceof FluidBlock) {
             ci.setReturnValue(((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "FLUIDS", true)));
         } else {
