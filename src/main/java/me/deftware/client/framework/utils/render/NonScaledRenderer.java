@@ -36,18 +36,18 @@ public class NonScaledRenderer {
     }
 
     public static void drawRect(float x, float y, float xx, float yy, Color c) {
-        NonScaledRenderer.drawRect(x, y, xx, yy, 0, c);
+        NonScaledRenderer.drawRect(x, y, xx, yy, 0, c, getScale());
     }
 
     public static void drawRect(float x, float y, float xx, float yy, int c) {
-        NonScaledRenderer.drawRect(x, y, xx, yy, c, null);
+        NonScaledRenderer.drawRect(x, y, xx, yy, c, null, getScale());
     }
 
-    public static void drawRect(float x, float y, float xx, float yy, int c, Color color) {
-        x *= getScale();
-        y *= getScale();
-        xx *= getScale();
-        yy *= getScale();
+    public static void drawRect(float x, float y, float xx, float yy, int c, Color color, float scale) {
+        x *= scale;
+        y *= scale;
+        xx *= scale;
+        yy *= scale;
         GL11.glPushMatrix();
         GraphicsUtil.prepareMatrix(IGuiScreen.getDisplayWidth(), IGuiScreen.getDisplayHeight());
         GL11.glEnable(GL11.GL_BLEND);
@@ -148,11 +148,19 @@ public class NonScaledRenderer {
     }
 
     public static int getMouseX() {
-        return (int) (getCursorPos()[0] / getScale());
+        return getMouseX(getScale());
     }
 
     public static int getMouseY() {
-        return (int) (getCursorPos()[1] / getScale());
+        return getMouseY(getScale());
+    }
+
+    public static int getMouseX(float scale) {
+        return (int) (getCursorPos()[0] / scale);
+    }
+
+    public static int getMouseY(float scale) {
+        return (int) (getCursorPos()[1] / scale);
     }
 
     public static double[] getCursorPos() {

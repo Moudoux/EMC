@@ -124,6 +124,7 @@ public abstract class EMCMod {
 		// Save as New Json Location if Settings Available
 		if (Bootstrap.EMCSettings != null) {
 			Bootstrap.EMCSettings.saveString("EMC_JSON_LOCATION", manualJsonLocation);
+			Bootstrap.EMCSettings.saveConfig();
 		}
 		return new File(manualJsonLocation);
 	}
