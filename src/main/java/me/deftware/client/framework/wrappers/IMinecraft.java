@@ -70,7 +70,7 @@ public class IMinecraft {
     }
 
     public static long getWindowHandle() {
-        return MinecraftClient.getInstance().window.getHandle();
+        return MinecraftClient.getInstance().getWindow().getHandle();
     }
 
     public static double getScaleFactor() {
@@ -89,10 +89,6 @@ public class IMinecraft {
             }
         }
         return null;
-    }
-
-    public static long getWindowHandle() {
-        return MinecraftClient.getInstance().getWindow().getHandle();
     }
 
     public static boolean isFocused() {
