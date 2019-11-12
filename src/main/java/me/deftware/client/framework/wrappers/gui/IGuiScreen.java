@@ -251,6 +251,11 @@ public abstract class IGuiScreen extends Screen {
         Screen.blit(x, y, 0, 0, width, height, width, height);
     }
 
+    public boolean mouseReleased(double x, double y, int button) {
+        children.forEach((listener) -> listener.mouseReleased(x, y, button));
+        return false;
+    }
+
     public int getIGuiScreenWidth() {
         return width;
     }
