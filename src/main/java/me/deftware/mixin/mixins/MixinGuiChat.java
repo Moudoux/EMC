@@ -8,6 +8,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.mixin.components.InternalGuiTextField;
 import me.deftware.mixin.imp.IMixinGuiScreen;
+import net.minecraft.class_4717;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -36,26 +37,23 @@ public abstract class MixinGuiChat extends Screen {
     @Shadow
     private int messageHistorySize;
 
-    @Shadow
+    //@Shadow
     private ParseResults<CommandSource> parseResults;
 
-    @Shadow
+    //@Shadow
     private CompletableFuture<Suggestions> suggestionsFuture;
 
-    @Shadow
+    //@Shadow
     private boolean completingSuggestion;
 
-    @Shadow
+    //@Shadow
     public abstract String getRenderText(String p_195130_1_, int p_195130_2_);
 
     @Shadow
-    public abstract void onChatFieldChanged(String p_195128_2_);
+    public abstract void method_23945(String p_195128_2_);
 
     @Shadow
-    public abstract void updateCommandFeedback();
-
-    @Shadow
-    public abstract void updateCommand();
+    public class_4717 field_21616;
 
     protected MixinGuiChat(LiteralText textComponent_1) {
         super(textComponent_1);
@@ -73,14 +71,15 @@ public abstract class MixinGuiChat extends Screen {
         this.chatField.setMaxLength(256);
         this.chatField.setHasBorder(false);
         this.chatField.setText(this.originalChatText);
-        this.chatField.setRenderTextProvider(this::getRenderText);
-        this.chatField.setChangedListener(this::onChatFieldChanged);
+        //this.chatField.setRenderTextProvider(this::getRenderText);
+        this.chatField.setChangedListener(this::method_23945);
         this.children.add(this.chatField);
-        this.updateCommand();
+        this.field_21616 = new class_4717(this.minecraft, this, this.chatField, this.font, true, false, 1, 10, true, -805306368);
+        this.field_21616.method_23934();
         this.setInitialFocus(this.chatField);
     }
-
-    @Inject(method = "updateCommand", at = @At("RETURN"), cancellable = true)
+//Lnet/minecraft/class_4717;method_23934()V
+    @Inject(method = "method_23934", at = @At(value = "RETURN", target = "Lnet/minecraft/class_4717;method_23934()V"), cancellable = true)
     private void injectCustomSuggestions(CallbackInfo ci) {
         String string_1 = this.chatField.getText();
         StringReader stringReader_1 = new StringReader(string_1);
@@ -100,7 +99,7 @@ public abstract class MixinGuiChat extends Screen {
                     this.suggestionsFuture = commandDispatcher_1.getCompletionSuggestions(parseResults_1);
                     this.suggestionsFuture.thenRun(() -> {
                         if (this.suggestionsFuture.isDone()) {
-                            this.updateCommandFeedback();
+                            this.field_21616.method_23937();
                         }
                     });
                 }
