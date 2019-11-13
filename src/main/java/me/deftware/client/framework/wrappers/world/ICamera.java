@@ -30,7 +30,7 @@ public class ICamera {
     }
 
     public static void setPosZ(double pos) {
-        ICamera.getRenderViewEntity().setPosition(ICamera.getRenderViewEntity().getY(), ICamera.getRenderViewEntity().getY(), pos);
+        ICamera.getRenderViewEntity().setPosition(ICamera.getRenderViewEntity().getX(), ICamera.getRenderViewEntity().getY(), pos);
     }
 
     public static double getPrevPosX() {
