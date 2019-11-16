@@ -61,7 +61,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
         stack = matrixStack_1;
         RenderSystem.pushMatrix();
         RenderSystem.loadIdentity();
-        RenderSystem.multMatrix(matrixStack_1.method_23760().method_23761()); // TODO: Verify in 19w45a
+        RenderSystem.multMatrix(matrixStack_1.peek().getModel()); // TODO: Verify in 19w45a
         new EventRender3D(partialTicks).broadcast();
         RenderSystem.popMatrix();
     }
