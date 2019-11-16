@@ -1,8 +1,8 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.mixin.imp.IMixinChatSuggestion;
-import net.minecraft.class_4717;
 import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screen.CommandSuggestor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,11 +13,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  public class MixinGuiChat {
 
     @Shadow
-    public class_4717 field_21616;
+    public CommandSuggestor commandSuggestor;
 
     @Inject(method = "init", at = @At("RETURN"))
     public void init(CallbackInfo ci) {
-        ((IMixinChatSuggestion) field_21616).setInject(true);
+        ((IMixinChatSuggestion) commandSuggestor).setInject(true);
     }
 
 }
