@@ -54,6 +54,7 @@
     "MixinWorldRenderer",
     "MixinPlayerEntity",
     "MixinPlayerListEntry",
-    "MixinRenderManager"
+    "MixinRenderManager",
+    "MixinChatSuggestion"
   ]
 }
