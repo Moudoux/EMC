@@ -38,6 +38,9 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     private int itemUseCooldown;
 
     @Shadow
+    private static int currentFps;
+
+    @Shadow
     public abstract void openScreen(Screen screen);
 
     @Override
@@ -59,6 +62,11 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
         EventGuiScreenDisplay event = new EventGuiScreenDisplay(screen);
         event.broadcast();
         return event.isCanceled() ? null : event.getScreen();
+    }
+
+    @Override
+    public int getFPS() {
+        return currentFps;
     }
 
     @Inject(method = "tick", at = @At("HEAD"))

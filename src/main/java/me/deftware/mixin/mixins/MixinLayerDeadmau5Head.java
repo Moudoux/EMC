@@ -41,12 +41,12 @@ public class MixinLayerDeadmau5Head {
                 float float_8 = MathHelper.lerp(float_3, abstractClientPlayerEntity_1.prevYaw, abstractClientPlayerEntity_1.yaw) - MathHelper.lerp(float_3, abstractClientPlayerEntity_1.prevBodyYaw, abstractClientPlayerEntity_1.bodyYaw);
                 float float_9 = MathHelper.lerp(float_3, abstractClientPlayerEntity_1.prevPitch, abstractClientPlayerEntity_1.pitch);
                 matrixStack_1.push();
-                matrixStack_1.multiply(Vector3f.POSITIVE_Y.getRotationQuaternion(float_8));
-                matrixStack_1.multiply(Vector3f.POSITIVE_X.getRotationQuaternion(float_9));
+                matrixStack_1.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(float_8));
+                matrixStack_1.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(float_9));
                 matrixStack_1.translate((double)(0.375F * (float)(int_3 * 2 - 1)), 0.0D, 0.0D);
                 matrixStack_1.translate(0.0D, -0.375D, 0.0D);
-                matrixStack_1.multiply(Vector3f.POSITIVE_X.getRotationQuaternion(-float_9));
-                matrixStack_1.multiply(Vector3f.POSITIVE_Y.getRotationQuaternion(-float_8));
+                matrixStack_1.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-float_9));
+                matrixStack_1.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-float_8));
                 float float_10 = 1.3333334F;
                 matrixStack_1.scale(1.3333334F, 1.3333334F, 1.3333334F);
                 (((Deadmau5FeatureRenderer) (Object) this).getModel()).renderEars(matrixStack_1, vertexConsumer_1, int_1, int_2); // TODO: Maybe change beginning cast to PlayerEntityModel in 1.15?

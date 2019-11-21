@@ -126,7 +126,7 @@ public class IMinecraft {
     }
 
     public static int getFPS() {
-        return MinecraftClient.getCurrentFps();
+        return ((IMixinMinecraft) MinecraftClient.getInstance()).getFPS();
     }
 
     public static boolean isInGame() {

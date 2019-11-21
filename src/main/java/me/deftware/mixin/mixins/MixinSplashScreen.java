@@ -21,6 +21,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Optional;
+import java.util.function.Consumer;
+
 @Mixin(SplashScreen.class)
 public abstract class MixinSplashScreen {
 
@@ -38,7 +41,7 @@ public abstract class MixinSplashScreen {
 
     @Shadow
     @Final
-    public Runnable field_18218;
+    public Consumer<Optional<Throwable>> field_18218;
 
     @Shadow
     @Final
@@ -145,7 +148,12 @@ public abstract class MixinSplashScreen {
 
 
     public void done() {
-        this.field_18218.run();
+        try {
+            this.reloadMonitor.throwExceptions();
+            this.field_18218.accept(Optional.empty());
+        } catch (Throwable var15) {
+            this.field_18218.accept(Optional.of(var15));
+        }
         if (!Bootstrap.initialized) {
             Bootstrap.initialized = true;
             Bootstrap.initList.forEach(mod -> mod.accept("arg"));

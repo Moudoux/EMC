@@ -27,4 +27,6 @@ public interface IMixinMinecraft {
 
     boolean getIsWindowFocused();
 
+    int getFPS();
+
 }

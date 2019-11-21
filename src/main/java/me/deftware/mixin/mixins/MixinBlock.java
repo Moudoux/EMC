@@ -29,10 +29,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinBlock {
 
     @Shadow
-    @Final
-    protected StateManager<Block, BlockState> stateFactory;
-
-    @Shadow
     private float field_21207;
 
     @Shadow

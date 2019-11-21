@@ -46,7 +46,7 @@ public abstract class MixinRenderLivingBase<T extends LivingEntity> {
             }
             if (flip) {
                 matrixStack_1.translate(0.0D, (double)(livingEntity_1.getHeight() + 0.1F), 0.0D);
-                matrixStack_1.multiply(Vector3f.POSITIVE_Z.getRotationQuaternion(180.0F));
+                matrixStack_1.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180.0F));
             }
         }
     }
