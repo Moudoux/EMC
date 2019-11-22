@@ -1,7 +1,7 @@
 import org.gradle.internal.os.OperatingSystem
 
 plugins {
-	id 'fabric-loom' version '0.2.5-SNAPSHOT'
+	id 'fabric-loom' version '0.2.6-SNAPSHOT'
 }
 
 apply plugin: 'maven'
@@ -40,9 +40,9 @@ repositories {
 dependencies {
 	minecraft "com.mojang:minecraft:${mcVersion}"
 	mappings "net.fabricmc:yarn:${mappingsVer}"
-	modCompile "net.fabricmc:fabric-loader:0.4.8+build.155"
-	modCompile 'com.github.Chocohead:Fabric-ASM:9af0ebe992'
-	include 'com.github.Chocohead:Fabric-ASM:9af0ebe992'
+	modCompile "net.fabricmc:fabric-loader:0.7.1+build.173"
+	modCompile 'com.github.modmuss50:Fabric-ASM:b97939c03a'
+	include 'com.github.modmuss50:Fabric-ASM:b97939c03a'
 	compile files("deps/IModelData.jar")
 }
 

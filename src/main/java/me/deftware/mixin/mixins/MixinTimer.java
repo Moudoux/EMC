@@ -7,8 +7,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
-
 @Mixin(RenderTickCounter.class)
 public class MixinTimer implements IMixinTimer {
 
@@ -17,7 +15,7 @@ public class MixinTimer implements IMixinTimer {
 
     private float speed = 1;
 
-    @Redirect(method = "beginRenderTick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/RenderTickCounter;tickTime:F", opcode = GETFIELD))
+    @Redirect(method = "beginRenderTick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/RenderTickCounter;tickTime:F", opcode = 180))
     private float getTickLength(RenderTickCounter self) {
         return tickTime / speed;
     }
