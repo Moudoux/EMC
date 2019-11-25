@@ -21,7 +21,7 @@ public class MixinLayerDeadmau5Head {
      * @reason
      */
     @Overwrite
-    public void method_4181(MatrixStack matrixStack_1, VertexConsumerProvider vertexConsumerProvider_1, int int_1, AbstractClientPlayerEntity abstractClientPlayerEntity_1, float float_1, float float_2, float float_3, float float_4, float float_5, float float_6) {
+    public void render(MatrixStack matrixStack_1, VertexConsumerProvider vertexConsumerProvider_1, int int_1, AbstractClientPlayerEntity abstractClientPlayerEntity_1, float float_1, float float_2, float float_3, float float_4, float float_5, float float_6) {
         String usernames = (String) SettingsMap.getValue(SettingsMap.MapKeys.MISC, "DEADMAU_EARS", "");
         boolean flag = abstractClientPlayerEntity_1.getGameProfile().getName().equalsIgnoreCase(usernames);
         if (usernames.contains(",")) {
