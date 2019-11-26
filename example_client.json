@@ -1,24 +1,24 @@
 {
-    "inheritsFrom": "1.15",
     "id": "1.15-EMC",
-    "time": "2019-04-10T20:37:13+02:00",
-    "releaseTime": "2019-04-10T20:37:13+02:00",
+    "inheritsFrom": "1.15",
+    "releaseTime": "2019-11-26T15:57:36+0100",
+    "time": "2019-11-26T15:57:36+0100",
     "type": "release",
+    "mainClass": "net.fabricmc.loader.launch.knot.KnotClient",
     "arguments": {
         "game": []
     },
-    "mainClass": "net.fabricmc.loader.launch.knot.KnotClient",
     "libraries": [
         {
-            "name": "net.fabricmc:sponge-mixin:0.7.11.27",
+            "name": "net.fabricmc:tiny-mappings-parser:0.2.0.11",
             "url": "https://maven.fabricmc.net/"
         },
         {
-            "name": "net.fabricmc:tiny-mappings-parser:0.1.1.8",
+            "name": "net.fabricmc:sponge-mixin:0.8+build.16",
             "url": "https://maven.fabricmc.net/"
         },
         {
-            "name": "net.fabricmc:tiny-remapper:0.1.0.33",
+            "name": "net.fabricmc:tiny-remapper:0.2.0.52",
             "url": "https://maven.fabricmc.net/"
         },
         {
@@ -30,31 +30,35 @@
             "url": "https://maven.fabricmc.net/"
         },
         {
-            "name": "org.ow2.asm:asm:7.0",
+            "name": "org.ow2.asm:asm:7.2",
             "url": "https://maven.fabricmc.net/"
         },
         {
-            "name": "org.ow2.asm:asm-analysis:7.0",
+            "name": "org.ow2.asm:asm-analysis:7.2",
             "url": "https://maven.fabricmc.net/"
         },
         {
-            "name": "org.ow2.asm:asm-commons:7.0",
+            "name": "org.ow2.asm:asm-commons:7.2",
             "url": "https://maven.fabricmc.net/"
         },
         {
-            "name": "org.ow2.asm:asm-tree:7.0",
+            "name": "org.ow2.asm:asm-tree:7.2",
             "url": "https://maven.fabricmc.net/"
         },
         {
-            "name": "org.ow2.asm:asm-util:7.0",
+            "name": "org.ow2.asm:asm-util:7.2",
             "url": "https://maven.fabricmc.net/"
         },
         {
-            "name": "net.fabricmc:yarn:1.15+build.1",
+            "name": "com.google.guava:guava:21.0",
             "url": "https://maven.fabricmc.net/"
         },
         {
-            "name": "me.deftware:subsystem:latest-separate",
+            "name": "net.fabricmc:yarn:1.15+build.1:v2",
+            "url": "https://maven.fabricmc.net/"
+        },
+        {
+            "name": "me.deftware:subsystem:0.7.1",
             "url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
         },
         {

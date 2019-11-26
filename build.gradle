@@ -39,7 +39,7 @@ repositories {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${mcVersion}"
-	mappings "net.fabricmc:yarn:${mappingsVer}"
+	mappings "net.fabricmc:yarn:${mappingsVer}:v2"
 	modCompile "net.fabricmc:fabric-loader:0.7.1+build.173"
 	modCompile 'com.github.modmuss50:Fabric-ASM:b97939c03a'
 	include 'com.github.modmuss50:Fabric-ASM:b97939c03a'
