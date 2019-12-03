@@ -33,7 +33,7 @@ public class IEntityOtherPlayerMP extends OtherClientPlayerEntity {
             setScore(oldPlayer.getScore());
         }
         enchantmentTableSeed = oldPlayer.getEnchantmentTableSeed();
-        getDataTracker().set(PlayerEntity.PLAYER_MODEL_BIT_MASK, oldPlayer.getDataTracker().get(PlayerEntity.PLAYER_MODEL_BIT_MASK));
+        getDataTracker().set(PlayerEntity.PLAYER_MODEL_PARTS, oldPlayer.getDataTracker().get(PlayerEntity.PLAYER_MODEL_PARTS));
     }
 
 }

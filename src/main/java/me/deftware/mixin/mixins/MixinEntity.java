@@ -42,13 +42,13 @@ public abstract class MixinEntity implements IMixinEntity {
     public double prevZ;
 
     @Shadow
-    public double prevRenderX;
+    public double lastRenderX;
 
     @Shadow
-    public double prevRenderY;
+    public double lastRenderY;
 
     @Shadow
-    public double prevRenderZ;
+    public double lastRenderZ;
 
     @Shadow
     public float prevYaw;

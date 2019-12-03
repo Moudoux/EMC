@@ -23,15 +23,15 @@ public class IItemEntity {
     }
 
     public double getLastTickPosX() {
-        return item.prevRenderX;
+        return item.lastRenderX;
     }
 
     public double getLastTickPosY() {
-        return item.prevRenderY;
+        return item.lastRenderY;
     }
 
     public double getLastTickPosZ() {
-        return item.prevRenderZ;
+        return item.lastRenderZ;
     }
 
     public float getHeight() {

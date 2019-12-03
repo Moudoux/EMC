@@ -9,11 +9,10 @@ import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
 import me.deftware.mixin.imp.IMixinRenderManager;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.GuiLighting;
+import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.entity.Entity;
@@ -366,8 +365,8 @@ public class RenderUtils {
     }
 
     public static void fixDarkLight() {
-        GlStateManager.enableLighting();
-        GuiLighting.disable();
+        RenderSystem.enableLighting();
+        DiffuseLighting.disable();
     }
 
     public static void drawAltFace(String name, int x, int y, int w, int h, boolean selected) {

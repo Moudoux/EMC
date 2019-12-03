@@ -61,15 +61,15 @@ public class IPlayer {
     }
 
     public double getLastTickPosX() {
-        return player.prevRenderX;
+        return player.lastRenderX;
     }
 
     public double getLastTickPosY() {
-        return player.prevRenderY;
+        return player.lastRenderY;
     }
 
     public double getLastTickPosZ() {
-        return player.prevRenderZ;
+        return player.lastRenderZ;
     }
 
     public boolean isCreative() {

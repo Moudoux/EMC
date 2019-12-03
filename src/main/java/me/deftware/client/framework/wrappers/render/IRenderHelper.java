@@ -1,20 +1,20 @@
 package me.deftware.client.framework.wrappers.render;
 
-import net.minecraft.client.render.GuiLighting;
+import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.util.math.Matrix4f;
 
 public class IRenderHelper {
 
     public static void disableStandardItemLighting() {
-        GuiLighting.disable();
+        DiffuseLighting.disable();
     }
 
     public static void enableStandardItemLighting() {
-        GuiLighting.enable();
+        DiffuseLighting.enable();
     }
 
     public static void enableGUIStandardItemLighting() {
-        GuiLighting.enableForItems(new Matrix4f());
+        DiffuseLighting.enableForLevel(new Matrix4f());
     }
 
 }

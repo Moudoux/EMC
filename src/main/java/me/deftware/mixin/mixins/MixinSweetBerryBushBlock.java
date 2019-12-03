@@ -38,9 +38,9 @@ public class MixinSweetBerryBushBlock {
             if (!eventSlowdown.isCanceled()) {
                 entity_1.slowMovement(blockState_1, new Vec3d(0.800000011920929D, 0.75D, 0.800000011920929D));
             }
-            if (!world_1.isClient && (Integer) blockState_1.get(AGE) > 0 && (entity_1.prevRenderX != entity_1.getX() || entity_1.prevRenderZ != entity_1.getZ())) {
-                double double_1 = Math.abs(entity_1.getX() - entity_1.prevRenderX);
-                double double_2 = Math.abs(entity_1.getZ() - entity_1.prevRenderZ);
+            if (!world_1.isClient && (Integer) blockState_1.get(AGE) > 0 && (entity_1.lastRenderX != entity_1.getX() || entity_1.lastRenderZ != entity_1.getZ())) {
+                double double_1 = Math.abs(entity_1.getX() - entity_1.lastRenderX);
+                double double_2 = Math.abs(entity_1.getZ() - entity_1.lastRenderZ);
                 if (double_1 >= 0.003000000026077032D || double_2 >= 0.003000000026077032D) {
                     if (!eventDamage.isCanceled()) {
                         entity_1.damage(DamageSource.SWEET_BERRY_BUSH, 1.0F);

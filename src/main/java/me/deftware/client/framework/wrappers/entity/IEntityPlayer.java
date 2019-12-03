@@ -81,15 +81,15 @@ public class IEntityPlayer {
     }
 
     public static double getLastTickPosX() {
-        return MinecraftClient.getInstance().player.prevRenderX;
+        return MinecraftClient.getInstance().player.lastRenderX;
     }
 
     public static double getLastTickPosY() {
-        return MinecraftClient.getInstance().player.prevRenderY;
+        return MinecraftClient.getInstance().player.lastRenderY;
     }
 
     public static double getLastTickPosZ() {
-        return MinecraftClient.getInstance().player.prevRenderZ;
+        return MinecraftClient.getInstance().player.lastRenderZ;
     }
 
     public static IEntity clonePlayer() {

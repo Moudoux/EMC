@@ -35,7 +35,7 @@ public class MixinLayerDeadmau5Head {
         }
         if (abstractClientPlayerEntity_1.hasSkinTexture() && !abstractClientPlayerEntity_1.isInvisible() && flag) {
             VertexConsumer vertexConsumer_1 = vertexConsumerProvider_1.getBuffer(RenderLayer.getEntitySolid(abstractClientPlayerEntity_1.getSkinTexture()));
-            int int_2 = LivingEntityRenderer.method_23622(abstractClientPlayerEntity_1, 0.0F);
+            int int_2 = LivingEntityRenderer.getOverlay(abstractClientPlayerEntity_1, 0.0F);
 
             for(int int_3 = 0; int_3 < 2; ++int_3) {
                 float float_8 = MathHelper.lerp(float_3, abstractClientPlayerEntity_1.prevYaw, abstractClientPlayerEntity_1.yaw) - MathHelper.lerp(float_3, abstractClientPlayerEntity_1.prevBodyYaw, abstractClientPlayerEntity_1.bodyYaw);
@@ -49,7 +49,7 @@ public class MixinLayerDeadmau5Head {
                 matrixStack_1.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-float_8));
                 float float_10 = 1.3333334F;
                 matrixStack_1.scale(1.3333334F, 1.3333334F, 1.3333334F);
-                (((Deadmau5FeatureRenderer) (Object) this).getModel()).renderEars(matrixStack_1, vertexConsumer_1, int_1, int_2); // TODO: Maybe change beginning cast to PlayerEntityModel in 1.15?
+                (((Deadmau5FeatureRenderer) (Object) this).getContextModel()).renderEars(matrixStack_1, vertexConsumer_1, int_1, int_2); // TODO: Maybe change beginning cast to PlayerEntityModel in 1.15?
                 matrixStack_1.pop();
             }
         }

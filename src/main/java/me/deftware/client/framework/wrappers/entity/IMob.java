@@ -25,15 +25,15 @@ public class IMob {
     }
 
     public double getLastTickPosX() {
-        return mob.prevRenderX;
+        return mob.lastRenderX;
     }
 
     public double getLastTickPosY() {
-        return mob.prevRenderY;
+        return mob.lastRenderY;
     }
 
     public double getLastTickPosZ() {
-        return mob.prevRenderZ;
+        return mob.lastRenderZ;
     }
 
     public float getHeight() {
