@@ -7,7 +7,6 @@ import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.mixin.components.CustomClass;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.gui.screen.Overlay;
 import net.minecraft.client.gui.screen.SplashScreen;
 import net.minecraft.resource.ResourceReloadMonitor;
 import net.minecraft.util.Identifier;
@@ -29,32 +28,32 @@ public abstract class MixinSplashScreen {
 
     @Final
     @Shadow
-    public static Identifier LOGO = new Identifier("textures/gui/title/mojang.png");
+    private static Identifier LOGO = new Identifier("textures/gui/title/mojang.png");
 
     @Final
     @Shadow
-    public MinecraftClient client;
+    private MinecraftClient client;
 
     @Final
     @Shadow
-    public ResourceReloadMonitor reloadMonitor;
+    private ResourceReloadMonitor reloadMonitor;
 
     @Shadow
     @Final
-    public Consumer<Optional<Throwable>> field_18218;
+    private Consumer<Optional<Throwable>> exceptionHandler;
 
     @Shadow
     @Final
-    public boolean field_18219;
+    private boolean reloading;
 
     @Shadow
-    public float field_17770;
+    private float progress;
 
     @Shadow
-    public long field_17771 = -1L;
+    private long applyCompleteTime = -1L;
 
     @Shadow
-    public long field_18220 = -1L;
+    private long prepareCompleteTime = -1L;
 
     private Identifier customLogo = null;
 
@@ -72,7 +71,7 @@ public abstract class MixinSplashScreen {
     }
 
     @Shadow
-    public abstract void renderProgressBar(int int_1, int int_2, int int_3, int int_4, float float_1);
+    protected abstract void renderProgressBar(int int_1, int int_2, int int_3, int int_4, float float_1);
 
     @Inject(method = "<init>*", at = @At("RETURN"))
     private void onConstructed(CallbackInfo ci) {
@@ -90,12 +89,12 @@ public abstract class MixinSplashScreen {
         int int_3 = this.client.getWindow().getScaledWidth();
         int int_4 = this.client.getWindow().getScaledHeight();
         long long_1 = Util.getMeasuringTimeMs();
-        if (this.field_18219 && (this.reloadMonitor.isLoadStageComplete() || this.client.currentScreen != null) && this.field_18220 == -1L) {
-            this.field_18220 = long_1;
+        if (this.reloading && (this.reloadMonitor.isPrepareStageComplete() || this.client.currentScreen != null) && this.prepareCompleteTime == -1L) {
+            this.prepareCompleteTime = long_1;
         }
 
-        float float_2 = this.field_17771 > -1L ? (float)(long_1 - this.field_17771) / 1000.0F : -1.0F;
-        float float_3 = this.field_18220 > -1L ? (float)(long_1 - this.field_18220) / 500.0F : -1.0F;
+        float float_2 = this.applyCompleteTime > -1L ? (float)(long_1 - this.applyCompleteTime) / 1000.0F : -1.0F;
+        float float_3 = this.prepareCompleteTime > -1L ? (float)(long_1 - this.prepareCompleteTime) / 500.0F : -1.0F;
         float float_6;
         int int_6;
         if (float_2 >= 1.0F) {
@@ -106,12 +105,12 @@ public abstract class MixinSplashScreen {
             int_6 = MathHelper.ceil((1.0F - MathHelper.clamp(float_2 - 1.0F, 0.0F, 1.0F)) * 255.0F);
             DrawableHelper.fill(0, 0, int_3, int_4, 16777215 | int_6 << 24);
             float_6 = 1.0F - MathHelper.clamp(float_2 - 1.0F, 0.0F, 1.0F);
-        } else if (this.field_18219) {
+        } else if (this.reloading) {
             if (this.client.currentScreen != null && float_3 < 1.0F) {
                 this.client.currentScreen.render(int_1, int_2, float_1);
             }
 
-            int_6 = MathHelper.ceil(MathHelper.clamp((double)float_3, 0.15D, 1.0D) * 255.0D);
+            int_6 = MathHelper.ceil(MathHelper.clamp(float_3, 0.15D, 1.0D) * 255.0D);
             DrawableHelper.fill(0, 0, int_3, int_4, 16777215 | int_6 << 24);
             float_6 = MathHelper.clamp(float_3, 0.0F, 1.0F);
         } else {
@@ -126,18 +125,18 @@ public abstract class MixinSplashScreen {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, float_6);
         ((SplashScreen) (Object) this).blit(int_6, int_8, 0, 0, 256, 256);
         float float_7 = this.reloadMonitor.getProgress();
-        this.field_17770 = this.field_17770 * 0.95F + float_7 * 0.050000012F;
+        this.progress = this.progress * 0.95F + float_7 * 0.050000012F;
         if (float_2 < 1.0F) {
             this.renderProgressBar(int_3 / 2 - 150, int_4 / 4 * 3, int_3 / 2 + 150, int_4 / 4 * 3 + 10, 1.0F - MathHelper.clamp(float_2, 0.0F, 1.0F));
         }
 
         if (float_2 >= 2.0F) {
-            this.client.setOverlay((Overlay)null);
+            this.client.setOverlay(null);
         }
 
-        if (this.field_17771 == -1L && this.reloadMonitor.isApplyStageComplete() && (!this.field_18219 || float_3 >= 2.0F)) {
+        if (this.applyCompleteTime == -1L && this.reloadMonitor.isApplyStageComplete() && (!this.reloading || float_3 >= 2.0F)) {
             this.reloadMonitor.throwExceptions();
-            this.field_17771 = Util.getMeasuringTimeMs();
+            this.applyCompleteTime = Util.getMeasuringTimeMs();
             done();
             if (this.client.currentScreen != null) {
                 this.client.currentScreen.init(this.client, this.client.getWindow().getScaledWidth(), this.client.getWindow().getScaledHeight());
@@ -150,9 +149,9 @@ public abstract class MixinSplashScreen {
     public void done() {
         try {
             this.reloadMonitor.throwExceptions();
-            this.field_18218.accept(Optional.empty());
+            this.exceptionHandler.accept(Optional.empty());
         } catch (Throwable var15) {
-            this.field_18218.accept(Optional.of(var15));
+            this.exceptionHandler.accept(Optional.of(var15));
         }
         if (!Bootstrap.initialized) {
             Bootstrap.initialized = true;
