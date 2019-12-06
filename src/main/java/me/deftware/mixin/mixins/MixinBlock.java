@@ -7,10 +7,8 @@ import me.deftware.client.framework.event.events.EventSlowdown;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.world.IBlock;
 import net.minecraft.block.*;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
@@ -28,12 +26,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Block.class)
 public abstract class MixinBlock {
 
+    @Final
     @Shadow
-    private float field_21207;
+    private float velocityMultiplier;
 
     @Shadow
     @Final
-    private int lightLevel;
+    protected int lightLevel;
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void getOutlineShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, EntityContext entityContext_1, CallbackInfoReturnable<VoxelShape> ci) {
@@ -51,8 +50,8 @@ public abstract class MixinBlock {
      * @reason
      */
     @Overwrite
-    public float method_23349() {
-        if (field_21207 != 1.0f) {
+    public float getVelocityMultiplier() {
+        if (velocityMultiplier != 1.0f) {
             Event event = null;
             if (((Block) (Object) this) instanceof HoneyBlock) {
                 event = new EventSlowdown(EventSlowdown.SlowdownType.Honey);
@@ -66,7 +65,7 @@ public abstract class MixinBlock {
                 }
             }
         }
-        return this.field_21207;
+        return this.velocityMultiplier;
     }
 
     @Inject(method = "shouldDrawSide", at = @At("HEAD"), cancellable = true)
