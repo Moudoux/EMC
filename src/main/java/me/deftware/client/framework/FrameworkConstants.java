@@ -6,7 +6,7 @@ public class FrameworkConstants {
     public static int PATCH = 4;
 
     public static String AUTHOR = "Deftware";
-    public static String FRAMEWORK_NAME = "EMC";
+    public static String FRAMEWORK_NAME = "EMC-F v2";
     public static MappingsLoader MAPPING_LOADER = MappingsLoader.Fabric;
     public static MappingSystem MAPPING_SYSTEM = MappingSystem.Yarn;
 
