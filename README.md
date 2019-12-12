@@ -49,17 +49,17 @@ public class UpdateListener extends EventListener {
 Minecraft versions currently supported
 -------------------
 
-* 1.15.1
-* 1.15
-* 1.14.4
-* 1.14.3
-* 1.14.2
-* 1.14.1
-* 1.14
-* 1.13.2
-* 1.13.1
-* 1.13
-* 1.12.2
+* [1.15.1](https://gitlab.com/EMC-Framework/EMC/tree/1.15.1)
+* [1.15](https://gitlab.com/EMC-Framework/EMC/tree/1.15)
+* [1.14.4](https://gitlab.com/EMC-Framework/EMC/tree/1.14.4)
+* [1.14.3](https://gitlab.com/EMC-Framework/EMC/tree/1.14.3)
+* [1.14.2](https://gitlab.com/EMC-Framework/EMC/tree/1.14.2)
+* [1.14.1](https://gitlab.com/EMC-Framework/EMC/tree/1.14.1)
+* [1.14](https://gitlab.com/EMC-Framework/EMC/tree/1.14)
+* [1.13.2](https://gitlab.com/EMC-Framework/EMC/tree/1.13.2)
+* [1.13.1](https://gitlab.com/EMC-Framework/EMC/tree/1.13.1)
+* [1.13](https://gitlab.com/EMC-Framework/EMC/tree/1.13)
+* [1.12.2](https://gitlab.com/EMC-Framework/EMC/tree/1.12.2)
 
 Loading EMC (1.15.1)
 -------------------
