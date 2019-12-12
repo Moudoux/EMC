@@ -49,6 +49,7 @@ public class UpdateListener extends EventListener {
 Minecraft versions currently supported
 -------------------
 
+* 1.15.1
 * 1.15
 * 1.14.4
 * 1.14.3
@@ -60,7 +61,7 @@ Minecraft versions currently supported
 * 1.13
 * 1.12.2
 
-Loading EMC (1.15)
+Loading EMC (1.15.1)
 -------------------
 
 Some versions of EMC are loaded differently and use a small library to load, these builds are appended with an F, such as `EMC-F` for the 1.15 version of EMC.
@@ -69,12 +70,12 @@ Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To
 
 ```
 {
-	"name": "me.deftware:EMC-F:latest-1.15",
+	"name": "me.deftware:EMC-F-v2:latest-1.15.1",
 	"url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
 }
 ```
 
-Then change `mainClass` to `net.fabricmc.loader.launch.knot.KnotClient`. If you want to see an example on how to load EMC see [example_client.json](https://gitlab.com/EMC-Framework/EMC/blob/1.15/example_client.json)
+Then change `mainClass` to `net.fabricmc.loader.launch.knot.KnotClient`. If you want to see an example on how to load EMC see [example_client.json](https://gitlab.com/EMC-Framework/EMC/blob/1.15.1/example_client.json)
 
 Making client mods with EMC 
 -------------------
