@@ -28,7 +28,7 @@ public abstract class MixinSplashScreen {
 
     @Final
     @Shadow
-    private static Identifier LOGO = new Identifier("textures/gui/title/mojang.png");
+    private final static Identifier LOGO = new Identifier("textures/gui/title/mojang.png");
 
     @Final
     @Shadow
