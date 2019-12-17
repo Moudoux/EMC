@@ -40,6 +40,10 @@ public class IWorld {
         return entities;
     }
 
+    public static long getWorldTime() {
+        return MinecraftClient.getInstance().world.getTime();
+    }
+
     public static void sendQuittingPacket() {
         if (MinecraftClient.getInstance().world != null) {
             MinecraftClient.getInstance().world.disconnect();

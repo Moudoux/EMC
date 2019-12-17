@@ -91,6 +91,18 @@ public abstract class MixinEntity implements IMixinEntity {
     @Shadow
     public Vec3d movementMultiplier;
 
+    /**
+     * @author Deftware
+     * @reason
+     */
+    @Overwrite
+    public EntityPose getPose() {
+        if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "SWIMMING_MODE_OVERRIDE", false)) {
+            return EntityPose.SWIMMING;
+        }
+        return (EntityPose)this.dataTracker.get(POSE);
+    }
+
     @Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;noClip:Z", opcode = 180))
     private boolean noClipCheck(Entity self) {
         boolean noClipCheck = (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "NOCLIP", false);

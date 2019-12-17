@@ -23,14 +23,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.*;
-import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameRenderer.class)
@@ -39,8 +37,6 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     @Shadow
     private boolean renderHand;
     private float partialTicks = 0;
-
-    private MatrixStack stack;
 
     @Shadow
     public abstract void loadShader(Identifier p_loadShader_1_);
@@ -55,10 +51,9 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Inject(method = "renderHand", at = @At("HEAD"))
     private void renderHand(MatrixStack matrixStack_1, Camera camera_1, float float_1, CallbackInfo ci) {
-        stack = matrixStack_1;
         RenderSystem.pushMatrix();
         RenderSystem.loadIdentity();
-        RenderSystem.multMatrix(matrixStack_1.peek().getModel()); // TODO: Verify in 19w45a
+        RenderSystem.multMatrix(matrixStack_1.peek().getModel());
         new EventRender3D(partialTicks).broadcast();
         RenderSystem.popMatrix();
     }
