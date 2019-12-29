@@ -36,6 +36,7 @@ public class JsonConverter {
                 System.setProperty("emcMod" + i, data);
                 i++;
             }
+            jvmArguments.add("-DemcModDefined=true");
             arguments.add("jvm", jvmArguments);
             json.add("arguments", arguments);
             for (JsonElement e : json.get("libraries").getAsJsonArray()) {
