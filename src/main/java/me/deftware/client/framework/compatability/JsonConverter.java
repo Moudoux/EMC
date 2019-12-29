@@ -41,10 +41,11 @@ public class JsonConverter {
             for (JsonElement e : json.get("libraries").getAsJsonArray()) {
                 JsonObject o = e.getAsJsonObject();
                 if (o.get("name").getAsString().equals("me.deftware:subsystem:0.7.1")) {
-                    o.remove("name");
                     o.addProperty("name", "me.deftware:subsystem:0.7.2");
                 }
             }
+            json.addProperty("mainClass", "me.deftware.client.framework.main.Main");
+            json.remove("emcMods");
             PrintWriter writer = new PrintWriter(jsonFile.getAbsolutePath(), "UTF-8");
             writer.println(json.toString());
             writer.close();
