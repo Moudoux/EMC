@@ -45,7 +45,6 @@ dependencies {
 	modCompile "net.fabricmc:fabric-loader:0.7.2+build.174"
 	modCompile 'com.github.modmuss50:Fabric-ASM:b97939c03a'
 	include 'com.github.modmuss50:Fabric-ASM:b97939c03a'
-	include 'me.deftware:subsystem:0.7.1'
 	compile files("deps/IModelData.jar")
 }
 
