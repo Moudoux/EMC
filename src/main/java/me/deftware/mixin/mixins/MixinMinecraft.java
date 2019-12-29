@@ -2,7 +2,7 @@ package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventGuiScreenDisplay;
 import me.deftware.client.framework.event.events.EventShutdown;
-import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.mixin.imp.IMixinMinecraft;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -113,11 +113,6 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     @Override
     public void doMiddleClickMouse() {
         doItemPick();
-    }
-
-    @Inject(method = "<init>*", at = @At("RETURN"))
-    private void init(CallbackInfo callbackInfo) {
-        Bootstrap.init();
     }
 
     @Override

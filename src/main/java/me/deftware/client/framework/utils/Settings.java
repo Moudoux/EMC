@@ -1,7 +1,8 @@
 package me.deftware.client.framework.utils;
 
 import com.google.gson.*;
-import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
+import me.deftware.client.framework.path.OSUtils;
 import me.deftware.client.framework.wrappers.IMinecraft;
 
 import java.io.File;
@@ -23,7 +24,7 @@ public class Settings {
 	public synchronized void initialize(JsonObject modInfo) {
 		try {
 			String modName = (Bootstrap.modsInfo != null && modInfo != null) ?  modInfo.get("name").getAsString() : "EMC";
-			String file = OSUtils.getMCDir(true) + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator + "configs" + File.separator + modName + "_config.json";
+			String file = OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator + "configs" + File.separator + modName + "_config.json";
 			configFile = new File(file);
 			if (!configFile.exists()) {
 				if (!configFile.createNewFile()) {

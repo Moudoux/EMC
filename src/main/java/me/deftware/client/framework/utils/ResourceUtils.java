@@ -1,6 +1,8 @@
 package me.deftware.client.framework.utils;
 
-import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.main.EMCMod;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
+import me.deftware.client.framework.path.OSUtils;
 import me.deftware.client.framework.wrappers.IMinecraft;
 
 import java.io.*;
@@ -17,28 +19,14 @@ public class ResourceUtils {
      *
      * @return InputStream
      */
-    public static InputStream getStreamFromModResources(String modName, String resourcePath) {
-        String jarName = "";
-        for (int mods = 0; mods < Bootstrap.modsInfo.size(); mods++) {
-            if (Bootstrap.modsInfo.get(mods).get("name").getAsString().equals(modName)) {
-                jarName = Bootstrap.modsInfo.get(mods).get(Bootstrap.JSON_JARNAME_NOTE).getAsString();
-                Bootstrap.logger.debug("Found a jar with a name " + jarName);
-                break;
-            }
-        }
-        File modJar = new File(OSUtils.getMCDir(true) + "libraries" + File.separator + "EMC" + File.separator
-                + IMinecraft.getMinecraftVersion() + File.separator + jarName);
-
-        Bootstrap.logger.debug("Reading JAR file: " + modJar.getAbsolutePath());
-
+    public static InputStream getStreamFromModResources(EMCMod mod, String resourcePath) {
         InputStream in;
         try {
-            ZipFile zipFile = new ZipFile(modJar);
+            ZipFile zipFile = new ZipFile(mod.physicalFile);
             ZipEntry entry = zipFile.getEntry(resourcePath);
-
             in = zipFile.getInputStream(entry);
         } catch (IOException e) {
-            Bootstrap.logger.warn("Requested resource does not exist", e);
+            Bootstrap.logger.error("Requested resource does not exist", e);
             return null;
         }
         return in;
@@ -56,7 +44,7 @@ public class ResourceUtils {
             Bootstrap.logger.debug("Getting resource from: " + IMinecraft.getRunningLocation() + File.separator + resourcePath);
             resource = new FileInputStream(IMinecraft.getRunningLocation() + File.separator + resourcePath);
         } catch (URISyntaxException | FileNotFoundException e) {
-            Bootstrap.logger.warn("Requested resource does not exist", e);
+            Bootstrap.logger.error("Requested resource does not exist", e);
             return null;
         }
         return resource;
@@ -77,9 +65,8 @@ public class ResourceUtils {
                 resource = new FileInputStream("/home/" + System.getProperty("user.name") + File.separator + resourcePath);
             }
             Bootstrap.logger.debug("Getting resource from: " + System.getProperty("user.home") + File.separator + resourcePath);
-
         } catch (FileNotFoundException e) {
-            Bootstrap.logger.warn("Requested resource does not exist", e);
+            Bootstrap.logger.error("Requested resource does not exist", e);
             return null;
         }
         return resource;

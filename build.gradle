@@ -35,14 +35,17 @@ repositories {
 	mavenCentral()
 	maven { url 'https://maven.fabricmc.net' }
 	maven { url 'https://jitpack.io' }
+	maven { url "https://gitlab.com/EMC-Framework/maven/raw/master/" }
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:${mcVersion}"
 	mappings "net.fabricmc:yarn:${mappingsVer}:v2"
+	compile 'com.google.code.findbugs:jsr305:3.0.2'
 	modCompile "net.fabricmc:fabric-loader:0.7.2+build.174"
 	modCompile 'com.github.modmuss50:Fabric-ASM:b97939c03a'
 	include 'com.github.modmuss50:Fabric-ASM:b97939c03a'
+	include 'me.deftware:subsystem:0.7.1'
 	compile files("deps/IModelData.jar")
 }
 
@@ -97,3 +100,4 @@ task copyToMinecraft(type: Copy) {
 
 build.dependsOn(createPom)
 build.finalizedBy(copyBuilds)
+copyToMinecraft.dependsOn(build)

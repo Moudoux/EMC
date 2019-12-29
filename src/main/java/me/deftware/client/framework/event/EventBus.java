@@ -1,6 +1,6 @@
 package me.deftware.client.framework.event;
 
-import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.utils.MultiMap;
 
 import java.lang.reflect.Method;

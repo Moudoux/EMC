@@ -1,6 +1,6 @@
 package me.deftware.client.framework.fonts;
 
-import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
 
 import java.awt.*;
 import java.util.HashMap;

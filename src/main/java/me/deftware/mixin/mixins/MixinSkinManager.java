@@ -5,7 +5,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.InsecureTextureException;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
-import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.HashUtils;
 import net.minecraft.client.MinecraftClient;
@@ -15,7 +15,6 @@ import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.*;
 
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 
 @Mixin(PlayerSkinProvider.class)
 public abstract class MixinSkinManager {

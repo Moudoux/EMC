@@ -90,8 +90,6 @@ public class SettingsMap {
 
 		/**
 		 * MAX_FPS
-		 * CUSTOM_SPLASHSCREEN_TEXTURE
-		 * CUSTOM_LOGO_TEXTURE
 		 */
 		public static final int GAME_SETTINGS = 5;
 

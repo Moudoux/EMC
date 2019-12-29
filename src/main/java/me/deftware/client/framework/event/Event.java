@@ -1,6 +1,6 @@
 package me.deftware.client.framework.event;
 
-import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
 
 /**
  * This class describes the way events are defined in EMC framework and handles the process of

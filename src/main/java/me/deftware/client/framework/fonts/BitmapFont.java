@@ -1,13 +1,11 @@
 package me.deftware.client.framework.fonts;
 
-import me.deftware.client.framework.FrameworkConstants;
-import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.render.GraphicsUtil;
 import me.deftware.client.framework.utils.render.NonScaledRenderer;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
-import net.minecraft.client.MinecraftClient;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.opengl.GL11;
 

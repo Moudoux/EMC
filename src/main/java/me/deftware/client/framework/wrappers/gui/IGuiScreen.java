@@ -1,6 +1,7 @@
 package me.deftware.client.framework.wrappers.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.utils.ResourceUtils;
 import me.deftware.client.framework.utils.render.Texture;
 import me.deftware.client.framework.wrappers.IMinecraft;
@@ -25,6 +26,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class IGuiScreen extends Screen {
 
@@ -224,11 +226,11 @@ public abstract class IGuiScreen extends Screen {
         pause = state;
     }
 
-    protected void drawTexture(String mod, String texture, int x, int y, int width, int height) {
+    protected void drawTexture(EMCMod mod, String texture, int x, int y, int width, int height) {
         GL11.glPushMatrix();
         if (!textureHashMap.containsKey(texture)) {
             try {
-                BufferedImage img = ImageIO.read(ResourceUtils.getStreamFromModResources(mod, texture));
+                BufferedImage img = ImageIO.read(Objects.requireNonNull(ResourceUtils.getStreamFromModResources(mod, texture)));
                 Texture tex = new Texture(img.getWidth(), img.getHeight(), true);
                 tex.fillFromBufferedImageFlip(img);
                 tex.update();

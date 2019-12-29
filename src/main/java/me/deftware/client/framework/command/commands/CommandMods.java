@@ -2,7 +2,7 @@ package me.deftware.client.framework.command.commands;
 
 import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.EMCModCommand;
-import me.deftware.client.framework.main.Bootstrap;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.utils.ChatProcessor;
 
 public class CommandMods extends EMCModCommand {
