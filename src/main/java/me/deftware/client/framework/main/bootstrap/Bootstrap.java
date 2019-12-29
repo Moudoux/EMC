@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  */
 public class Bootstrap {
 
-    public static boolean initialized = false;
+    public static boolean initialized = false, CRASHED = false;
     public static Logger logger = LogManager.getLogger(String.format("EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
     public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
     public static boolean isRunning = true;

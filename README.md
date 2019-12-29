@@ -107,4 +107,4 @@ Minecraft source code, only EMC wrapper calls.
 License
 -------------------
 
-EMC is licensed under GPL-3.0
+EMC is licensed under MIT

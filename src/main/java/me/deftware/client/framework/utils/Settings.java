@@ -37,8 +37,10 @@ public class Settings {
 				config = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
 			}
 			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-				Bootstrap.logger.info("Saving EMC config for mod " + modName);
-				saveConfig();
+				if (!Bootstrap.CRASHED) {
+					Bootstrap.logger.info("Saving EMC config for mod " + modName);
+					saveConfig();
+				}
 			}));
 		} catch (Exception ex) {
 			ex.printStackTrace();
