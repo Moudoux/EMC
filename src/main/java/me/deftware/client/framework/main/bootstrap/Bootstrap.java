@@ -15,6 +15,7 @@ import me.deftware.client.framework.path.OSUtils;
 import me.deftware.client.framework.utils.Settings;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.scoreboard.Scoreboard;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.util.SystemNanoClock;
