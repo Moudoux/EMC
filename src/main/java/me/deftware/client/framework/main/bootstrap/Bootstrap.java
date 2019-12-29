@@ -122,9 +122,24 @@ public class Bootstrap {
         Bootstrap.currentModClassLoader = URLClassLoader.newInstance(
                 new URL[]{new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/")},
                 Bootstrap.class.getClassLoader());
-
         BufferedReader buffer = new BufferedReader(new InputStreamReader(Objects.requireNonNull(Bootstrap.currentModClassLoader.getResourceAsStream("client.json"))));
         JsonObject jsonObject = new Gson().fromJson(buffer.lines().collect(Collectors.joining("\n")), JsonObject.class);
+        boolean remove = false;
+        if (!jsonObject.has("scheme")) {
+            remove = true;
+        } else if (jsonObject.get("scheme").getAsInt() < 2) {
+            remove = true;
+        }
+        if (remove) {
+            Bootstrap.currentModClassLoader.close();
+            buffer.close();
+            jarFile.close();
+            Bootstrap.logger.warn("Uninstalling unsupported mod {}", clientJar.getName());
+            if (!clientJar.delete()) {
+                Bootstrap.logger.error("Failed to delete {}", clientJar.getName());
+            }
+            return;
+        }
         if (mods.containsKey(jsonObject.get("name").getAsString())) {
             buffer.close();
             return;
