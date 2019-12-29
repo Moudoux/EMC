@@ -31,6 +31,7 @@ public class EMCCrashScreen extends IGuiScreen {
             render = true;
         }
         Bootstrap.CRASHED = true;
+        GLFW.glfwSetWindowSize(MinecraftClient.getInstance().getWindow().getHandle(), 1366, 768);
     }
 
     @Override
@@ -120,7 +121,7 @@ public class EMCCrashScreen extends IGuiScreen {
 
     @Override
     protected void onUpdate() {
-        GLFW.glfwSetWindowSize(MinecraftClient.getInstance().getWindow().getHandle(), 1366, 768);
+
     }
 
     @Override
