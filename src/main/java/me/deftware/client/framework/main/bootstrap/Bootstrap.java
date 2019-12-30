@@ -11,6 +11,7 @@ import me.deftware.client.framework.main.bootstrap.discovery.AbstractModDiscover
 import me.deftware.client.framework.main.bootstrap.discovery.DirectoryModDiscovery;
 import me.deftware.client.framework.main.bootstrap.discovery.JVMModDiscovery;
 import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.path.LocationUtil;
 import me.deftware.client.framework.path.OSUtils;
 import me.deftware.client.framework.utils.Settings;
 import me.deftware.client.framework.wrappers.IMinecraft;
@@ -52,6 +53,13 @@ public class Bootstrap {
 
     public static void init() {
         try {
+            File emcJar = LocationUtil.getEMC().toFile(), mcDir = LocationUtil.getMinecraftDir().toFile();
+            if (System.getProperty("EMCDir", "null").equalsIgnoreCase("null")) {
+                System.setProperty("EMCDir", emcJar != null ? emcJar.getParentFile().getAbsolutePath() : "null");
+            }
+            if (System.getProperty("MCDir", "null").equalsIgnoreCase("null")) {
+                System.setProperty("MCDir", mcDir != null ? mcDir.getAbsolutePath() : "null");
+            }
             Bootstrap.logger.info(String.format("Loading EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
             EMC_ROOT = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator);
             EMC_CONFIGS = new File(EMC_ROOT.getAbsolutePath() + File.separator + "configs" + File.separator);
