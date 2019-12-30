@@ -42,6 +42,7 @@ public class FontManager {
 
     public static void clearCache() {
         fontStore.clear();
+        customFonts.clear();
     }
 
 }

@@ -97,7 +97,6 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
     private boolean blindlessSlowdownEvent(LivingEntity self, StatusEffect effect) {
-        System.out.println("Blindess check");
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Blindness);
         event.broadcast();
         if (event.isCanceled()) {

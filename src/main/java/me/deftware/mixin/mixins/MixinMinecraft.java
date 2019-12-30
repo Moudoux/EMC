@@ -4,6 +4,7 @@ import me.deftware.client.framework.event.events.EventGuiScreenDisplay;
 import me.deftware.client.framework.event.events.EventShutdown;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.utils.exception.ExceptionHandler;
+import me.deftware.client.framework.utils.exception.GlUtil;
 import me.deftware.mixin.imp.IMixinMinecraft;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.OutOfMemoryScreen;
@@ -197,27 +198,50 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     @Shadow
     public abstract void cleanUpAfterCrash();
 
+    @Shadow
+    @Final
+    private Queue<Runnable> renderTaskQueue;
+
     private void exception(Throwable e, CrashReport report, boolean unexpected) {
+        // Credit to https://github.com/natanfudge/Not-Enough-Crashes/blob/master/notenoughcrashes/src/main/java/fudge/notenoughcrashes/mixinhandlers/InGameCatcher.java
+        Integer originalReservedMemorySize = null;
+        try {
+            if (MinecraftClient.memoryReservedForCrash != null) {
+                originalReservedMemorySize = MinecraftClient.memoryReservedForCrash.length;
+                MinecraftClient.memoryReservedForCrash = new byte[0];
+            }
+        } catch (Throwable ignored) { }
         if (MinecraftClient.getInstance().getNetworkHandler() != null) {
             MinecraftClient.getInstance().getNetworkHandler().getConnection().disconnect(new LiteralText("Crashed"));
         }
         MinecraftClient.getInstance().disconnect(new SaveLevelScreen(new TranslatableText("menu.savingLevel")));
-        customPrintCrashReport(report);
-        ExceptionHandler.handleCrash(e, report, unexpected);
+        renderTaskQueue.clear();
+        GlUtil.resetState();
+        if (originalReservedMemorySize != null) {
+            try {
+                MinecraftClient.memoryReservedForCrash = new byte[originalReservedMemorySize];
+            } catch (Throwable ignored) { }
+        }
+        System.gc();
+        MinecraftClient.getInstance().options.debugEnabled = false;
+        MinecraftClient.getInstance().inGameHud.getChatHud().clear(true);
+        ExceptionHandler.handleCrash(e, report, unexpected, customPrintCrashReport(report));
     }
 
-    private void customPrintCrashReport(CrashReport crashReport) {
+    private File customPrintCrashReport(CrashReport crashReport) {
         File file = new File(MinecraftClient.getInstance().runDirectory, "crash-reports");
         File file2 = new File(file, "crash-" + (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date()) + "-client.txt");
         net.minecraft.Bootstrap.println(crashReport.asString());
         if (crashReport.getFile() != null) {
             net.minecraft.Bootstrap.println("#@!@# Game crashed! Crash report saved to: #@!@# " + crashReport.getFile());
+            return crashReport.getFile();
         } else if (crashReport.writeToFile(file2)) {
             net.minecraft.Bootstrap.println("#@!@# Game crashed! Crash report saved to: #@!@# " + file2.getAbsolutePath());
+            return file2;
         } else {
             net.minecraft.Bootstrap.println("#@?@# Game crashed! Crash report could not be saved. #@?@#");
         }
-
+        return null;
     }
 
 }

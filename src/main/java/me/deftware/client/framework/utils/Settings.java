@@ -28,7 +28,7 @@ public class Settings {
 			configFile = new File(file);
 			if (!configFile.exists()) {
 				if (!configFile.createNewFile()) {
-					System.out.println("Failed to create config");
+					Bootstrap.logger.error("Failed to create config");
 				}
 				config = new Gson().fromJson("{}", JsonObject.class);
 				saveDouble("version", 3.1);
@@ -37,10 +37,8 @@ public class Settings {
 				config = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
 			}
 			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-				if (!Bootstrap.CRASHED) {
 					Bootstrap.logger.info("Saving EMC config for mod " + modName);
 					saveConfig();
-				}
 			}));
 		} catch (Exception ex) {
 			ex.printStackTrace();

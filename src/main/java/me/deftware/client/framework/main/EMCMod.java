@@ -6,6 +6,7 @@ import me.deftware.client.framework.path.LocationUtil;
 import me.deftware.client.framework.utils.Settings;
 
 import java.io.File;
+import java.net.URLClassLoader;
 
 /**
  * This is a parent class for all of the mods loaded by EMC.
@@ -13,6 +14,7 @@ import java.io.File;
  */
 public abstract class EMCMod {
 
+	public URLClassLoader classLoader;
 	private Settings settings;
 	public JsonObject modInfo;
 	public File physicalFile;

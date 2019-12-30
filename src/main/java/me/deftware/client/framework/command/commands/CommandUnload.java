@@ -27,12 +27,7 @@ public class CommandUnload extends EMCModCommand {
                                 })
                 )*/
                 .executes(c -> {
-                    // Remove event listeners
-                    EventBus.clearEvents();
-                    // Unload all mods
                     Bootstrap.ejectMods();
-                    // Reset gamma
-                    MinecraftClient.getInstance().options.gamma = 0.5F;
                     ChatProcessor.printFrameworkMessage("Unloaded all EMC mods, Minecraft is now running as vanilla");
                     return 1;
                 }));

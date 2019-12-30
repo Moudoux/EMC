@@ -31,11 +31,15 @@ public class SettingsMap {
 	 * @return Object
 	 */
 	public static Object getValue(int mapKey, String key, Object _default) {
-		return SettingsMap.map.containsKey(mapKey) ? SettingsMap.map.get(mapKey).containsKey(key) ? SettingsMap.map.get(mapKey).get(key) : _default : _default;
+		return SettingsMap.map.containsKey(mapKey) ? SettingsMap.map.get(mapKey).getOrDefault(key, _default) : _default;
 	}
 
 	public static boolean hasValue(int mapKey, String key) {
 		return map.containsKey(mapKey) && map.get(mapKey).containsKey(key);
+	}
+
+	public static void reset() {
+		map.clear();
 	}
 
 	public static boolean isOverrideMode() {

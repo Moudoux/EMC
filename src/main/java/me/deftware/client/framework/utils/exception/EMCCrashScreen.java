@@ -1,122 +1,110 @@
 package me.deftware.client.framework.utils.exception;
 
+import me.deftware.client.framework.fonts.FontManager;
+import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.utils.ChatColor;
-import me.deftware.client.framework.utils.render.RenderUtils;
+import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.gui.IGuiButton;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import me.deftware.client.framework.wrappers.render.IFontRenderer;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.util.crash.CrashReport;
 import org.apache.commons.io.FileUtils;
-import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Objects;
 
+
 public class EMCCrashScreen extends IGuiScreen {
 
-    private CrashReport report;
-    private Throwable e;
-    private boolean unexpected, render = false;
-    private String status = "";
+    private StringList list;
+    private final CrashReport report;
+    private final Throwable e;
+    private final boolean unexpected;
+    private final File output;
 
-    protected EMCCrashScreen(Throwable e, CrashReport report, boolean unexpected) {
+    public EMCCrashScreen(Throwable e, CrashReport report, boolean unexpected, File output) {
         this.report = report;
+        this.output = output;
         this.e = e;
         this.unexpected = unexpected;
-        if (report.asString().contains("Rendering item")) {
-            render = true;
-        }
+        Bootstrap.CRASH_COUNT += 1;
         Bootstrap.CRASHED = true;
-        GLFW.glfwSetWindowSize(MinecraftClient.getInstance().getWindow().getHandle(), 1366, 768);
     }
 
     @Override
     protected void onInitGui() {
         this.clearButtons();
-        this.addButton(new IGuiButton(0, getIGuiScreenWidth() / 2 - 100, getIGuiScreenHeight() - 28, 98, 20, ChatColor.GREEN + "Try to fix it") {
-            @Override
-            public void onButtonClick(double v, double v1) {
-                try {
-                    if (render) {
-                        status = "Please delete " + ChatColor.BOLD + "\".minecraft/assets/\"" + ChatColor.RESET + " and restart the game";
-                    } else {
-                        if (!System.getProperty("EMCDir", "null").equalsIgnoreCase("null")) {
-                            String basePath = System.getProperty("EMCDir") + File.separator;
-                            Arrays.stream(Objects.requireNonNull(new File(basePath).listFiles())).forEach((file) -> {
-                                if (!file.getName().contains("EMC")) {
-                                    try {
-                                        FileUtils.writeStringToFile(new File(file.getAbsolutePath() + ".delete"), "Delete mod", "UTF-8");
-                                    } catch (Exception ex) {
-                                        ex.printStackTrace();
-                                    }
-                                }
-                            });
-                        }
-                        Arrays.stream(Objects.requireNonNull(Bootstrap.EMC_ROOT.listFiles())).forEach((file) -> {
-                            if (file.getName().endsWith(".jar")) {
-                                try {
-                                    FileUtils.writeStringToFile(new File(file.getAbsolutePath() + ".delete"), "Delete mod", "UTF-8");
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                }
-                            }
-                        });
-                        try {
-                            FileUtils.deleteDirectory(Bootstrap.EMC_CONFIGS);
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                    status = "Applied fixes, please restart the game";
-                } catch (Exception ex) {
-                    status = "Failed to fix, please send a screenshot of this to deftware#0001";
-                }
+        this.children.clear();
+        list = new StringList(width, height, 43, height - 32, IFontRenderer.getFontHeight() + 2);
+        this.children.add(list);
+        if (report != null) {
+            String[] cause = report.getCauseAsString().split("at ");
+            list.children().add(new StringEntry(cause[0].trim()));
+            for (int i = 1; i < cause.length; i++) {
+                list.children().add(new StringEntry("   at " + cause[i].trim()));
             }
-        });
-        this.addButton(new IGuiButton(1, getIGuiScreenWidth() / 2 + 2,
-
-                        getIGuiScreenHeight() - 28, 98, 20, ChatColor.RED + "Close game") {
-                    @Override
-                    public void onButtonClick(double v, double v1) {
-                        System.exit(-1);
+        }
+        this.addButton(new IGuiButton(0, this.width / 2 - 155, this.height - 29, 150, 20, ChatColor.GREEN + "Try to fix") {
+            @Override
+            public void onButtonClick(double mouseX, double mouseY) {
+                Bootstrap.logger.warn("Resetting EMC...");
+                // Reset EMC
+                Bootstrap.reset();
+                // Delete Fabric mods
+                if (!System.getProperty("EMCDir", "null").equalsIgnoreCase("null")) {
+                    Bootstrap.logger.warn("Scheduling Fabric mods for deletion");
+                    String basePath = System.getProperty("EMCDir") + File.separator;
+                    Arrays.stream(Objects.requireNonNull(new File(basePath).listFiles())).forEach((file) -> {
+                        if (!file.getName().contains("EMC")) {
+                            try {
+                                FileUtils.writeStringToFile(new File(file.getAbsolutePath() + ".delete"), "Delete mod", "UTF-8");
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
+                }
+                // Delete EMC mods
+                Bootstrap.logger.warn("Deleting EMC mods");
+                Arrays.stream(Objects.requireNonNull(Bootstrap.EMC_ROOT.listFiles())).forEach((file) -> {
+                    if (file.getName().endsWith(".jar")) {
+                       if (!file.delete()) {
+                            Bootstrap.logger.error("Could not delete {}", file.getName());
+                       }
                     }
                 });
+                // Delete configs
+                Bootstrap.logger.warn("Deleting EMC mod configs");
+                try {
+                    FileUtils.deleteDirectory(Bootstrap.EMC_CONFIGS);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                // Initialize again
+                Bootstrap.logger.warn("Re-Initializing EMC bootstrap");
+                Bootstrap.CRASHED = false;
+                Bootstrap.init();
+                MinecraftClient.getInstance().openScreen(new TitleScreen());
+                Bootstrap.getMods().values().forEach(EMCMod::postInit);
+            }
+        });
+        this.addButton(new IGuiButton(1, this.width / 2 - 155 + 160, this.height - 29, 150, 20, ChatColor.RED + "Close game") {
+            @Override
+            public void onButtonClick(double mouseX, double mouseY) {
+                System.exit(-1);
+            }
+        });
     }
 
     @Override
     protected void onDraw(int mouseX, int mouseY, float partialTicks) {
-        this.drawIDefaultBackground();
+        list.render(mouseX, mouseY, partialTicks);
         IFontRenderer.drawCenteredString(ChatColor.BOLD + "Uh oh! Crashed" + (unexpected ? " (Unexpected)" : " (Reported)"), getIGuiScreenWidth() / 2, 20, 16777215);
-        IFontRenderer.drawCenteredString("EMCDir: " + System.getProperty("EMCDir", "Not set"), getIGuiScreenWidth() / 2, 40, 16777215);
-        IFontRenderer.drawCenteredString("MCDir: " + System.getProperty("MCDir", "Not set"), getIGuiScreenWidth() / 2, 40 + IFontRenderer.getFontHeight() + 2, 16777215);
-
-        int thickness = 2;
-        // Top
-        RenderUtils.drawRect(20, 65, getIGuiScreenWidth() - 20, 65 + thickness, Color.WHITE);
-        // Left
-        RenderUtils.drawRect(20, 65, 20 + thickness, getIGuiScreenHeight() - 50, Color.WHITE);
-        // Right
-        RenderUtils.drawRect(getIGuiScreenWidth() - 20, 65, getIGuiScreenWidth() - 20 + thickness, getIGuiScreenHeight() - 48, Color.WHITE);
-        // Bottom
-        RenderUtils.drawRect(20, getIGuiScreenHeight() - 50, getIGuiScreenWidth() - 20, getIGuiScreenHeight() - 50 + thickness, Color.WHITE);
-
-        boolean flag = false;
-        int y = 70;
-        for (String s : report.getCauseAsString().split("at ")) {
-            int x = 25;
-            if (flag) {
-                x += 10;
-            }
-            IFontRenderer.drawString(s.trim(), x, y, 0xFFFFFF);
-            y += IFontRenderer.getFontHeight() + 2;
-            flag = true;
-        }
-
-        IFontRenderer.drawCenteredString(status, getIGuiScreenWidth() / 2, getIGuiScreenHeight() - 28 - IFontRenderer.getFontHeight() - 2, 16777215);
     }
 
     @Override
@@ -141,6 +129,51 @@ public class EMCCrashScreen extends IGuiScreen {
 
     @Override
     protected void onGuiResize(int w, int h) {
+
+    }
+
+    public class StringList extends EntryListWidget {
+
+        public StringList(int width, int height, int top, int bottom, int itemHeight) {
+            super(MinecraftClient.getInstance(), width, height, top, bottom, itemHeight);
+        }
+
+        @Override
+        public int getRowWidth() {
+            return width - 2;
+        }
+
+        @Override
+        protected int getScrollbarPosition() {
+            return width - 6;
+        }
+
+    }
+
+    public class StringEntry extends EntryListWidget.Entry {
+
+        private String string;
+
+        public StringEntry(String string) {
+            this.string = string;
+        }
+
+        public void render(int index, int y, int x, int width, int height, int mouseX, int mouseY, boolean hovering, float delta) {
+            String render = string;
+            if (IFontRenderer.getStringWidth(render) > width) {
+                render = "";
+                for (String s : string.split("")) {
+                    if (IFontRenderer.getStringWidth(render + s + "...") < width - 6) {
+                        render += s;
+                    } else {
+                        render += "...";
+                        break;
+                    }
+                }
+            }
+            IFontRenderer.drawString(render, x, y, 0xFFFFFF);
+        }
+
 
     }
 

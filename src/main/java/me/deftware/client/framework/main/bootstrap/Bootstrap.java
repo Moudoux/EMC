@@ -6,6 +6,7 @@ import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.commands.*;
 import me.deftware.client.framework.compatability.JsonConverter;
+import me.deftware.client.framework.event.EventBus;
 import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.main.bootstrap.discovery.AbstractModDiscovery;
 import me.deftware.client.framework.main.bootstrap.discovery.DirectoryModDiscovery;
@@ -14,12 +15,11 @@ import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.path.LocationUtil;
 import me.deftware.client.framework.path.OSUtils;
 import me.deftware.client.framework.utils.Settings;
+import me.deftware.client.framework.utils.exception.EMCCrashScreen;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.scoreboard.Scoreboard;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.util.SystemNanoClock;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,7 +29,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
@@ -41,13 +40,13 @@ import java.util.stream.Collectors;
  */
 public class Bootstrap {
 
+    public static int CRASH_COUNT = 0;
     public static boolean initialized = false, CRASHED = false;
     public static Logger logger = LogManager.getLogger(String.format("EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
     public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
     public static boolean isRunning = true;
     public static Settings EMCSettings;
     public static File EMC_ROOT, EMC_CONFIGS;
-    private static URLClassLoader currentModClassLoader;
     private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
     private static List<AbstractModDiscovery> modDiscoveries = new ArrayList<>(Arrays.asList(new JVMModDiscovery(), new DirectoryModDiscovery()));
 
@@ -78,7 +77,7 @@ public class Bootstrap {
             EMCSettings.initialize(null);
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", EMCSettings.getFloat("RENDER_SCALE", 1.0f));
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
-            if (!System.getProperty("emcModDefined", "false").equalsIgnoreCase("true")) {
+            if (!System.getProperty("emcModDefined", "false").equalsIgnoreCase("true") && CRASH_COUNT == 0) {
                 Bootstrap.logger.warn("Converting old Json emcMods entry to JVM arguments");
                 new JsonConverter();
             }
@@ -101,6 +100,19 @@ public class Bootstrap {
         } catch (Exception ex) {
             Bootstrap.logger.warn("Failed to load EMC", ex);
         }
+    }
+
+    public static void reset() {
+        try {
+            ejectMods();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        SettingsMap.reset();
+        modsInfo.clear();
+        mods.clear();
+        modDiscoveries.clear();
+        modDiscoveries = new ArrayList<>(Arrays.asList(new JVMModDiscovery(), new DirectoryModDiscovery()));
     }
 
     /**
@@ -128,10 +140,10 @@ public class Bootstrap {
      */
     public static void loadMod(File clientJar) throws Exception {
         JarFile jarFile = new JarFile(clientJar);
-        Bootstrap.currentModClassLoader = URLClassLoader.newInstance(
+        URLClassLoader currentModClassLoader = URLClassLoader.newInstance(
                 new URL[]{new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/")},
                 Bootstrap.class.getClassLoader());
-        BufferedReader buffer = new BufferedReader(new InputStreamReader(Objects.requireNonNull(Bootstrap.currentModClassLoader.getResourceAsStream("client.json"))));
+        BufferedReader buffer = new BufferedReader(new InputStreamReader(Objects.requireNonNull(currentModClassLoader.getResourceAsStream("client.json"))));
         JsonObject jsonObject = new Gson().fromJson(buffer.lines().collect(Collectors.joining("\n")), JsonObject.class);
         boolean remove = false;
         if (!jsonObject.has("scheme")) {
@@ -140,7 +152,7 @@ public class Bootstrap {
             remove = true;
         }
         if (remove) {
-            Bootstrap.currentModClassLoader.close();
+            currentModClassLoader.close();
             buffer.close();
             jarFile.close();
             Bootstrap.logger.warn("Uninstalling unsupported mod {}", clientJar.getName());
@@ -166,17 +178,19 @@ public class Bootstrap {
             return;
         }
         Bootstrap.mods.put(jsonObject.get("name").getAsString(),
-                (EMCMod) Bootstrap.currentModClassLoader.loadClass(jsonObject.get("main").getAsString()).newInstance());
-        Enumeration<?> e = jarFile.entries();
-        for (JarEntry je = (JarEntry) e.nextElement(); e.hasMoreElements(); je = (JarEntry) e.nextElement()) {
-            if (je.isDirectory() || !je.getName().endsWith(".class")) {
-                continue;
+                (EMCMod) currentModClassLoader.loadClass(jsonObject.get("main").getAsString()).newInstance());
+            Enumeration<?> e = jarFile.entries();
+            for (JarEntry je = (JarEntry) e.nextElement(); e.hasMoreElements(); je = (JarEntry) e.nextElement()) {
+                if (je.isDirectory() || !je.getName().endsWith(".class")) {
+                    continue;
+                }
+                String className = je.getName().replace(".class", "").replace('/', '.');
+                WeakReference<Class> c = new WeakReference<>(currentModClassLoader.loadClass(className));
+                Bootstrap.logger.debug("Loaded class " + Objects.requireNonNull(c.get()).getName());
             }
-            String className = je.getName().replace(".class", "").replace('/', '.');
-            WeakReference<Class> c = new WeakReference<>(Bootstrap.currentModClassLoader.loadClass(className));
-            Bootstrap.logger.debug("Loaded class " + Objects.requireNonNull(c.get()).getName());
-        }
+        buffer.close();
         jarFile.close();
+        Bootstrap.mods.get(jsonObject.get("name").getAsString()).classLoader = currentModClassLoader;
         Bootstrap.mods.get(jsonObject.get("name").getAsString()).init(jsonObject);
         Bootstrap.logger.info("Loaded {}", jsonObject.get("name").getAsString());
     }
@@ -202,10 +216,23 @@ public class Bootstrap {
     }
 
     public static void ejectMods() {
+        EventBus.clearEvents();
         Bootstrap.logger.warn("Ejecting all loaded mods");
-        Bootstrap.mods.forEach((key, mod) -> mod.onUnload());
+        for (EMCMod mod : mods.values()) {
+            try {
+                mod.onUnload();
+            } catch (NullPointerException ignored) { }
+            try {
+                mod.classLoader.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
         Bootstrap.mods.clear();
         registerFrameworkCommands();
+        MinecraftClient.getInstance().options.gamma = 0.5F;
+        EMCSettings = null;
+        System.gc();
     }
 
     private static void clearChildren(CommandNode<?> commandNode) {

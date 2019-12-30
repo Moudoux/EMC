@@ -19,7 +19,7 @@ public class JsonConverter {
 
     public JsonConverter() {
         File jsonFile = getEMCJsonFile();
-        if (!jsonFile.exists()) {
+        if (jsonFile == null || !jsonFile.exists()) {
             Bootstrap.logger.error("Could not find Json file, is this a custom launcher?");
             return;
         }
@@ -90,6 +90,10 @@ public class JsonConverter {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+
+        if (manualJsonLocation == null) {
+            return null;
         }
 
         // Save as New Json Location if Settings Available

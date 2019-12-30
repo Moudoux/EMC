@@ -78,28 +78,22 @@ public class BitmapFont implements EMCFont {
         if (extras == null)
             extras = "";
         char[] additionalCharacters = extras.toCharArray();
-
         //Lowercase alphabet
         for (char lowercaseAlphabet = 'a'; lowercaseAlphabet <= 'z'; lowercaseAlphabet++) {
             characterGenerate(lowercaseAlphabet, color);
         }
-
         //Uppercase alphabet
         for (char uppercaseAlphabet = 'A'; uppercaseAlphabet <= 'Z'; uppercaseAlphabet++) {
             characterGenerate(uppercaseAlphabet, color);
         }
-
         //Numbers
         for (char numeric = 48; numeric <= 57; numeric++) { //0 - 9 in ASCII
             characterGenerate(numeric, color);
         }
-
         char specialCharacters[] = {'!', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
                 ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', '"'};
-
         if (additionalCharacters.length > 0)
             specialCharacters = ArrayUtils.addAll(specialCharacters, additionalCharacters);
-
         //Additional and special characters
         for (int additional = 0; additional < specialCharacters.length; additional++) { //0 - 9 in ASCII
             characterGenerate(specialCharacters[additional], color);
@@ -110,6 +104,7 @@ public class BitmapFont implements EMCFont {
     protected void characterGenerate(char character, Color color) {
         String letterBuffer = String.valueOf(character);
         int textwidth = getStringWidthNonScaled(letterBuffer);
+
         int textheight = getStringHeightNonScaled(letterBuffer);
 
         BufferedImage characterTexture = new BufferedImage(textwidth, textheight, BufferedImage.TYPE_INT_ARGB);
