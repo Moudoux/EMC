@@ -77,7 +77,7 @@ public class Bootstrap {
             EMCSettings.initialize(null);
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", EMCSettings.getFloat("RENDER_SCALE", 1.0f));
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
-            if (!System.getProperty("emcModDefined", "false").equalsIgnoreCase("true") && CRASH_COUNT == 0) {
+            if (!System.getProperty("emcModDefined", "false").equalsIgnoreCase("true")) {
                 Bootstrap.logger.warn("Converting old Json emcMods entry to JVM arguments");
                 new JsonConverter();
             }
