@@ -27,7 +27,7 @@ public class IWorld {
 
     public static ArrayList<IEntity> getLoadedEntities() {
         ArrayList<IEntity> entities = new ArrayList<>();
-        if (Bootstrap.CRASHED) {
+        if (Bootstrap.CRASHED || MinecraftClient.getInstance().world == null || ((IMixinWorldClient) MinecraftClient.getInstance().world).getLoadedEntities() == null) {
             return entities;
         }
         for (Entity entity : ((IMixinWorldClient) MinecraftClient.getInstance().world).getLoadedEntities().values()) {
@@ -38,6 +38,9 @@ public class IWorld {
 
     public static ArrayList<ITileEntity> getLoadedTileEntities() {
         ArrayList<ITileEntity> entities = new ArrayList<>();
+        if (MinecraftClient.getInstance().world == null) {
+            return entities;
+        }
         for (BlockEntity entity : MinecraftClient.getInstance().world.blockEntities) {
             entities.add(new ITileEntity(entity));
         }
@@ -45,6 +48,9 @@ public class IWorld {
     }
 
     public static long getWorldTime() {
+        if (MinecraftClient.getInstance().world == null) {
+            return 0L;
+        }
         return MinecraftClient.getInstance().world.getTime();
     }
 

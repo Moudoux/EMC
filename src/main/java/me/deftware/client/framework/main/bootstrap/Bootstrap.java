@@ -15,7 +15,6 @@ import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.path.LocationUtil;
 import me.deftware.client.framework.path.OSUtils;
 import me.deftware.client.framework.utils.Settings;
-import me.deftware.client.framework.utils.exception.EMCCrashScreen;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
@@ -48,6 +47,10 @@ public class Bootstrap {
     public static Settings EMCSettings;
     public static File EMC_ROOT, EMC_CONFIGS;
     private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
+
+    /**
+     * JVMModDiscovery should always be the first item
+     */
     private static List<AbstractModDiscovery> modDiscoveries = new ArrayList<>(Arrays.asList(new JVMModDiscovery(), new DirectoryModDiscovery()));
 
     public static void init() {
