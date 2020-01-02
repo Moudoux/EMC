@@ -55,7 +55,6 @@ public class Bootstrap {
 
     public static void init() {
         try {
-            System.out.println("TEST BUILD");
             File emcJar = LocationUtil.getEMC().toFile(), mcDir = LocationUtil.getMinecraftDir().toFile();
             if (System.getProperty("EMCDir", "null").equalsIgnoreCase("null")) {
                 System.setProperty("EMCDir", emcJar != null ? emcJar.getParentFile().getAbsolutePath() : "null");
