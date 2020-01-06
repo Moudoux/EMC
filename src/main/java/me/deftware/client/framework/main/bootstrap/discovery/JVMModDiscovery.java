@@ -1,10 +1,10 @@
 package me.deftware.client.framework.main.bootstrap.discovery;
 
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
+import me.deftware.client.framework.utils.HashUtils;
 import me.deftware.client.framework.utils.WebUtils;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.*;
 import java.net.URL;
 import java.security.DigestInputStream;
@@ -88,7 +88,7 @@ public class JVMModDiscovery extends AbstractModDiscovery {
                  DigestInputStream digestStream = new DigestInputStream(input, digest)) {
                 while (digestStream.read() != -1) { }
                 MessageDigest msgDigest = digestStream.getMessageDigest();
-                sha1 = new HexBinaryAdapter().marshal(msgDigest.digest());
+                sha1 = HashUtils.printHexBinary(msgDigest.digest());
             }
             return sha1;
         }

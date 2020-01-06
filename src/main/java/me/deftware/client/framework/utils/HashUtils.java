@@ -2,7 +2,6 @@ package me.deftware.client.framework.utils;
 
 import net.minecraft.client.MinecraftClient;
 
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -13,7 +12,7 @@ public class HashUtils {
     public static String getSHA(String string) throws Exception {
         MessageDigest sha1 = MessageDigest.getInstance("SHA-512");
         sha1.update(string.getBytes());
-        return new HexBinaryAdapter().marshal(sha1.digest());
+        return printHexBinary(sha1.digest());
     }
 
 
@@ -28,7 +27,7 @@ public class HashUtils {
                 len = input.read(buffer);
             }
             input.close();
-            return new HexBinaryAdapter().marshal(sha1.digest());
+            return printHexBinary(sha1.digest());
         } catch (Exception ex) {
             return "";
         }
@@ -41,6 +40,17 @@ public class HashUtils {
         } catch (Exception ex) {
             return "";
         }
+    }
+
+    private static final char[] hexCode = "0123456789ABCDEF".toCharArray();
+
+    public static String printHexBinary(byte[] data) {
+        StringBuilder r = new StringBuilder(data.length * 2);
+        for (byte b : data) {
+            r.append(hexCode[(b >> 4) & 0xF]);
+            r.append(hexCode[(b & 0xF)]);
+        }
+        return r.toString();
     }
 
 }
