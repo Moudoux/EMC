@@ -10,12 +10,18 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(TextureManager.class)
 public class MixinTextureManager {
 
-    @ModifyVariable(method = "bindTextureInner", at = @At("HEAD"))
+    int syncedCount = 0;
+
+    @ModifyVariable(method = "bindTexture", at = @At("HEAD"))
     private Identifier bindTexture(Identifier resource) {
         if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "RAINBOW_ITEM_GLINT", false)) {
             if (resource.getPath().contains("enchanted_item_glint")) {
-                resource = new Identifier(
-                        "emc/enchanted_item_glint_rainbow.png");
+                if (syncedCount > 50) { // One tick as Normal Enchant Glint
+                    resource = new Identifier(
+                            "emc/enchanted_item_glint_rainbow.png");
+                } else {
+                    syncedCount++;
+                }
             }
         }
         return resource;
