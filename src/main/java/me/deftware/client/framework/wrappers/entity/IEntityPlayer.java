@@ -4,18 +4,19 @@ import me.deftware.client.framework.wrappers.item.IItemStack;
 import me.deftware.client.framework.wrappers.math.IVec3d;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.client.framework.wrappers.world.IEnumFacing;
+import me.deftware.client.framework.wrappers.world.IWorld;
 import me.deftware.mixin.imp.IMixinEntity;
 import me.deftware.mixin.imp.IMixinEntityPlayerSP;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.BowItem;
-import net.minecraft.item.EnderPearlItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.packet.HandSwingC2SPacket;
 import net.minecraft.tag.FluidTags;
@@ -25,11 +26,19 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.Set;
 
 @SuppressWarnings("All")
 public class IEntityPlayer {
+
+    // PING
+    private static int ping = 0;
+    // TPS
+    private static long previousTotalWorldTime;
+    private static double previousMeasureTime, currentTPS = 0;
 
     public static void drawPlayer(int posX, int posY, int scale) {
         InventoryScreen.drawEntity(posX, posY, scale, 0, 0, MinecraftClient.getInstance().player);
@@ -700,6 +709,83 @@ public class IEntityPlayer {
             }
         }
         return inLiquid;
+    }
+
+    public static int getPing() {
+        MinecraftClient mc = MinecraftClient.getInstance();
+
+        if (IEntityPlayer.isNull()) {
+            ping = 0;
+        } else {
+            new Thread() {
+                @Override
+                public void run() {
+                    ClientPlayNetworkHandler nethandlerplayclient = mc.player.networkHandler;
+                    ping = nethandlerplayclient.getPlayerListEntry(mc.player.getUuid()).getLatency();
+                }
+            }.start();
+        }
+        return ping;
+    }
+
+    /**
+     * Updates the TPS variable
+     * @return the Current TPS, as a rounded string
+     */
+    public static String getTPS() {
+        if (!IWorld.isNull()) {
+            if (getTimeInSeconds() - previousMeasureTime < 3.0) {
+                // Parse Existing TPS
+                DecimalFormat df = new DecimalFormat("#.##");
+                df.setRoundingMode(RoundingMode.CEILING);
+                return df.format(currentTPS);
+            }
+            currentTPS = ((double) (IWorld.getWorldTime() - previousTotalWorldTime)) / (getTimeInSeconds() - previousMeasureTime);
+
+            // Limits TPS to not go above 20, sometimes possible
+            if (currentTPS > 20.0d) {
+                currentTPS = 20.0d;
+            }
+
+            updatePreviousTotalWorldTime();
+        } else {
+            currentTPS = 0.0d;
+        }
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setRoundingMode(RoundingMode.CEILING);
+        return df.format(currentTPS);
+    }
+
+    /**
+     * Sets the TotalWorldTime to whatever it is at the moment, effectively updating it
+     */
+    private static void updatePreviousTotalWorldTime() {
+        try {
+            if (IWorld.getWorldTime() == 0) {
+                Thread.sleep(500);
+
+                if (IWorld.getWorldTime() == 0) {
+                    Thread.sleep(1000);
+                    if (IWorld.getWorldTime() == 0) {
+                        System.out.println("The TotalWorldTime is 0 after waiting for the TotalWorldTime, and should not happen!");
+                    }
+                }
+            }
+            previousTotalWorldTime = IWorld.getWorldTime();
+            previousMeasureTime = getTimeInSeconds();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Gets the Current Time, in seconds
+     * @return the current time, in seconds
+     */
+    public static double getTimeInSeconds() {
+        return (System.currentTimeMillis() / 1000d);
     }
 
     public static int floor_double(double value) {
