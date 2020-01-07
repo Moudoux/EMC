@@ -38,7 +38,7 @@ public class EMCCrashScreen extends IGuiScreen {
     protected void onInitGui() {
         this.clearButtons();
         this.children.clear();
-        list = new StringList(width, height, 43, height - 32, IFontRenderer.getFontHeight() + 2, false);
+        list = new StringList(width, height, 43, height - 32, IFontRenderer.getFontHeight() + 2);
         this.children.add(list);
         if (report != null) {
             String[] cause = report.getCauseAsString().split("at ");
