@@ -2,7 +2,6 @@ package me.deftware.client.framework.wrappers.gui.list;
 
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import me.deftware.client.framework.wrappers.render.IFontRenderer;
-import me.deftware.mixin.imp.IMixinGuiScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.EntryListWidget;
 
@@ -26,7 +25,7 @@ public class StringList extends EntryListWidget {
 	}
 
 	public void addToEventListener(IGuiScreen screen) {
-		((IMixinGuiScreen) screen).getEventList().add(this);
+		screen.addRawEventListener(this);
 	}
 
 	@Override

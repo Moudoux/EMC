@@ -186,6 +186,10 @@ public abstract class IGuiScreen extends Screen {
         this.children.add(listener);
     }
 
+    public void addRawEventListener(Element listener) {
+        this.children.add(listener);
+    }
+
     protected void drawIDefaultBackground() {
         renderBackground();
     }
