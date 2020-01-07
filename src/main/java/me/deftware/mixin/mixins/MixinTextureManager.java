@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(TextureManager.class)
 public class MixinTextureManager {
 
-    int syncedCount = 0;
+    private int syncedCount = 0;
 
     @ModifyVariable(method = "bindTexture", at = @At("HEAD"))
     private Identifier bindTexture(Identifier resource) {
