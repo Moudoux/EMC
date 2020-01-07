@@ -168,6 +168,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     /**
      * @reason Catch crashes
      * @author deftware
+     * @reason Catch Exceptions when they occur
      */
     @Overwrite
     public void run() {
