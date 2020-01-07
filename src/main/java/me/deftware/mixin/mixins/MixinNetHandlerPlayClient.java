@@ -1,26 +1,41 @@
 package me.deftware.mixin.mixins;
 
+import io.netty.buffer.Unpooled;
 import me.deftware.client.framework.event.events.EventAnimation;
 import me.deftware.client.framework.event.events.EventKnockback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.packet.EntityStatusS2CPacket;
 import net.minecraft.client.network.packet.ExplosionS2CPacket;
 import net.minecraft.entity.Entity;
+import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkThreadUtils;
+import net.minecraft.network.Packet;
+import net.minecraft.server.network.packet.CustomPayloadC2SPacket;
+import net.minecraft.util.PacketByteBuf;
 import net.minecraft.world.explosion.Explosion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public class MixinNetHandlerPlayClient {
 
+    @Redirect(method = "onGameJoin", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/Packet;)V"))
+    private void handleGameJoin(ClientConnection connection, Packet<?> packet) {
+        if (!(packet instanceof CustomPayloadC2SPacket)) {
+            connection.send(packet);
+            return;
+        }
+        // Overwrite the brand packet to send vanilla, because Fabric modifies it and some server do not like it
+        connection.send(new CustomPayloadC2SPacket(CustomPayloadC2SPacket.BRAND, (new PacketByteBuf(Unpooled.buffer())).writeString("vanilla")));
+    }
+
     @Inject(method = "onEntityStatus", at = @At("HEAD"), cancellable = true)
-    public void onEntityStatus(EntityStatusS2CPacket packetIn, CallbackInfo ci) {
+    private void onEntityStatus(EntityStatusS2CPacket packetIn, CallbackInfo ci) {
         if (packetIn.getStatus() == 35) {
             EventAnimation event = new EventAnimation(EventAnimation.AnimationType.Totem);
             event.broadcast();

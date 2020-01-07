@@ -166,6 +166,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     private CrashReport crashReport;
 
     /**
+     * @reason Catch crashes
      * @author deftware
      */
     @Overwrite
