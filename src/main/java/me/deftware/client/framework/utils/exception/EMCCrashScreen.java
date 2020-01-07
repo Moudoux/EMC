@@ -1,16 +1,14 @@
 package me.deftware.client.framework.utils.exception;
 
-import me.deftware.client.framework.fonts.FontManager;
 import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.utils.ChatColor;
-import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.gui.IGuiButton;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
+import me.deftware.client.framework.wrappers.gui.list.StringList;
 import me.deftware.client.framework.wrappers.render.IFontRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.util.crash.CrashReport;
 import org.apache.commons.io.FileUtils;
 
@@ -40,13 +38,13 @@ public class EMCCrashScreen extends IGuiScreen {
     protected void onInitGui() {
         this.clearButtons();
         this.children.clear();
-        list = new StringList(width, height, 43, height - 32, IFontRenderer.getFontHeight() + 2);
+        list = new StringList(width, height, 43, height - 32, IFontRenderer.getFontHeight() + 2, false);
         this.children.add(list);
         if (report != null) {
             String[] cause = report.getCauseAsString().split("at ");
-            list.children().add(new StringEntry(cause[0].trim()));
+            list.children().add(new StringList.StringEntry(cause[0].trim()));
             for (int i = 1; i < cause.length; i++) {
-                list.children().add(new StringEntry("   at " + cause[i].trim()));
+                list.children().add(new StringList.StringEntry("   at " + cause[i].trim()));
             }
         }
         this.addButton(new IGuiButton(0, this.width / 2 - 155, this.height - 29, 150, 20, ChatColor.GREEN + "Try to fix") {
@@ -129,51 +127,6 @@ public class EMCCrashScreen extends IGuiScreen {
 
     @Override
     protected void onGuiResize(int w, int h) {
-
-    }
-
-    public class StringList extends EntryListWidget {
-
-        public StringList(int width, int height, int top, int bottom, int itemHeight) {
-            super(MinecraftClient.getInstance(), width, height, top, bottom, itemHeight);
-        }
-
-        @Override
-        public int getRowWidth() {
-            return width - 2;
-        }
-
-        @Override
-        protected int getScrollbarPosition() {
-            return width - 6;
-        }
-
-    }
-
-    public class StringEntry extends EntryListWidget.Entry {
-
-        private String string;
-
-        public StringEntry(String string) {
-            this.string = string;
-        }
-
-        public void render(int index, int y, int x, int width, int height, int mouseX, int mouseY, boolean hovering, float delta) {
-            String render = string;
-            if (IFontRenderer.getStringWidth(render) > width) {
-                render = "";
-                for (String s : string.split("")) {
-                    if (IFontRenderer.getStringWidth(render + s + "...") < width - 6) {
-                        render += s;
-                    } else {
-                        render += "...";
-                        break;
-                    }
-                }
-            }
-            IFontRenderer.drawString(render, x, y, 0xFFFFFF);
-        }
-
 
     }
 
