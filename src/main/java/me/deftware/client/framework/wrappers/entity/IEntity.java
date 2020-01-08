@@ -14,6 +14,8 @@ import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.Projectile;
 
+import java.math.BigDecimal;
+
 @SuppressWarnings("All")
 public class IEntity {
 
@@ -89,6 +91,27 @@ public class IEntity {
             return ((LivingEntity) entity).getHealth();
         }
         return 0;
+    }
+
+    public float getMaxHealth() {
+        if (entity instanceof LivingEntity) {
+            return ((LivingEntity) entity).getMaximumHealth();
+        }
+        return 0;
+    }
+
+    /**
+     * Typically Mojangs AI has positions up to 0.999
+     * <p>
+     * However, considering the randomness of normal players their positions are far more exacted
+     *
+     * @param positionValue The X, Y, or Z position of an Entity
+     * @param invalidDivider The point at which an entity is considered non ai
+     * @return Whether that position is that of an AI or not
+     */
+    public boolean isNonAIPositionValue(double positionValue, int invalidDivider) {
+        boolean isNonAI = (BigDecimal.valueOf(positionValue).scale() > invalidDivider);
+        return isNonAI;
     }
 
     public int getEntityID() {
