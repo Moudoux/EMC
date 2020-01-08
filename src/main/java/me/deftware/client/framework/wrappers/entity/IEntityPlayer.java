@@ -88,6 +88,34 @@ public class IEntityPlayer {
 		return null;
 	}
 
+	public static float getRidingEntityRotationYaw() {
+		if (getRidingEntity() == null) {
+			return 0;
+		}
+		return getRidingEntity().getEntity().yaw;
+	}
+
+	public static void setRidingEntityRotationYaw(float yaw) {
+		if (getRidingEntity() == null) {
+			return;
+		}
+		getRidingEntity().getEntity().yaw = yaw;
+	}
+
+	public static float getRidingEntityRotationPitch() {
+		if (getRidingEntity() == null) {
+			return 0;
+		}
+		return getRidingEntity().getEntity().pitch;
+	}
+
+	public static void setRidingEntityRotationPitch(float pitch) {
+		if (getRidingEntity() == null) {
+			return;
+		}
+		getRidingEntity().getEntity().pitch = pitch;
+	}
+
 	public static int getFoodLevel() {
 		return MinecraftClient.getInstance().player.getHungerManager().getFoodLevel();
 	}
