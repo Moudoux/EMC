@@ -2,9 +2,11 @@ package me.deftware.mixin.mixins;
 
 import io.netty.buffer.Unpooled;
 import me.deftware.client.framework.event.events.EventAnimation;
+import me.deftware.client.framework.event.events.EventChunkDataReceive;
 import me.deftware.client.framework.event.events.EventKnockback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.packet.ChunkDataS2CPacket;
 import net.minecraft.client.network.packet.EntityStatusS2CPacket;
 import net.minecraft.client.network.packet.EntityVelocityUpdateS2CPacket;
 import net.minecraft.client.network.packet.ExplosionS2CPacket;
@@ -86,6 +88,15 @@ public class MixinNetHandlerPlayClient {
             } else {
                 entity.setVelocityClient(packet.getVelocityX() / 8000.0D, packet.getVelocityY() / 8000.0D, packet.getVelocityZ() / 8000.0D);
             }
+        }
+    }
+
+    @Inject(method = "onChunkData", at = @At("HEAD"), cancellable = true)
+    public void onReceiveChunkData(ChunkDataS2CPacket packet, CallbackInfo ci) {
+        EventChunkDataReceive event = new EventChunkDataReceive(packet);
+        event.broadcast();
+        if (event.isCanceled()) {
+            ci.cancel();
         }
     }
 
