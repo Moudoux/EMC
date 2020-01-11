@@ -3,6 +3,7 @@ package me.deftware.mixin.mixins;
 import me.deftware.client.framework.event.events.EventGuiScreenDisplay;
 import me.deftware.client.framework.event.events.EventShutdown;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
+import me.deftware.client.framework.utils.INonNullList;
 import me.deftware.client.framework.utils.exception.ExceptionHandler;
 import me.deftware.client.framework.utils.exception.GlUtil;
 import me.deftware.mixin.imp.IMixinMinecraft;
@@ -31,6 +32,8 @@ import java.util.Queue;
 
 @Mixin(MinecraftClient.class)
 public abstract class MixinMinecraft implements IMixinMinecraft {
+
+    private static Queue<Runnable> staticRenderTaskQueue;
 
     @Shadow
     public boolean windowFocused;
@@ -153,58 +156,25 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
         return windowFocused;
     }
 
-    @Shadow
-    private Thread thread;
-
-    @Shadow
-    private boolean running;
-
-    @Shadow
-    protected abstract void render(boolean tick);
-
-    @Shadow
-    private CrashReport crashReport;
-
-    /**
-     * @reason Catch crashes
-     * @author deftware
-     * @reason Catch Exceptions when they occur
-     */
-    @Overwrite
-    public void run() {
-        this.thread = Thread.currentThread();
-        try {
-            boolean bl = false;
-            while(this.running) {
-                try {
-                    try {
-                        this.render(!bl);
-                    } catch (OutOfMemoryError var3) {
-                        this.cleanUpAfterCrash();
-                        this.openScreen(new OutOfMemoryScreen());
-                        System.gc();
-                        bl = true;
-                    }
-                } catch (CrashException e) {
-                    exception(e, e.getReport(), false);
-                } catch (Throwable e) {
-                    exception(e, new CrashReport("Unexpected error", e), true);
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            MinecraftClient.printCrashReport(this.crashReport);
-        }
+    @Inject(method = "render", at = @At("TAIL"))
+    private void render(boolean tick, CallbackInfo ci) {
+        staticRenderTaskQueue = renderTaskQueue;
     }
 
-    @Shadow
-    public abstract void cleanUpAfterCrash();
+    /**
+     * @author Deftware
+     * @reason
+     */
+    @Overwrite
+    public static void printCrashReport(CrashReport crashReport) {
+        exception(null, crashReport, false);
+    }
 
     @Shadow
     @Final
     private Queue<Runnable> renderTaskQueue;
 
-    private void exception(Throwable e, CrashReport report, boolean unexpected) {
+    private static void exception(Throwable e, CrashReport report, boolean unexpected) {
         // Credit to https://github.com/natanfudge/Not-Enough-Crashes/blob/master/notenoughcrashes/src/main/java/fudge/notenoughcrashes/mixinhandlers/InGameCatcher.java
         Integer originalReservedMemorySize = null;
         try {
@@ -217,7 +187,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
             MinecraftClient.getInstance().getNetworkHandler().getConnection().disconnect(new LiteralText("Crashed"));
         }
         MinecraftClient.getInstance().disconnect(new SaveLevelScreen(new TranslatableText("menu.savingLevel")));
-        renderTaskQueue.clear();
+        staticRenderTaskQueue.clear();
         GlUtil.resetState();
         if (originalReservedMemorySize != null) {
             try {
@@ -230,7 +200,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
         ExceptionHandler.handleCrash(e, report, unexpected, customPrintCrashReport(report));
     }
 
-    private File customPrintCrashReport(CrashReport crashReport) {
+    private static File customPrintCrashReport(CrashReport crashReport) {
         File file = new File(MinecraftClient.getInstance().runDirectory, "crash-reports");
         File file2 = new File(file, "crash-" + (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date()) + "-client.txt");
         net.minecraft.Bootstrap.println(crashReport.asString());
