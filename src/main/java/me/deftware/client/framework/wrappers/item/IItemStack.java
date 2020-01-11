@@ -22,6 +22,8 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 
+import java.util.ArrayList;
+
 public class IItemStack {
 
     public static final IItemStack EMPTY = new IItemStack(ItemStack.EMPTY);
@@ -54,7 +56,7 @@ public class IItemStack {
 
     public static IItemStack cloneWithoutEffects(IItemStack stack) {
         return new IItemStack(new ItemStack(Item.byRawId(Item.getRawId(stack.getStack().getItem())),
-                Integer.valueOf(stack.getStack().toString().split("x")[0])));
+                Integer.parseInt(stack.getStack().toString().split("x")[0])));
     }
 
     public static boolean validName(String name) {
@@ -66,10 +68,30 @@ public class IItemStack {
     }
 
     public void enchantAll(int level) {
-        for (Object enchantment : Registry.ENCHANTMENT) {
+        for (Enchantment enchantment : Registry.ENCHANTMENT) {
             if (enchantment != Enchantments.SILK_TOUCH && enchantment != Enchantments.BINDING_CURSE
                     && enchantment != Enchantments.VANISHING_CURSE) {
-                stack.addEnchantment((Enchantment) enchantment, level);
+                stack.addEnchantment(enchantment, level);
+            }
+        }
+    }
+
+    public static ArrayList<String> getEnchantmentNames() {
+        ArrayList<String> enchantNames = new ArrayList<>();
+
+        for (Enchantment enchantment : Registry.ENCHANTMENT) {
+            enchantNames.add(enchantment.getTranslationKey());
+        }
+
+        return enchantNames;
+    }
+
+    public void enchant(String name, int level) {
+        for (Enchantment enchantment : Registry.ENCHANTMENT) {
+            if (enchantment != Enchantments.SILK_TOUCH && enchantment != Enchantments.BINDING_CURSE
+                    && enchantment != Enchantments.VANISHING_CURSE && enchantment.getTranslationKey().equals(name)) {
+                stack.addEnchantment(enchantment, level);
+                break;
             }
         }
     }
@@ -80,7 +102,7 @@ public class IItemStack {
 
     public void setStackDisplayName(String name) {
         CompoundTag nbttagcompound = stack.getOrCreateSubTag("display");
-        nbttagcompound.putString("Name", LiteralText.Serializer.toJson(new LiteralText(name)).toString());
+        nbttagcompound.putString("Name", LiteralText.Serializer.toJson(new LiteralText(name)));
     }
 
     public boolean hasCompoundTag() {
@@ -165,17 +187,11 @@ public class IItemStack {
     }
 
     public boolean isArmor() {
-        if (stack.getItem() instanceof ArmorItem) {
-            return true;
-        }
-        return false;
+        return stack.getItem() instanceof ArmorItem;
     }
 
     public boolean isBow() {
-        if (stack.getItem() instanceof BowItem) {
-            return true;
-        }
-        return false;
+        return stack.getItem() instanceof BowItem;
     }
 
     public int getEnchantmentLevel(int enchantID) {
@@ -184,7 +200,7 @@ public class IItemStack {
 
     public enum IEffects {
 
-        InstantHelth(StatusEffects.INSTANT_HEALTH);
+        InstantHealth(StatusEffects.INSTANT_HEALTH);
 
         private StatusEffect effect;
 
