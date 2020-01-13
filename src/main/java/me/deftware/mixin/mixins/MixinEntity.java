@@ -22,7 +22,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-
 @Mixin(Entity.class)
 public abstract class MixinEntity implements IMixinEntity {
 
@@ -150,6 +149,11 @@ public abstract class MixinEntity implements IMixinEntity {
     @Override
     public boolean getAFlag(int flag) {
         return getFlag(flag);
+    }
+
+    @Override
+    public DataTracker getTracker() {
+        return dataTracker;
     }
 
 }
