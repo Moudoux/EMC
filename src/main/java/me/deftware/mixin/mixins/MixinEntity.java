@@ -152,4 +152,9 @@ public abstract class MixinEntity implements IMixinEntity {
         return getFlag(flag);
     }
 
+    @Override
+    public DataTracker getTracker() {
+        return dataTracker;
+    }
+
 }
