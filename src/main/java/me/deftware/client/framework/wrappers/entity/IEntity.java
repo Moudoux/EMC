@@ -93,6 +93,10 @@ public class IEntity {
         return 0;
     }
 
+    public IDirection getDirection() {
+        return IDirection.getFrom(entity.yaw);
+    }
+
     public float getMaxHealth() {
         if (entity instanceof LivingEntity) {
             return ((LivingEntity) entity).getMaximumHealth();

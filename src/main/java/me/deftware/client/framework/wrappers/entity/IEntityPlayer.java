@@ -88,6 +88,13 @@ public class IEntityPlayer {
 		return null;
 	}
 
+	public static IDirection getRidingEntityDirection() {
+		if (getRidingEntity() == null) {
+			return IDirection.NORTH;
+		}
+		return getRidingEntity().getDirection();
+	}
+
 	public static float getRidingEntityRotationYaw() {
 		if (getRidingEntity() == null) {
 			return 0;
@@ -455,6 +462,13 @@ public class IEntityPlayer {
 			return 0;
 		}
 		return MinecraftClient.getInstance().player.getAttackCooldownProgress(0);
+	}
+
+	public static IDirection getDirection() {
+		if (IEntityPlayer.isNull()) {
+			return IDirection.NORTH;
+		}
+		return IDirection.getFrom(getRotationYaw());
 	}
 
 	public static float getRotationYaw() {
