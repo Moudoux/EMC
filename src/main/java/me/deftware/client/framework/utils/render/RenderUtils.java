@@ -15,13 +15,11 @@ import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.util.Window;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -152,27 +150,6 @@ public class RenderUtils {
         vertexbuffer.vertex(BoundingBox.x1, BoundingBox.y1, BoundingBox.z2).next();
         vertexbuffer.vertex(BoundingBox.x1, BoundingBox.y2, BoundingBox.z2).next();
         tessellator.draw();
-    }
-
-    public static void renderScissor(int x, int y, int width, int height, boolean debugMode) {
-        Window window = MinecraftClient.getInstance().getWindow();
-        float scaleFactor = NonScaledRenderer.getScale();
-        GL11.glScissor((int) (x * scaleFactor), (int) ((window.getHeight() - y - height) * scaleFactor), (int) (width * scaleFactor), (int) (height * scaleFactor));
-
-        if (debugMode) {
-            LogManager.getLogger("EMC-Debug").info("Given: x=" + x + " y=" + y + " width=" + width + " height=" + height);
-            LogManager.getLogger("EMC-Debug").info("Scissors: x=" + ((int) (x * scaleFactor)) + " y=" + ((int) ((window.getHeight() - y - height) * scaleFactor)) + " width=" + ((int) (width * scaleFactor)) + " height=" + ((int) (height * scaleFactor)));
-        }
-    }
-
-    public static void renderInvertedScissor(int x, int y, int width, int height, boolean debugMode) {
-        float scaleFactor = NonScaledRenderer.getScale();
-        GL11.glScissor((int) (x * scaleFactor), (int) (y * scaleFactor), (int) (width * scaleFactor), (int) (height * scaleFactor));
-
-        if (debugMode) {
-            LogManager.getLogger("EMC-Debug").info("Given: x=" + x + " y=" + y + " width=" + width + " height=" + height);
-            LogManager.getLogger("EMC-Debug").info("Scissors: x=" + ((int) (x * scaleFactor)) + " y=" + ((int) (y * scaleFactor)) + " width=" + ((int) (width * scaleFactor)) + " height=" + ((int) (height * scaleFactor)));
-        }
     }
 
     public static void drawCircle(int xx, int yy, int radius, int col) {
