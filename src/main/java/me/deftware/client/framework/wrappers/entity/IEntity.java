@@ -93,6 +93,14 @@ public class IEntity {
         return 0;
     }
 
+    public float getRotationYaw() {
+        return entity.yaw;
+    }
+
+    public float getRotationPitch() {
+        return entity.pitch;
+    }
+
     public IDirection getDirection() {
         return IDirection.getFrom(entity.yaw);
     }
