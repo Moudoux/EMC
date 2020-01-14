@@ -110,5 +110,8 @@ public class IGlStateManager {
     public static void enablePolygonOffset() {
         RenderSystem.enablePolygonOffset();
     }
+    public static void lineWidth(float f) {
+         RenderSystem.lineWidth(f);
+    }
 
 }
