@@ -1,31 +1,27 @@
 package me.deftware.client.framework.wrappers.entity;
 
 public enum IDirection {
-    NORTH("North", 90, 90),
-    NORTH_EAST("Northeast", 90, 90),
-    EAST("East", 90, 90),
-    SOUTH_EAST("Southeast", 90, 90),
-    SOUTH("South", 90, 90),
-    SOUTH_WEST("Southwest", 90, 90),
-    WEST("West", 90, 90),
-    NORTH_WEST("Northwest", 90, 90);
+    SOUTH("South", 0),
+    SOUTH_WEST("Southwest", 45),
+    WEST("West", 90),
+    NORTH_WEST("Northwest", 135),
+    NORTH("North", 180),
+    NORTH_EAST("Northeast", 225),
+    EAST("East", 270),
+    SOUTH_EAST("Southeast", 315);
 
-    private final int from, to;
+    private final int centerDegree;
 
     private final String name;
 
-    IDirection(final String name, final int from, final int to) {
-        this.from = from;
-        this.to = to;
+    IDirection(final String name, final int centerDegree) {
+        this.centerDegree = centerDegree;
+
         this.name = name;
     }
 
-    public int getFrom() {
-        return from;
-    }
-
-    public int getTo() {
-        return to;
+    public float getCenter() {
+        return centerDegree;
     }
 
     public String getName() {
@@ -36,7 +32,7 @@ public enum IDirection {
 
     public static IDirection getFrom(float lookDir) {
         for (IDirection possibleDir : VALUES) {
-            if (lookDir >= possibleDir.from && lookDir <= possibleDir.to) {
+            if (lookDir >= (possibleDir.centerDegree - 22.5f) && lookDir <= (possibleDir.centerDegree + 22.5f)) {
                 return possibleDir;
             }
         }

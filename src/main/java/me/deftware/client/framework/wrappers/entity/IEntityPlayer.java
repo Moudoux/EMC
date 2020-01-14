@@ -468,14 +468,26 @@ public class IEntityPlayer {
 		if (IEntityPlayer.isNull()) {
 			return IDirection.NORTH;
 		}
-		return IDirection.getFrom(getRotationYaw());
+		return IDirection.getFrom(getRotationYaw(true));
 	}
 
-	public static float getRotationYaw() {
+	public static float getRotationYaw(boolean fullCircleCalc) {
 		if (IEntityPlayer.isNull()) {
 			return 0;
 		}
-		return MinecraftClient.getInstance().player.yaw;
+		float currentYaw = MinecraftClient.getInstance().player.yaw % 360;
+
+		if (fullCircleCalc) {
+			currentYaw = (currentYaw + 360) % 360;
+		} else if (currentYaw > 180) {
+			currentYaw -= 360;
+		}
+
+		return currentYaw;
+	}
+
+	public static float getRotationYaw() {
+		return getRotationYaw(false);
 	}
 
 	public static void setRotationYaw(float yaw) {
