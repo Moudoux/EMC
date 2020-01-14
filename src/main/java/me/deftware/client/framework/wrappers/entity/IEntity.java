@@ -93,6 +93,30 @@ public class IEntity {
         return 0;
     }
 
+    public float getRotationYaw(boolean fullCircleCalc) {
+        float currentYaw = entity.yaw % 360;
+
+        if (fullCircleCalc) {
+            currentYaw = (currentYaw + 360) % 360;
+        } else if (currentYaw > 180) {
+            currentYaw -= 360;
+        }
+
+        return currentYaw;
+    }
+
+    public float getRotationYaw() {
+        return getRotationYaw(false);
+    }
+
+    public float getRotationPitch() {
+        return entity.pitch;
+    }
+
+    public IDirection getDirection() {
+        return IDirection.getFrom(entity.yaw);
+    }
+
     public float getMaxHealth() {
         if (entity instanceof LivingEntity) {
             return ((LivingEntity) entity).getMaximumHealth();

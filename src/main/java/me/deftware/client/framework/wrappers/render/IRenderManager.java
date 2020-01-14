@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers.render;
 
+import me.deftware.mixin.imp.IMixinGameRenderer;
 import me.deftware.mixin.imp.IMixinRenderManager;
 import net.minecraft.client.MinecraftClient;
 
@@ -23,6 +24,14 @@ public class IRenderManager {
 
     public static float getPlayerViewX() {
         return MinecraftClient.getInstance().getEntityRenderManager().camera.getPitch();
+    }
+
+    public static float getPlayerFovMultiplier() {
+        return ((IMixinGameRenderer) MinecraftClient.getInstance().gameRenderer).getFovMultiplier();
+    }
+
+    public static void updatePlayerFovMultiplier(float newValue) {
+        ((IMixinGameRenderer) MinecraftClient.getInstance().gameRenderer).updateFovMultiplier(newValue);
     }
 
 }
