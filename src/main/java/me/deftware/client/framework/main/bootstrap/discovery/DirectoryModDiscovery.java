@@ -58,6 +58,7 @@ public class DirectoryModDiscovery extends AbstractModDiscovery {
                 // Open and read json file
                 BufferedReader buffer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 json = new Gson().fromJson(buffer.lines().collect(Collectors.joining("\n")), JsonObject.class);
+                buffer.close();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
