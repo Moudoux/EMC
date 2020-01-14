@@ -4,8 +4,11 @@ import net.minecraft.client.MinecraftClient;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.security.DigestInputStream;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class HashUtils {
 
@@ -14,7 +17,6 @@ public class HashUtils {
         sha1.update(string.getBytes());
         return printHexBinary(sha1.digest());
     }
-
 
     public static String calcSHA(File file) throws Exception {
         MessageDigest sha1 = MessageDigest.getInstance("SHA-512");
@@ -31,6 +33,23 @@ public class HashUtils {
         } catch (Exception ex) {
             return "";
         }
+    }
+
+    public static String getSha1(File file) throws IOException {
+        String sha1 = null;
+        MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance("SHA-1");
+        } catch (NoSuchAlgorithmException e1) {
+            throw new IOException("Impossible to get SHA-1 digester", e1);
+        }
+        try (InputStream input = new FileInputStream(file);
+             DigestInputStream digestStream = new DigestInputStream(input, digest)) {
+            while (digestStream.read() != -1) { }
+            MessageDigest msgDigest = digestStream.getMessageDigest();
+            sha1 = HashUtils.printHexBinary(msgDigest.digest());
+        }
+        return sha1;
     }
 
     public static String getClientHash() {

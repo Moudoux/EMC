@@ -1,16 +1,25 @@
 package me.deftware.client.framework.main.bootstrap.discovery;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class DirectoryModDiscovery extends AbstractModDiscovery {
 
     @Override
     public void discover() {
-        Arrays.stream(Objects.requireNonNull(getDiscoverPath().listFiles())).forEach((file) -> {
+        Arrays.stream(Objects.requireNonNull(Bootstrap.EMC_ROOT.listFiles())).forEach((file) -> {
             File deleteFile = new File(file.getAbsolutePath() + ".delete"),
                     updateFile = new File(file.getAbsolutePath() + ".update");
             if (!file.isDirectory() && file.getName().endsWith(".jar")) {
@@ -28,25 +37,45 @@ public class DirectoryModDiscovery extends AbstractModDiscovery {
                         }
                     }
                     Bootstrap.logger.debug("Discovered {} with DirectoryModDiscovery", file.getName());
-                    entries.add(new DirectoryModEntry(file, (String) null));
+                    entries.add(new DirectoryModEntry(file));
                 }
             }
         });
     }
 
-    @Override
-    public File getDiscoverPath() {
-        return Bootstrap.EMC_ROOT;
-    }
-
     public static class DirectoryModEntry extends AbstractModEntry {
 
-        public DirectoryModEntry(File file, String... data) {
-            super(file, data);
+        private URLClassLoader classLoader;
+
+        DirectoryModEntry(File file) {
+            super(file, null);
+            try {
+                JarURLConnection connection = (JarURLConnection) new URL("jar", "", "file:" + getFile().getAbsolutePath() + "!/client.json").openConnection();
+                        // Create classLoader
+                classLoader = URLClassLoader.newInstance(
+                        new URL[]{new URL("jar", "", "file:" + getFile().getAbsolutePath() + "!/")},
+                        Bootstrap.class.getClassLoader());
+                // Open and read json file
+                BufferedReader buffer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                json = new Gson().fromJson(buffer.lines().collect(Collectors.joining("\n")), JsonObject.class);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
 
         @Override
-        public void init() { }
+        public void init() {
+            // No initialization needs to be done as directory mods are not auto updated
+        }
+
+        @Override
+        public EMCMod toInstance() throws Exception {
+            // Load main class from classLoader
+            EMCMod instance = (EMCMod) classLoader.loadClass(getJson().get("main").getAsString()).newInstance();
+            // Set instance classLoader
+            instance.classLoader = classLoader;
+            return instance;
+        }
 
     }
 

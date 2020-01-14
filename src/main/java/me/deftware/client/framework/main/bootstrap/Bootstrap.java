@@ -5,12 +5,9 @@ import com.mojang.brigadier.tree.CommandNode;
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.commands.*;
-import me.deftware.client.framework.compatability.JsonConverter;
 import me.deftware.client.framework.event.EventBus;
 import me.deftware.client.framework.main.EMCMod;
-import me.deftware.client.framework.main.bootstrap.discovery.AbstractModDiscovery;
-import me.deftware.client.framework.main.bootstrap.discovery.DirectoryModDiscovery;
-import me.deftware.client.framework.main.bootstrap.discovery.JVMModDiscovery;
+import me.deftware.client.framework.main.bootstrap.discovery.*;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.path.LocationUtil;
 import me.deftware.client.framework.path.OSUtils;
@@ -20,17 +17,9 @@ import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
-import java.lang.ref.WeakReference;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.stream.Collectors;
 
 /**
  * This class is responsible for bootstrapping (initialization) process of EMC framework
@@ -46,12 +35,13 @@ public class Bootstrap {
     public static boolean isRunning = true;
     public static Settings EMCSettings;
     public static File EMC_ROOT, EMC_CONFIGS;
+
     private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
 
     /**
-     * JVMModDiscovery should always be the first item
+     * ClasspathModDiscovery should always be the first item
      */
-    private static List<AbstractModDiscovery> modDiscoveries = new ArrayList<>(Arrays.asList(new JVMModDiscovery(), new DirectoryModDiscovery()));
+    private static List<AbstractModDiscovery> modDiscoveries = new ArrayList<>(Arrays.asList(new ClasspathModDiscovery(), new JsonModDiscovery(), new JVMModDiscovery(), new DirectoryModDiscovery()));
 
     public static void init() {
         try {
@@ -80,23 +70,21 @@ public class Bootstrap {
             EMCSettings.initialize(null);
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", EMCSettings.getFloat("RENDER_SCALE", 1.0f));
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
-            if (!System.getProperty("emcModDefined", "false").equalsIgnoreCase("true")) {
-                Bootstrap.logger.warn("Converting old Json emcMods entry to JVM arguments");
-                new JsonConverter();
-            }
             modDiscoveries.forEach(discovery -> {
                 discovery.discover();
-                Bootstrap.logger.info("{} found {} mod{}", discovery.getClass().getSimpleName(), discovery.getMods().size(), discovery.getMods().size() != 1 ? "s" : "");
+                if (discovery.getSize() != 0) {
+                    Bootstrap.logger.info("{} found {} mod{}", discovery.getClass().getSimpleName(), discovery.getSize(), discovery.getSize() != 1 ? "s" : "");
+                }
+                discovery.getMods().forEach(AbstractModDiscovery.AbstractModEntry::init);
             });
             registerFrameworkCommands();
             modDiscoveries.forEach(discovery -> {
                 discovery.getMods().forEach(mod -> {
-                    mod.init();
                     try {
-                        loadMod(mod.file);
+                        loadMod(mod);
                     } catch (Exception ex) {
                         ex.printStackTrace();
-                        Bootstrap.logger.error("Failed to load {}", mod.file.getName());
+                        Bootstrap.logger.error("Failed to load {}", mod.getFile().getName());
                     }
                 });
             });
@@ -135,67 +123,22 @@ public class Bootstrap {
         CommandRegister.registerCommand(new CommandScale());
     }
 
-    /**
-     * Loads an EMC mod
-     *
-     * @param clientJar
-     * @throws Exception
-     */
-    public static void loadMod(File clientJar) throws Exception {
-        JarFile jarFile = new JarFile(clientJar);
-        URLClassLoader currentModClassLoader = URLClassLoader.newInstance(
-                new URL[]{new URL("jar", "", "file:" + clientJar.getAbsolutePath() + "!/")},
-                Bootstrap.class.getClassLoader());
-        BufferedReader buffer = new BufferedReader(new InputStreamReader(Objects.requireNonNull(currentModClassLoader.getResourceAsStream("client.json"))));
-        JsonObject jsonObject = new Gson().fromJson(buffer.lines().collect(Collectors.joining("\n")), JsonObject.class);
-        boolean remove = false;
-        if (!jsonObject.has("scheme")) {
-            remove = true;
-        } else if (jsonObject.get("scheme").getAsInt() < 2) {
-            remove = true;
-        }
-        if (remove) {
-            currentModClassLoader.close();
-            buffer.close();
-            jarFile.close();
-            Bootstrap.logger.warn("Uninstalling unsupported mod {}", clientJar.getName());
-            if (!clientJar.delete()) {
-                Bootstrap.logger.error("Failed to delete {}", clientJar.getName());
-            }
+    public static void loadMod(AbstractModDiscovery.AbstractModEntry entry) throws Exception {
+        EMCMod mod = entry.toInstance();
+        if (mod == null) {
             return;
         }
-        if (mods.containsKey(jsonObject.get("name").getAsString())) {
-            buffer.close();
+        // Check compatibility
+        if (entry.getJson().get("scheme").getAsInt() < FrameworkConstants.SCHEME) {
+            Bootstrap.logger.warn("Uninstalling unsupported mod");
             return;
         }
-        Bootstrap.modsInfo.add(jsonObject);
-        Bootstrap.logger.debug("Loading mod: " + jsonObject.get("name").getAsString()
-                + " [ver. " + jsonObject.get("version").getAsString() + "] " +
-                "by " + jsonObject.get("author").getAsString());
-        String[] minVersion = (jsonObject.has("minVersion") ? jsonObject.get("minVersion").getAsString() : String.format("%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH)).split("\\.");
-        double version = Double.parseDouble(String.format("%s.%s", minVersion[0], minVersion[1]));
-        int patch = Integer.parseInt(minVersion[2]);
-        if (version >= FrameworkConstants.VERSION && patch > FrameworkConstants.PATCH) {
-            Bootstrap.logger.error("Could not load {}, required EMC version mismatch", jsonObject.get("name").getAsString());
-            jarFile.close();
-            return;
-        }
-        Bootstrap.mods.put(jsonObject.get("name").getAsString(),
-                (EMCMod) currentModClassLoader.loadClass(jsonObject.get("main").getAsString()).newInstance());
-            Enumeration<?> e = jarFile.entries();
-            for (JarEntry je = (JarEntry) e.nextElement(); e.hasMoreElements(); je = (JarEntry) e.nextElement()) {
-                if (je.isDirectory() || !je.getName().endsWith(".class")) {
-                    continue;
-                }
-                String className = je.getName().replace(".class", "").replace('/', '.');
-                WeakReference<Class> c = new WeakReference<>(currentModClassLoader.loadClass(className));
-                Bootstrap.logger.debug("Loaded class " + Objects.requireNonNull(c.get()).getName());
-            }
-        buffer.close();
-        jarFile.close();
-        Bootstrap.mods.get(jsonObject.get("name").getAsString()).classLoader = currentModClassLoader;
-        Bootstrap.mods.get(jsonObject.get("name").getAsString()).init(jsonObject);
-        Bootstrap.logger.info("Loaded {}", jsonObject.get("name").getAsString());
+        Bootstrap.logger.debug("Loading mod: " + entry.getJson().get("name").getAsString()
+                + " [ver. " + entry.getJson().get("version").getAsString() + "] " +
+                "by " + entry.getJson().get("author").getAsString());
+        Bootstrap.mods.put(entry.getJson().get("name").getAsString(), entry.toInstance());
+        Bootstrap.mods.get(entry.getJson().get("name").getAsString()).init(entry.getJson());
+        Bootstrap.logger.info("Loaded {}", entry.getJson().get("name").getAsString());
     }
 
     /**
