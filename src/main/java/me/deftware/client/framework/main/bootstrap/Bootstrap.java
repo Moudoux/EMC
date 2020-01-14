@@ -129,14 +129,16 @@ public class Bootstrap {
             return;
         }
         // Check compatibility
-        if (entry.getJson().get("scheme").getAsInt() < FrameworkConstants.SCHEME) {
-            Bootstrap.logger.warn("Uninstalling unsupported mod");
+        String[] minVersion = (entry.getJson().has("minVersion") ? entry.getJson().get("minVersion").getAsString() : String.format("%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH)).split("\\.");
+        if (Double.parseDouble(String.format("%s.%s", minVersion[0], minVersion[1])) >= FrameworkConstants.VERSION && Integer.parseInt(minVersion[2]) > FrameworkConstants.PATCH) {
+            Bootstrap.logger.warn("Will not load {}, unsupported EMC version", entry.getFile().getName());
+            return;
+        } else if (!entry.getJson().has("scheme") || entry.getJson().get("scheme").getAsInt() < FrameworkConstants.SCHEME) {
+            Bootstrap.logger.warn("Will not load unsupported mod {}, unsupported scheme", entry.getFile().getName());
             return;
         }
-        Bootstrap.logger.debug("Loading mod: " + entry.getJson().get("name").getAsString()
-                + " [ver. " + entry.getJson().get("version").getAsString() + "] " +
-                "by " + entry.getJson().get("author").getAsString());
-        Bootstrap.mods.put(entry.getJson().get("name").getAsString(), entry.toInstance());
+        Bootstrap.logger.debug("Loading {} v{} by {}", entry.getJson().get("name").getAsString(), entry.getJson().get("version").getAsString(), entry.getJson().get("author").getAsString());
+        Bootstrap.mods.put(entry.getJson().get("name").getAsString(), mod);
         Bootstrap.mods.get(entry.getJson().get("name").getAsString()).init(entry.getJson());
         Bootstrap.logger.info("Loaded {}", entry.getJson().get("name").getAsString());
     }
