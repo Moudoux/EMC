@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(PlayerEntity.class)
 public class MixinPlayerEntity {
 
-    @Redirect(method = "adjustMovementForSneaking", at = @At(value = "INVOKE", target = "net/minecraft/entity/player/PlayerEntity.method_21825()Z", opcode = 180))
+    @Redirect(method = "adjustMovementForSneaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;clipAtLedge()Z", opcode = 180))
     private boolean sneakingCheck(PlayerEntity self) {
         EventSneakingCheck event = new EventSneakingCheck(((PlayerEntity) (Object) this).isSneaking());
         event.broadcast();
