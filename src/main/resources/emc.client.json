@@ -16,6 +16,8 @@
     "MixinEntityLivingBase",
     "MixinEntity",
     "MixinAbstractHorse",
+    "MixinAbstractPig",
+    "MixinEnderEyeEntity",
     "MixinTextureManager",
     "MixinBlockFluidRenderer",
     "MixinBlockModelRenderer",

@@ -1,7 +1,7 @@
 import org.gradle.internal.os.OperatingSystem
 
 plugins {
-	id 'fabric-loom' version '0.2.6-SNAPSHOT'
+	id 'fabric-loom' version '0.2.7-SNAPSHOT'
 }
 
 apply plugin: 'maven'
@@ -47,6 +47,10 @@ dependencies {
 	modCompile 'com.github.modmuss50:Fabric-ASM:b97939c03a'
 	include 'com.github.modmuss50:Fabric-ASM:b97939c03a'
 	compile files("deps/IModelData.jar")
+}
+
+minecraft {
+	refmapName = 'emc-refmap.json'
 }
 
 //noinspection GroovyAssignabilityCheck
