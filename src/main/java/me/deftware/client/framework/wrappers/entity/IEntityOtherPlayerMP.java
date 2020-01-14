@@ -5,6 +5,7 @@ import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.GameRules;
 
+@SuppressWarnings("ALL")
 public class IEntityOtherPlayerMP extends OtherClientPlayerEntity {
 
     public IEntityOtherPlayerMP() {
@@ -23,8 +24,8 @@ public class IEntityOtherPlayerMP extends OtherClientPlayerEntity {
             experienceProgress = oldPlayer.experienceProgress;
             totalExperience = oldPlayer.totalExperience;
             setScore(oldPlayer.getScore());
-            lastPortalDirectionVector = oldPlayer.getLastPortalDirectionVector();
-            lastPortalDirection = oldPlayer.getLastPortalDirection();
+            lastNetherPortalDirectionVector = oldPlayer.getLastNetherPortalDirectionVector();
+            lastNetherPortalDirection = oldPlayer.getLastNetherPortalDirection();
         } else if (world.getGameRules().getBoolean(GameRules.KEEP_INVENTORY) || oldPlayer.isSpectator()) {
             inventory.clone(oldPlayer.inventory);
             experienceLevel = oldPlayer.experienceLevel;
