@@ -3,10 +3,12 @@ package me.deftware.mixin.mixins;
 import me.deftware.client.framework.event.events.EventGuiScreenDisplay;
 import me.deftware.client.framework.event.events.EventShutdown;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
+import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.INonNullList;
 import me.deftware.client.framework.utils.exception.ExceptionHandler;
 import me.deftware.client.framework.utils.exception.GlUtil;
 import me.deftware.mixin.imp.IMixinMinecraft;
+import net.minecraft.client.ClientBrandRetriever;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.OutOfMemoryScreen;
 import net.minecraft.client.gui.screen.SaveLevelScreen;
@@ -214,6 +216,16 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
             net.minecraft.Bootstrap.println("#@?@# Game crashed! Crash report could not be saved. #@?@#");
         }
         return null;
+    }
+
+
+    /**
+     * @reason Removes the modded flag
+     * @author deftware
+     */
+    @Overwrite
+    public boolean method_24289() {
+        return false;
     }
 
 }
