@@ -51,7 +51,7 @@ public class JVMModDiscovery extends AbstractModDiscovery {
                     String remoteSHA1 = WebUtils.get(sha1);
                     try {
                         String hash = HashUtils.getSha1(getFile());
-                        if (!remoteSHA1.equalsIgnoreCase(hash) && !Bootstrap.IGNORE_SHA1) {
+                        if (!remoteSHA1.equalsIgnoreCase(hash)) {
                             Bootstrap.logger.warn("SHA-1 not matching for {}, expected {} but got {}!", getFile().getName(), remoteSHA1, hash);
                             if (!getFile().delete()) {
                                 Bootstrap.logger.error("Failed to delete {}", getFile().getName());
