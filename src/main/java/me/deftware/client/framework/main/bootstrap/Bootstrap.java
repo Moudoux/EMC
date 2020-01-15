@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Bootstrap {
 
     public static int CRASH_COUNT = 0;
-    public static boolean initialized = false, CRASHED = false;
+    public static boolean initialized = false, CRASHED = false, IGNORE_SHA1 = false;
     public static Logger logger = LogManager.getLogger(String.format("EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
     public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
     public static boolean isRunning = true;
