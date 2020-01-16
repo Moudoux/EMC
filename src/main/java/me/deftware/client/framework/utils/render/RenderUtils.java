@@ -153,7 +153,7 @@ public class RenderUtils {
         GL11.glBlendFunc(770, 771);
         GL11.glLineWidth(2.0f);
         worldRenderer.begin(1, VertexFormats.POSITION_COLOR);
-        GL11.glScaled(16, 0.0f, 16);
+        GL11.glScaled(0.5f, 0.0f, 0.5f);
 
         for (IChunkPos position : positions) {
             x = position.getX();
