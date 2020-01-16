@@ -89,7 +89,7 @@ public class IChunkPos {
     }
 
     public String toCords() {
-        return pos.x + "-" + pos.z;
+        return pos.x + ", " + pos.z;
     }
 
     public boolean compareTo(IChunkPos pos2) {

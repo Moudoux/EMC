@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers.entity;
 
+import me.deftware.client.framework.wrappers.world.IChunkPos;
 import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
 import me.deftware.mixin.imp.IMixinNetworkPlayerInfo;
 import net.minecraft.client.MinecraftClient;
@@ -213,6 +214,10 @@ public class IEntity {
 
     public double getEyeHeight() {
         return entity.getEyeHeight(EntityPose.STANDING);
+    }
+
+    public boolean isWithinChunk(IChunkPos chunkPos) {
+        return getPosX() >= chunkPos.getStartX() && getPosX() <= chunkPos.getEndX() && getPosZ() >= chunkPos.getStartZ() && getPosZ() <= chunkPos.getEndZ();
     }
 
     public boolean isHostile() {

@@ -2,10 +2,12 @@ package me.deftware.client.framework.utils.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.client.framework.wrappers.entity.*;
 import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
+import me.deftware.client.framework.wrappers.world.IChunkPos;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
 import me.deftware.mixin.imp.IMixinRenderManager;
 import net.minecraft.client.MinecraftClient;
@@ -23,6 +25,7 @@ import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -121,6 +124,62 @@ public class RenderUtils {
 
     public static void drawSelectionBoundingBox(IAxisAlignedBB BoundingBox) {
         RenderUtils.drawSelectionBoundingBox(BoundingBox.getAABB());
+    }
+
+    static Vec3d camPos() {
+        return MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
+    }
+
+    public static void renderBoxes(IBlockPos IBlockPos, List<IChunkPos> positions) {
+        final Tessellator tessellator = Tessellator.getInstance();
+        final BufferBuilder worldRenderer = tessellator.getBuffer();
+
+        double x;
+        double z;
+        final float redColourR = 1.0f;
+        final float redColourG = 0.0f;
+        final float redColourB = 0.0f;
+        final float redColourA = 0.5f;
+
+        GL11.glPushMatrix();
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthMask(false);
+
+        GL11.glTranslated(-camPos().getX(), -camPos().getY(), -camPos().getZ());
+        GL11.glDisable(3553);
+        GL11.glEnable(3042);
+        GL11.glBlendFunc(770, 771);
+        GL11.glLineWidth(2.0f);
+        worldRenderer.begin(1, VertexFormats.POSITION_COLOR);
+        GL11.glScaled(16, 0.0f, 16);
+
+        for (IChunkPos position : positions) {
+            x = position.getX();
+            z = position.getZ();
+
+            // Renders Up and Down Lines
+            worldRenderer.vertex(x, 0.0, z).color(redColourR, redColourG, redColourB, redColourA).next();
+            worldRenderer.vertex(x + 16.0, 0.0, z).color(redColourR, redColourG, redColourB, redColourA).next();
+            worldRenderer.vertex(x, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
+            worldRenderer.vertex(x + 16.0, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
+
+            // Renders Side Lines
+            worldRenderer.vertex(x, 0.0, z).color(redColourR, redColourG, redColourB, redColourA).next();
+            worldRenderer.vertex(x + 16.0, 0.0, z).color(redColourR, redColourG, redColourB, redColourA).next();
+            worldRenderer.vertex(x, 0.0, z).color(redColourR, redColourG, redColourB, redColourA).next();
+            worldRenderer.vertex(x, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
+            worldRenderer.vertex(x + 16.0, 0.0, z).color(redColourR, redColourG, redColourB, redColourA).next();
+            worldRenderer.vertex(x + 16.0, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
+            worldRenderer.vertex(x, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
+            worldRenderer.vertex(x + 16.0, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
+        }
+
+        tessellator.draw();
+        GL11.glPopMatrix();
+        GL11.glEnable(3553);
+        GL11.glDisable(3042);
     }
 
     public static void drawSelectionBoundingBox(Box BoundingBox) {

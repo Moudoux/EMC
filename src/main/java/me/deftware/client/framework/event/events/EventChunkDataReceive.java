@@ -3,6 +3,7 @@ package me.deftware.client.framework.event.events;
 import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.wrappers.world.IChunk;
 import me.deftware.client.framework.wrappers.world.IChunkPos;
+import me.deftware.client.framework.wrappers.world.IWorld;
 import net.minecraft.client.network.packet.ChunkDataS2CPacket;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.ChunkPos;
@@ -13,6 +14,8 @@ public class EventChunkDataReceive extends Event {
 
     private ChunkPos rawPos;
     private IChunkPos pos;
+
+    private IWorld theWorld;
 
     private BlockBox bbox;
     public boolean isInitialFullChunk, updatedIsFullChunk;
