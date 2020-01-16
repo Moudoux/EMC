@@ -130,7 +130,7 @@ public class RenderUtils {
         return MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
     }
 
-    public static void renderBoxes(IBlockPos IBlockPos, List<IChunkPos> positions) {
+    public static void renderBoxes(List<IChunkPos> positions) {
         final Tessellator tessellator = Tessellator.getInstance();
         final BufferBuilder worldRenderer = tessellator.getBuffer();
 
@@ -142,20 +142,20 @@ public class RenderUtils {
         final float redColourA = 0.5f;
 
         GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glBlendFunc(770, 771);
+        GL11.glEnable(3042);
+        GL11.glLineWidth(2.0f);
+
+        GL11.glDisable(3553);
+        GL11.glDisable(2929);
         GL11.glDepthMask(false);
 
         GL11.glTranslated(-camPos().getX(), -camPos().getY(), -camPos().getZ());
-        GL11.glDisable(3553);
-        GL11.glEnable(3042);
-        GL11.glBlendFunc(770, 771);
-        GL11.glLineWidth(2.0f);
-        worldRenderer.begin(1, VertexFormats.POSITION_COLOR);
-        GL11.glScaled(0.5f, 0.0f, 0.5f);
+        GL11.glScaled(1f, 1f, 1f);
 
         for (IChunkPos position : positions) {
+            worldRenderer.begin(1, VertexFormats.POSITION_COLOR);
+
             x = position.getX();
             z = position.getZ();
 
@@ -174,12 +174,15 @@ public class RenderUtils {
             worldRenderer.vertex(x + 16.0, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
             worldRenderer.vertex(x, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
             worldRenderer.vertex(x + 16.0, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
+
+            tessellator.draw();
         }
 
-        tessellator.draw();
-        GL11.glPopMatrix();
+        GL11.glDepthMask(true);
+        GL11.glEnable(2929);
         GL11.glEnable(3553);
         GL11.glDisable(3042);
+        GL11.glPopMatrix();
     }
 
     public static void drawSelectionBoundingBox(Box BoundingBox) {
