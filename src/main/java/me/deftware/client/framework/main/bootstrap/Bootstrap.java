@@ -123,7 +123,7 @@ public class Bootstrap {
         CommandRegister.registerCommand(new CommandScale());
     }
 
-    public static void loadMod(AbstractModDiscovery.AbstractModEntry entry) throws Exception {
+    public static synchronized void loadMod(AbstractModDiscovery.AbstractModEntry entry) throws Exception {
         EMCMod mod = entry.toInstance();
         if (mod == null) {
             return;
@@ -135,6 +135,10 @@ public class Bootstrap {
             return;
         } else if (!entry.getJson().has("scheme") || entry.getJson().get("scheme").getAsInt() < FrameworkConstants.SCHEME) {
             Bootstrap.logger.warn("Will not load unsupported mod {}, unsupported scheme", entry.getFile().getName());
+            return;
+        }
+        // Ensure only one instance is loaded
+        if (Bootstrap.mods.containsKey(entry.getJson().get("name").getAsString())) {
             return;
         }
         Bootstrap.logger.debug("Loading {} v{} by {}", entry.getJson().get("name").getAsString(), entry.getJson().get("version").getAsString(), entry.getJson().get("author").getAsString());
