@@ -1,5 +1,6 @@
 package me.deftware.client.framework.utils;
 
+import com.google.common.collect.EvictingQueue;
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.mixin.imp.IMixinGuiNewChat;
 import net.minecraft.client.MinecraftClient;
@@ -9,13 +10,18 @@ import net.minecraft.text.Style;
 import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
+import java.util.Queue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 
 public class ChatProcessor {
 
     private static final Pattern URL_PATTERN = Pattern
             .compile("^(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
-    private static ArrayList<String> history = new ArrayList<>();
+    private static Queue<String> history = EvictingQueue.create(256);
+
+    private static final Lock historyLock = new ReentrantLock();
 
     public static String convertColorCodes(String message) {
 
@@ -81,11 +87,19 @@ public class ChatProcessor {
     }
 
     public static void sendMessages() {
-        if (!history.isEmpty()) {
-            for (String message : history) {
-                printChatMessage(message, true);
+        historyLock.lock();
+        ArrayList<String> listCopy;
+
+        try {
+            if (!history.isEmpty()) {
+                listCopy = new ArrayList<>(history);
+                for (String message : listCopy) {
+                    printChatMessage(message, true);
+                }
+                history.clear();
             }
-            history.clear();
+        } finally {
+            historyLock.unlock();
         }
     }
 
