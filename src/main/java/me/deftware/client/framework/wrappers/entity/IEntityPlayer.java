@@ -1,6 +1,7 @@
 package me.deftware.client.framework.wrappers.entity;
 
 import me.deftware.client.framework.wrappers.item.IItemStack;
+import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.math.IVec3d;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.client.framework.wrappers.world.IEnumFacing;
@@ -747,6 +748,10 @@ public class IEntityPlayer {
 
 	public static boolean isInAir() {
 		return MinecraftClient.getInstance().player.isInFluid(new FluidTags.CachingTag(new Identifier("air")));
+	}
+
+	public static IAxisAlignedBB getBoundingBox() {
+		return new IAxisAlignedBB(MinecraftClient.getInstance().player.getBoundingBox());
 	}
 
 	public static boolean isTouchingLiquid() {

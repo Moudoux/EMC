@@ -2,10 +2,10 @@ package me.deftware.client.framework.utils.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.client.framework.wrappers.entity.*;
 import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
+import me.deftware.client.framework.wrappers.math.IVec3d;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.client.framework.wrappers.world.IChunkPos;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
@@ -130,52 +130,42 @@ public class RenderUtils {
         return MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
     }
 
-    public static void renderBoxes(List<IChunkPos> positions) {
+    public static void renderChunks(List<IChunkPos> positions, Color color) {
         final Tessellator tessellator = Tessellator.getInstance();
         final BufferBuilder worldRenderer = tessellator.getBuffer();
 
-        double x;
-        double z;
-        final float redColourR = 1.0f;
-        final float redColourG = 0.0f;
-        final float redColourB = 0.0f;
-        final float redColourA = 0.5f;
+        final float red = color.getRed();
+        final float green = color.getGreen();
+        final float blue = color.getBlue();
+        final float alpha = color.getAlpha();
+
+        double renderY = Math.floor(IEntityPlayer.getBoundingBox().getAABB().y1) + 0.05 - camPos().getY();
 
         GL11.glPushMatrix();
-        GL11.glBlendFunc(770, 771);
+        RenderUtils.fixDarkLight();
         GL11.glEnable(3042);
-        GL11.glLineWidth(2.0f);
-
+        GL11.glEnable(2848);
+        GL11.glEnable(3553);
+        GL11.glBlendFunc(770, 771);
         GL11.glDisable(3553);
         GL11.glDisable(2929);
         GL11.glDepthMask(false);
+        GL11.glLineWidth(2.0f);
+        GL11.glColor4f(red, green, blue, alpha);
 
         GL11.glTranslated(-camPos().getX(), -camPos().getY(), -camPos().getZ());
-        GL11.glScaled(1f, 1f, 1f);
 
-        for (IChunkPos position : positions) {
-            worldRenderer.begin(1, VertexFormats.POSITION_COLOR);
+        for (IChunkPos chunkPos : positions) {
+            if (chunkPos != null) {
+                IVec3d chunkVector = chunkPos.getBlockPos().getVector();
 
-            x = position.getX();
-            z = position.getZ();
-
-            // Renders Up and Down Lines
-            worldRenderer.vertex(x, 0.0, z).color(redColourR, redColourG, redColourB, redColourA).next();
-            worldRenderer.vertex(x + 16.0, 0.0, z).color(redColourR, redColourG, redColourB, redColourA).next();
-            worldRenderer.vertex(x, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
-            worldRenderer.vertex(x + 16.0, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
-
-            // Renders Side Lines
-            worldRenderer.vertex(x, 0.0, z).color(redColourR, redColourG, redColourB, redColourA).next();
-            worldRenderer.vertex(x + 16.0, 0.0, z).color(redColourR, redColourG, redColourB, redColourA).next();
-            worldRenderer.vertex(x, 0.0, z).color(redColourR, redColourG, redColourB, redColourA).next();
-            worldRenderer.vertex(x, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
-            worldRenderer.vertex(x + 16.0, 0.0, z).color(redColourR, redColourG, redColourB, redColourA).next();
-            worldRenderer.vertex(x + 16.0, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
-            worldRenderer.vertex(x, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
-            worldRenderer.vertex(x + 16.0, 0.0, z + 16.0).color(redColourR, redColourG, redColourB, redColourA).next();
-
-            tessellator.draw();
+                worldRenderer.begin(2, VertexFormats.POSITION);
+                worldRenderer.vertex(chunkVector.getFluentX(), renderY, chunkVector.getFluentZ()).next();
+                worldRenderer.vertex(chunkVector.getFluentX() + 16, renderY, chunkVector.getFluentZ()).next();
+                worldRenderer.vertex(chunkVector.getFluentX() + 16, renderY, chunkVector.getFluentZ() + 16).next();
+                worldRenderer.vertex(chunkVector.getFluentX(), renderY, chunkVector.getFluentZ() + 16).next();
+                tessellator.draw();
+            }
         }
 
         GL11.glDepthMask(true);

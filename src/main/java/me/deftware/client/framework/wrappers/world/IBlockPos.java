@@ -82,10 +82,10 @@ public class IBlockPos {
             pos = new BlockPos(x, y, z);
             vectorPos = new IVec3d(x, y, z);
         } else {
-            vectorPos = new IVec3d(x, y, z);
             x = pos.getX();
             y = pos.getY();
             z = pos.getZ();
+            vectorPos = new IVec3d(x, y, z);
         }
     }
 
