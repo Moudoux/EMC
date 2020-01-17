@@ -7,6 +7,7 @@ import me.deftware.client.framework.wrappers.entity.*;
 import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.math.IVec3d;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
+import me.deftware.client.framework.wrappers.world.ICamera;
 import me.deftware.client.framework.wrappers.world.IChunkPos;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
 import me.deftware.mixin.imp.IMixinRenderManager;
@@ -126,10 +127,6 @@ public class RenderUtils {
         RenderUtils.drawSelectionBoundingBox(BoundingBox.getAABB());
     }
 
-    static Vec3d camPos() {
-        return MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
-    }
-
     public static void renderChunks(List<IChunkPos> positions, Color color) {
         final Tessellator tessellator = Tessellator.getInstance();
         final BufferBuilder worldRenderer = tessellator.getBuffer();
@@ -139,7 +136,7 @@ public class RenderUtils {
         final float blue = color.getBlue();
         final float alpha = color.getAlpha();
 
-        double renderY = Math.floor(IEntityPlayer.getBoundingBox().getAABB().y1) + 0.05 - camPos().getY();
+        double renderY = Math.floor(IEntityPlayer.getBoundingBox().getAABB().y1) + 0.05 - ICamera.getPosY();
 
         GL11.glPushMatrix();
         RenderUtils.fixDarkLight();
@@ -153,7 +150,7 @@ public class RenderUtils {
         GL11.glLineWidth(2.0f);
         GL11.glColor4f(red, green, blue, alpha);
 
-        GL11.glTranslated(-camPos().getX(), -camPos().getY(), -camPos().getZ());
+        GL11.glTranslated(-ICamera.getPosX(), -ICamera.getPosY(), -ICamera.getPosZ());
 
         for (IChunkPos chunkPos : positions) {
             if (chunkPos != null) {
