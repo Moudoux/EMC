@@ -142,7 +142,6 @@ public class RenderUtils {
         RenderUtils.fixDarkLight();
         GL11.glEnable(3042);
         GL11.glEnable(2848);
-        GL11.glEnable(3553);
         GL11.glBlendFunc(770, 771);
         GL11.glDisable(3553);
         GL11.glDisable(2929);
@@ -168,6 +167,7 @@ public class RenderUtils {
         GL11.glDepthMask(true);
         GL11.glEnable(2929);
         GL11.glEnable(3553);
+        GL11.glDisable(2848);
         GL11.glDisable(3042);
         GL11.glPopMatrix();
     }
