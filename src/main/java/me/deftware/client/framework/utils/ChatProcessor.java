@@ -56,31 +56,33 @@ public class ChatProcessor {
 
     public static LiteralText getLiteralText(String chatMessage) {
         LiteralText LiteralText = new LiteralText("");
-        String[] messageParts = chatMessage.split(" ");
-        int pathIndex = 0;
+        if (chatMessage != null) {
+            String[] messageParts = chatMessage.split(" ");
+            int pathIndex = 0;
 
-        for (String messagePart : messageParts) {
-            LiteralText append = new LiteralText(messagePart);
-            Style chatStyle = new Style();
+            for (String messagePart : messageParts) {
+                LiteralText append = new LiteralText(messagePart);
+                Style chatStyle = new Style();
 
-            if (ChatProcessor.URL_PATTERN.matcher(ChatColor.stripColor(messagePart)).matches()) {
-                chatStyle.setUnderline(true);
-                chatStyle.setClickEvent(new ClickEvent(
-                        ClickEvent.Action.OPEN_URL, ChatColor.stripColor(messagePart)));
+                if (ChatProcessor.URL_PATTERN.matcher(ChatColor.stripColor(messagePart)).matches()) {
+                    chatStyle.setUnderline(true);
+                    chatStyle.setClickEvent(new ClickEvent(
+                            ClickEvent.Action.OPEN_URL, ChatColor.stripColor(messagePart)));
+                }
+
+                String currentPath = chatMessage.substring(0, chatMessage.indexOf(messagePart, pathIndex));
+                String lastColor = ChatColor.getLastColors(currentPath);
+
+                if (lastColor.length() >= 2) {
+                    char formattingChar = lastColor.charAt(1);
+                    ChatProcessor.formatChatStyle(chatStyle, formattingChar);
+                }
+
+                append.setStyle(chatStyle);
+                LiteralText.append(append);
+                LiteralText.append(" ");
+                pathIndex += messagePart.length() - 1;
             }
-
-            String currentPath = chatMessage.substring(0, chatMessage.indexOf(messagePart, pathIndex));
-            String lastColor = ChatColor.getLastColors(currentPath);
-
-            if (lastColor.length() >= 2) {
-                char formattingChar = lastColor.charAt(1);
-                ChatProcessor.formatChatStyle(chatStyle, formattingChar);
-            }
-
-            append.setStyle(chatStyle);
-            LiteralText.append(append);
-            LiteralText.append(" ");
-            pathIndex += messagePart.length() - 1;
         }
 
         return LiteralText;
