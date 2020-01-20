@@ -18,4 +18,8 @@ public class IAxisAlignedBB {
         return bb;
     }
 
+    public IAxisAlignedBB offSet(double x, double y, double z) {
+        return new IAxisAlignedBB(bb.offset(x, y, z));
+    }
+
 }
