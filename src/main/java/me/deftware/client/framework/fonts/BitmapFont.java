@@ -1,6 +1,7 @@
 package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
+import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.render.GraphicsUtil;
 import me.deftware.client.framework.utils.render.NonScaledRenderer;
@@ -136,8 +137,33 @@ public class BitmapFont implements EMCFont {
 
     @Override
     public int drawString(int x, int y, String text) {
-        drawString(x, y, text, null);
+        return drawString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+    }
+
+    @Deprecated
+    @Override
+    public int drawStringWithShadow(int x, int y, String text) {
+        return drawString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+    }
+
+    @Override
+    public int drawString(int x, int y, String text, boolean shadow) {
+        return drawString(x, y, text, Color.white, shadow);
+    }
+
+    @Override
+    public int drawString(int x, int y, String text, Color color, boolean shadow) {
+        if (shadow) {
+            drawString(x + shadowSize, y + shadowSize, text, Color.black);
+        }
+        drawString(x, y, text, color);
         return 0;
+    }
+
+    @Deprecated
+    @Override
+    public int drawStringWithShadow(int x, int y, String text, Color color) {
+        return drawString(x, y, text, color, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
     }
 
     @Override
@@ -184,40 +210,39 @@ public class BitmapFont implements EMCFont {
     }
 
     @Override
-    public int drawStringWithShadow(int x, int y, String text) {
-        drawStringWithShadow(x, y, text, Color.white);
-        return 0;
-    }
-
-    @Override
-    public int drawStringWithShadow(int x, int y, String text, Color color) {
-        drawString(x + shadowSize, y + shadowSize, text, Color.black);
-        drawString(x, y, text, color);
-        return 0;
-    }
-
-    @Override
     public int drawCenteredString(int x, int y, String text) {
-        drawCenteredString(x, y, text, Color.white);
+        return drawCenteredString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+    }
+
+    @Deprecated
+    @Override
+    public int drawCenteredStringWithShadow(int x, int y, String text) {
+        return drawCenteredString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+    }
+
+    @Override
+    public int drawCenteredString(int x, int y, String text, boolean shadow) {
+        return drawCenteredString(x, y, text, Color.white, shadow);
+    }
+
+    @Override
+    public int drawCenteredString(int x, int y, String text, Color color, boolean shadow) {
+        if (shadow) {
+            drawCenteredString(x + shadowSize, y + shadowSize, text, Color.black);
+        }
+        drawCenteredString(x, y, text, color);
         return 0;
+    }
+
+    @Deprecated
+    @Override
+    public int drawCenteredStringWithShadow(int x, int y, String text, Color color) {
+        return drawCenteredString(x, y, text, color, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
     }
 
     @Override
     public int drawCenteredString(int x, int y, String text, Color color) {
         drawString(x - (getStringWidthNonScaled(ChatColor.stripColor(text)) / 2), y - (getStringHeightNonScaled(ChatColor.stripColor(text)) / 2), text, color);
-        return 0;
-    }
-
-    @Override
-    public int drawCenteredStringWithShadow(int x, int y, String text) {
-        drawCenteredStringWithShadow(x, y, text, Color.white);
-        return 0;
-    }
-
-    @Override
-    public int drawCenteredStringWithShadow(int x, int y, String text, Color color) {
-        drawCenteredString(x + shadowSize, y + shadowSize, text, Color.black);
-        drawCenteredString(x, y, text, color);
         return 0;
     }
 

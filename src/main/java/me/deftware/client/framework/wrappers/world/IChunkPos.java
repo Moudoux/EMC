@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers.world;
 
+import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.math.IVec3d;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -10,6 +11,8 @@ import java.util.List;
 public class IChunkPos {
 
     private double x, z;
+    private IBlockPos centerPos;
+    private IAxisAlignedBB boundingBox;
     private ChunkPos pos;
 
     public IChunkPos(ChunkPos pos) {
@@ -25,17 +28,25 @@ public class IChunkPos {
     public IChunkPos(double x, double z) {
         this.x = x;
         this.z = z;
-        pos = new ChunkPos(new BlockPos(x, 0, z));
+        updateCords(true);
     }
 
     public IChunkPos(IVec3d vec) {
         this.x = vec.vector.x;
         this.z = vec.vector.z;
-        pos = new ChunkPos(new BlockPos(x, vec.vector.y, z));
+        updateCords(true);
     }
 
     public ChunkPos getPos() {
         return pos;
+    }
+
+    public IBlockPos getBlockPos() {
+        return centerPos;
+    }
+
+    public IAxisAlignedBB getBoundingBox() {
+        return boundingBox;
     }
 
     public double getX() {
@@ -74,15 +85,19 @@ public class IChunkPos {
 
     private void updateCords(boolean blockPos) {
         if (blockPos) {
-            pos = new ChunkPos(new BlockPos(x, 0, z));
-            return;
+            centerPos = new IBlockPos(x, 0, z);
+            pos = new ChunkPos(centerPos.getPos());
+            boundingBox = new IAxisAlignedBB(getStartX(), 0, getStartZ(), getEndX(), 255, getEndZ());
+        } else {
+            centerPos = new IBlockPos(pos.getCenterBlockPos());
+            boundingBox = new IAxisAlignedBB(getStartX(), 0, getStartZ(), getEndX(), 255, getEndZ());
+            x = pos.x;
+            z = pos.z;
         }
-        x = pos.x;
-        z = pos.z;
     }
 
     public String toCords() {
-        return pos.x + "-" + pos.z;
+        return pos.x + ", " + pos.z;
     }
 
     public boolean compareTo(IChunkPos pos2) {

@@ -11,9 +11,11 @@ public class IBlockPos {
 
     private double x, y, z;
     private BlockPos pos;
+    private IVec3d vectorPos;
 
     public IBlockPos(BlockPos pos) {
         this.pos = pos;
+
         updateCords(false);
     }
 
@@ -22,6 +24,7 @@ public class IBlockPos {
         this.y = y;
         this.z = z;
         pos = new BlockPos(x, y, z);
+        vectorPos = new IVec3d(x, y, z);
     }
 
     public IBlockPos(IVec3d vec) {
@@ -29,6 +32,7 @@ public class IBlockPos {
         this.y = vec.vector.y;
         this.z = vec.vector.z;
         pos = new BlockPos(x, y, z);
+        vectorPos = vec;
     }
 
     public static Iterable<IBlockPos> getAllInBox(IBlockPos pos1, IBlockPos pos2) {
@@ -40,6 +44,10 @@ public class IBlockPos {
 
     public BlockPos getPos() {
         return pos;
+    }
+
+    public IVec3d getVector() {
+        return vectorPos;
     }
 
     public double getX() {
@@ -72,11 +80,13 @@ public class IBlockPos {
     private void updateCords(boolean blockPos) {
         if (blockPos) {
             pos = new BlockPos(x, y, z);
-            return;
+            vectorPos = new IVec3d(x, y, z);
+        } else {
+            x = pos.getX();
+            y = pos.getY();
+            z = pos.getZ();
+            vectorPos = new IVec3d(x, y, z);
         }
-        x = pos.getX();
-        y = pos.getY();
-        z = pos.getZ();
     }
 
     public IBlockPos down(int count) {
@@ -92,7 +102,7 @@ public class IBlockPos {
     }
 
     public String toCords() {
-        return pos.getX() + "-" + pos.getY() + "-" + pos.getZ();
+        return pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
     }
 
     public boolean compareTo(IBlockPos pos2) {

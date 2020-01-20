@@ -1,6 +1,7 @@
 package me.deftware.client.framework.wrappers.entity;
 
 import me.deftware.client.framework.wrappers.item.IItemStack;
+import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.math.IVec3d;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.client.framework.wrappers.world.IEnumFacing;
@@ -86,6 +87,13 @@ public class IEntityPlayer {
 			return new IEntity(MinecraftClient.getInstance().player.getVehicle());
 		}
 		return null;
+	}
+
+	public static IDirection getRidingEntityDirection() {
+		if (getRidingEntity() == null) {
+			return IDirection.NORTH;
+		}
+		return getRidingEntity().getDirection();
 	}
 
 	public static float getRidingEntityRotationYaw() {
@@ -457,11 +465,30 @@ public class IEntityPlayer {
 		return MinecraftClient.getInstance().player.getAttackCooldownProgress(0);
 	}
 
-	public static float getRotationYaw() {
+	public static IDirection getDirection() {
+		if (IEntityPlayer.isNull()) {
+			return IDirection.NORTH;
+		}
+		return IDirection.getFrom(getRotationYaw(true));
+	}
+
+	public static float getRotationYaw(boolean fullCircleCalc) {
 		if (IEntityPlayer.isNull()) {
 			return 0;
 		}
-		return MinecraftClient.getInstance().player.yaw;
+		float currentYaw = MinecraftClient.getInstance().player.yaw % 360;
+
+		if (fullCircleCalc) {
+			currentYaw = (currentYaw + 360) % 360;
+		} else if (currentYaw > 180) {
+			currentYaw -= 360;
+		}
+
+		return currentYaw;
+	}
+
+	public static float getRotationYaw() {
+		return getRotationYaw(false);
 	}
 
 	public static void setRotationYaw(float yaw) {
@@ -721,6 +748,10 @@ public class IEntityPlayer {
 
 	public static boolean isInAir() {
 		return MinecraftClient.getInstance().player.isInFluid(new FluidTags.CachingTag(new Identifier("air")));
+	}
+
+	public static IAxisAlignedBB getBoundingBox() {
+		return new IAxisAlignedBB(MinecraftClient.getInstance().player.getBoundingBox());
 	}
 
 	public static boolean isTouchingLiquid() {

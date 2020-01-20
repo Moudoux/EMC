@@ -69,6 +69,7 @@ public class Bootstrap {
             EMCSettings = new Settings();
             EMCSettings.initialize(null);
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", EMCSettings.getFloat("RENDER_SCALE", 1.0f));
+            SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_FONT_SHADOWS", EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
             modDiscoveries.forEach(discovery -> {
                 discovery.discover();
@@ -139,7 +140,6 @@ public class Bootstrap {
         }
         // Ensure only one instance is loaded
         if (Bootstrap.mods.containsKey(entry.getJson().get("name").getAsString())) {
-            Bootstrap.logger.debug("Found duplicate mod load attempt");
             return;
         }
         Bootstrap.logger.debug("Loading {} v{} by {}", entry.getJson().get("name").getAsString(), entry.getJson().get("version").getAsString(), entry.getJson().get("author").getAsString());
