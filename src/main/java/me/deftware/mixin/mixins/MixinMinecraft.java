@@ -224,7 +224,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
      * @author deftware
      */
     @Overwrite
-    public boolean method_24289() {
+    public boolean isModded() {
         return false;
     }
 

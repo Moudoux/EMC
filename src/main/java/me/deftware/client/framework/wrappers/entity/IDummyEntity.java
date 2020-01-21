@@ -16,7 +16,7 @@ public class IDummyEntity extends IEntity {
 
         public dummyEntity(IBlockPos pos) {
             super(net.minecraft.entity.EntityType.PLAYER, MinecraftClient.getInstance().player.getEntityWorld());
-            setPosition(pos.getX(), pos.getY(), pos.getZ());
+            setPos(pos.getX(), pos.getY(), pos.getZ());
         }
 
         @Override

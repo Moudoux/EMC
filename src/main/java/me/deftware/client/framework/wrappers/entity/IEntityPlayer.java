@@ -169,7 +169,7 @@ public class IEntityPlayer {
 	}
 
 	public static boolean isRidingEntityInWater() {
-		return MinecraftClient.getInstance().player.getVehicle().isInsideWater();
+		return MinecraftClient.getInstance().player.getVehicle().isTouchingWater();
 	}
 
 	public static double getRidingEntityMotionX() {
@@ -249,7 +249,7 @@ public class IEntityPlayer {
 		if (IEntityPlayer.isNull()) {
 			return;
 		}
-		MinecraftClient.getInstance().player.setPosition(MinecraftClient.getInstance().player.getX(),
+		MinecraftClient.getInstance().player.setPos(MinecraftClient.getInstance().player.getX(),
 				MinecraftClient.getInstance().player.getY() + y, MinecraftClient.getInstance().player.getZ());
 	}
 
@@ -257,14 +257,14 @@ public class IEntityPlayer {
 		if (IEntityPlayer.isNull()) {
 			return;
 		}
-		MinecraftClient.getInstance().player.setPosition(x, y, z);
+		MinecraftClient.getInstance().player.setPos(x, y, z);
 	}
 
 	public static void setPositionAndRotation(double x, double y, double z, float yaw, float pitch) {
 		if (IEntityPlayer.isNull()) {
 			return;
 		}
-		MinecraftClient.getInstance().player.setPositionAndAngles(x, y, z, yaw, pitch);
+		MinecraftClient.getInstance().player.refreshPositionAndAngles(x, y, z, yaw, pitch);
 	}
 
 	public static void setJumpMovementFactor(float speed) {
@@ -651,7 +651,7 @@ public class IEntityPlayer {
 		if (IEntityPlayer.isNull()) {
 			return false;
 		}
-		return MinecraftClient.getInstance().player.isInsideWater() || MinecraftClient.getInstance().player.isInLava();
+		return MinecraftClient.getInstance().player.isTouchingWater() || MinecraftClient.getInstance().player.isInLava();
 	}
 
 	public static boolean isFlying() {

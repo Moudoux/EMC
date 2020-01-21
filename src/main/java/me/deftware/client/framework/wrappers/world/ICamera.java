@@ -14,7 +14,7 @@ public class ICamera {
     }
 
     public static void setPosX(double pos) {
-        ICamera.getRenderViewEntity().setPosition(pos, ICamera.getRenderViewEntity().getY(), ICamera.getRenderViewEntity().getZ());
+        ICamera.getRenderViewEntity().setPos(pos, ICamera.getRenderViewEntity().getY(), ICamera.getRenderViewEntity().getZ());
     }
 
     public static double getPosY() {
@@ -22,7 +22,7 @@ public class ICamera {
     }
 
     public static void setPosY(double pos) {
-        ICamera.getRenderViewEntity().setPosition(ICamera.getRenderViewEntity().getX(), pos, ICamera.getRenderViewEntity().getZ());
+        ICamera.getRenderViewEntity().setPos(ICamera.getRenderViewEntity().getX(), pos, ICamera.getRenderViewEntity().getZ());
     }
 
     public static double getPosZ() {
@@ -30,7 +30,7 @@ public class ICamera {
     }
 
     public static void setPosZ(double pos) {
-        ICamera.getRenderViewEntity().setPosition(ICamera.getRenderViewEntity().getX(), ICamera.getRenderViewEntity().getY(), pos);
+        ICamera.getRenderViewEntity().setPos(ICamera.getRenderViewEntity().getX(), ICamera.getRenderViewEntity().getY(), pos);
     }
 
     public static double getPrevPosX() {
