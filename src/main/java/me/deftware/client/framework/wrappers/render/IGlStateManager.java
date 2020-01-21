@@ -35,6 +35,10 @@ public class IGlStateManager {
         RenderSystem.color4f(colorRed, colorGreen, colorBlue, 1.0F);
     }
 
+    public static void color(float colorRed, float colorGreen, float colorBlue, float colorAlpha) {
+        RenderSystem.color4f(colorRed, colorGreen, colorBlue, colorAlpha);
+    }
+
     public static void resetColor() {
         RenderSystem.clearCurrentColor();
     }
@@ -69,6 +73,14 @@ public class IGlStateManager {
 
     public static void tryBlendFuncSeparate(int srcFactor, int dstFactor, int srcFactorAlpha, int dstFactorAlpha) {
         RenderSystem.blendFuncSeparate(srcFactor, dstFactor, srcFactorAlpha, dstFactorAlpha);
+    }
+
+    public static void blendFunc(int srcFactor, int dstFactor) {
+        RenderSystem.blendFunc(srcFactor, dstFactor);
+    }
+
+    public static void depthFunc(int func) {
+        RenderSystem.depthFunc(func);
     }
 
     public static void enableTexture2D() {
@@ -109,6 +121,9 @@ public class IGlStateManager {
 
     public static void enablePolygonOffset() {
         RenderSystem.enablePolygonOffset();
+    }
+    public static void lineWidth(float f) {
+         RenderSystem.lineWidth(f);
     }
 
 }

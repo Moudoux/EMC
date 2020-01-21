@@ -22,6 +22,8 @@
     "MixinBlockFluidRenderer",
     "MixinBlockModelRenderer",
     "MixinEntityRenderer",
+    "MixinGameRenderer",
+    "MixinTextRenderer",
     "MixinPlayerControllerMP",
     "MixinAbstractClientPlayer",
     "MixinRenderLivingBase",

@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers.entity;
 
+import me.deftware.client.framework.wrappers.world.IChunkPos;
 import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
 import me.deftware.mixin.imp.IMixinNetworkPlayerInfo;
 import net.minecraft.client.MinecraftClient;
@@ -91,6 +92,30 @@ public class IEntity {
             return ((LivingEntity) entity).getHealth();
         }
         return 0;
+    }
+
+    public float getRotationYaw(boolean fullCircleCalc) {
+        float currentYaw = entity.yaw % 360;
+
+        if (fullCircleCalc) {
+            currentYaw = (currentYaw + 360) % 360;
+        } else if (currentYaw > 180) {
+            currentYaw -= 360;
+        }
+
+        return currentYaw;
+    }
+
+    public float getRotationYaw() {
+        return getRotationYaw(false);
+    }
+
+    public float getRotationPitch() {
+        return entity.pitch;
+    }
+
+    public IDirection getDirection() {
+        return IDirection.getFrom(entity.yaw);
     }
 
     public float getMaxHealth() {
@@ -189,6 +214,10 @@ public class IEntity {
 
     public double getEyeHeight() {
         return entity.getEyeHeight(EntityPose.STANDING);
+    }
+
+    public boolean isWithinChunk(IChunkPos chunkPos) {
+        return getPosX() >= chunkPos.getStartX() && getPosX() <= chunkPos.getEndX() && getPosZ() >= chunkPos.getStartZ() && getPosZ() <= chunkPos.getEndZ();
     }
 
     public boolean isHostile() {
