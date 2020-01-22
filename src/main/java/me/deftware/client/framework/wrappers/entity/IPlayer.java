@@ -24,15 +24,6 @@ public class IPlayer {
         return player.getGameProfile().getName();
     }
 
-    public String getFormattedDisplayName() {
-        return player.getDisplayName().asFormattedString();
-    }
-
-    public float getNametagSize() {
-        return MinecraftClient.getInstance().player.distanceTo(player) / 2.5F <= 1.5F ? 2.0F
-                : MinecraftClient.getInstance().player.distanceTo(player) / 2.5F;
-    }
-
     public boolean isSelf() {
         if (player == MinecraftClient.getInstance().player
                 || player.getName().equals(MinecraftClient.getInstance().getSession().getUsername())) {
@@ -74,10 +65,6 @@ public class IPlayer {
 
     public boolean isCreative() {
         return player.isCreative();
-    }
-
-    public float getHeight() {
-        return player.getHeight();
     }
 
     public void setGlowing(boolean state) {

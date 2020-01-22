@@ -1,6 +1,7 @@
 package me.deftware.client.framework.wrappers.item;
 
 
+import me.deftware.client.framework.wrappers.entity.IEntity;
 import me.deftware.client.framework.wrappers.entity.IEntityPlayer;
 import me.deftware.client.framework.wrappers.entity.IPlayer;
 import net.minecraft.client.MinecraftClient;
@@ -11,19 +12,22 @@ import net.minecraft.item.Items;
 import net.minecraft.server.network.packet.CreativeInventoryActionC2SPacket;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class IInventoryWrapper {
 
-    public static ArrayList<IItemStack> getArmorInventory(IPlayer player) {
-        if (IEntityPlayer.isNull()) {
-            return new ArrayList<>();
-        }
+    public static ArrayList<IItemStack> getArmorInventory(IEntity entity) {
         ArrayList<IItemStack> array = new ArrayList<>();
-        for (int index = 3; index >= 0; index--) {
-            ItemStack item = player.getPlayer().inventory.armor.get(index);
-            IItemStack stack = new IItemStack(item);
-            array.add(stack);
+        if (entity != null) {
+            for (ItemStack item : entity.getEntity().getArmorItems()) {
+                if (item != null) {
+                    IItemStack stack = new IItemStack(item);
+                    array.add(stack);
+                }
+            }
         }
+
+        Collections.reverse(array);
         return array;
     }
 
@@ -52,12 +56,22 @@ public class IInventoryWrapper {
         return false;
     }
 
-    public static IItemStack getHeldItem(IPlayer player, boolean offhand) {
-        if (IEntityPlayer.isNull()) {
-            return null;
+    public static IItemStack getHeldItem(IEntity entity, boolean offhand) {
+        ItemStack finalItem = ItemStack.EMPTY;
+        int slotId = 0;
+        if (entity != null) {
+            for (ItemStack item : entity.getEntity().getItemsHand()) {
+                if ((slotId == 0 && !offhand) || (slotId == 1 && offhand)) {
+                    finalItem = item;
+                    break;
+                } else if (slotId <= 1) {
+                    slotId++;
+                } else {
+                    break;
+                }
+            }
         }
-        ItemStack item = offhand ? player.getPlayer().getOffHandStack() : player.getPlayer().getMainHandStack();
-        return new IItemStack(item);
+        return new IItemStack(finalItem);
     }
 
     public static IItemStack getHeldInventoryItem() {
@@ -65,7 +79,7 @@ public class IInventoryWrapper {
     }
 
     public static IItemStack getHeldItem(boolean offhand) {
-        return IInventoryWrapper.getHeldItem(new IPlayer(MinecraftClient.getInstance().player), offhand);
+        return IInventoryWrapper.getHeldItem(new IEntity(MinecraftClient.getInstance().player), offhand);
     }
 
     public static ArrayList<ISlot> getSlots() {

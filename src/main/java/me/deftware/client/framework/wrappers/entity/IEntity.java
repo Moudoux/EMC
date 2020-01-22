@@ -46,8 +46,16 @@ public class IEntity {
         return entity.distanceTo(MinecraftClient.getInstance().player);
     }
 
+    public float getDistanceToEntity() {
+        return MinecraftClient.getInstance().player.distanceTo(entity);
+    }
+
     public String getName() {
         return entity instanceof PlayerEntity ? ((PlayerEntity) entity).getGameProfile().getName() : null;
+    }
+
+    public String getFormattedDisplayName() {
+        return entity.getDisplayName().asFormattedString();
     }
 
     public boolean isDead() {
@@ -116,6 +124,27 @@ public class IEntity {
 
     public IDirection getDirection() {
         return IDirection.getFrom(entity.yaw);
+    }
+
+    public double getLastTickPosX() {
+        return entity.lastRenderX;
+    }
+
+    public double getLastTickPosY() {
+        return entity.lastRenderY;
+    }
+
+    public double getLastTickPosZ() {
+        return entity.lastRenderZ;
+    }
+
+    public float getNametagSize() {
+        return getDistanceToEntity() / 2.5F <= 1.5F ? 2.0F
+                : getDistanceToEntity() / 2.5F;
+    }
+
+    public float getHeight() {
+        return entity.getHeight();
     }
 
     public float getMaxHealth() {
