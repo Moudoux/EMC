@@ -128,18 +128,6 @@ public class IEntityPlayer {
 		return MinecraftClient.getInstance().player.getHungerManager().getFoodLevel();
 	}
 
-	public static double getLastTickPosX() {
-		return MinecraftClient.getInstance().player.lastRenderX;
-	}
-
-	public static double getLastTickPosY() {
-		return MinecraftClient.getInstance().player.lastRenderY;
-	}
-
-	public static double getLastTickPosZ() {
-		return MinecraftClient.getInstance().player.lastRenderZ;
-	}
-
 	public static IEntity clonePlayer() {
 		return new IEntity(new IEntityOtherPlayerMP());
 	}

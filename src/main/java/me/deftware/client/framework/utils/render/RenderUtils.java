@@ -146,7 +146,7 @@ public class RenderUtils {
         GL11.glDisable(3553);
         GL11.glDisable(2929);
         GL11.glDepthMask(false);
-        GL11.glLineWidth(2.0f);
+        GL11.glLineWidth(1.0f);
         GL11.glColor4f(red, green, blue, alpha);
 
         GL11.glTranslated(-ICamera.getPosX(), -ICamera.getPosY(), -ICamera.getPosZ());
