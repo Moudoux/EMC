@@ -44,7 +44,7 @@ public class Main extends EMCMod {
 
     @EventHandler(eventType = EventRender2D.class)
     public void onRender2D(EventRender2D event) {
-        customFont.drawStringWithShadow(2,2, "TestMod");
+        customFont.drawString(2,2, "TestMod", true);
     }
 
 }
