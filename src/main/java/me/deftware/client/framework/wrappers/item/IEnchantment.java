@@ -41,10 +41,17 @@ public class IEnchantment {
         return item != null;
     }
 
-    protected static Enchantment getByName(String id) {
+    public static Enchantment getByName(String id) {
         Identifier resourceLocation = new Identifier(id);
         if (Registry.ENCHANTMENT.containsId(resourceLocation)) {
             return Registry.ENCHANTMENT.get(resourceLocation);
+        } else {
+            for (Enchantment enchantment : Registry.ENCHANTMENT) {
+                IEnchantment enchantmentObj = new IEnchantment(enchantment);
+                if (enchantmentObj.getEnchantmentKey().equalsIgnoreCase(id)) {
+                    return enchantmentObj.getEnchantment();
+                }
+            }
         }
         return null;
     }
