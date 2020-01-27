@@ -1,6 +1,7 @@
 package me.deftware.client.framework.wrappers.item;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -21,7 +22,7 @@ public class IEnchantment {
     }
 
     public String getName() {
-        return item.getName(1).getString();
+        return new TranslatableText(item.getTranslationKey()).asString();
     }
 
     public String getTranslationKey() {

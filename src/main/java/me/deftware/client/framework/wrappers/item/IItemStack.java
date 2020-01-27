@@ -69,10 +69,7 @@ public class IItemStack {
 
     public void enchantAll(int level) {
         for (Enchantment enchantment : Registry.ENCHANTMENT) {
-            if (enchantment != Enchantments.SILK_TOUCH && enchantment != Enchantments.BINDING_CURSE
-                    && enchantment != Enchantments.VANISHING_CURSE) {
-                stack.addEnchantment(enchantment, level);
-            }
+            stack.addEnchantment(enchantment, level);
         }
     }
 
@@ -89,8 +86,8 @@ public class IItemStack {
 
     public void enchant(String name, int level) {
         for (Enchantment enchantment : Registry.ENCHANTMENT) {
-            if (enchantment != Enchantments.SILK_TOUCH && enchantment != Enchantments.BINDING_CURSE
-                    && enchantment != Enchantments.VANISHING_CURSE && enchantment.getTranslationKey().equals(name)) {
+            IEnchantment enchantmentData = new IEnchantment(enchantment);
+            if (enchantmentData.getEnchantmentKey().equals(name)) {
                 stack.addEnchantment(enchantment, level);
                 break;
             }

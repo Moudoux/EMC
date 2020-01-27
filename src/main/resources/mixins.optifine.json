@@ -2,7 +2,7 @@
   "required": true,
   "compatibilityLevel": "JAVA_8",
   "package": "me.deftware.mixin.mixins",
-  "refmap": "emc-refmap.json",
+  "refmap": "mixins.emc.refmap.json",
   "mixins": [
     "MixinOptiFineBlockModelRenderer"
   ]
