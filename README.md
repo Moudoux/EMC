@@ -61,8 +61,16 @@ Minecraft versions currently supported
 * [1.13.1](https://gitlab.com/EMC-Framework/EMC/tree/1.13.1)
 * [1.13](https://gitlab.com/EMC-Framework/EMC/tree/1.13)
 * [1.12.2](https://gitlab.com/EMC-Framework/EMC/tree/1.12.2)
+* [1.12.1](https://gitlab.com/EMC-Framework/EMC/tree/1.12.1)
+* [1.12](https://gitlab.com/EMC-Framework/EMC/tree/1.12)
+* [1.11.2](https://gitlab.com/EMC-Framework/EMC/tree/1.11.2)
+* [1.11](https://gitlab.com/EMC-Framework/EMC/tree/1.11)
+* [1.10.2](https://gitlab.com/EMC-Framework/EMC/tree/1.10.2)
+* [1.9.4](https://gitlab.com/EMC-Framework/EMC/tree/1.9.4)
+* [1.9](https://gitlab.com/EMC-Framework/EMC/tree/1.9)
+* [1.8.9](https://gitlab.com/EMC-Framework/EMC/tree/1.8.9)
 
-Loading EMC (1.15.2)
+Loading EMC
 -------------------
 
 Some versions of EMC are loaded differently and use a small library to load, these builds are appended with an F, such as `EMC-F` for the 1.14+ versions of EMC.
@@ -71,12 +79,19 @@ Minecraft uses Maven to download dependencies, EMC is loaded as a dependency. To
 
 ```
 {
-	"name": "me.deftware:EMC-F-v2:latest-1.15.2",
+	"name": "me.deftware:EMC:latest-<mcVersion>",
 	"url": "https://gitlab.com/EMC-Framework/maven/raw/master/"
 }
 ```
 
-Then change `mainClass` to `net.fabricmc.loader.launch.knot.KnotClient`. If you want to see an example on how to load EMC see [example_client.json](https://gitlab.com/EMC-Framework/EMC/blob/1.15.2/example_client.json)
+Then change `mainClass` to `net.fabricmc.loader.launch.knot.KnotClient` if on 1.14 or higher, or in the `arguments->game` array add `"--tweakClass", "me.deftware.launch.Launcher"` at the end.
+
+If you want to see an example on how to load EMC see the example json included in this repository.
+
+Stacking on top of Forge
+-------------------
+
+EMC can be stacked on top of Forge to run EMC mods in conjunction with Forge mods. To build EMC for Forge simply run the gradle build task with the `-Pforgebuild="true"` argument. 
 
 Making client mods with EMC 
 -------------------
