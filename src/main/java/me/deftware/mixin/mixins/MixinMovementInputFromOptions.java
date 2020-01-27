@@ -16,10 +16,7 @@ public class MixinMovementInputFromOptions {
     @Final
     public GameOptions settings;
 
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @ModifyVariable(method = "tick", at = @At("HEAD"))
     public boolean onTick(boolean bl) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Sneak);

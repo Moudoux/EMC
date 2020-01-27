@@ -26,10 +26,7 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
     @Shadow
     private int itemUseTimeLeft;
 
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "hasStatusEffect", at = @At(value = "TAIL"), cancellable = true)
     private void onHasStatusEffect(StatusEffect effect, CallbackInfoReturnable<Boolean> cir) {
@@ -42,10 +39,7 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
         cir.setReturnValue(event.isActive());
     }
 
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @Inject(method = "getJumpVelocity", at = @At(value = "TAIL"), cancellable = true)
     private void onGetJumpVelocity(CallbackInfoReturnable<Float> cir) {
         cir.setReturnValue((float) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "JUMP_HEIGHT", cir.getReturnValue()));

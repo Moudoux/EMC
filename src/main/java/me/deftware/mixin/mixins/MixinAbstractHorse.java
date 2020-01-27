@@ -9,10 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(HorseBaseEntity.class)
 public abstract class MixinAbstractHorse {
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @Inject(method = "isSaddled", at = @At(value = "TAIL"), cancellable = true)
     private void onIsSaddled(CallbackInfoReturnable<Boolean> cir) {
         EventSaddleCheck event = new EventSaddleCheck(cir.getReturnValue());

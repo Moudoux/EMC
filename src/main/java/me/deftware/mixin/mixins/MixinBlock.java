@@ -44,10 +44,6 @@ public abstract class MixinBlock {
         }
     }
 
-    /**
-     * @author Deftware
-     * @reason
-     */
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "getVelocityMultiplier", at = @At(value = "TAIL"), cancellable = true)
     private void onGetVelocityMultiplier(CallbackInfoReturnable<Float> cir) {

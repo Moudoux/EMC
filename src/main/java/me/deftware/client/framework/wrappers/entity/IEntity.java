@@ -279,7 +279,6 @@ public class IEntity {
         } else if (e.equals(EntityType.ENTITY_LIVING_BASE)) {
             return entity instanceof LivingEntity;
         } else if (e.equals(EntityType.ENTITY_LIVING)) {
-            // TODO: Was base and normal combined?
             return entity instanceof LivingEntity;
         } else if (e.equals(EntityType.ENTITY_ITEM)) {
             return entity instanceof ItemEntity;

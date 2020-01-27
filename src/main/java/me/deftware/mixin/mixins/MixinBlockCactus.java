@@ -15,10 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(CactusBlock.class)
 public class MixinBlockCactus {
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @Inject(method = "getCollisionShape", at = @At(value = "TAIL"), cancellable = true)
     private void onGetCollisionShape(BlockState state, BlockView view, BlockPos pos, EntityContext ePos, CallbackInfoReturnable<VoxelShape> cir) {
         if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "custom_cactus_voxel", false)) {

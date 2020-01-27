@@ -11,10 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerListEntry.class)
 public class MixinPlayerListEntry {
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @Inject(method = "getGameMode", at = @At(value = "TAIL"))
     private void onGetGameMode(CallbackInfoReturnable<GameMode> cir) {
         if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "FAKE_SPEC", false)) {

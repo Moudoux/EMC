@@ -120,10 +120,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         field_3922 = height;
     }
 
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @Inject(method = "sendMovementPackets", at = @At(value = "HEAD"), cancellable = true)
     private void onSendMovementPackets(CallbackInfo ci) {
         ClientPlayerEntity entity = (ClientPlayerEntity) (Object) this;

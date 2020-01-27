@@ -15,19 +15,13 @@ public class MixinPlayerControllerMP implements IMixinPlayerControllerMP {
     @Shadow
     private boolean breakingBlock;
 
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @Inject(method = "getReachDistance", at = @At(value = "RETURN"), cancellable = true)
     private void onGetReachDistance(CallbackInfoReturnable<Float> cir) {
         cir.setReturnValue((float) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "BLOCK_REACH_DISTANCE", cir.getReturnValue()));
     }
 
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @Inject(method = "hasExtendedReach", at = @At(value = "TAIL"), cancellable = true)
     private void onHasExtendedReach(CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue((boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "EXTENDED_REACH", cir.getReturnValue()));

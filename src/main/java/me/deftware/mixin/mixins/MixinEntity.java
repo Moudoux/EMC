@@ -2,6 +2,7 @@ package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventKnockback;
 import me.deftware.client.framework.event.events.EventSlowdown;
+import me.deftware.client.framework.event.events.EventSneakingCheck;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.mixin.imp.IMixinEntity;
 import net.minecraft.block.BlockState;
@@ -66,10 +67,7 @@ public abstract class MixinEntity implements IMixinEntity {
     @Shadow
     public Vec3d movementMultiplier;
 
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @Inject(method = "getPose", at = @At(value = "TAIL"), cancellable = true)
     private void onGetPose(CallbackInfoReturnable<EntityPose> cir) {
         if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "SWIMMING_MODE_OVERRIDE", false)) {
@@ -83,10 +81,7 @@ public abstract class MixinEntity implements IMixinEntity {
         return noClip || noClipCheck && self instanceof ClientPlayerEntity;
     }
 
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @Inject(method = "slowMovement", at = @At(value = "TAIL"), cancellable = true)
     private void onSlowMovement(BlockState state, Vec3d multiplier, CallbackInfo ci) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Web);
@@ -100,8 +95,7 @@ public abstract class MixinEntity implements IMixinEntity {
         }
     }
 
-    // TODO is this even still needed?
-    /*@Redirect(method = "move", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.isSneaking()Z", opcode = 180, ordinal = 0))
+    @Redirect(method = "move", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.isSneaking()Z", opcode = 180, ordinal = 0))
     private boolean sneakingCheck(Entity self) {
         EventSneakingCheck event = new EventSneakingCheck(isSneaking());
         event.broadcast();
@@ -109,7 +103,7 @@ public abstract class MixinEntity implements IMixinEntity {
             return true;
         }
         return getFlag(1);
-    }*/
+    }
 
     @Inject(method = "setVelocityClient", at = @At("HEAD"), cancellable = true)
     private void onSetVelocityClient(double double_1, double double_2, double double_3, CallbackInfo ci) {

@@ -16,10 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(SweetBerryBushBlock.class)
 public class MixinSweetBerryBushBlock {
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @Redirect(method = "onEntityCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;slowMovement(Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/Vec3d;)V"))
     private void onSlowMovement(Entity entity, BlockState state, Vec3d multiplier) {
         EventSlowdown eventSlowdown = new EventSlowdown(EventSlowdown.SlowdownType.BerryBush);

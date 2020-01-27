@@ -24,10 +24,7 @@ public class MixinNetHandlerPlayClient {
         }
     }
 
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @Inject(method = "onExplosion", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V"), cancellable = true)
     private void onExplosion(ExplosionS2CPacket packet, CallbackInfo ci) {
         EventKnockback event = new EventKnockback(packet.getPlayerVelocityX(), packet.getPlayerVelocityY(), packet.getPlayerVelocityZ());

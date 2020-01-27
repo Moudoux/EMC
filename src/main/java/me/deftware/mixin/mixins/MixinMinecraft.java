@@ -94,10 +94,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
         }
     }
 
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @Inject(method = "getVersionType", at = @At("HEAD"), cancellable = true)
     private void onGetVersionType(CallbackInfoReturnable<String> cir) {
         cir.setReturnValue("release");
@@ -159,10 +156,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
         staticRenderTaskQueue = renderTaskQueue;
     }
 
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @Inject(method = "printCrashReport", at = @At("HEAD"), cancellable = true)
     private static void onPrintCrashReport(CrashReport crashReport, CallbackInfo ci) {
         exception(null, crashReport, false);

@@ -49,7 +49,6 @@ public class IEntityPlayer {
 	}
 
 	public static boolean isAtEdge() {
-		// TODO: Is this right?
 		return MinecraftClient.getInstance().world.getCollisions(MinecraftClient.getInstance().player, MinecraftClient.getInstance().player.getBoundingBox().offset(0, -0.5, 0).expand(-0.001, 0, -0.001), Collections.emptySet()).count() == 0;
 	}
 
@@ -526,8 +525,11 @@ public class IEntityPlayer {
 	}
 
 	public static double getEyeHeight() {
-		// TODO: Can we get the current pose?
-		return MinecraftClient.getInstance().player.getEyeHeight(EntityPose.STANDING);
+		return MinecraftClient.getInstance().player.getEyeHeight(MinecraftClient.getInstance().player.getPose());
+	}
+
+	public static double getEyeHeight(EntityPose pose) {
+		return MinecraftClient.getInstance().player.getEyeHeight(pose);
 	}
 
 	public static int getItemInUseMaxCount() {

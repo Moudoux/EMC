@@ -63,10 +63,7 @@ public class MixinGuiScreen implements IMixinGuiScreen {
         }
     }
 
-    /**
-     * @author Deftware
-     * @reason
-     */
+
     @Inject(method = "getTooltipFromItem", at = @At(value = "TAIL"), cancellable = true)
     private void onGetTooltipFromItem(ItemStack stack, CallbackInfoReturnable<List<String>> cir) {
         EventGetItemToolTip event = new EventGetItemToolTip(cir.getReturnValue(), new IItem(stack.getItem()));
