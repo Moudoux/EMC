@@ -5,6 +5,7 @@
   "refmap": "emc-refmap.json",
   "mixins": [
     "MixinMinecraft",
+    "MixinClientBrandRetriever",
     "MixinBlock",
     "MixinGuiScreen",
     "MixinCPacketPlayer",

@@ -4,6 +4,7 @@ import me.deftware.client.framework.event.events.EventGuiScreenDisplay;
 import me.deftware.client.framework.event.events.EventShutdown;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.mixin.imp.IMixinMinecraft;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
@@ -84,6 +85,11 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     @Inject(method = "getVersionType", at = @At("HEAD"), cancellable = true)
     private void onGetVersionType(CallbackInfoReturnable<String> cir) {
         cir.setReturnValue("release");
+    }
+
+    @Inject(method = "getGameVersion", at = @At("TAIL"), cancellable = true)
+    private void onGetGameVersion(CallbackInfoReturnable<String> cir) {
+        cir.setReturnValue(SharedConstants.getGameVersion().getName());
     }
 
     @Inject(method = "stop", at = @At("HEAD"))
