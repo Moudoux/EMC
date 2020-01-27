@@ -3,16 +3,14 @@ package me.deftware.mixin.mixins;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.mixin.imp.IMixinPlayerControllerMP;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
-import net.minecraft.world.GameMode;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClientPlayerInteractionManager.class)
 public class MixinPlayerControllerMP implements IMixinPlayerControllerMP {
-
-    @Shadow
-    private GameMode gameMode;
 
     @Shadow
     private boolean breakingBlock;
@@ -21,18 +19,18 @@ public class MixinPlayerControllerMP implements IMixinPlayerControllerMP {
      * @author Deftware
      * @reason
      */
-    @Overwrite
-    public float getReachDistance() {
-        return (float) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "BLOCK_REACH_DISTANCE", gameMode.isCreative() ? 5.0F : 4.5F);
+    @Inject(method = "getReachDistance", at = @At(value = "RETURN"), cancellable = true)
+    private void onGetReachDistance(CallbackInfoReturnable<Float> cir) {
+        cir.setReturnValue((float) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "BLOCK_REACH_DISTANCE", cir.getReturnValue()));
     }
 
     /**
      * @author Deftware
      * @reason
      */
-    @Overwrite
-    public boolean hasExtendedReach() {
-        return (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "EXTENDED_REACH", gameMode.isCreative());
+    @Inject(method = "hasExtendedReach", at = @At(value = "TAIL"), cancellable = true)
+    private void onHasExtendedReach(CallbackInfoReturnable<Boolean> cir) {
+        cir.setReturnValue((boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "EXTENDED_REACH", cir.getReturnValue()));
     }
 
     @Override

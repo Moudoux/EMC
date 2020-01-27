@@ -3,14 +3,10 @@ package me.deftware.mixin.mixins;
 import me.deftware.client.framework.event.events.EventGuiScreenDisplay;
 import me.deftware.client.framework.event.events.EventShutdown;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.maps.SettingsMap;
-import me.deftware.client.framework.utils.INonNullList;
 import me.deftware.client.framework.utils.exception.ExceptionHandler;
 import me.deftware.client.framework.utils.exception.GlUtil;
 import me.deftware.mixin.imp.IMixinMinecraft;
-import net.minecraft.client.ClientBrandRetriever;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.OutOfMemoryScreen;
 import net.minecraft.client.gui.screen.SaveLevelScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
@@ -19,13 +15,16 @@ import net.minecraft.client.util.Session;
 import net.minecraft.client.util.Window;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -48,9 +47,6 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     @Shadow
     @Final
     private RenderTickCounter renderTickCounter;
-
-    @Shadow
-    private Screen currentScreen;
 
     @Shadow
     private int itemUseCooldown;
@@ -102,9 +98,9 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
      * @author Deftware
      * @reason
      */
-    @Overwrite
-    public String getVersionType() {
-        return "release";
+    @Inject(method = "getVersionType", at = @At("HEAD"), cancellable = true)
+    private void onGetVersionType(CallbackInfoReturnable<String> cir) {
+        cir.setReturnValue("release");
     }
 
     @Inject(method = "stop", at = @At("HEAD"))
@@ -167,9 +163,10 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
      * @author Deftware
      * @reason
      */
-    @Overwrite
-    public static void printCrashReport(CrashReport crashReport) {
+    @Inject(method = "printCrashReport", at = @At("HEAD"), cancellable = true)
+    private static void onPrintCrashReport(CrashReport crashReport, CallbackInfo ci) {
         exception(null, crashReport, false);
+        ci.cancel();
     }
 
     @Shadow
@@ -218,14 +215,9 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
         return null;
     }
 
-
-    /**
-     * @reason Removes the modded flag
-     * @author deftware
-     */
-    @Overwrite
-    public boolean isModded() {
-        return false;
+    @Inject(method = "isModded", at = @At(value = "TAIL"))
+    public void isModdedCheck(CallbackInfoReturnable<Boolean> cir) {
+        cir.setReturnValue(false);
     }
 
 }

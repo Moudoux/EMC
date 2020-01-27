@@ -5,10 +5,10 @@ import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.options.GameOptions;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@SuppressWarnings("ALL")
 @Mixin(KeyboardInput.class)
 public class MixinMovementInputFromOptions {
 
@@ -20,22 +20,10 @@ public class MixinMovementInputFromOptions {
      * @author Deftware
      * @reason
      */
-    @Overwrite
-    public void tick(boolean boolean_1) {
-        ((KeyboardInput) (Object) this).pressingForward = this.settings.keyForward.isPressed();
-        ((KeyboardInput) (Object) this).pressingBack = this.settings.keyBack.isPressed();
-        ((KeyboardInput) (Object) this).pressingLeft = this.settings.keyLeft.isPressed();
-        ((KeyboardInput) (Object) this).pressingRight = this.settings.keyRight.isPressed();
-        ((KeyboardInput) (Object) this).movementForward = ((KeyboardInput) (Object) this).pressingForward == ((KeyboardInput) (Object) this).pressingBack ? 0.0F : (float) (((KeyboardInput) (Object) this).pressingForward ? 1 : -1);
-        ((KeyboardInput) (Object) this).movementSideways = ((KeyboardInput) (Object) this).pressingLeft == ((KeyboardInput) (Object) this).pressingRight ? 0.0F : (float) (((KeyboardInput) (Object) this).pressingLeft ? 1 : -1);
-        ((KeyboardInput) (Object) this).jumping = this.settings.keyJump.isPressed();
-        ((KeyboardInput) (Object) this).sneaking = this.settings.keySneak.isPressed();
+    @ModifyVariable(method = "tick", at = @At("HEAD"))
+    public boolean onTick(boolean bl) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Sneak);
         event.broadcast();
-        if (boolean_1 && !event.isCanceled()) {
-            ((KeyboardInput) (Object) this).movementSideways = (float) ((double) ((KeyboardInput) (Object) this).movementSideways * 0.3D);
-            ((KeyboardInput) (Object) this).movementForward = (float) ((double) ((KeyboardInput) (Object) this).movementForward * 0.3D);
-        }
+        return event.isCanceled() ? false : bl;
     }
-
 }

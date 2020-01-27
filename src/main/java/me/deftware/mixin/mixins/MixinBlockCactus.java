@@ -8,28 +8,21 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(CactusBlock.class)
 public class MixinBlockCactus {
-
-    @Shadow
-    @Final
-    protected static VoxelShape COLLISION_SHAPE;
-
     /**
      * @author Deftware
      * @reason
      */
-    @Overwrite
-    public VoxelShape getCollisionShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, EntityContext verticalEntityPosition_1) {
+    @Inject(method = "getCollisionShape", at = @At(value = "TAIL"), cancellable = true)
+    private void onGetCollisionShape(BlockState state, BlockView view, BlockPos pos, EntityContext ePos, CallbackInfoReturnable<VoxelShape> cir) {
         if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "custom_cactus_voxel", false)) {
-            return VoxelShapes.fullCube();
+            cir.setReturnValue(VoxelShapes.fullCube());
         }
-        return COLLISION_SHAPE;
     }
-
 }

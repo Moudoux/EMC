@@ -17,7 +17,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -49,23 +48,26 @@ public abstract class MixinBlock {
      * @author Deftware
      * @reason
      */
-    @Overwrite
-    public float getVelocityMultiplier() {
+    @SuppressWarnings("ConstantConditions")
+    @Inject(method = "getVelocityMultiplier", at = @At(value = "TAIL"), cancellable = true)
+    private void onGetVelocityMultiplier(CallbackInfoReturnable<Float> cir) {
         if (velocityMultiplier != 1.0f) {
+            Block block = (Block) (Object) this;
             Event event = null;
-            if (((Block) (Object) this) instanceof HoneyBlock) {
+            if (block instanceof HoneyBlock) {
                 event = new EventSlowdown(EventSlowdown.SlowdownType.Honey);
-            } else if (((Block) (Object) this) instanceof SoulSandBlock) {
+            } else if (block instanceof SoulSandBlock) {
                 event = new EventSlowdown(EventSlowdown.SlowdownType.Soulsand);
             }
             if (event != null) {
                 event.broadcast();
                 if (event.isCanceled()) {
-                    return 1.0f;
+                    cir.setReturnValue(1.0f);
+                    return;
                 }
             }
         }
-        return this.velocityMultiplier;
+        cir.setReturnValue(this.velocityMultiplier);
     }
 
     @Inject(method = "shouldDrawSide", at = @At("HEAD"), cancellable = true)

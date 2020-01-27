@@ -4,38 +4,32 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.event.events.EventHurtcam;
 import me.deftware.client.framework.event.events.EventRender2D;
 import me.deftware.client.framework.event.events.EventRender3D;
-import me.deftware.client.framework.event.events.EventWeather;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.ChatProcessor;
-import me.deftware.client.framework.utils.render.NonScaledRenderer;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ProjectileUtil;
-import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.*;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.function.Predicate;
 
 @Mixin(GameRenderer.class)
 public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
-    @Shadow
-    private boolean renderHand;
     private float partialTicks = 0;
 
     @Shadow
@@ -83,70 +77,25 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
         loadShader(location);
     }
 
-    @Shadow
-    @Final
-    public MinecraftClient client;
+    private boolean bypassReach;
 
-    /**
-     * @author Deftware
-     * @reason
-     */
-    @Overwrite
-    public void updateTargetedEntity(float float_1) {
-        Entity entity_1 = this.client.getCameraEntity();
-        if (entity_1 != null) {
-            if (this.client.world != null) {
-                // EMC
-                boolean bypassReach = (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "BYPASS_REACH_LIMIT", false);
-                //
-                this.client.getProfiler().push("pick");
-                this.client.targetedEntity = null;
-                double double_1 = (double)this.client.interactionManager.getReachDistance();
-                this.client.crosshairTarget = entity_1.rayTrace(double_1, float_1, false);
-                Vec3d vec3d_1 = entity_1.getCameraPosVec(float_1);
-                boolean boolean_1 = false;
-                double double_2 = double_1;
-                if (this.client.interactionManager.hasExtendedReach()) {
-                    // EMC
-                    if (!bypassReach) {
-                        double_2 = 6.0D;
-                        double_1 = double_2;
-                    }
-                } else {
-                    if (double_1 > 3.0D) {
-                        boolean_1 = true;
-                    }
-                }
-
-                double_2 *= double_2;
-                if (this.client.crosshairTarget != null) {
-                    double_2 = this.client.crosshairTarget.getPos().squaredDistanceTo(vec3d_1);
-                }
-
-                Vec3d vec3d_2 = entity_1.getRotationVec(1.0F);
-                Vec3d vec3d_3 = vec3d_1.add(vec3d_2.x * double_1, vec3d_2.y * double_1, vec3d_2.z * double_1);
-                float float_2 = 1.0F;
-                Box boundingBox_1 = entity_1.getBoundingBox().stretch(vec3d_2.multiply(double_1)).expand(1.0D, 1.0D, 1.0D);
-                EntityHitResult entityHitResult_1 = ProjectileUtil.rayTrace(entity_1, vec3d_1, vec3d_3, boundingBox_1, (entity_1x) -> {
-                    return !entity_1x.isSpectator() && entity_1x.collides();
-                }, bypassReach ? 0D : double_2);
-                if (entityHitResult_1 != null) {
-                    Entity entity_2 = entityHitResult_1.getEntity();
-                    Vec3d vec3d_4 = entityHitResult_1.getPos();
-                    double double_3 = bypassReach ? 2D : vec3d_1.squaredDistanceTo(vec3d_4);
-                    if (boolean_1 && double_3 > 9.0D) {
-                        this.client.crosshairTarget = BlockHitResult.createMissed(vec3d_4, Direction.getFacing(vec3d_2.x, vec3d_2.y, vec3d_2.z), new BlockPos(vec3d_4));
-                    } else if (double_3 < double_2 || this.client.crosshairTarget == null) {
-                        this.client.crosshairTarget = entityHitResult_1;
-                        if (entity_2 instanceof LivingEntity || entity_2 instanceof ItemFrameEntity) {
-                            this.client.targetedEntity = entity_2;
-                        }
-                    }
-                }
-
-                this.client.getProfiler().pop();
-            }
-        }
+    @Inject(method = "updateTargetedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V"))
+    private void onBypassReachInitialize(float tickDelta, CallbackInfo ci) {
+        bypassReach = (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "BYPASS_REACH_LIMIT", true);
     }
 
+    @Redirect(method = "updateTargetedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ProjectileUtil;rayTrace(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/function/Predicate;D)Lnet/minecraft/util/hit/EntityHitResult;"))
+    private EntityHitResult onRayTraceDistance(Entity entity, Vec3d vec3d, Vec3d vec3d2, Box box, Predicate<Entity> predicate, double d) {
+        return ProjectileUtil.rayTrace(entity, vec3d, vec3d2, box, predicate, bypassReach ? 0d : d);
+    }
+
+    @Redirect(method = "updateTargetedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;squaredDistanceTo(Lnet/minecraft/util/math/Vec3d;)D", ordinal = 1))
+    private double onDistance(Vec3d self, Vec3d vec3d) {
+        return bypassReach ? 2D : self.squaredDistanceTo(vec3d);
+    }
+
+    @Redirect(method = "updateTargetedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;hasExtendedReach()Z"))
+    private boolean onTest(ClientPlayerInteractionManager clientPlayerInteractionManager) {
+        return !bypassReach && clientPlayerInteractionManager.hasExtendedReach();
+    }
 }

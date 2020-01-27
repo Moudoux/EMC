@@ -9,8 +9,10 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
 
@@ -28,24 +30,25 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
      * @author Deftware
      * @reason
      */
-    @Overwrite
-    public boolean hasStatusEffect(StatusEffect statusEffect_1) {
+    @SuppressWarnings("ConstantConditions")
+    @Inject(method = "hasStatusEffect", at = @At(value = "TAIL"), cancellable = true)
+    private void onHasStatusEffect(StatusEffect effect, CallbackInfoReturnable<Boolean> cir) {
         if (!((LivingEntity) (Object) this instanceof ClientPlayerEntity)) {
-            return activeStatusEffects.containsKey(statusEffect_1);
+            return;
         }
-        EventIsPotionActive event = new EventIsPotionActive(statusEffect_1.getTranslationKey(),
-                activeStatusEffects.containsKey(statusEffect_1));
+
+        EventIsPotionActive event = new EventIsPotionActive(effect.getTranslationKey(), activeStatusEffects.containsKey(effect));
         event.broadcast();
-        return event.isActive();
+        cir.setReturnValue(event.isActive());
     }
 
     /**
      * @author Deftware
      * @reason
      */
-    @Overwrite
-    public float getJumpVelocity() {
-        return (float) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "JUMP_HEIGHT", 0.42F);
+    @Inject(method = "getJumpVelocity", at = @At(value = "TAIL"), cancellable = true)
+    private void onGetJumpVelocity(CallbackInfoReturnable<Float> cir) {
+        cir.setReturnValue((float) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "JUMP_HEIGHT", cir.getReturnValue()));
     }
 
     @Override

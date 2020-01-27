@@ -3,24 +3,20 @@ package me.deftware.mixin.mixins;
 import me.deftware.client.framework.event.events.EventSaddleCheck;
 import net.minecraft.entity.passive.HorseBaseEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(HorseBaseEntity.class)
 public abstract class MixinAbstractHorse {
-
-    @Shadow
-    protected abstract boolean getHorseFlag(int int_19);
-
     /**
      * @author Deftware
      * @reason
      */
-    @Overwrite
-    public boolean isSaddled() {
-        EventSaddleCheck event = new EventSaddleCheck(this.getHorseFlag(4));
+    @Inject(method = "isSaddled", at = @At(value = "TAIL"), cancellable = true)
+    private void onIsSaddled(CallbackInfoReturnable<Boolean> cir) {
+        EventSaddleCheck event = new EventSaddleCheck(cir.getReturnValue());
         event.broadcast();
-        return event.isState();
+        cir.setReturnValue(event.isState());
     }
-
 }
