@@ -80,7 +80,8 @@ public class IItemStack {
         ArrayList<String> enchantNames = new ArrayList<>();
 
         for (Enchantment enchantment : Registry.ENCHANTMENT) {
-            enchantNames.add(enchantment.getTranslationKey());
+            IEnchantment enchantmentObj = new IEnchantment(enchantment);
+            enchantNames.add(enchantmentObj.getEnchantmentKey());
         }
 
         return enchantNames;
