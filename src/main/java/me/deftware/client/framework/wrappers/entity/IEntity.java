@@ -17,6 +17,7 @@ import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.Projectile;
+import net.minecraft.util.math.Box;
 
 import java.math.BigDecimal;
 
@@ -31,6 +32,10 @@ public class IEntity {
 
     public Entity getEntity() {
         return entity;
+    }
+
+    public Box getBoundingBox() {
+        return entity.getBoundingBox();
     }
 
     public boolean isOnGround() {

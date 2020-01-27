@@ -125,9 +125,10 @@ public abstract class MixinEntity implements IMixinEntity {
         return getFlag(flag);
     }
 
-    @Accessor("dataTracker")
     @Override
-    public abstract DataTracker getTracker();
+    public DataTracker getTracker() {
+        return dataTracker;
+    }
 
     @Override
     public void setInPortal(boolean inPortal) {
