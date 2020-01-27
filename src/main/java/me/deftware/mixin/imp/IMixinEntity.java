@@ -6,6 +6,8 @@ public interface IMixinEntity {
 
 	boolean getAFlag(int flag);
 
+	void setInPortal(boolean inPortal);
+
 	DataTracker getTracker();
 
 }

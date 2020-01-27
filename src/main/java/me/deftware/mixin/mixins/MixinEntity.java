@@ -62,6 +62,9 @@ public abstract class MixinEntity implements IMixinEntity {
     public float yaw;
 
     @Shadow
+    public boolean inNetherPortal;
+
+    @Shadow
     @Final
     public DataTracker dataTracker;
 
@@ -154,6 +157,11 @@ public abstract class MixinEntity implements IMixinEntity {
     @Override
     public DataTracker getTracker() {
         return dataTracker;
+    }
+
+    @Override
+    public void setInPortal(boolean inPortal) {
+        this.inNetherPortal = inPortal;
     }
 
 }

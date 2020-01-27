@@ -140,6 +140,10 @@ public class IEntityPlayer {
 		return ((IMixinEntity) MinecraftClient.getInstance().player).getAFlag(flag);
 	}
 
+	public static void setInPortal(boolean inPortal) {
+		((IMixinEntity) MinecraftClient.getInstance().player).setInPortal(inPortal);
+	}
+
 	public static void setSprinting(boolean state) {
 		MinecraftClient.getInstance().player.setSprinting(state);
 	}
