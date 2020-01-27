@@ -3,19 +3,13 @@ package me.deftware.mixin.mixins;
 import me.deftware.client.framework.event.events.EventGuiScreenDisplay;
 import me.deftware.client.framework.event.events.EventShutdown;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.utils.exception.ExceptionHandler;
-import me.deftware.client.framework.utils.exception.GlUtil;
 import me.deftware.mixin.imp.IMixinMinecraft;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.SaveLevelScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.Session;
 import net.minecraft.client.util.Window;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.crash.CrashReport;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -26,15 +20,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Queue;
-
 @Mixin(MinecraftClient.class)
 public abstract class MixinMinecraft implements IMixinMinecraft {
-
-    private static Queue<Runnable> staticRenderTaskQueue;
 
     @Shadow
     public boolean windowFocused;
@@ -94,7 +81,6 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
         }
     }
 
-
     @Inject(method = "getVersionType", at = @At("HEAD"), cancellable = true)
     private void onGetVersionType(CallbackInfoReturnable<String> cir) {
         cir.setReturnValue("release");
@@ -151,65 +137,7 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
         return windowFocused;
     }
 
-    @Inject(method = "render", at = @At("TAIL"))
-    private void render(boolean tick, CallbackInfo ci) {
-        staticRenderTaskQueue = renderTaskQueue;
-    }
-
-
-    @Inject(method = "printCrashReport", at = @At("HEAD"), cancellable = true)
-    private static void onPrintCrashReport(CrashReport crashReport, CallbackInfo ci) {
-        exception(null, crashReport, false);
-        ci.cancel();
-    }
-
-    @Shadow
-    @Final
-    private Queue<Runnable> renderTaskQueue;
-
-    private static void exception(Throwable e, CrashReport report, boolean unexpected) {
-        // Credit to https://github.com/natanfudge/Not-Enough-Crashes/blob/master/notenoughcrashes/src/main/java/fudge/notenoughcrashes/mixinhandlers/InGameCatcher.java
-        Integer originalReservedMemorySize = null;
-        try {
-            if (MinecraftClient.memoryReservedForCrash != null) {
-                originalReservedMemorySize = MinecraftClient.memoryReservedForCrash.length;
-                MinecraftClient.memoryReservedForCrash = new byte[0];
-            }
-        } catch (Throwable ignored) { }
-        if (MinecraftClient.getInstance().getNetworkHandler() != null) {
-            MinecraftClient.getInstance().getNetworkHandler().getConnection().disconnect(new LiteralText("Crashed"));
-        }
-        MinecraftClient.getInstance().disconnect(new SaveLevelScreen(new TranslatableText("menu.savingLevel")));
-        staticRenderTaskQueue.clear();
-        GlUtil.resetState();
-        if (originalReservedMemorySize != null) {
-            try {
-                MinecraftClient.memoryReservedForCrash = new byte[originalReservedMemorySize];
-            } catch (Throwable ignored) { }
-        }
-        System.gc();
-        MinecraftClient.getInstance().options.debugEnabled = false;
-        MinecraftClient.getInstance().inGameHud.getChatHud().clear(true);
-        ExceptionHandler.handleCrash(e, report, unexpected, customPrintCrashReport(report));
-    }
-
-    private static File customPrintCrashReport(CrashReport crashReport) {
-        File file = new File(MinecraftClient.getInstance().runDirectory, "crash-reports");
-        File file2 = new File(file, "crash-" + (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date()) + "-client.txt");
-        net.minecraft.Bootstrap.println(crashReport.asString());
-        if (crashReport.getFile() != null) {
-            net.minecraft.Bootstrap.println("#@!@# Game crashed! Crash report saved to: #@!@# " + crashReport.getFile());
-            return crashReport.getFile();
-        } else if (crashReport.writeToFile(file2)) {
-            net.minecraft.Bootstrap.println("#@!@# Game crashed! Crash report saved to: #@!@# " + file2.getAbsolutePath());
-            return file2;
-        } else {
-            net.minecraft.Bootstrap.println("#@?@# Game crashed! Crash report could not be saved. #@?@#");
-        }
-        return null;
-    }
-
-    @Inject(method = "isModded", at = @At(value = "TAIL"))
+    @Inject(method = "isModded", at = @At(value = "TAIL"), cancellable = true)
     public void isModdedCheck(CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(false);
     }
