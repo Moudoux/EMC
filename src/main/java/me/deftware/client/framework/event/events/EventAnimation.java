@@ -19,7 +19,7 @@ public class EventAnimation extends Event {
 	}
 
 	public enum AnimationType {
-		Totem
+		Totem, Wall, Fire, Underwater
 	}
 
 }
