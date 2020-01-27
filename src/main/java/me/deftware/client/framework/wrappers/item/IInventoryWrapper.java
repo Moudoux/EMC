@@ -3,7 +3,6 @@ package me.deftware.client.framework.wrappers.item;
 
 import me.deftware.client.framework.wrappers.entity.IEntity;
 import me.deftware.client.framework.wrappers.entity.IEntityPlayer;
-import me.deftware.client.framework.wrappers.entity.IPlayer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.container.Slot;
 import net.minecraft.entity.EquipmentSlot;

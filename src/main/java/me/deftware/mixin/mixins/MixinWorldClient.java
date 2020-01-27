@@ -1,7 +1,6 @@
 package me.deftware.mixin.mixins;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.mixin.imp.IMixinWorldClient;
 import net.minecraft.client.world.ClientWorld;

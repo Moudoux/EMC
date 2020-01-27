@@ -1,7 +1,6 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.Matrix4f;

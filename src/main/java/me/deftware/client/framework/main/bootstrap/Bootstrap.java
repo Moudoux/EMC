@@ -1,6 +1,6 @@
 package me.deftware.client.framework.main.bootstrap;
 
-import com.google.gson.*;
+import com.google.gson.JsonObject;
 import com.mojang.brigadier.tree.CommandNode;
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.command.CommandRegister;
@@ -18,7 +18,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**

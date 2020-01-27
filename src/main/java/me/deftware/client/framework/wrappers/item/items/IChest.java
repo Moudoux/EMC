@@ -2,9 +2,7 @@ package me.deftware.client.framework.wrappers.item.items;
 
 import me.deftware.client.framework.wrappers.item.IItemStack;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.container.CraftingContainer;
 import net.minecraft.container.GenericContainer;
-import net.minecraft.container.PlayerContainer;
 
 public class IChest {
 

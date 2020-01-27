@@ -6,7 +6,9 @@ import me.deftware.client.framework.utils.HashUtils;
 import me.deftware.client.framework.utils.WebUtils;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.net.URL;
 
 public class JVMModDiscovery extends AbstractModDiscovery {

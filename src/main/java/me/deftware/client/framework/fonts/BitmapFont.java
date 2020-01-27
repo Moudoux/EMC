@@ -1,7 +1,6 @@
 package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.render.GraphicsUtil;
 import me.deftware.client.framework.utils.render.NonScaledRenderer;

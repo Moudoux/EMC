@@ -1,7 +1,6 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.maps.SettingsMap;
-import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.block.FluidRenderer;
 import net.minecraft.fluid.FluidState;

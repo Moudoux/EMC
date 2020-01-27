@@ -2,12 +2,7 @@ package me.deftware.client.framework.utils.exception;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.*;
 
 /**
  * https://github.com/natanfudge/Not-Enough-Crashes

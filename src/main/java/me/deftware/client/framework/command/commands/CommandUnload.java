@@ -2,10 +2,8 @@ package me.deftware.client.framework.command.commands;
 
 import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.EMCModCommand;
-import me.deftware.client.framework.event.EventBus;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.utils.ChatProcessor;
-import net.minecraft.client.MinecraftClient;
 
 import static com.mojang.brigadier.builder.LiteralArgumentBuilder.literal;
 

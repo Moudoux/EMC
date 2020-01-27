@@ -9,8 +9,8 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import me.deftware.client.framework.command.argument.ArgumentBuilder;
 import me.deftware.client.framework.command.argument.ArgumentExceptionFunction;
-import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.main.EMCMod;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
 
 import java.util.Arrays;
 import java.util.Collection;

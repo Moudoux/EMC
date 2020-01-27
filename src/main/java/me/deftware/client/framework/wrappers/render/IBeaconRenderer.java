@@ -1,14 +1,5 @@
 package me.deftware.client.framework.wrappers.render;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import me.deftware.client.framework.utils.render.TexUtil;
-import me.deftware.client.framework.wrappers.IResourceLocation;
-import me.deftware.client.framework.wrappers.entity.IEntityPlayer;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.block.entity.BeaconBlockEntityRenderer;
-import net.minecraft.client.render.block.entity.EndGatewayBlockEntityRenderer;
-import net.minecraft.util.DyeColor;
-
 public class IBeaconRenderer {
 
     /*
