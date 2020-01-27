@@ -10,12 +10,12 @@ import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.IChat;
 
-@SuppressWarnings("ALL")
+//@SuppressWarnings("ALL")
 public class CommandTrigger extends EMCModCommand {
 
     @Override
-    public CommandBuilder getCommandBuilder() {
-        return new CommandBuilder().set((LiteralArgumentBuilder) LiteralArgumentBuilder.literal("trigger")
+    public CommandBuilder<?> getCommandBuilder() {
+        return new CommandBuilder<>().set(LiteralArgumentBuilder.literal("trigger")
                 .then(
                         LiteralArgumentBuilder.literal("set")
                                 .then(

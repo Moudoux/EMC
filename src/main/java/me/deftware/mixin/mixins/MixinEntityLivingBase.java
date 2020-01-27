@@ -24,7 +24,7 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
     private Map<StatusEffect, StatusEffectInstance> activeStatusEffects;
 
     @Shadow
-    private int itemUseTimeLeft;
+    protected int itemUseTimeLeft;
 
 
     @SuppressWarnings("ConstantConditions")

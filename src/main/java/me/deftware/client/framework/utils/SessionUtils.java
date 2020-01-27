@@ -18,8 +18,8 @@ public class SessionUtils {
      * Log into a Minecraft account
      *
      * @param username Email address for mojang account and username for legacy Minecraft account
-     * @param password
-     * @return
+     * @param password Password for Mojang Account
+     * @return Whether the login was successfull
      */
     public static boolean loginWithPassword(String username, String password) {
         Session session = null;
@@ -48,7 +48,7 @@ public class SessionUtils {
     /**
      * Set your Minecraft username, non premium
      *
-     * @param username
+     * @param username The username to login with
      */
     public static void loginWithoutPassword(String username) {
         ((IMixinMinecraft) MinecraftClient.getInstance()).setSession(new Session(username, "", "0", "legacy"));

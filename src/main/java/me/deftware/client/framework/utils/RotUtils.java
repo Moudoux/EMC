@@ -52,16 +52,14 @@ public class RotUtils {
         float[] needed = RotUtils.getRotations(entity.getEntity().getBoundingBox().getCenter());
         float diffYaw = MathHelper.wrapDegrees(MinecraftClient.getInstance().player.yaw) - needed[0];
         float diffPitch = MathHelper.wrapDegrees(MinecraftClient.getInstance().player.pitch) - needed[1];
-        float angle = MathHelper.sqrt(diffYaw * diffYaw + diffPitch * diffPitch);
-        return angle;
+        return MathHelper.sqrt(diffYaw * diffYaw + diffPitch * diffPitch);
     }
 
     public static float getAngleToServerRotation(IEntity entity) {
         float[] needed = RotUtils.getRotations(entity.getEntity().getBoundingBox().getCenter());
         float diffYaw = RotUtils.serverYaw - needed[0];
         float diffPitch = RotUtils.serverPitch - needed[1];
-        float angle = MathHelper.sqrt(diffYaw * diffYaw + diffPitch * diffPitch);
-        return angle;
+        return MathHelper.sqrt(diffYaw * diffYaw + diffPitch * diffPitch);
     }
 
     private static float limitAngleChange(float current, float intended, float maxChange) {
@@ -99,13 +97,13 @@ public class RotUtils {
 
     private static Vec3d getEyesPos() {
         return new Vec3d(MinecraftClient.getInstance().player.getX(),
-                MinecraftClient.getInstance().player.getY() + MinecraftClient.getInstance().player.getEyeHeight(EntityPose.STANDING),
+                MinecraftClient.getInstance().player.getY() + MinecraftClient.getInstance().player.getEyeHeight(MinecraftClient.getInstance().player.getPose()),
                 MinecraftClient.getInstance().player.getZ());
     }
 
     public static IVec3d getEyesPosIVec() {
         return new IVec3d(MinecraftClient.getInstance().player.getX(),
-                MinecraftClient.getInstance().player.getY() + MinecraftClient.getInstance().player.getEyeHeight(EntityPose.STANDING),
+                MinecraftClient.getInstance().player.getY() + MinecraftClient.getInstance().player.getEyeHeight(MinecraftClient.getInstance().player.getPose()),
                 MinecraftClient.getInstance().player.getZ());
     }
 

@@ -15,6 +15,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("all")
 public class ChatProcessor {
 
     private static final Pattern URL_PATTERN = Pattern

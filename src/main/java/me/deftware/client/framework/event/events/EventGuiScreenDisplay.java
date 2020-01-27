@@ -40,7 +40,7 @@ public class EventGuiScreenDisplay extends Event {
         return type;
     }
 
-    public static enum ScreenTypes {
+    public enum ScreenTypes {
         MainMenu, Multiplayer, GuiIngameMenu, Unknown
     }
 

@@ -30,7 +30,7 @@ public class IKeybindWrapper {
         return InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), key);
     }
 
-    public static enum IKeybind {
+    public enum IKeybind {
 
         SNEAK(MinecraftClient.getInstance().options.keySneak),
         USEITEM(MinecraftClient.getInstance().options.keyUse),

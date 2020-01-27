@@ -41,7 +41,7 @@ public class ITileEntity {
         return chestType != null;
     }
 
-    public static enum IChestType {
+    public enum IChestType {
         TRAPPED_CHEST, CHEST, ENDER_CHEST, SHULKER_BOX, BARREL
     }
 

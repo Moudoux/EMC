@@ -13,8 +13,8 @@ import me.deftware.client.framework.wrappers.IChat;
 public class CommandScale extends EMCModCommand {
 
     @Override
-    public CommandBuilder getCommandBuilder() {
-        return new CommandBuilder().set((LiteralArgumentBuilder) LiteralArgumentBuilder.literal("scale")
+    public CommandBuilder<?> getCommandBuilder() {
+        return new CommandBuilder<>().set(LiteralArgumentBuilder.literal("scale")
                 .then(
                         LiteralArgumentBuilder.literal("set")
                                 .then(

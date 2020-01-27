@@ -18,7 +18,6 @@ import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
@@ -31,7 +30,7 @@ import java.util.Objects;
 public abstract class IGuiScreen extends Screen {
 
     protected IGuiScreen parent = null;
-    protected boolean escGoesBack = true;
+    protected boolean escGoesBack;
     private boolean pause = true;
     private HashMap<String, Texture> textureHashMap = new HashMap<>();
 
@@ -59,13 +58,12 @@ public abstract class IGuiScreen extends Screen {
      */
     public static String getClipboardString() {
         try {
-            Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents((Object) null);
+            Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
 
             if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                 return (String) transferable.getTransferData(DataFlavor.stringFlavor);
             }
-        } catch (Exception var1) {
-            ;
+        } catch (Exception ignored) {
         }
 
         return "";
@@ -77,9 +75,8 @@ public abstract class IGuiScreen extends Screen {
     public static void setClipboardString(String copyText) {
         try {
             StringSelection stringselection = new StringSelection(copyText);
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, (ClipboardOwner) null);
-        } catch (Exception var2) {
-            ;
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, null);
+        } catch (Exception ignored) {
         }
     }
 
@@ -117,9 +114,7 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public static boolean isWindowMinimized() {
-        if (getDisplayWidth() == 0 || getDisplayHeight() == 0)
-            return true;
-        return false;
+        return getDisplayWidth() == 0 || getDisplayHeight() == 0;
     }
 
     @Override
@@ -223,7 +218,7 @@ public abstract class IGuiScreen extends Screen {
 
     public void drawCenteredString(String text, int x, int y, int color) {
         MinecraftClient.getInstance().textRenderer.drawWithShadow(text,
-                x - MinecraftClient.getInstance().textRenderer.getStringWidth(text) / 2, y, color);
+                x - MinecraftClient.getInstance().textRenderer.getStringWidth(text) / 2f, y, color);
     }
 
     public void setDoesGuiPauseGame(boolean state) {

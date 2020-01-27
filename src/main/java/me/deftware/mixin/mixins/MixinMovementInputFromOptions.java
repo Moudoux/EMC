@@ -14,13 +14,13 @@ public class MixinMovementInputFromOptions {
 
     @Shadow
     @Final
-    public GameOptions settings;
+    private GameOptions settings;
 
 
     @ModifyVariable(method = "tick", at = @At("HEAD"))
     public boolean onTick(boolean bl) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Sneak);
         event.broadcast();
-        return event.isCanceled() ? false : bl;
+        return !event.isCanceled() && bl;
     }
 }

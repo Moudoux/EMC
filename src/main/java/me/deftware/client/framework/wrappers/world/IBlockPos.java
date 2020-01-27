@@ -80,13 +80,12 @@ public class IBlockPos {
     private void updateCords(boolean blockPos) {
         if (blockPos) {
             pos = new BlockPos(x, y, z);
-            vectorPos = new IVec3d(x, y, z);
         } else {
             x = pos.getX();
             y = pos.getY();
             z = pos.getZ();
-            vectorPos = new IVec3d(x, y, z);
         }
+        vectorPos = new IVec3d(x, y, z);
     }
 
     public IBlockPos down(int count) {

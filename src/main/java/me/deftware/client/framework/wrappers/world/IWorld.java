@@ -1,6 +1,5 @@
 package me.deftware.client.framework.wrappers.world;
 
-import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.wrappers.entity.IEntity;
 import me.deftware.client.framework.wrappers.entity.ITileEntity;
 import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
@@ -27,7 +26,7 @@ public class IWorld {
 
     public static ArrayList<IEntity> getLoadedEntities() {
         ArrayList<IEntity> entities = new ArrayList<>();
-        if (Bootstrap.CRASHED || MinecraftClient.getInstance().world == null || ((IMixinWorldClient) MinecraftClient.getInstance().world).getLoadedEntities() == null) {
+        if (MinecraftClient.getInstance().world == null || ((IMixinWorldClient) MinecraftClient.getInstance().world).getLoadedEntities() == null) {
             return entities;
         }
         for (Entity entity : ((IMixinWorldClient) MinecraftClient.getInstance().world).getLoadedEntities().values()) {

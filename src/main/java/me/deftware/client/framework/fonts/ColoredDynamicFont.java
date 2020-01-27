@@ -38,8 +38,8 @@ public class ColoredDynamicFont extends DynamicFont {
             }
 
             // Remove formatting codes as we dont support those...
-            text = text.replaceAll(Character.toString(COLOR_CHAR) + "+[l-o]", "");
-            text = text.replaceAll(Character.toString(COLOR_CHAR) + "+[l-o]", "");
+            text = text.replaceAll(COLOR_CHAR + "+[l-o]", "");
+            text = text.replaceAll(COLOR_CHAR + "+[l-o]", "");
 
             String currentText = "", drawnText = "";
             boolean skip = false;

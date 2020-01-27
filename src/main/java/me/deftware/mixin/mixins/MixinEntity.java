@@ -39,15 +39,15 @@ public abstract class MixinEntity implements IMixinEntity {
     public float yaw;
 
     @Shadow
-    public boolean inNetherPortal;
+    protected boolean inNetherPortal;
 
     @Shadow
     @Final
-    public DataTracker dataTracker;
+    protected DataTracker dataTracker;
 
     @Shadow
     @Final
-    public static TrackedData<EntityPose> POSE;
+    protected static TrackedData<EntityPose> POSE;
 
     @Shadow
     public abstract boolean isSneaking();
@@ -62,10 +62,10 @@ public abstract class MixinEntity implements IMixinEntity {
     public abstract Box getBoundingBox();
 
     @Shadow
-    public abstract boolean getFlag(int int_1);
+    protected abstract boolean getFlag(int int_1);
 
     @Shadow
-    public Vec3d movementMultiplier;
+    protected Vec3d movementMultiplier;
 
 
     @Inject(method = "getPose", at = @At(value = "TAIL"), cancellable = true)

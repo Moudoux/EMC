@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  public class MixinGuiChat {
 
     @Shadow
-    public CommandSuggestor commandSuggestor;
+    private CommandSuggestor commandSuggestor;
 
     @Inject(method = "init", at = @At("RETURN"))
     public void init(CallbackInfo ci) {

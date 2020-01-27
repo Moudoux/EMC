@@ -14,7 +14,7 @@ public class EventDamage extends Event {
         return source;
     }
 
-    public static enum DamageSource {
+    public enum DamageSource {
         BerryBush
     }
 

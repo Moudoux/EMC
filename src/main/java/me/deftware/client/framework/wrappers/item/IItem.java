@@ -56,12 +56,9 @@ public class IItem {
     }
 
     public boolean isThrowable() {
-        if (item instanceof BowItem || item instanceof SnowballItem || item instanceof EggItem
+        return item instanceof BowItem || item instanceof SnowballItem || item instanceof EggItem
                 || item instanceof EnderPearlItem || item instanceof SplashPotionItem
-                || item instanceof LingeringPotionItem || item instanceof FishingRodItem) {
-            return true;
-        }
-        return false;
+                || item instanceof LingeringPotionItem || item instanceof FishingRodItem;
     }
 
     public boolean instanceOf(IItemType type) {
@@ -88,7 +85,7 @@ public class IItem {
         } else if (type.equals(IItemType.ItemHoe)) {
             return item instanceof HoeItem;
         } else if (type.equals(IItemType.ItemShulkerBox)) {
-            return item instanceof BlockItem && ((BlockItem) item).getTranslationKey().contains("shulker_box");
+            return item instanceof BlockItem && item.getTranslationKey().contains("shulker_box");
         }
         return false;
     }

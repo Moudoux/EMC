@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinGuiContainer extends MixinGuiScreen implements IMixinGuiContainer {
 
     @Shadow
-    private Slot focusedSlot;
+    protected Slot focusedSlot;
 
     @Override
     public Slot getHoveredSlot() {

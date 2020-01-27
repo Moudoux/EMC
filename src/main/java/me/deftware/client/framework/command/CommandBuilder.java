@@ -4,17 +4,18 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.command.arguments.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.CommandSource;
+import net.minecraft.server.command.ServerCommandSource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("ALL")
 /**
  * Wrapper for building EMC commands
  */
 public class CommandBuilder<T> {
 
-    private LiteralArgumentBuilder<?> builder;
+    private LiteralArgumentBuilder<ServerCommandSource> builder;
     private List<String> aliases = new ArrayList<>();
 
     /**
@@ -25,7 +26,7 @@ public class CommandBuilder<T> {
      * @param execution
      * @return CommandBuilder
      */
-    public CommandBuilder addCommand(String command, CommandExecution execution) {
+    public CommandBuilder<?> addCommand(String command, CommandExecution execution) {
         return set(CommandManager.literal(command).executes(source -> {
             execution.onExecute(new CommandResult(source));
             return 1;
@@ -38,8 +39,8 @@ public class CommandBuilder<T> {
      * @param argument
      * @return
      */
-    public CommandBuilder set(LiteralArgumentBuilder argument) {
-        builder = argument;
+    public CommandBuilder<?> set(LiteralArgumentBuilder<?> argument) {
+        builder = (LiteralArgumentBuilder<ServerCommandSource>) argument;
         return this;
     }
 
@@ -49,7 +50,7 @@ public class CommandBuilder<T> {
      * @param argument
      * @return
      */
-    public CommandBuilder append(LiteralArgumentBuilder argument) {
+    public CommandBuilder<?> append(LiteralArgumentBuilder<ServerCommandSource> argument) {
         if (builder == null) {
             builder = argument;
         } else {
@@ -64,7 +65,7 @@ public class CommandBuilder<T> {
      * @param alias
      * @return
      */
-    public CommandBuilder registerAlias(String alias) {
+    public CommandBuilder<?> registerAlias(String alias) {
         aliases.add(alias);
         return this;
     }
@@ -87,7 +88,7 @@ public class CommandBuilder<T> {
         return aliases;
     }
 
-    protected LiteralArgumentBuilder build() {
+    protected LiteralArgumentBuilder<ServerCommandSource> build() {
         return builder;
     }
 

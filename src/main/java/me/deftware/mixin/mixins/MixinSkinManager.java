@@ -16,10 +16,6 @@ import java.util.Map;
 
 @Mixin(PlayerSkinProvider.class)
 public abstract class MixinSkinManager {
-     /*
-     * @author Deftware
-     * @reason
-     */
      @Inject(method = "*",
              at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getInstance()Lnet/minecraft/client/MinecraftClient;", ordinal = 1),
              locals = LocalCapture.CAPTURE_FAILHARD)

@@ -8,15 +8,14 @@ import me.deftware.client.framework.command.CommandResult;
 import me.deftware.client.framework.command.EMCModCommand;
 import me.deftware.client.framework.wrappers.IChat;
 
-@SuppressWarnings("ALL")
 /**
  * Demo command demonstrating how to use argument
  */
 public class TestCommand extends EMCModCommand {
 
 	@Override
-	public CommandBuilder getCommandBuilder() {
-		return new CommandBuilder().set((LiteralArgumentBuilder) LiteralArgumentBuilder.literal("friends")
+	public CommandBuilder<?> getCommandBuilder() {
+		return new CommandBuilder<>().set(LiteralArgumentBuilder.literal("friends")
 				.then(
 						LiteralArgumentBuilder.literal("add")
 								.then(

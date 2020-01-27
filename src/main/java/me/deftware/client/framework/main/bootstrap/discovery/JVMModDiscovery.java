@@ -76,7 +76,7 @@ public class JVMModDiscovery extends AbstractModDiscovery {
         }
 
         @Override
-        public EMCMod toInstance() throws Exception {
+        public EMCMod toInstance() {
             return null;
         }
 

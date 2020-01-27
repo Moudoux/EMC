@@ -22,8 +22,8 @@ public class OAuthNetworkManager extends ClientConnection {
 
     public static OAuthNetworkManager connect(InetAddress inetAddress_1, int int_1, boolean boolean_1, OAuth.OAuthCallback callback) {
         final OAuthNetworkManager clientConnection_1 = new OAuthNetworkManager(NetworkSide.CLIENTBOUND, callback);
-        Class class_2;
-        Lazy lazy_2;
+        Class<? extends Channel> class_2;
+        Lazy<?> lazy_2;
         if (Epoll.isAvailable() && boolean_1) {
             class_2 = EpollSocketChannel.class;
             lazy_2 = CLIENT_IO_GROUP_EPOLL;
@@ -32,16 +32,16 @@ public class OAuthNetworkManager extends ClientConnection {
             lazy_2 = CLIENT_IO_GROUP;
         }
 
-        ((Bootstrap) ((Bootstrap) ((Bootstrap) (new Bootstrap()).group((EventLoopGroup) lazy_2.get())).handler(new ChannelInitializer<Channel>() {
-            protected void initChannel(Channel channel_1) throws Exception {
+        (new Bootstrap()).group((EventLoopGroup) lazy_2.get()).handler(new ChannelInitializer<Channel>() {
+            protected void initChannel(Channel channel_1) {
                 try {
                     channel_1.config().setOption(ChannelOption.TCP_NODELAY, true);
-                } catch (ChannelException var3) {
+                } catch (ChannelException ignored) {
                 }
 
                 channel_1.pipeline().addLast("timeout", new ReadTimeoutHandler(30)).addLast("splitter", new SplitterHandler()).addLast("decoder", new DecoderHandler(NetworkSide.CLIENTBOUND)).addLast("prepender", new SizePrepender()).addLast("encoder", new PacketEncoder(NetworkSide.SERVERBOUND)).addLast("packet_handler", clientConnection_1);
             }
-        })).channel(class_2)).connect(inetAddress_1, int_1).syncUninterruptibly();
+        }).channel(class_2).connect(inetAddress_1, int_1).syncUninterruptibly();
         return clientConnection_1;
     }
 

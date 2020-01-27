@@ -10,8 +10,8 @@ import static com.mojang.brigadier.builder.LiteralArgumentBuilder.literal;
 public class CommandUnload extends EMCModCommand {
 
     @Override
-    public CommandBuilder getCommandBuilder() {
-        return new CommandBuilder().set(literal("unload")
+    public CommandBuilder<?> getCommandBuilder() {
+        return new CommandBuilder<>().set(literal("unload")
                 /* Disable until a way to unload mod specific events/commands is made
                 .then(
                         argument("modname", new EMCModArgument())

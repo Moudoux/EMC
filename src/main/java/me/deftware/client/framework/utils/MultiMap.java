@@ -13,8 +13,7 @@ public class MultiMap<K, V> {
      * @param value Entry value
      */
     public void put(K key, V value) {
-        if (map.get(key) == null)
-            map.put(key, new ArrayList<V>());
+        map.computeIfAbsent(key, k -> new ArrayList<>());
 
         map.get(key).add(value);
     }
@@ -23,8 +22,7 @@ public class MultiMap<K, V> {
      * Add the specified set to the map if it's not yet associated
      */
     public void putIfAbsent(K key, V value) {
-        if (map.get(key) == null)
-            map.put(key, new ArrayList<>());
+        map.computeIfAbsent(key, k -> new ArrayList<>());
 
         // if value is absent, insert it
         if (!map.get(key).contains(value)) {

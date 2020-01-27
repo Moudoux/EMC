@@ -6,6 +6,6 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EventHandler {
 
-	Class eventType() default Event.class;
+	Class<?> eventType() default Event.class;
 
 }

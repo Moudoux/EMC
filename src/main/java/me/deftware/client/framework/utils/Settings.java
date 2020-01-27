@@ -152,11 +152,11 @@ public class Settings {
 	}
 
 	public synchronized String getConfigFileContents() throws IOException {
-		String output = "";
+		StringBuilder output = new StringBuilder();
 		for (String s : Files.readAllLines(Paths.get(configFile.getAbsolutePath()), StandardCharsets.UTF_8)) {
-			output += s;
+			output.append(s);
 		}
-		return output;
+		return output.toString();
 	}
 
 	public synchronized void saveConfig() {

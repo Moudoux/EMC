@@ -8,8 +8,8 @@ import me.deftware.client.framework.utils.ChatProcessor;
 public class CommandMods extends EMCModCommand {
 
 	@Override
-	public CommandBuilder getCommandBuilder() {
-		return new CommandBuilder().addCommand("mods", result -> {
+	public CommandBuilder<?> getCommandBuilder() {
+		return new CommandBuilder<>().addCommand("mods", result -> {
 			if (Bootstrap.modsInfo == null || Bootstrap.getMods().isEmpty()) {
 				ChatProcessor.printFrameworkMessage("No EMC mods are loaded");
 			} else {

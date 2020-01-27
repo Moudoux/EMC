@@ -32,11 +32,11 @@ public class IGuiPasswordTextField extends IGuiTextField {
 
             // Replace chars
             String text = this.getText();
-            String hidden = "";
+            StringBuilder hidden = new StringBuilder();
             for (int i = 0; i < text.length(); i++) {
-                hidden = hidden + "*";
+                hidden.append("*");
             }
-            text = hidden;
+            text = hidden.toString();
 
             String string_1 = ((IMixinGuiTextField) this).getFontRendererInstance().trimToWidth(text.substring(((IMixinGuiTextField) this).getLineScrollOffset()), this.getInnerWidth());
             boolean boolean_1 = int_4 >= 0 && int_4 <= string_1.length();
@@ -50,7 +50,7 @@ public class IGuiPasswordTextField extends IGuiTextField {
 
             if (!string_1.isEmpty()) {
                 String string_2 = boolean_1 ? string_1.substring(0, int_4) : string_1;
-                int_8 = ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow((String)((IMixinGuiTextField) this).getRenderTextProvider().apply(string_2, ((IMixinGuiTextField) this).getLineScrollOffset()), (float)int_6, (float)int_7, int_3);
+                int_8 = ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(((IMixinGuiTextField) this).getRenderTextProvider().apply(string_2, ((IMixinGuiTextField) this).getLineScrollOffset()), (float)int_6, (float)int_7, int_3);
             }
 
             boolean boolean_3 = ((IMixinGuiTextField) this).getCursorMax() < this.getText().length() || this.getText().length() >= ((IMixinGuiTextField) this).getMaxTextLength();
@@ -63,7 +63,7 @@ public class IGuiPasswordTextField extends IGuiTextField {
             }
 
             if (!string_1.isEmpty() && boolean_1 && int_4 < string_1.length()) {
-                ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow((String)((IMixinGuiTextField) this).getRenderTextProvider().apply(string_1.substring(int_4), ((IMixinGuiTextField) this).getCursorMax()), (float)int_8, (float)int_7, int_3);
+                ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(((IMixinGuiTextField) this).getRenderTextProvider().apply(string_1.substring(int_4), ((IMixinGuiTextField) this).getCursorMax()), (float)int_8, (float)int_7, int_3);
             }
 
             if (!boolean_3 && ((IMixinGuiTextField) this).getSuggestion() != null) {
@@ -125,10 +125,10 @@ public class IGuiPasswordTextField extends IGuiTextField {
         RenderSystem.enableColorLogicOp();
         RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
         bufferBuilder_1.begin(7, VertexFormats.POSITION);
-        bufferBuilder_1.vertex((double)int_1, (double)int_4, 0.0D).next();
-        bufferBuilder_1.vertex((double)int_3, (double)int_4, 0.0D).next();
-        bufferBuilder_1.vertex((double)int_3, (double)int_2, 0.0D).next();
-        bufferBuilder_1.vertex((double)int_1, (double)int_2, 0.0D).next();
+        bufferBuilder_1.vertex(int_1, int_4, 0.0D).next();
+        bufferBuilder_1.vertex(int_3, int_4, 0.0D).next();
+        bufferBuilder_1.vertex(int_3, int_2, 0.0D).next();
+        bufferBuilder_1.vertex(int_1, int_2, 0.0D).next();
         tessellator_1.draw();
         RenderSystem.disableColorLogicOp();
         RenderSystem.enableTexture();

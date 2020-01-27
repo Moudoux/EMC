@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -74,7 +75,7 @@ public class WebUtils {
 		connection.setRequestProperty("Accept", "application/json");
 		connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
-		OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
+		OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8);
 		writer.write(payload);
 		writer.close();
 

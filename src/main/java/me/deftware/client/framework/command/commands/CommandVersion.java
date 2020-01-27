@@ -9,8 +9,8 @@ import me.deftware.client.framework.wrappers.IMinecraft;
 public class CommandVersion extends EMCModCommand {
 
 	@Override
-	public CommandBuilder getCommandBuilder() {
-		return new CommandBuilder().addCommand("version", result -> {
+	public CommandBuilder<?> getCommandBuilder() {
+		return new CommandBuilder<>().addCommand("version", result -> {
 			ChatProcessor.printFrameworkMessage("== EMC info ==");
 			ChatProcessor.printFrameworkMessage("You are running " + FrameworkConstants.FRAMEWORK_NAME
 					+ " version " + FrameworkConstants.VERSION + "." + FrameworkConstants.PATCH + " built by " + FrameworkConstants.AUTHOR);

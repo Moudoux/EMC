@@ -13,10 +13,6 @@ public class IClassHandler {
 
     /**
      * Returns a instance of a given IClass subclass
-     *
-     * @param clazz
-     * @return
-     * @throws Exception
      */
     public static <T extends IClass> T getClass(Class<T> clazz) throws Exception {
         return clazz.newInstance();

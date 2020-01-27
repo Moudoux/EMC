@@ -9,10 +9,10 @@ import org.spongepowered.asm.mixin.Shadow;
 public class MixinCPacketPlayer implements IMixinCPacketPlayer {
 
     @Shadow
-    private boolean onGround;
+    protected boolean onGround;
 
     @Shadow
-    private boolean changePosition;
+    protected boolean changePosition;
 
     @Override
     public boolean isOnGround() {

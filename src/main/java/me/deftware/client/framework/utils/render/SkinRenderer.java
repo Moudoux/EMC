@@ -44,40 +44,34 @@ public class SkinRenderer {
 
             // Face
             x = x + width / 4;
-            y = y + 0;
             int w = width / 2;
             int h = height / 4;
             int fw = height * 2;
             int fh = height * 2;
-            float u = height / 4;
-            float v = height / 4;
+            float u = height / 4f;
+            float v = height / 4f;
             Screen.blit(x, y, u, v, w, h, fw, fh);
 
             // Hat
-            x = x + 0;
-            y = y + 0;
             w = width / 2;
             h = height / 4;
-            u = height / 4 * 5;
-            v = height / 4;
+            u = height / 4f * 5;
+            v = height / 4f;
             Screen.blit(x, y, u, v, w, h, fw, fh);
 
             // Chest
-            x = x + 0;
             y = y + height / 4;
             w = width / 2;
             h = height / 8 * 3;
-            u = height / 4 * 2.5F;
-            v = height / 4 * 2.5F;
+            u = height / 4f * 2.5F;
+            v = height / 4f * 2.5F;
             Screen.blit(x, y, u, v, w, h, fw, fh);
 
             // Jacket
-            x = x + 0;
-            y = y + 0;
             w = width / 2;
             h = height / 8 * 3;
-            u = height / 4 * 2.5F;
-            v = height / 4 * 4.5F;
+            u = height / 4f * 2.5F;
+            v = height / 4f * 4.5F;
             Screen.blit(x, y, u, v, w, h, fw, fh);
 
             // Left Arm
@@ -85,35 +79,30 @@ public class SkinRenderer {
             y = y + (slim ? height / 32 : 0);
             w = width / 16 * (slim ? 3 : 4);
             h = height / 8 * 3;
-            u = height / 4 * 5.5F;
-            v = height / 4 * 2.5F;
+            u = height / 4f * 5.5F;
+            v = height / 4f * 2.5F;
             Screen.blit(x, y, u, v, w, h, fw, fh);
 
             // Left Sleeve
-            x = x + 0;
-            y = y + 0;
             w = width / 16 * (slim ? 3 : 4);
             h = height / 8 * 3;
-            u = height / 4 * 5.5F;
-            v = height / 4 * 4.5F;
+            u = height / 4f * 5.5F;
+            v = height / 4f * 4.5F;
             Screen.blit(x, y, u, v, w, h, fw, fh);
 
             // Right Arm
             x = x + width / 16 * (slim ? 11 : 12);
-            y = y + 0;
             w = width / 16 * (slim ? 3 : 4);
             h = height / 8 * 3;
-            u = height / 4 * 5.5F;
-            v = height / 4 * 2.5F;
+            u = height / 4f * 5.5F;
+            v = height / 4f * 2.5F;
             Screen.blit(x, y, u, v, w, h, fw, fh);
 
             // Right Sleeve
-            x = x + 0;
-            y = y + 0;
             w = width / 16 * (slim ? 3 : 4);
             h = height / 8 * 3;
-            u = height / 4 * 5.5F;
-            v = height / 4 * 4.5F;
+            u = height / 4f * 5.5F;
+            v = height / 4f * 4.5F;
             Screen.blit(x, y, u, v, w, h, fw, fh);
 
             // Left Leg
@@ -121,35 +110,30 @@ public class SkinRenderer {
             y = y + height / 32 * (slim ? 11 : 12);
             w = width / 4;
             h = height / 8 * 3;
-            u = height / 4 * 0.5F;
-            v = height / 4 * 2.5F;
+            u = height / 4f * 0.5F;
+            v = height / 4f * 2.5F;
             Screen.blit(x, y, u, v, w, h, fw, fh);
 
             // Left Pants
-            x = x + 0;
-            y = y + 0;
             w = width / 4;
             h = height / 8 * 3;
-            u = height / 4 * 0.5F;
-            v = height / 4 * 4.5F;
+            u = height / 4f * 0.5F;
+            v = height / 4f * 4.5F;
             Screen.blit(x, y, u, v, w, h, fw, fh);
 
             // Right Leg
             x = x + width / 4;
-            y = y + 0;
             w = width / 4;
             h = height / 8 * 3;
-            u = height / 4 * 0.5F;
-            v = height / 4 * 2.5F;
+            u = height / 4f * 0.5F;
+            v = height / 4f * 2.5F;
             Screen.blit(x, y, u, v, w, h, fw, fh);
 
             // Right Pants
-            x = x + 0;
-            y = y + 0;
             w = width / 4;
             h = height / 8 * 3;
-            u = height / 4 * 0.5F;
-            v = height / 4 * 4.5F;
+            u = height / 4f * 0.5F;
+            v = height / 4f * 4.5F;
             Screen.blit(x, y, u, v, w, h, fw, fh);
 
             GL11.glDisable(GL11.GL_BLEND);

@@ -25,7 +25,7 @@ public class ICPacketDig extends IPacket {
         return null;
     }
 
-    public static enum IDigAction {
+    public enum IDigAction {
         START_DESTROY_BLOCK, STOP_DESTROY_BLOCK
     }
 

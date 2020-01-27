@@ -172,8 +172,7 @@ public class IEntity {
      * @return Whether that position is that of an AI or not
      */
     public boolean isNonAIPositionValue(double positionValue, int invalidDivider) {
-        boolean isNonAI = (BigDecimal.valueOf(positionValue).scale() > invalidDivider);
-        return isNonAI;
+        return (BigDecimal.valueOf(positionValue).scale() > invalidDivider);
     }
 
     public int getEntityID() {
@@ -198,9 +197,7 @@ public class IEntity {
 
     public boolean isPlayerOwned() {
         if (entity instanceof WolfEntity) {
-            if (((WolfEntity) entity).isOwner(MinecraftClient.getInstance().player)) {
-                return true;
-            }
+            return ((WolfEntity) entity).isOwner(MinecraftClient.getInstance().player);
         }
         return false;
     }
@@ -250,7 +247,11 @@ public class IEntity {
     }
 
     public double getEyeHeight() {
-        return entity.getEyeHeight(EntityPose.STANDING);
+        return entity.getEyeHeight(entity.getPose());
+    }
+
+    public double getEyeHeight(EntityPose pose) {
+        return entity.getEyeHeight(pose);
     }
 
     public boolean isWithinChunk(IChunkPos chunkPos) {
@@ -261,9 +262,7 @@ public class IEntity {
         if (entity instanceof HostileEntity) {
             return true;
         } else if (entity instanceof ChickenEntity) {
-            if (((ChickenEntity) entity).jockey) {
-                return true;
-            }
+            return ((ChickenEntity) entity).jockey;
         }
         return false;
     }

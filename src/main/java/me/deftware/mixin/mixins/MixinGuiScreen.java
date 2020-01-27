@@ -30,11 +30,11 @@ public class MixinGuiScreen implements IMixinGuiScreen {
 
     @Shadow
     @Final
-    private List<AbstractButtonWidget> buttons;
+    protected List<AbstractButtonWidget> buttons;
 
     @Shadow
     @Final
-    private List<Element> children;
+    protected List<Element> children;
 
     @Override
     public List<AbstractButtonWidget> getButtonList() {

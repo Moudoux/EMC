@@ -33,7 +33,7 @@ import static org.lwjgl.opengl.GL11.*;
 /**
  * Common functions used for rendering
  */
-@SuppressWarnings("Duplicates")
+//@SuppressWarnings("Duplicates")
 public class RenderUtils {
 
     public static int enemy = 0;
@@ -346,7 +346,7 @@ public class RenderUtils {
         GL11.glEnable(2929);
         GL11.glDepthMask(true);
         GL11.glDisable(3042);
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
     }
 
     public static void frame(double x, double y, double z, double x2, double y2, double z2, Color color) {
@@ -392,7 +392,7 @@ public class RenderUtils {
 
     public static void blockESPBox(IBlockPos IBlockPos, float red, float green, float blue) {
         RenderUtils.fixDarkLight();
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
         double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
         double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
         double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
@@ -410,7 +410,7 @@ public class RenderUtils {
         GL11.glEnable(2929);
         GL11.glDepthMask(true);
         GL11.glDisable(3042);
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
     }
 
     public static void fixDarkLight() {
@@ -428,13 +428,13 @@ public class RenderUtils {
             DrawableHelper.blit(x, y, 24, 24, w, h, 192, 192);
             DrawableHelper.blit(x, y, 120, 24, w, h, 192, 192);
             glDisable(GL_BLEND);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
     public static void blockESPBox(IBlockPos IBlockPos, Color c) {
         RenderUtils.fixDarkLight();
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
         float red = c.getRed(), green = c.getGreen(), blue = c.getBlue();
         double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
         double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
@@ -453,12 +453,12 @@ public class RenderUtils {
         GL11.glEnable(2929);
         GL11.glDepthMask(true);
         GL11.glDisable(3042);
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
     }
 
     public static void framelessBlockESP(IBlockPos IBlockPos, float red, float green, float blue) {
         RenderUtils.fixDarkLight();
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
         double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
         double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
         double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
@@ -474,12 +474,12 @@ public class RenderUtils {
         GL11.glEnable(2929);
         GL11.glDepthMask(true);
         GL11.glDisable(3042);
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
     }
 
     public static void emptyBlockESPBox(IBlockPos IBlockPos) {
         RenderUtils.fixDarkLight();
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
         double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
         double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
         double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
@@ -499,7 +499,7 @@ public class RenderUtils {
 
     public static void entityESPBox(Entity entity, int mode) {
         RenderUtils.fixDarkLight();
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(2.0F);
@@ -534,7 +534,7 @@ public class RenderUtils {
 
     public static void nukerBox(IBlockPos IBlockPos, float damage) {
         RenderUtils.fixDarkLight();
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
         double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
         double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
         double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
@@ -561,7 +561,7 @@ public class RenderUtils {
 
     public static void searchBox(IBlockPos IBlockPos) {
         RenderUtils.fixDarkLight();
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
         double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
         double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
         double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
@@ -759,7 +759,7 @@ public class RenderUtils {
 
     public static void tracerLine(Entity entity, int mode) {
         RenderUtils.fixDarkLight();
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
         double x = entity.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
         double y = entity.getY() + entity.getHeight() / 2.0F - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
         double z = entity.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
@@ -800,7 +800,7 @@ public class RenderUtils {
 
     public static void tracerLine(Entity entity, Color color) {
         RenderUtils.fixDarkLight();
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
 
         double x = entity.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
         double y = entity.getY() + entity.getHeight() / 2.0F - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
@@ -833,7 +833,7 @@ public class RenderUtils {
 
     public static void tracerLine(Entity entity, Color color, float alpha) {
         RenderUtils.fixDarkLight();
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
         double x = entity.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX() + 0.5f;
         double y = entity.getY() + entity.getHeight() / 2.0F - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY() - 0.5f;
         double z = entity.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ() + 0.5f;
@@ -862,7 +862,7 @@ public class RenderUtils {
         GL11.glDepthMask(true);
         GL11.glDisable(3042);
 
-        GlStateManager.clearCurrentColor();
+        RenderSystem.clearCurrentColor();
     }
 
     public static void enableGL2D() {
@@ -959,7 +959,7 @@ public class RenderUtils {
         RenderUtils.glColor(color);
         GL11.glBegin(1);
 
-        GL11.glVertex3d(0.0D, MinecraftClient.getInstance().player.getEyeHeight(EntityPose.STANDING), 0.0D);
+        GL11.glVertex3d(0.0D, MinecraftClient.getInstance().player.getEyeHeight(MinecraftClient.getInstance().player.getPose()), 0.0D);
         GL11.glVertex3d(x, y, z);
 
         GL11.glEnd();

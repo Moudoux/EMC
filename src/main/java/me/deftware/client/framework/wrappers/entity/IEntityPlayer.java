@@ -572,10 +572,7 @@ public class IEntityPlayer {
 	}
 
 	public static boolean hasPotionEffects() {
-		if (!MinecraftClient.getInstance().player.getStatusEffects().isEmpty()) {
-			return true;
-		}
-		return false;
+		return !MinecraftClient.getInstance().player.getStatusEffects().isEmpty();
 	}
 
 	public static boolean isSingleplayer() {
@@ -590,7 +587,7 @@ public class IEntityPlayer {
 			return "0";
 		}
 		return String.format("%.3f",
-				new Object[]{Double.valueOf(MinecraftClient.getInstance().getCameraEntity().getX())});
+				MinecraftClient.getInstance().getCameraEntity().getX());
 	}
 
 	public static String getDisplayY() {
@@ -598,7 +595,7 @@ public class IEntityPlayer {
 			return "0";
 		}
 		return String.format("%.5f",
-				new Object[]{Double.valueOf(MinecraftClient.getInstance().getCameraEntity().getY())});
+				MinecraftClient.getInstance().getCameraEntity().getY());
 	}
 
 	public static String getDisplayZ() {
@@ -606,13 +603,13 @@ public class IEntityPlayer {
 			return "0";
 		}
 		return String.format("%.3f",
-				new Object[]{Double.valueOf(MinecraftClient.getInstance().getCameraEntity().getZ())});
+				MinecraftClient.getInstance().getCameraEntity().getZ());
 	}
 
 	/**
 	 * Which dimension the player is in (-1 = the Nether, 0 = normal world)
 	 *
-	 * @return
+	 * @return The dimension
 	 */
 	public static int getDimension() {
 		if (IEntityPlayer.isNull()) {
@@ -624,10 +621,7 @@ public class IEntityPlayer {
 	public static boolean isRowingBoat() {
 		if (IEntityPlayer.isNull()) {
 			return false;
-		} else if (MinecraftClient.getInstance().player.getVehicle() instanceof BoatEntity) {
-			return true;
-		}
-		return false;
+		} else return MinecraftClient.getInstance().player.getVehicle() instanceof BoatEntity;
 	}
 
 	public static boolean isRiding() {
@@ -719,10 +713,7 @@ public class IEntityPlayer {
 	}
 
 	public static boolean isNull() {
-		if (MinecraftClient.getInstance().player == null) {
-			return true;
-		}
-		return false;
+		return MinecraftClient.getInstance().player == null;
 	}
 
 	public static boolean isHoldingItem(HandItem item) {

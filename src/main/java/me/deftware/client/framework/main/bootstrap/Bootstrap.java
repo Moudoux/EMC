@@ -30,8 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Bootstrap {
 
-    public static int CRASH_COUNT = 0;
-    public static boolean initialized = false, CRASHED = false;
+    public static boolean initialized = false;
     public static Logger logger = LogManager.getLogger(String.format("EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
     public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
     public static boolean isRunning = true;
@@ -81,16 +80,14 @@ public class Bootstrap {
                 discovery.getMods().forEach(AbstractModDiscovery.AbstractModEntry::init);
             });
             registerFrameworkCommands();
-            modDiscoveries.forEach(discovery -> {
-                discovery.getMods().forEach(mod -> {
-                    try {
-                        loadMod(mod);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        Bootstrap.logger.error("Failed to load {}", mod.getFile().getName());
-                    }
-                });
-            });
+            modDiscoveries.forEach(discovery -> discovery.getMods().forEach(mod -> {
+                try {
+                    loadMod(mod);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    Bootstrap.logger.error("Failed to load {}", mod.getFile().getName());
+                }
+            }));
         } catch (Exception ex) {
             Bootstrap.logger.warn("Failed to load EMC", ex);
         }

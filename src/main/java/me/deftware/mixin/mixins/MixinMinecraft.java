@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinMinecraft implements IMixinMinecraft {
 
     @Shadow
-    public boolean windowFocused;
+    private boolean windowFocused;
 
     @Mutable
     @Shadow
@@ -51,13 +51,13 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     }
 
     @Shadow
-    public abstract void doAttack();
+    protected abstract void doAttack();
 
     @Shadow
-    public abstract void doItemUse();
+    protected abstract void doItemUse();
 
     @Shadow
-    public abstract void doItemPick();
+    protected abstract void doItemPick();
 
     @ModifyVariable(method = "openScreen", at = @At("HEAD"))
     private Screen displayGuiScreenModifier(Screen screen) {

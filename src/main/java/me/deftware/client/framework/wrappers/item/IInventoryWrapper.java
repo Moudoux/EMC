@@ -36,9 +36,7 @@ public class IInventoryWrapper {
         }
         ItemStack chest = MinecraftClient.getInstance().player.getEquippedStack(EquipmentSlot.CHEST);
         if (chest != null) {
-            if (chest.getItem() == Items.ELYTRA) {
-                return true;
-            }
+            return chest.getItem() == Items.ELYTRA;
         }
         return false;
     }

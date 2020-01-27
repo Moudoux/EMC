@@ -32,14 +32,14 @@ public class EventPacketSend extends Event {
     }
 
     public IPacket getIPacket() {
-        if (packet instanceof PlayerMoveC2SPacket) {
-            return new ICPacketPlayer(packet);
-        } else if (packet instanceof PlayerMoveC2SPacket.Both) {
+        if (packet instanceof PlayerMoveC2SPacket.Both) {
             return new ICPacketPositionRotation(packet);
         } else if (packet instanceof PlayerMoveC2SPacket.LookOnly) {
             return new ICPacketRotation(packet);
         } else if (packet instanceof PlayerMoveC2SPacket.PositionOnly) {
             return new ICPacketPosition(packet);
+        } else if (packet instanceof PlayerMoveC2SPacket) {
+            return new ICPacketPlayer(packet);
         } else if (packet instanceof GuiCloseC2SPacket) {
             return new ICPacketCloseWindow(packet);
         }

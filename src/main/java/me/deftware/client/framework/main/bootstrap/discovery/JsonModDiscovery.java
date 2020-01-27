@@ -57,24 +57,21 @@ public class JsonModDiscovery extends AbstractModDiscovery {
 				try {
 					JFXPanel frame = new JFXPanel(); // Initialize JavaFX Environment
 					isFileDialogOpen = true;
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							FileChooser fileChooser = new FileChooser();
-							fileChooser.setTitle("Open EMC Json File (Required)");
-							fileChooser.getExtensionFilters().addAll(
-									new FileChooser.ExtensionFilter("Json", "*.json")
-							);
+					Platform.runLater(() -> {
+						FileChooser fileChooser = new FileChooser();
+						fileChooser.setTitle("Open EMC Json File (Required)");
+						fileChooser.getExtensionFilters().addAll(
+								new FileChooser.ExtensionFilter("Json", "*.json")
+						);
 
-							File resultFile = fileChooser.showOpenDialog(null);
+						File resultFile = fileChooser.showOpenDialog(null);
 
-							if (resultFile != null) {
-								manualJsonLocation = resultFile.getAbsolutePath();
-							} else {
-								System.out.println("JSON not found, things will break if other addons are using this!");
-							}
-							isFileDialogOpen = false;
+						if (resultFile != null) {
+							manualJsonLocation = resultFile.getAbsolutePath();
+						} else {
+							System.out.println("JSON not found, things will break if other addons are using this!");
 						}
+						isFileDialogOpen = false;
 					});
 				} catch (Exception | Error ex) {
 					System.out.println("Error: EMC Json File Open Dialog failed to open, please Input your EMC Json Location manually in your EMC Config @ emcJsonLocation");

@@ -29,7 +29,7 @@ public enum ChatColor {
 	private static final Map<Character, ChatColor> BY_CHAR;
 
 	static {
-		STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + Character.toString(COLOR_CHAR) + "[0-9A-FK-OR]");
+		STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + COLOR_CHAR + "[0-9A-FK-OR]");
 		STRIP_COLOR_PATTERN2 = Pattern.compile("(?i)&[0-9A-FK-OR]");
 		BY_ID = Maps.newHashMap();
 		BY_CHAR = Maps.newHashMap();
@@ -37,16 +37,16 @@ public enum ChatColor {
 		int length = (values = ChatColor.values()).length;
 		for (int i = 0; i < length; i++) {
 			ChatColor color = values[i];
-			ChatColor.BY_ID.put(Integer.valueOf(color.intCode), color);
-			ChatColor.BY_CHAR.put(Character.valueOf(color.code), color);
+			ChatColor.BY_ID.put(color.intCode, color);
+			ChatColor.BY_CHAR.put(color.code, color);
 		}
 	}
 
-	private ChatColor(String s, int n, char code, int intCode) {
+	ChatColor(String s, int n, char code, int intCode) {
 		this(s, n, code, intCode, false);
 	}
 
-	private ChatColor(String s, int n, char code, int intCode, boolean isFormat) {
+	ChatColor(String s, int n, char code, int intCode, boolean isFormat) {
 		this.code = code;
 		this.intCode = intCode;
 		this.isFormat = isFormat;
@@ -71,13 +71,13 @@ public enum ChatColor {
 	}
 
 	public static ChatColor getByChar(char code) {
-		return ChatColor.BY_CHAR.get(Character.valueOf(code));
+		return ChatColor.BY_CHAR.get(code);
 	}
 
 	public static ChatColor getByChar(String code) {
-		Validate.notNull(code, "Code cannot be null", new Object[0]);
-		Validate.isTrue(code.length() > 0, "Code must have at least one char", new Object[0]);
-		return ChatColor.BY_CHAR.get(Character.valueOf(code.charAt(0)));
+		Validate.notNull(code, "Code cannot be null");
+		Validate.isTrue(code.length() > 0, "Code must have at least one char");
+		return ChatColor.BY_CHAR.get(code.charAt(0));
 	}
 
 	public static String stripColor(String input) {
@@ -101,7 +101,7 @@ public enum ChatColor {
 	}
 
 	public static String getLastColors(String input) {
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		int length = input.length();
 		for (int index = length - 1; index > -1; index--) {
 			char section = input.charAt(index);
@@ -109,7 +109,7 @@ public enum ChatColor {
 				char c = input.charAt(index + 1);
 				ChatColor color = ChatColor.getByChar(c);
 				if (color != null) {
-					result = String.valueOf(color.toString()) + result;
+					result.insert(0, color.toString());
 					if (color.isColor()) {
 						break;
 					}
@@ -119,7 +119,7 @@ public enum ChatColor {
 				}
 			}
 		}
-		return result;
+		return result.toString();
 	}
 
 }

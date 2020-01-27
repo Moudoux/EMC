@@ -18,7 +18,7 @@ public class IChunk {
     }
 
     public int getLightFor(IEnumLightType lightType, IBlockPos pos) {
-        return chunk.getLuminance( pos.getPos());
+        return chunk.getLuminance(pos.getPos());
     }
 
     public IChunkPos getPos() {

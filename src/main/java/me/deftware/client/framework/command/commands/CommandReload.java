@@ -6,12 +6,13 @@ import me.deftware.client.framework.command.EMCModCommand;
 import me.deftware.client.framework.wrappers.IChat;
 import me.deftware.client.framework.wrappers.entity.IEntity;
 import me.deftware.client.framework.wrappers.world.IWorld;
+import net.minecraft.server.command.ServerCommandSource;
 
 public class CommandReload extends EMCModCommand {
 
     @Override
-    public CommandBuilder getCommandBuilder() {
-        return new CommandBuilder().set((LiteralArgumentBuilder) LiteralArgumentBuilder.literal("reload")
+    public CommandBuilder<?> getCommandBuilder() {
+        return new CommandBuilder<>().set(LiteralArgumentBuilder.literal("reload")
                 .then(
                         LiteralArgumentBuilder.literal("skins")
                                 .executes(c -> {

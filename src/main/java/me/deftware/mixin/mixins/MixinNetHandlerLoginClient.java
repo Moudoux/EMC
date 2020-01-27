@@ -13,7 +13,7 @@ public class MixinNetHandlerLoginClient implements IMixinNetHandlerLoginClient {
 
     @Final
     @Shadow
-    protected ClientConnection connection;
+    private ClientConnection connection;
 
     @Shadow
     private GameProfile profile;
@@ -30,7 +30,7 @@ public class MixinNetHandlerLoginClient implements IMixinNetHandlerLoginClient {
 
     @Override
     public void setGameProfile(GameProfile profile) {
-        profile = profile;
+        this.profile = profile;
     }
 
 }

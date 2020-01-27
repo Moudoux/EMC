@@ -9,10 +9,10 @@ import me.deftware.client.framework.wrappers.IChat;
 public class CommandHelp extends EMCModCommand {
 
 	@Override
-	public CommandBuilder getCommandBuilder() {
-		return new CommandBuilder().addCommand("help", result -> {
+	public CommandBuilder<?> getCommandBuilder() {
+		return new CommandBuilder<>().addCommand("help", result -> {
 			for (String cmd : CommandRegister.getCommandsAndUsage()) {
-				IChat.sendClientMessage((String) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".") + cmd);
+				IChat.sendClientMessage(SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".") + cmd);
 			}
 		});
 	}

@@ -33,7 +33,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     private float partialTicks = 0;
 
     @Shadow
-    public abstract void loadShader(Identifier p_loadShader_1_);
+    protected abstract void loadShader(Identifier p_loadShader_1_);
 
     /* TODO: FIX
     @Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "com/mojang/blaze3d/systems/RenderSystem.enableDepthTest()V"))

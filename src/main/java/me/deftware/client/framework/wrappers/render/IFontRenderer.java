@@ -9,7 +9,7 @@ public class IFontRenderer {
     }
 
     public static void drawCenteredString(String text, int x, int y, int color) {
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(text, x - MinecraftClient.getInstance().textRenderer.getStringWidth(text) / 2, y, color);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(text, x - MinecraftClient.getInstance().textRenderer.getStringWidth(text) / 2f, y, color);
     }
 
     public static void drawStringWithShadow(String text, int x, int y, int color) {

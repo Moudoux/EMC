@@ -22,7 +22,7 @@ public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventL
     }
 
     public void drawCenteredString(String text, int x, int y, int color) {
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(text, x - MinecraftClient.getInstance().textRenderer.getStringWidth(text) / 2, y, color);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(text, x - MinecraftClient.getInstance().textRenderer.getStringWidth(text) / 2f, y, color);
     }
 
     @Override

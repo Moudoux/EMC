@@ -7,7 +7,6 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 
-@SuppressWarnings("RedundantConditionalExpression")
 public class IMouse {
 
     public static ArrayList<MouseScrollCallback> scrollCallbacks = new ArrayList<>();
@@ -28,12 +27,8 @@ public class IMouse {
     }
 
     public static boolean isButtonDown(int button) {
-        if (button == 0) {
-            return GLFW.glfwGetMouseButton(MinecraftClient.getInstance().getWindow().getHandle(),
-                    GLFW.GLFW_MOUSE_BUTTON_1) == 1 ? true : false;
-        } else if (button == 1) {
-            return GLFW.glfwGetMouseButton(MinecraftClient.getInstance().getWindow().getHandle(),
-                    GLFW.GLFW_MOUSE_BUTTON_2) == 1 ? true : false;
+        if (button == 0 || button == 1) {
+            return GLFW.glfwGetMouseButton(MinecraftClient.getInstance().getWindow().getHandle(), (button == 0 ? GLFW.GLFW_MOUSE_BUTTON_1 : GLFW.GLFW_MOUSE_BUTTON_2)) == 1;
         }
         return false;
     }

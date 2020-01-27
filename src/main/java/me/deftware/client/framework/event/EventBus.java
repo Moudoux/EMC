@@ -10,9 +10,9 @@ import java.util.HashMap;
 public class EventBus {
 
     private static final Object lock = new Object();
-    private static MultiMap<Class, Listener> listeners = new MultiMap<>();
+    private static MultiMap<Class<?>, Listener> listeners = new MultiMap<>();
 
-    public static synchronized void registerClass(Class clazz, Object instance) {
+    public static synchronized void registerClass(Class<?> clazz, Object instance) {
         synchronized (lock) {
             Bootstrap.logger.debug(String.format("Loading event handlers in class %s", clazz.getName()));
             for (Method method : clazz.getDeclaredMethods()) {
@@ -22,7 +22,7 @@ public class EventBus {
                         method.setAccessible(true);
                     }
                     EventHandler annotation = method.getAnnotation(EventHandler.class);
-                    Class eventType = annotation.eventType();
+                    Class<?> eventType = annotation.eventType();
                     listeners.putIfAbsent(eventType, new Listener(method, instance));
                     Bootstrap.logger.debug(String.format("Loaded event handler for method %s", method.getName()));
                 }
@@ -30,10 +30,10 @@ public class EventBus {
         }
     }
 
-    public static synchronized void unRegisterClass(Class clazz) {
+    public static synchronized void unRegisterClass(Class<?> clazz) {
         synchronized (lock) {
-            HashMap<Class, Listener> removeList = new HashMap<>();
-            for (Class event : listeners.keySet()) {
+            HashMap<Class<?>, Listener> removeList = new HashMap<>();
+            for (Class<?> event : listeners.keySet()) {
                 Collection<Listener> listenerCollection = listeners.get(event);
                 for (Listener listener : listenerCollection) {
                     if (listener.getClassInstance().getClass() == clazz) {
@@ -42,9 +42,7 @@ public class EventBus {
                     }
                 }
             }
-            removeList.forEach((key, value) -> {
-                listeners.remove(key, value);
-            });
+            removeList.forEach((key, value) -> listeners.remove(key, value));
         }
     }
 

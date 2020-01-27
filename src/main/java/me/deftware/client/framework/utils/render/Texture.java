@@ -113,7 +113,7 @@ public class Texture {
                     int rgb = ((0xFF) << 24) |
                             ((0xFF) << 16) |
                             ((0xFF) << 8) |
-                            ((0xFF) << 0);
+                            ((0xFF));
                     this.setPixel(x, y, rgb);
                 }
             }

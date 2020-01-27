@@ -90,13 +90,13 @@ public class BitmapFont implements EMCFont {
         for (char numeric = 48; numeric <= 57; numeric++) { //0 - 9 in ASCII
             characterGenerate(numeric, color);
         }
-        char specialCharacters[] = {'!', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
+        char[] specialCharacters = {'!', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
                 ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', '"'};
         if (additionalCharacters.length > 0)
             specialCharacters = ArrayUtils.addAll(specialCharacters, additionalCharacters);
         //Additional and special characters
-        for (int additional = 0; additional < specialCharacters.length; additional++) { //0 - 9 in ASCII
-            characterGenerate(specialCharacters[additional], color);
+        for (char specialCharacter : specialCharacters) { //0 - 9 in ASCII
+            characterGenerate(specialCharacter, color);
         }
         return 0;
     }

@@ -154,7 +154,7 @@ public class IItemStack {
     }
 
     public boolean isEmpty() {
-        return stack.getItem() == Item.fromBlock(Blocks.AIR);
+        return stack.getItem() == Blocks.AIR.asItem();
     }
 
     public IItem getIItem() {

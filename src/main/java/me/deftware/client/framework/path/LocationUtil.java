@@ -37,7 +37,7 @@ public class LocationUtil {
         URL classResource = c.getResource(c.getSimpleName() + ".class");
         if (classResource == null) {
             return new LocationUtil((URL) null);
-        };
+        }
         String url = classResource.toString(), suffix = c.getCanonicalName().replace('.', '/') + ".class";
         if (!url.endsWith(suffix)) {
             return new LocationUtil((URL) null);

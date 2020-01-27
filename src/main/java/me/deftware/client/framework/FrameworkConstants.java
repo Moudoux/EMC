@@ -11,11 +11,11 @@ public class FrameworkConstants {
     public static MappingsLoader MAPPING_LOADER = MappingsLoader.Fabric;
     public static MappingSystem MAPPING_SYSTEM = MappingSystem.Yarn;
 
-    public static enum MappingSystem {
+    public enum MappingSystem {
         Yarn, MCPConfig, MOJANG
     }
 
-    public static enum MappingsLoader {
+    public enum MappingsLoader {
         Fabric, MCP
     }
 

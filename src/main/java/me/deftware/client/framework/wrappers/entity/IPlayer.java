@@ -25,11 +25,8 @@ public class IPlayer {
     }
 
     public boolean isSelf() {
-        if (player == MinecraftClient.getInstance().player
-                || player.getName().equals(MinecraftClient.getInstance().getSession().getUsername())) {
-            return true;
-        }
-        return false;
+        return player == MinecraftClient.getInstance().player
+                || player.getName().equals(MinecraftClient.getInstance().getSession().getUsername());
     }
 
     public IItemStack getHeldItem() {

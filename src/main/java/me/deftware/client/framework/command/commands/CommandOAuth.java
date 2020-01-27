@@ -9,8 +9,8 @@ import me.deftware.client.framework.wrappers.IChat;
 public class CommandOAuth extends EMCModCommand {
 
 	@Override
-	public CommandBuilder getCommandBuilder() {
-		return new CommandBuilder().addCommand("auth", result -> {
+	public CommandBuilder<?> getCommandBuilder() {
+		return new CommandBuilder<>().addCommand("auth", result -> {
 			IChat.sendClientMessage("Authenticating...");
 			OAuth.oAuth((status, code, time) -> {
 				if (status) {

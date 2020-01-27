@@ -6,7 +6,7 @@ import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.server.command.CommandSource;
+import net.minecraft.server.command.ServerCommandSource;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -14,15 +14,14 @@ import java.util.Map;
 /**
  * Handles custom EMC commands
  */
-@SuppressWarnings("ALL")
 public class CommandRegister {
 
-    private static CommandDispatcher<CommandSource> dispatcher = new CommandDispatcher<CommandSource>();
+    private static CommandDispatcher<ServerCommandSource> dispatcher = new CommandDispatcher<>();
 
     /**
      * @return Brigadier dispatcher object
      */
-    public static CommandDispatcher<CommandSource> getDispatcher() {
+    public static CommandDispatcher<ServerCommandSource> getDispatcher() {
         return dispatcher;
     }
 
@@ -31,7 +30,7 @@ public class CommandRegister {
      * (restores to the dafault state - no commands loaded)
      */
     public static void clearDispatcher() {
-        dispatcher = new CommandDispatcher<CommandSource>();
+        dispatcher = new CommandDispatcher<>();
     }
 
     /**
@@ -39,18 +38,18 @@ public class CommandRegister {
      *
      * @param command
      */
-    public static synchronized void registerCommand(CommandBuilder command) {
-        CommandNode<?> node = dispatcher.register(command.build());
+    public static synchronized void registerCommand(CommandBuilder<?> command) {
+        CommandNode<ServerCommandSource> node = dispatcher.register(command.build());
         for (Object alias : command.getAliases()) {
-            LiteralArgumentBuilder argumentBuilder = LiteralArgumentBuilder.literal((String) alias);
-            dispatcher.register((LiteralArgumentBuilder) argumentBuilder.redirect(node));
+            LiteralArgumentBuilder<ServerCommandSource> argumentBuilder = LiteralArgumentBuilder.literal((String) alias);
+            dispatcher.register(argumentBuilder.redirect(node));
         }
     }
 
     /**
      * Registers a EMCModCommand
      *
-     * @param command
+     * @param modCommand
      */
     public static void registerCommand(EMCModCommand modCommand) {
         registerCommand(modCommand.getCommandBuilder());
@@ -76,12 +75,8 @@ public class CommandRegister {
      * @return
      */
     public static ArrayList<String> getCommandsAndUsage() {
-        ArrayList<String> commands = new ArrayList<>();
-        Map<CommandNode<CommandSource>, String> map = getSmartUsage();
-        for (String cmd : map.values()) {
-            commands.add(cmd);
-        }
-        return commands;
+        Map<CommandNode<ServerCommandSource>, String> map = getSmartUsage();
+        return new ArrayList<>(map.values());
     }
 
     /**
@@ -89,7 +84,7 @@ public class CommandRegister {
      *
      * @return
      */
-    public static Map<CommandNode<CommandSource>, String> getSmartUsage() {
+    public static Map<CommandNode<ServerCommandSource>, String> getSmartUsage() {
         return dispatcher.getSmartUsage(dispatcher.getRoot(), MinecraftClient.getInstance().player.getCommandSource());
     }
 

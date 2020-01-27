@@ -32,7 +32,7 @@ public class IScreens {
         realmsbridge.switchToRealms(parent);
     }
 
-    public static enum Screen {
+    public enum Screen {
         Multiplayer, WorldSelection, Options, MainMenu
     }
 

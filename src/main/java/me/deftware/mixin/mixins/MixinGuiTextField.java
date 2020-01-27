@@ -40,7 +40,7 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
     private String suggestion;
 
     @Shadow
-    public boolean focused;
+    private boolean focused;
 
     @Shadow
     private int selectionEnd;
