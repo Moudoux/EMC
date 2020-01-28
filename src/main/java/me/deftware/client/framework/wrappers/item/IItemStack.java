@@ -35,7 +35,7 @@ public class IItemStack {
     }
 
     public IItemStack(IBlock block) {
-        stack = new ItemStack(Item.fromBlock(block.getBlock()));
+        stack = new ItemStack(block.getBlock());
     }
 
     public IItemStack(IItem item) {
@@ -87,7 +87,7 @@ public class IItemStack {
     public void enchant(String name, int level) {
         for (Enchantment enchantment : Registry.ENCHANTMENT) {
             IEnchantment enchantmentData = new IEnchantment(enchantment);
-            if (enchantmentData.getEnchantmentKey().equals(name)) {
+            if (enchantmentData.getEnchantmentKey().equalsIgnoreCase(name)) {
                 stack.addEnchantment(enchantment, level);
                 break;
             }

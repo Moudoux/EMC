@@ -42,6 +42,7 @@
     "MixinEntityPlayerSP",
     "MixinGuiMainMenu",
     "MixinInGameOverlayRenderer",
+    "MixinItemStack",
     "MixinItemTool",
     "MixinKeyBinding",
     "MixinGuiEditSign",

@@ -10,7 +10,7 @@ public class IEnchantment {
     private Enchantment item;
 
     public IEnchantment(String name) {
-        item = getByName(name);
+        item = getByName(name).item;
     }
 
     public IEnchantment(Enchantment item) {
@@ -41,15 +41,15 @@ public class IEnchantment {
         return item != null;
     }
 
-    public static Enchantment getByName(String id) {
+    public static IEnchantment getByName(String id) {
         Identifier resourceLocation = new Identifier(id);
         if (Registry.ENCHANTMENT.containsId(resourceLocation)) {
-            return Registry.ENCHANTMENT.get(resourceLocation);
+            return new IEnchantment(Registry.ENCHANTMENT.get(resourceLocation));
         } else {
             for (Enchantment enchantment : Registry.ENCHANTMENT) {
                 IEnchantment enchantmentObj = new IEnchantment(enchantment);
                 if (enchantmentObj.getEnchantmentKey().equalsIgnoreCase(id)) {
-                    return enchantmentObj.getEnchantment();
+                    return enchantmentObj;
                 }
             }
         }
