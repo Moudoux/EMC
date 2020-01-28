@@ -8,7 +8,7 @@ import me.deftware.mixin.imp.IMixinGuiScreen;
 import net.minecraft.client.gui.screen.DisconnectedScreen;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.AbstractContainerScreen;
+import net.minecraft.client.gui.screen.ingame.ContainerScreen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 
 import java.util.ArrayList;
@@ -34,13 +34,13 @@ public class EventGuiScreenDraw extends Event {
         } else if (type.equals(CommonScreenTypes.GuiIngameMenu)) {
             return screen instanceof GameMenuScreen;
         } else if (type.equals(CommonScreenTypes.GuiContainer)) {
-            return screen instanceof AbstractContainerScreen;
+            return screen instanceof ContainerScreen;
         }
         return false;
     }
 
     public ScreenInstance getInstance() {
-        if (screen instanceof AbstractContainerScreen) {
+        if (screen instanceof ContainerScreen) {
             return new GuiContainerInstance(screen);
         }
         return new ScreenInstance(screen);

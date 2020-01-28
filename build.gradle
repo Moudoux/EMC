@@ -43,7 +43,7 @@ dependencies {
 	minecraft "com.mojang:minecraft:${mcVersion}"
 	mappings "net.fabricmc:yarn:${mappingsVer}:v2"
 	compile 'com.google.code.findbugs:jsr305:3.0.2'
-	modCompile "net.fabricmc:fabric-loader:0.7.2+build.174"
+	modCompile "net.fabricmc:fabric-loader:0.7.6+build.180"
 	modCompile 'com.github.modmuss50:Fabric-ASM:b97939c03a'
 	include 'com.github.modmuss50:Fabric-ASM:b97939c03a'
 	compile files("deps/IModelData.jar")
