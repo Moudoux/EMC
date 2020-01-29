@@ -10,31 +10,19 @@ public interface EMCFont {
 
     int drawString(int x, int y, String text);
 
-    @Deprecated
     int drawStringWithShadow(int x, int y, String text);
-
-    int drawString(int x, int y, String text, boolean shadow);
 
     int drawString(int x, int y, String text, Color color);
 
-    @Deprecated
     int drawStringWithShadow(int x, int y, String text, Color color);
-
-    int drawString(int x, int y, String text, Color color, boolean shadow);
 
     int drawCenteredString(int x, int y, String text);
 
-    @Deprecated
     int drawCenteredStringWithShadow(int x, int y, String text);
 
-    int drawCenteredString(int x, int y, String text, boolean shadow);
-
-    @Deprecated
     int drawCenteredStringWithShadow(int x, int y, String text, Color color);
 
     int drawCenteredString(int x, int y, String text, Color color);
-
-    int drawCenteredString(int x, int y, String text, Color color, boolean shadow);
 
     int drawOnScreen(int x, int y);
 

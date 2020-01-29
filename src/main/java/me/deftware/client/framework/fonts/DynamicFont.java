@@ -1,6 +1,5 @@
 package me.deftware.client.framework.fonts;
 
-import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.utils.render.GraphicsUtil;
 import me.deftware.client.framework.utils.render.NonScaledRenderer;
 import me.deftware.client.framework.utils.render.Texture;
@@ -109,35 +108,7 @@ public class DynamicFont implements EMCFont {
 
     @Override
     public int drawString(int x, int y, String text) {
-        return drawString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
-    }
-
-    @Deprecated
-    @Override
-    public int drawStringWithShadow(int x, int y, String text) {
-        return drawString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
-    }
-
-    @Override
-    public int drawString(int x, int y, String text, boolean shadow) {
-        return drawString(x, y, text, Color.white, shadow);
-    }
-
-    @Deprecated
-    @Override
-    public int drawStringWithShadow(int x, int y, String text, Color color) {
-        return drawString(x, y, text, color, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
-    }
-
-    @Override
-    public int drawString(int x, int y, String text, Color color, boolean shadow) {
-        if (shadow) {
-            generateString(text, Color.black);
-            drawOnScreen(x + shadowSize, y + shadowSize);
-        }
-        generateString(text, color);
-        drawOnScreen(x, y);
-        return 0;
+        return drawString(x, y, text, Color.white);
     }
 
     @Override
@@ -148,33 +119,23 @@ public class DynamicFont implements EMCFont {
     }
 
     @Override
+    public int drawStringWithShadow(int x, int y, String text) {
+        return drawStringWithShadow(x, y, text, Color.white);
+    }
+
+    @Override
+    public int drawStringWithShadow(int x, int y, String text, Color color) {
+        generateString(text, Color.black);
+        drawOnScreen(x + shadowSize, y + shadowSize);
+        generateString(text, color);
+        drawOnScreen(x, y);
+        return 0;
+    }
+
+    @Override
     public int drawCenteredString(int x, int y, String text) {
-        return drawCenteredString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
-    }
-
-    @Deprecated
-    @Override
-    public int drawCenteredStringWithShadow(int x, int y, String text) {
-        return drawCenteredString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
-    }
-
-    @Override
-    public int drawCenteredString(int x, int y, String text, boolean shadow) {
-        return drawCenteredString(x, y, text, Color.white, shadow);
-    }
-
-    @Deprecated
-    @Override
-    public int drawCenteredStringWithShadow(int x, int y, String text, Color color) {
-        return drawCenteredString(x, y, text, color, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
-    }
-
-    @Override
-    public int drawCenteredString(int x, int y, String text, Color color, boolean shadow) {
-        if (shadow) {
-            drawCenteredString(x + shadowSize, y + shadowSize, text, Color.black);
-        }
-        drawCenteredString(x, y, text, color);
+        generateString(text, Color.white);
+        drawOnScreen(x - getLastRenderedWidth() / 2, y - getLastRenderedHeight() / 2);
         return 0;
     }
 
@@ -182,6 +143,18 @@ public class DynamicFont implements EMCFont {
     public int drawCenteredString(int x, int y, String text, Color color) {
         generateString(text, color);
         drawOnScreen(x - getLastRenderedWidth() / 2, y - getLastRenderedHeight() / 2);
+        return 0;
+    }
+
+    @Override
+    public int drawCenteredStringWithShadow(int x, int y, String text) {
+        return drawCenteredStringWithShadow(x, y, text, Color.white);
+    }
+
+    @Override
+    public int drawCenteredStringWithShadow(int x, int y, String text, Color color) {
+        drawCenteredString(x + shadowSize, y + shadowSize, text, Color.black);
+        drawCenteredString(x, y, text, color);
         return 0;
     }
 

@@ -52,8 +52,6 @@ public class JsonModDiscovery extends AbstractModDiscovery {
 			if (manualJsonLocation != null && new File(manualJsonLocation).exists()) {
 				return new File(manualJsonLocation);
 			} else {
-				System.out.println("Opening File Open Dialog, as JSON Cannot be found...");
-
 				try {
 					JFXPanel frame = new JFXPanel(); // Initialize JavaFX Environment
 					isFileDialogOpen = true;
@@ -69,12 +67,12 @@ public class JsonModDiscovery extends AbstractModDiscovery {
 						if (resultFile != null) {
 							manualJsonLocation = resultFile.getAbsolutePath();
 						} else {
-							System.out.println("JSON not found, things will break if other addons are using this!");
+							Bootstrap.logger.debug("JSON not found, things will break if other addons are using this!");
 						}
 						isFileDialogOpen = false;
 					});
 				} catch (Exception | Error ex) {
-					System.out.println("Error: EMC Json File Open Dialog failed to open, please Input your EMC Json Location manually in your EMC Config @ emcJsonLocation");
+					Bootstrap.logger.debug("Error: EMC Json File Open Dialog failed to open, please Input your EMC Json Location manually in your EMC Config @ emcJsonLocation");
 					ex.printStackTrace();
 				}
 			}
