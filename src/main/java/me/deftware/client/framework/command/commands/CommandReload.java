@@ -6,7 +6,6 @@ import me.deftware.client.framework.command.EMCModCommand;
 import me.deftware.client.framework.wrappers.IChat;
 import me.deftware.client.framework.wrappers.entity.IEntity;
 import me.deftware.client.framework.wrappers.world.IWorld;
-import net.minecraft.server.command.ServerCommandSource;
 
 public class CommandReload extends EMCModCommand {
 
