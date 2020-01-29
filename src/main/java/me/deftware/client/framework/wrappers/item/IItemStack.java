@@ -171,6 +171,14 @@ public class IItemStack {
         return false;
     }
 
+    public boolean hasEnchantment(IEnchantment enchantment) {
+        return getEnchantmentLevel(enchantment) > 0;
+    }
+
+    public int getEnchantmentLevel(IEnchantment enchantment) {
+        return EnchantmentHelper.getLevel(enchantment.getEnchantment(), stack);
+    }
+
     public int getRarity() {
         if (stack.getRarity() == Rarity.COMMON) {
             return 0;
