@@ -20,6 +20,7 @@ import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 
 import java.util.ArrayList;
@@ -202,6 +203,14 @@ public class IItemStack {
 
     public int getEnchantmentLevel(int enchantID) {
         return EnchantmentHelper.getLevel(Enchantment.byRawId(enchantID), getStack());
+    }
+
+    public int getDurability() {
+        return MathHelper.clamp(stack.getDamage(), 0, Math.max(stack.getMaxDamage(), 0));
+    }
+
+    public int getRawDurability() {
+        return stack.getDamage();
     }
 
     public enum IEffects {
