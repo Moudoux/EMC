@@ -10,9 +10,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PigEntity.class)
 public abstract class MixinAbstractPig {
 
+    @Inject(method = "isSaddled", at = @At(value = "TAIL"), cancellable = true)
+    private void onIsSaddled(CallbackInfoReturnable<Boolean> cir) {
+        EventSaddleCheck event = new EventSaddleCheck(cir.getReturnValue());
+        event.broadcast();
 
-    @Inject(method = "isSaddled", at = @At("RETURN"), cancellable = true)
-    public void isSaddled(CallbackInfoReturnable<Boolean> cir) {
+        cir.setReturnValue(event.isState());
+    }
+
+    @Inject(method = "canBeControlledByRider", at = @At("TAIL"), cancellable = true)
+    public void canBeControlled(CallbackInfoReturnable<Boolean> cir) {
         EventSaddleCheck event = new EventSaddleCheck(cir.getReturnValue());
         event.broadcast();
         cir.setReturnValue(event.isState());
