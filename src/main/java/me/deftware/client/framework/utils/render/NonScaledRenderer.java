@@ -7,7 +7,6 @@ import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import net.minecraft.client.MinecraftClient;
-import org.apache.logging.log4j.LogManager;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -74,26 +73,6 @@ public class NonScaledRenderer {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         IMinecraft.triggerGuiRenderer();
         resetScale();
-    }
-
-    public static void renderScissor(int x, int y, int width, int height, boolean debugMode) {
-        float scaleFactor = NonScaledRenderer.getScale();
-        GL11.glScissor((int) (x * scaleFactor), (int) ((IGuiScreen.getDisplayHeight() - y - height) * scaleFactor), (int) (width * scaleFactor), (int) (height * scaleFactor));
-
-        if (debugMode) {
-            LogManager.getLogger("EMC-Debug").info("Given: x=" + x + " y=" + y + " width=" + width + " height=" + height);
-            LogManager.getLogger("EMC-Debug").info("Scissors: x=" + ((int) (x * scaleFactor)) + " y=" + ((int) ((IGuiScreen.getDisplayHeight() - y - height) * scaleFactor)) + " width=" + ((int) (width * scaleFactor)) + " height=" + ((int) (height * scaleFactor)));
-        }
-    }
-
-    public static void renderInvertedScissor(int x, int y, int width, int height, boolean debugMode) {
-        float scaleFactor = NonScaledRenderer.getScale();
-        GL11.glScissor((int) (x * scaleFactor), (int) (y * scaleFactor), (int) (width * scaleFactor), (int) (height * scaleFactor));
-
-        if (debugMode) {
-            LogManager.getLogger("EMC-Debug").info("Given: x=" + x + " y=" + y + " width=" + width + " height=" + height);
-            LogManager.getLogger("EMC-Debug").info("Scissors: x=" + ((int) (x * scaleFactor)) + " y=" + ((int) (y * scaleFactor)) + " width=" + ((int) (width * scaleFactor)) + " height=" + ((int) (height * scaleFactor)));
-        }
     }
 
     public static void drawFilledCircle(int xx, int yy, float radius, int col) {
