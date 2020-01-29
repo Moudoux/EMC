@@ -52,6 +52,8 @@ public class JsonModDiscovery extends AbstractModDiscovery {
 			if (manualJsonLocation != null && new File(manualJsonLocation).exists()) {
 				return new File(manualJsonLocation);
 			} else {
+				Bootstrap.logger.debug("Opening File Open Dialog, as JSON Cannot be found...");
+
 				try {
 					JFXPanel frame = new JFXPanel(); // Initialize JavaFX Environment
 					isFileDialogOpen = true;

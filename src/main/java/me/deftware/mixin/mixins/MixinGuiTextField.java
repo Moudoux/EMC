@@ -154,7 +154,7 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
     @Redirect(method = "renderButton", at = @At(value = "INVOKE", target = "net/minecraft/client/font/TextRenderer.drawWithShadow(Ljava/lang/String;FFI)I"))
     public int render(TextRenderer self, String text, float x, float y, int color) {
         if (useCustomFont) {
-            customFont.drawStringWithShadow((int) x, (int) y - 6, text, new Color(color));
+            customFont.drawString((int) x, (int) y - 6, text, new Color(color), true);
             return (int) (x + customFont.getStringWidth(text) + 1f);
         } else {
             return this.textRenderer.drawWithShadow(text, x, y, color);
