@@ -204,12 +204,16 @@ public class IItemStack {
         return EnchantmentHelper.getLevel(Enchantment.byRawId(enchantID), getStack());
     }
 
-    public int getDurability() {
-        return MathHelper.clamp(stack.getDamage(), 0, Math.max(stack.getMaxDamage(), 0));
+    public int getDamage() {
+        return MathHelper.clamp(stack.getDamage(), 0, getMaxDamage());
     }
 
-    public int getRawDurability() {
+    public int getRawDamage() {
         return stack.getDamage();
+    }
+
+    public int getMaxDamage() {
+        return Math.max(stack.getMaxDamage(), 0);
     }
 
     public enum IEffects {
