@@ -205,7 +205,7 @@ public class IItemStack {
     }
 
     public int getDamage() {
-        return MathHelper.clamp(stack.getDamage(), 0, getMaxDamage());
+        return MathHelper.clamp(getRawDamage(), 0, getMaxDamage());
     }
 
     public int getRawDamage() {
@@ -213,7 +213,11 @@ public class IItemStack {
     }
 
     public int getMaxDamage() {
-        return Math.max(stack.getMaxDamage(), 0);
+        return Math.max(getRawMaxDamage(), 0);
+    }
+
+    public int getRawMaxDamage() {
+        return stack.getMaxDamage();
     }
 
     public enum IEffects {
