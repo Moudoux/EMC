@@ -26,12 +26,12 @@ public abstract class MixinNetworkManager {
             return;
         }
 
-        //Run it through the circuits.
+        // Run it through the circuits.
         IPacket ipacket = event.getIPacket();
         ipacket = PacketCircuit.handlePacket(ipacket);
 
+        // Packets can be null if out of the circuits and can be blocked from being sent.
         if(ipacket != null) sendImmediately(ipacket.getPacket(), futureListeners);
-        //Packets can be null out of the circuits, so that they can be blocked from being sent.
     }
 
 }
