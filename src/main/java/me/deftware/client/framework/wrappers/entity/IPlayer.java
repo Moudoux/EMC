@@ -8,12 +8,19 @@ public class IPlayer {
 
     private PlayerEntity player;
 
+    private IEntity entity;
+
     public IPlayer(PlayerEntity player) {
         this.player = player;
+        this.entity = new IEntity(player);
     }
 
     public PlayerEntity getPlayer() {
         return player;
+    }
+
+    public IEntity getEntity() {
+        return entity;
     }
 
     public float getHealth() {
