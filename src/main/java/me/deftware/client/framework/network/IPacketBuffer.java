@@ -2,7 +2,6 @@ package me.deftware.client.framework.network;
 
 import io.netty.buffer.Unpooled;
 import me.deftware.client.framework.wrappers.item.IItemStack;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.PacketByteBuf;
 
 public class IPacketBuffer {
