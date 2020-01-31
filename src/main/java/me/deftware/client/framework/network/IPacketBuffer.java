@@ -2,6 +2,7 @@ package me.deftware.client.framework.network;
 
 import io.netty.buffer.Unpooled;
 import me.deftware.client.framework.wrappers.item.IItemStack;
+import me.deftware.client.framework.wrappers.world.IBlockPos;
 import net.minecraft.util.PacketByteBuf;
 
 public class IPacketBuffer {
@@ -18,6 +19,10 @@ public class IPacketBuffer {
 
     public void writeItemStack(IItemStack stack) {
         buffer.writeItemStack(stack.getStack());
+    }
+
+    public void writeBlockPos(IBlockPos pos) {
+        buffer.writeBlockPos(pos.getPos());
     }
 
     public void writeDouble(double value) {
@@ -54,6 +59,10 @@ public class IPacketBuffer {
 
     public IItemStack readItemStack() {
         return new IItemStack(buffer.readItemStack());
+    }
+
+    public IBlockPos readBlockPos() {
+        return new IBlockPos(buffer.readBlockPos());
     }
 
 }
