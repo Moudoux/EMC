@@ -21,8 +21,7 @@ public class EventBus {
                         Bootstrap.logger.debug(String.format("Making method %s accessible", method.getName()));
                         method.setAccessible(true);
                     }
-                    EventHandler annotation = method.getAnnotation(EventHandler.class);
-                    Class<?> eventType = annotation.eventType();
+                    Class<? extends Event> eventType = method.getParameterTypes()[0].asSubclass(Event.class);
                     listeners.putIfAbsent(eventType, new Listener(method, instance));
                     Bootstrap.logger.debug(String.format("Loaded event handler for method %s", method.getName()));
                 }
