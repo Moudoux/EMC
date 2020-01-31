@@ -106,4 +106,12 @@ public class RotUtils {
                 MinecraftClient.getInstance().player.getZ());
     }
 
+    public static float rad2deg(float rad) {
+        return (float) ((180/Math.PI)*rad);
+    }
+
+    public static float deg2rad(float deg) {
+        return (float) ((Math.PI/180)*deg);
+    }
+
 }
