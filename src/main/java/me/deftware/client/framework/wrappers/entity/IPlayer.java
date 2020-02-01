@@ -4,27 +4,17 @@ import me.deftware.client.framework.wrappers.item.IItemStack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 
-public class IPlayer {
+public class IPlayer extends IEntity {
 
     private PlayerEntity player;
 
-    private IEntity entity;
-
     public IPlayer(PlayerEntity player) {
+        super(player);
         this.player = player;
-        this.entity = new IEntity(player);
     }
 
     public PlayerEntity getPlayer() {
         return player;
-    }
-
-    public IEntity getEntity() {
-        return entity;
-    }
-
-    public float getHealth() {
-        return player.getHealth();
     }
 
     public String getName() {
@@ -41,30 +31,6 @@ public class IPlayer {
             return new IItemStack(player.inventory.getMainHandStack());
         }
         return null;
-    }
-
-    public double getPosX() {
-        return player.getX();
-    }
-
-    public double getPosY() {
-        return player.getY();
-    }
-
-    public double getPosZ() {
-        return player.getZ();
-    }
-
-    public double getLastTickPosX() {
-        return player.lastRenderX;
-    }
-
-    public double getLastTickPosY() {
-        return player.lastRenderY;
-    }
-
-    public double getLastTickPosZ() {
-        return player.lastRenderZ;
     }
 
     public boolean isCreative() {
