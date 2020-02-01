@@ -105,6 +105,16 @@ public abstract class MixinBlock {
         event.broadcast();
         if (event.modified) {
             ci.setReturnValue(event.shape);
+        } else {
+            if ((Object) this instanceof FluidBlock) {
+                ci.setReturnValue((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "LIQUID_VOXEL_FULL", false)
+                        ? VoxelShapes.fullCube()
+                        : VoxelShapes.empty());
+            } else if ((Object) this instanceof SweetBerryBushBlock) {
+                if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "custom_berry_voxel", false)) {
+                    ci.setReturnValue(VoxelShapes.fullCube());
+                }
+            }
         }
     }
 
