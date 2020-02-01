@@ -4,6 +4,7 @@ import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.event.events.EventBlockhardness;
 import me.deftware.client.framework.event.events.EventCollideCheck;
 import me.deftware.client.framework.event.events.EventSlowdown;
+import me.deftware.client.framework.event.events.EventVoxelShape;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.world.IBlock;
 import net.minecraft.block.*;
@@ -32,6 +33,10 @@ public abstract class MixinBlock {
     @Shadow
     @Final
     protected int lightLevel;
+
+    @Shadow
+    @Final
+    protected boolean collidable;
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void getOutlineShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, EntityContext entityContext_1, CallbackInfoReturnable<VoxelShape> ci) {
@@ -96,14 +101,10 @@ public abstract class MixinBlock {
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     public void getCollisionShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, EntityContext context, CallbackInfoReturnable<VoxelShape> ci) {
-        if ((Object) this instanceof FluidBlock) {
-            ci.setReturnValue((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "LIQUID_VOXEL_FULL", false)
-                    ? VoxelShapes.fullCube()
-                    : VoxelShapes.empty());
-        } else if ((Object) this instanceof SweetBerryBushBlock) {
-            if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "custom_berry_voxel", false)) {
-                ci.setReturnValue(VoxelShapes.fullCube());
-            }
+        EventVoxelShape event = new EventVoxelShape(collidable ? blockState_1.getOutlineShape(blockView_1, blockPos_1) : VoxelShapes.empty(), new IBlock((Block) (Object) this));
+        event.broadcast();
+        if (event.modified) {
+            ci.setReturnValue(event.shape);
         }
     }
 
