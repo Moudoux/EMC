@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers.entity;
 
+import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.client.framework.wrappers.world.IChunkPos;
 import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
@@ -18,7 +19,6 @@ import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.Projectile;
-import net.minecraft.util.math.Box;
 
 import java.math.BigDecimal;
 
@@ -35,8 +35,8 @@ public class IEntity {
         return entity;
     }
 
-    public Box getBoundingBox() {
-        return entity.getBoundingBox();
+    public IAxisAlignedBB getBoundingBox() {
+        return new IAxisAlignedBB(entity.getBoundingBox());
     }
 
     public IBlockPos getBlockPos() {

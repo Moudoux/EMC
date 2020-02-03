@@ -31,7 +31,7 @@ import static org.lwjgl.opengl.GL11.*;
 /**
  * Common functions used for rendering
  */
-//@SuppressWarnings("Duplicates")
+@SuppressWarnings("Duplicates")
 public class RenderUtils {
 
     public static int enemy = 0;
@@ -42,6 +42,10 @@ public class RenderUtils {
 
     public static void loadShader(IResourceLocation location) {
         ((IMixinEntityRenderer) MinecraftClient.getInstance().gameRenderer).loadCustomShader(location);
+    }
+
+    public static IMixinRenderManager getRenderManager() {
+        return (IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager();
     }
 
     public static void disableShader() {
@@ -104,9 +108,9 @@ public class RenderUtils {
     }
 
     public static void blockEspBox(IBlockPos IBlockPos, double red, double green, double blue) {
-        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
-        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
-        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(GL_BLEND);
         GL11.glLineWidth(2.0F);
@@ -119,6 +123,33 @@ public class RenderUtils {
         GL11.glEnable(GL_DEPTH_TEST);
         GL11.glDepthMask(true);
         GL11.glDisable(GL_BLEND);
+    }
+
+    public static void renderHitBox(IEntity entity, Color c) {
+        float red = (float)c.getRed();
+        float green = (float)c.getGreen();
+        float blue = (float)c.getBlue();
+        RenderUtils.fixDarkLight();
+        RenderSystem.clearCurrentColor();
+        GL11.glBlendFunc(770, 771);
+        GL11.glEnable(3042);
+        GL11.glLineWidth(2.0F);
+        GL11.glDisable(3553);
+        GL11.glDisable(2929);
+        GL11.glDepthMask(false);
+        GL11.glColor4f(red, green, blue, 0.15F);
+        IMixinRenderManager renderManager = RenderUtils.getRenderManager();
+        IAxisAlignedBB box =  new IAxisAlignedBB(entity.getBoundingBox().x1 - 0.05D - entity.getPosX() + (entity.getPosX() - renderManager.getRenderPosX()),
+                entity.getBoundingBox().y1 - entity.getPosY() + (entity.getPosY() - renderManager.getRenderPosY()),
+                entity.getBoundingBox().z1 - 0.05D - entity.getPosZ() + (entity.getPosZ() - renderManager.getRenderPosZ()),
+                entity.getBoundingBox().x2 + 0.05D - entity.getPosX() + (entity.getPosX() - renderManager.getRenderPosX()),
+                entity.getBoundingBox().y2 + 0.1D - entity.getPosY() + (entity.getPosY() - renderManager.getRenderPosY()),
+                entity.getBoundingBox().z2 + 0.05D - entity.getPosZ() + (entity.getPosZ() - renderManager.getRenderPosZ()));
+        RenderUtils.drawColorBox(box, 0.0F, 1.0F, 0.0F, 0.15F);
+        GL11.glEnable(3553);
+        GL11.glEnable(2929);
+        GL11.glDepthMask(true);
+        GL11.glDisable(3042);
     }
 
     public static void drawSelectionBoundingBox(IAxisAlignedBB BoundingBox) {
@@ -323,12 +354,12 @@ public class RenderUtils {
 
     public static void box(double x, double y, double z, double x2, double y2, double z2, float red, float green,
                            float blue, float alpha) {
-        x -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
-        y -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
-        z -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
-        x2 -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
-        y2 -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
-        z2 -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        x -= (RenderUtils.getRenderManager()).getRenderPosX();
+        y -= (RenderUtils.getRenderManager()).getRenderPosY();
+        z -= (RenderUtils.getRenderManager()).getRenderPosZ();
+        x2 -= (RenderUtils.getRenderManager()).getRenderPosX();
+        y2 -= (RenderUtils.getRenderManager()).getRenderPosY();
+        z2 -= (RenderUtils.getRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(2.0F);
@@ -348,12 +379,12 @@ public class RenderUtils {
     }
 
     public static void frame(double x, double y, double z, double x2, double y2, double z2, Color color) {
-        x -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
-        y -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
-        z -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
-        x2 -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
-        y2 -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
-        z2 -= ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        x -= (RenderUtils.getRenderManager()).getRenderPosX();
+        y -= (RenderUtils.getRenderManager()).getRenderPosY();
+        z -= (RenderUtils.getRenderManager()).getRenderPosZ();
+        x2 -= (RenderUtils.getRenderManager()).getRenderPosX();
+        y2 -= (RenderUtils.getRenderManager()).getRenderPosY();
+        z2 -= (RenderUtils.getRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(2.0F);
@@ -369,9 +400,9 @@ public class RenderUtils {
     }
 
     public static void blockESPBox(IBlockPos IBlockPos) {
-        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
-        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
-        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(1.0F);
@@ -391,9 +422,9 @@ public class RenderUtils {
     public static void blockESPBox(IBlockPos IBlockPos, float red, float green, float blue) {
         RenderUtils.fixDarkLight();
         RenderSystem.clearCurrentColor();
-        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
-        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
-        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(1.0F);
@@ -434,9 +465,9 @@ public class RenderUtils {
         RenderUtils.fixDarkLight();
         RenderSystem.clearCurrentColor();
         float red = c.getRed(), green = c.getGreen(), blue = c.getBlue();
-        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
-        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
-        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(1.0F);
@@ -457,9 +488,9 @@ public class RenderUtils {
     public static void framelessBlockESP(IBlockPos IBlockPos, float red, float green, float blue) {
         RenderUtils.fixDarkLight();
         RenderSystem.clearCurrentColor();
-        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
-        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
-        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(2.0F);
@@ -478,9 +509,9 @@ public class RenderUtils {
     public static void emptyBlockESPBox(IBlockPos IBlockPos) {
         RenderUtils.fixDarkLight();
         RenderSystem.clearCurrentColor();
-        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
-        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
-        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(2.0F);
@@ -516,7 +547,7 @@ public class RenderUtils {
         } else if (mode == 4) {
             GL11.glColor4d(0.0D, 1.0D, 0.0D, 0.5D);
         }
-        IMixinRenderManager renderManager = (IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager();
+        IMixinRenderManager renderManager = RenderUtils.getRenderManager();
         RenderUtils.drawSelectionBoundingBox(new Box(
                 entity.getBoundingBox().x1 - 0.05D - entity.getX() + (entity.getX() - renderManager.getRenderPosX()),
                 entity.getBoundingBox().y1 - entity.getY() + (entity.getY() - renderManager.getRenderPosY()),
@@ -533,9 +564,9 @@ public class RenderUtils {
     public static void nukerBox(IBlockPos IBlockPos, float damage) {
         RenderUtils.fixDarkLight();
         RenderSystem.clearCurrentColor();
-        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
-        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
-        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(1.0F);
@@ -560,9 +591,9 @@ public class RenderUtils {
     public static void searchBox(IBlockPos IBlockPos) {
         RenderUtils.fixDarkLight();
         RenderSystem.clearCurrentColor();
-        double x = IBlockPos.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
-        double y = IBlockPos.getY() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
-        double z = IBlockPos.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(1.0F);
@@ -758,9 +789,9 @@ public class RenderUtils {
     public static void tracerLine(Entity entity, int mode) {
         RenderUtils.fixDarkLight();
         RenderSystem.clearCurrentColor();
-        double x = entity.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
-        double y = entity.getY() + entity.getHeight() / 2.0F - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
-        double z = entity.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        double x = entity.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
+        double y = entity.getY() + entity.getHeight() / 2.0F - (RenderUtils.getRenderManager()).getRenderPosY();
+        double z = entity.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(2.0F);
@@ -800,9 +831,9 @@ public class RenderUtils {
         RenderUtils.fixDarkLight();
         RenderSystem.clearCurrentColor();
 
-        double x = entity.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX();
-        double y = entity.getY() + entity.getHeight() / 2.0F - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY();
-        double z = entity.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ();
+        double x = entity.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
+        double y = entity.getY() + entity.getHeight() / 2.0F - (RenderUtils.getRenderManager()).getRenderPosY();
+        double z = entity.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
 
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
@@ -832,9 +863,9 @@ public class RenderUtils {
     public static void tracerLine(Entity entity, Color color, float alpha) {
         RenderUtils.fixDarkLight();
         RenderSystem.clearCurrentColor();
-        double x = entity.getX() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX() + 0.5f;
-        double y = entity.getY() + entity.getHeight() / 2.0F - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY() - 0.5f;
-        double z = entity.getZ() - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ() + 0.5f;
+        double x = entity.getX() - (RenderUtils.getRenderManager()).getRenderPosX() + 0.5f;
+        double y = entity.getY() + entity.getHeight() / 2.0F - (RenderUtils.getRenderManager()).getRenderPosY() - 0.5f;
+        double z = entity.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ() + 0.5f;
 
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
@@ -945,9 +976,9 @@ public class RenderUtils {
     }
 
     public static void tracerLine(int x, int y, int z, Color color) {
-        x = (int) (x + (0.5D - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosX()));
-        y = (int) (y + (0.5D - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosY()));
-        z = (int) (z + (0.5D - ((IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager()).getRenderPosZ()));
+        x = (int) (x + (0.5D - (RenderUtils.getRenderManager()).getRenderPosX()));
+        y = (int) (y + (0.5D - (RenderUtils.getRenderManager()).getRenderPosY()));
+        z = (int) (z + (0.5D - (RenderUtils.getRenderManager()).getRenderPosZ()));
         GL11.glBlendFunc(770, 771);
         GL11.glEnable(3042);
         GL11.glLineWidth(2.0F);
