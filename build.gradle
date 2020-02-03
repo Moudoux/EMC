@@ -1,9 +1,18 @@
+import net.fabricmc.loom.LoomGradlePlugin
 import org.gradle.internal.os.OperatingSystem
 
-plugins {
-	id 'fabric-loom' version '0.2.7-SNAPSHOT'
+buildscript {
+	repositories {
+		jcenter()
+		mavenCentral()
+		maven { url = "https://maven.fabricmc.net/" }
+	}
+	dependencies {
+		classpath "net.fabricmc:fabric-loom:0.2.7-SNAPSHOT"
+	}
 }
 
+apply plugin: LoomGradlePlugin
 apply plugin: 'maven'
 
 sourceCompatibility = targetCompatibility = 1.8
@@ -28,15 +37,14 @@ if (OperatingSystem.current().isMacOsX()) {
 }
 def mcVersion = "${project.minecraftVersion}"
 def mappingsVer = "${mcVersion}${project.mappingsVer}"
-archivesBaseName = "EMC"
 version = getVersionFromJava()
 
 repositories {
 	mavenCentral()
 	jcenter()
-	maven { url 'https://maven.fabricmc.net' }
-	maven { url 'https://jitpack.io' }
-	maven { url "https://gitlab.com/EMC-Framework/maven/raw/master/" }
+	maven { url = 'https://maven.fabricmc.net' }
+	maven { url = 'https://jitpack.io' }
+	maven { url = 'https://gitlab.com/EMC-Framework/maven/raw/master/' }
 }
 
 dependencies {
