@@ -16,15 +16,17 @@ public class MixinSplashScreen {
 
     @Inject(method = "init", at = @At("HEAD"))
     private static void init(MinecraftClient minecraftClient_1, CallbackInfo ci) {
-        Bootstrap.init();
+        if (!Bootstrap.initialized) {
+            Bootstrap.init();
+        }
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Util;getMeasuringTimeMs()J", ordinal = 1))
     private long render(int int_1, int int_2, float float_1) {
         if (!Bootstrap.initialized) {
             Bootstrap.initialized = true;
+            Bootstrap.getMods().values().forEach(EMCMod::postInit);
         }
-        Bootstrap.getMods().values().forEach(EMCMod::postInit);
         return Util.getMeasuringTimeMs();
     }
 
