@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers.entity;
 
+import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.client.framework.wrappers.world.IChunkPos;
 import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
 import me.deftware.mixin.imp.IMixinNetworkPlayerInfo;
@@ -36,6 +37,10 @@ public class IEntity {
 
     public Box getBoundingBox() {
         return entity.getBoundingBox();
+    }
+
+    public IBlockPos getBlockPos() {
+        return new IBlockPos(entity.getBlockPos());
     }
 
     public boolean isOnGround() {
