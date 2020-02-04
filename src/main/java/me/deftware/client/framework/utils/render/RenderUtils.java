@@ -107,33 +107,6 @@ public class RenderUtils {
         GL11.glPopMatrix();
     }
 
-    public static void renderHitBox(IEntity entity, Color c) {
-        float red = (float)c.getRed();
-        float green = (float)c.getGreen();
-        float blue = (float)c.getBlue();
-        RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
-        GL11.glBlendFunc(770, 771);
-        GL11.glEnable(3042);
-        GL11.glLineWidth(2.0F);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
-        GL11.glDepthMask(false);
-        GL11.glColor4f(red, green, blue, 0.15F);
-        IMixinRenderManager renderManager = RenderUtils.getRenderManager();
-        IAxisAlignedBB box =  new IAxisAlignedBB(entity.getBoundingBox().x1 - 0.05D - entity.getPosX() + (entity.getPosX() - renderManager.getRenderPosX()),
-                entity.getBoundingBox().y1 - entity.getPosY() + (entity.getPosY() - renderManager.getRenderPosY()),
-                entity.getBoundingBox().z1 - 0.05D - entity.getPosZ() + (entity.getPosZ() - renderManager.getRenderPosZ()),
-                entity.getBoundingBox().x2 + 0.05D - entity.getPosX() + (entity.getPosX() - renderManager.getRenderPosX()),
-                entity.getBoundingBox().y2 + 0.1D - entity.getPosY() + (entity.getPosY() - renderManager.getRenderPosY()),
-                entity.getBoundingBox().z2 + 0.05D - entity.getPosZ() + (entity.getPosZ() - renderManager.getRenderPosZ()));
-        RenderUtils.drawColorBox(box, 0F, 0F, 0F, 0F);
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
-        GL11.glDepthMask(true);
-        GL11.glDisable(3042);
-    }
-
     public static void drawSelectionBoundingBox(IAxisAlignedBB BoundingBox) {
         RenderUtils.drawSelectionBoundingBox(BoundingBox.getAABB());
     }
