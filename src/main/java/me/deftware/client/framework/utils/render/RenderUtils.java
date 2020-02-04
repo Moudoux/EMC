@@ -107,24 +107,6 @@ public class RenderUtils {
         GL11.glPopMatrix();
     }
 
-    public static void blockEspBox(IBlockPos IBlockPos, double red, double green, double blue) {
-        double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
-        double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
-        double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
-        GL11.glBlendFunc(770, 771);
-        GL11.glEnable(GL_BLEND);
-        GL11.glLineWidth(2.0F);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL_DEPTH_TEST);
-        GL11.glDepthMask(false);
-        GL11.glColor4d(red, green, blue, 0.15F);
-        RenderUtils.drawColorBox(new Box(x, y, z, x + 1.0, y + 1.0, z + 1.0), 0F, 0F, 0F, 0F);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL_DEPTH_TEST);
-        GL11.glDepthMask(true);
-        GL11.glDisable(GL_BLEND);
-    }
-
     public static void renderHitBox(IEntity entity, Color c) {
         float red = (float)c.getRed();
         float green = (float)c.getGreen();
@@ -361,20 +343,19 @@ public class RenderUtils {
         y2 -= (RenderUtils.getRenderManager()).getRenderPosY();
         z2 -= (RenderUtils.getRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
-        GL11.glEnable(3042);
+        GL11.glEnable(GL_BLEND);
         GL11.glLineWidth(2.0F);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
-        GL11.glDepthMask(false);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL_DEPTH_TEST);
         GL11.glDepthMask(false);
         GL11.glColor4f(red, green, blue, alpha);
         RenderUtils.drawColorBox(new Box(x, y, z, x2, y2, z2), red, green, blue, alpha);
         GL11.glColor4d(0.0D, 0.0D, 0.0D, 0.5D);
         RenderUtils.drawSelectionBoundingBox(new Box(x, y, z, x2, y2, z2));
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL_DEPTH_TEST);
         GL11.glDepthMask(true);
-        GL11.glDisable(3042);
+        GL11.glDisable(GL_BLEND);
         RenderSystem.clearCurrentColor();
     }
 
@@ -386,80 +367,104 @@ public class RenderUtils {
         y2 -= (RenderUtils.getRenderManager()).getRenderPosY();
         z2 -= (RenderUtils.getRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
-        GL11.glEnable(3042);
+        GL11.glEnable(GL_BLEND);
         GL11.glLineWidth(2.0F);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL_DEPTH_TEST);
         GL11.glDepthMask(false);
         RenderUtils.glColor(color);
         RenderUtils.drawSelectionBoundingBox(new Box(x, y, z, x2, y2, z2));
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL_DEPTH_TEST);
         GL11.glDepthMask(true);
-        GL11.glDisable(3042);
+        GL11.glDisable(GL_BLEND);
     }
 
-    public static void blockESPBox(IBlockPos IBlockPos) {
-        double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
-        double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
-        double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
-        GL11.glBlendFunc(770, 771);
-        GL11.glEnable(3042);
-        GL11.glLineWidth(1.0F);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
-        GL11.glDepthMask(false);
-        GL11.glColor4d(0.0D, 1.0D, 0.0D, 0.26000000596046448D);
-        RenderUtils.drawColorBox(new Box(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D), 0.0F, 1.0F, 0.0F, 0.15F);
-        GL11.glColor4d(0.0D, 0.0D, 0.0D, 0.5D);
-        RenderUtils.drawSelectionBoundingBox(new Box(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D));
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
-        GL11.glDepthMask(true);
-        GL11.glDisable(3042);
-    }
-
-    public static void blockESPBox(IBlockPos IBlockPos, float red, float green, float blue) {
+    public static void ESPBox(IBlockPos IBlockPos, double red, double green, double blue, double alpha, float lineWidth, boolean boundryBox) {
         RenderUtils.fixDarkLight();
         RenderSystem.clearCurrentColor();
         double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
         double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
         double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
         GL11.glBlendFunc(770, 771);
-        GL11.glEnable(3042);
-        GL11.glLineWidth(1.0F);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
+        GL11.glEnable(GL_BLEND);
+        GL11.glLineWidth(lineWidth);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL_DEPTH_TEST);
         GL11.glDepthMask(false);
-        GL11.glColor4f(red, green, blue, 0.15F);
-        RenderUtils.drawColorBox(new Box(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D), 0.0F, 1.0F, 0.0F, 0.15F);
-        GL11.glColor4d(0.0D, 0.0D, 0.0D, 0.5D);
-        RenderUtils.drawSelectionBoundingBox(new Box(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D));
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
+        GL11.glColor4d(red, green, blue, alpha);
+        RenderUtils.drawColorBox(new Box(x, y, z, x + 1.0, y + 1.0, z + 1.0), 0F, 0F, 0F, 0F);
+        if(boundryBox){
+            GL11.glColor4d(0.0D, 0.0D, 0.0D, 0.5D);
+            RenderUtils.drawSelectionBoundingBox(new Box(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D));
+        }
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL_DEPTH_TEST);
         GL11.glDepthMask(true);
-        GL11.glDisable(3042);
+        GL11.glDisable(GL_BLEND);
         RenderSystem.clearCurrentColor();
     }
 
-    public static void blockESPBox(IAxisAlignedBB IBlockPos, float red, float green, float blue) {
+    public static void ESPBox(IAxisAlignedBB IBlockPos, double red, double green, double blue, double alpha, float lineWidth, boolean boundryBox) {
         RenderUtils.fixDarkLight();
         RenderSystem.clearCurrentColor();
         IBlockPos = IBlockPos.offSet(-(RenderUtils.getRenderManager()).getRenderPosX(), -(RenderUtils.getRenderManager()).getRenderPosY(), -(RenderUtils.getRenderManager()).getRenderPosZ());
         GL11.glBlendFunc(770, 771);
-        GL11.glEnable(3042);
-        GL11.glLineWidth(1.0F);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
+        GL11.glEnable(GL_BLEND);
+        GL11.glLineWidth(lineWidth);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL_DEPTH_TEST);
         GL11.glDepthMask(false);
-        GL11.glColor4f(red, green, blue, 0.15F);
-        RenderUtils.drawColorBox(IBlockPos.getAABB(), 0.0F, 1.0F, 0.0F, 0.15F);
-        GL11.glColor4d(0.0D, 0.0D, 0.0D, 0.5D);
-        RenderUtils.drawSelectionBoundingBox(IBlockPos.getAABB());
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
+        GL11.glColor4d(red, green, blue, alpha);
+        RenderUtils.drawColorBox(IBlockPos.getAABB(), 0.0F, 0.0F, 0.0F, 0.0F);
+        if(boundryBox){
+            GL11.glColor4d(0.0D, 0.0D, 0.0D, 0.5D);
+            RenderUtils.drawSelectionBoundingBox(IBlockPos.getAABB());
+        }
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL_DEPTH_TEST);
         GL11.glDepthMask(true);
-        GL11.glDisable(3042);
+        GL11.glDisable(GL_BLEND);
+        RenderSystem.clearCurrentColor();
+    }
+
+    public static void emptyESPBox(IBlockPos IBlockPos, double red, double green, double blue, double alpha, float lineWidth) {
+        RenderUtils.fixDarkLight();
+        RenderSystem.clearCurrentColor();
+        double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
+        double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
+        double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
+        GL11.glBlendFunc(770, 771);
+        GL11.glEnable(GL_BLEND);
+        GL11.glLineWidth(lineWidth);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL_DEPTH_TEST);
+        GL11.glDepthMask(false);
+        GL11.glColor4d(red, green, blue, alpha);
+        RenderUtils.drawSelectionBoundingBox(new Box(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D));
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL_DEPTH_TEST);
+        GL11.glDepthMask(true);
+        GL11.glDisable(GL_BLEND);
+        RenderSystem.clearCurrentColor();
+    }
+
+    public static void emptyESPBox(IAxisAlignedBB IBlockPos, double red, double green, double blue, double alpha, float lineWidth) {
+        RenderUtils.fixDarkLight();
+        RenderSystem.clearCurrentColor();
+        IBlockPos = IBlockPos.offSet(-(RenderUtils.getRenderManager()).getRenderPosX(), -(RenderUtils.getRenderManager()).getRenderPosY(), -(RenderUtils.getRenderManager()).getRenderPosZ());
+        GL11.glBlendFunc(770, 771);
+        GL11.glEnable(GL_BLEND);
+        GL11.glLineWidth(lineWidth);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL_DEPTH_TEST);
+        GL11.glDepthMask(false);
+        GL11.glColor4d(red, green, blue, alpha);
+        RenderUtils.drawSelectionBoundingBox(IBlockPos.getAABB());
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL_DEPTH_TEST);
+        GL11.glDepthMask(true);
+        GL11.glDisable(GL_BLEND);
         RenderSystem.clearCurrentColor();
     }
 
@@ -480,106 +485,6 @@ public class RenderUtils {
             glDisable(GL_BLEND);
         } catch (Exception ignored) {
         }
-    }
-
-    public static void blockESPBox(IBlockPos IBlockPos, Color c) {
-        RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
-        float red = c.getRed(), green = c.getGreen(), blue = c.getBlue();
-        double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
-        double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
-        double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
-        GL11.glBlendFunc(770, 771);
-        GL11.glEnable(3042);
-        GL11.glLineWidth(1.0F);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
-        GL11.glDepthMask(false);
-        GL11.glColor4f(red, green, blue, 0.15F);
-        RenderUtils.drawColorBox(new Box(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D), 0.0F, 1.0F, 0.0F, 0.15F);
-        GL11.glColor4d(0.0D, 0.0D, 0.0D, 0.5D);
-        RenderUtils.drawSelectionBoundingBox(new Box(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D));
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
-        GL11.glDepthMask(true);
-        GL11.glDisable(3042);
-        RenderSystem.clearCurrentColor();
-    }
-
-    public static void framelessBlockESP(IBlockPos IBlockPos, float red, float green, float blue) {
-        RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
-        double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
-        double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
-        double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
-        GL11.glBlendFunc(770, 771);
-        GL11.glEnable(3042);
-        GL11.glLineWidth(2.0F);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
-        GL11.glDepthMask(false);
-        GL11.glColor4f(red, green, blue, 0.15F);
-        RenderUtils.drawColorBox(new Box(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D), red, green, blue, 0.15F);
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
-        GL11.glDepthMask(true);
-        GL11.glDisable(3042);
-        RenderSystem.clearCurrentColor();
-    }
-
-    public static void emptyBlockESPBox(IBlockPos IBlockPos) {
-        RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
-        double x = IBlockPos.getX() - (RenderUtils.getRenderManager()).getRenderPosX();
-        double y = IBlockPos.getY() - (RenderUtils.getRenderManager()).getRenderPosY();
-        double z = IBlockPos.getZ() - (RenderUtils.getRenderManager()).getRenderPosZ();
-        GL11.glBlendFunc(770, 771);
-        GL11.glEnable(3042);
-        GL11.glLineWidth(2.0F);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
-        GL11.glDepthMask(false);
-        GL11.glColor4d(0.0D, 0.0D, 0.0D, 0.5D);
-        RenderUtils.drawSelectionBoundingBox(new Box(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D));
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
-        GL11.glDepthMask(true);
-        GL11.glDisable(3042);
-    }
-
-    public static void entityESPBox(Entity entity, int mode) {
-        RenderUtils.fixDarkLight();
-        RenderSystem.clearCurrentColor();
-        GL11.glBlendFunc(770, 771);
-        GL11.glEnable(3042);
-        GL11.glLineWidth(2.0F);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
-        GL11.glDepthMask(false);
-        if (mode == 0) {
-            GL11.glColor4d(1.0F - MinecraftClient.getInstance().player.distanceTo(entity) / 40.0F,
-                    MinecraftClient.getInstance().player.distanceTo(entity) / 40.0F, 0.0D, 0.5D);
-        } else if (mode == 1) {
-            GL11.glColor4d(0.0D, 0.0D, 1.0D, 0.5D);
-        } else if (mode == 2) {
-            GL11.glColor4d(1.0D, 1.0D, 0.0D, 0.5D);
-        } else if (mode == 3) {
-            GL11.glColor4d(1.0D, 0.0D, 0.0D, 0.5D);
-        } else if (mode == 4) {
-            GL11.glColor4d(0.0D, 1.0D, 0.0D, 0.5D);
-        }
-        IMixinRenderManager renderManager = RenderUtils.getRenderManager();
-        RenderUtils.drawSelectionBoundingBox(new Box(
-                entity.getBoundingBox().x1 - 0.05D - entity.getX() + (entity.getX() - renderManager.getRenderPosX()),
-                entity.getBoundingBox().y1 - entity.getY() + (entity.getY() - renderManager.getRenderPosY()),
-                entity.getBoundingBox().z1 - 0.05D - entity.getZ() + (entity.getZ() - renderManager.getRenderPosZ()),
-                entity.getBoundingBox().x2 + 0.05D - entity.getX() + (entity.getX() - renderManager.getRenderPosX()),
-                entity.getBoundingBox().y2 + 0.1D - entity.getY() + (entity.getY() - renderManager.getRenderPosY()),
-                entity.getBoundingBox().z2 + 0.05D - entity.getZ() + (entity.getZ() - renderManager.getRenderPosZ())));
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
-        GL11.glDepthMask(true);
-        GL11.glDisable(3042);
     }
 
     public static void nukerBox(IBlockPos IBlockPos, float damage) {
