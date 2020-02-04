@@ -145,7 +145,7 @@ public class RenderUtils {
                 entity.getBoundingBox().x2 + 0.05D - entity.getPosX() + (entity.getPosX() - renderManager.getRenderPosX()),
                 entity.getBoundingBox().y2 + 0.1D - entity.getPosY() + (entity.getPosY() - renderManager.getRenderPosY()),
                 entity.getBoundingBox().z2 + 0.05D - entity.getPosZ() + (entity.getPosZ() - renderManager.getRenderPosZ()));
-        RenderUtils.drawColorBox(box, 0.0F, 1.0F, 0.0F, 0.15F);
+        RenderUtils.drawColorBox(box, 0F, 0F, 0F, 0F);
         GL11.glEnable(3553);
         GL11.glEnable(2929);
         GL11.glDepthMask(true);
@@ -435,6 +435,27 @@ public class RenderUtils {
         RenderUtils.drawColorBox(new Box(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D), 0.0F, 1.0F, 0.0F, 0.15F);
         GL11.glColor4d(0.0D, 0.0D, 0.0D, 0.5D);
         RenderUtils.drawSelectionBoundingBox(new Box(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D));
+        GL11.glEnable(3553);
+        GL11.glEnable(2929);
+        GL11.glDepthMask(true);
+        GL11.glDisable(3042);
+        RenderSystem.clearCurrentColor();
+    }
+
+    public static void blockESPBox(IAxisAlignedBB IBlockPos, float red, float green, float blue) {
+        RenderUtils.fixDarkLight();
+        RenderSystem.clearCurrentColor();
+        IBlockPos = IBlockPos.offSet(-(RenderUtils.getRenderManager()).getRenderPosX(), -(RenderUtils.getRenderManager()).getRenderPosY(), -(RenderUtils.getRenderManager()).getRenderPosZ());
+        GL11.glBlendFunc(770, 771);
+        GL11.glEnable(3042);
+        GL11.glLineWidth(1.0F);
+        GL11.glDisable(3553);
+        GL11.glDisable(2929);
+        GL11.glDepthMask(false);
+        GL11.glColor4f(red, green, blue, 0.15F);
+        RenderUtils.drawColorBox(IBlockPos.getAABB(), 0.0F, 1.0F, 0.0F, 0.15F);
+        GL11.glColor4d(0.0D, 0.0D, 0.0D, 0.5D);
+        RenderUtils.drawSelectionBoundingBox(IBlockPos.getAABB());
         GL11.glEnable(3553);
         GL11.glEnable(2929);
         GL11.glDepthMask(true);
