@@ -33,6 +33,12 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     private float partialTicks = 0;
 
     @Shadow
+    private float movementFovMultiplier;
+
+    @Shadow
+    private float lastMovementFovMultiplier;
+
+    @Shadow
     protected abstract void loadShader(Identifier p_loadShader_1_);
 
     /* TODO: FIX
@@ -98,4 +104,16 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     private boolean onTest(ClientPlayerInteractionManager clientPlayerInteractionManager) {
         return !bypassReach && clientPlayerInteractionManager.hasExtendedReach();
     }
+
+    @Override
+    public float getFovMultiplier() {
+        return movementFovMultiplier;
+    }
+
+    @Override
+    public void updateFovMultiplier(float newFov) {
+        lastMovementFovMultiplier = newFov;
+        movementFovMultiplier = newFov;
+    }
+
 }

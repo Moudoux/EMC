@@ -6,4 +6,8 @@ public interface IMixinEntityRenderer {
 
     void loadCustomShader(IResourceLocation location);
 
+    float getFovMultiplier();
+
+    void updateFovMultiplier(float newFov);
+
 }

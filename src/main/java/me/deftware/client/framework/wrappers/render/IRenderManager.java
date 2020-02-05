@@ -1,7 +1,7 @@
 package me.deftware.client.framework.wrappers.render;
 
 import me.deftware.client.framework.utils.render.RenderUtils;
-import me.deftware.mixin.imp.IMixinGameRenderer;
+import me.deftware.mixin.imp.IMixinEntityRenderer;
 import net.minecraft.client.MinecraftClient;
 
 public class IRenderManager {
@@ -27,11 +27,11 @@ public class IRenderManager {
     }
 
     public static float getPlayerFovMultiplier() {
-        return ((IMixinGameRenderer) MinecraftClient.getInstance().gameRenderer).getFovMultiplier();
+        return ((IMixinEntityRenderer) MinecraftClient.getInstance().gameRenderer).getFovMultiplier();
     }
 
     public static void updatePlayerFovMultiplier(float newValue) {
-        ((IMixinGameRenderer) MinecraftClient.getInstance().gameRenderer).updateFovMultiplier(newValue);
+        ((IMixinEntityRenderer) MinecraftClient.getInstance().gameRenderer).updateFovMultiplier(newValue);
     }
 
 }
