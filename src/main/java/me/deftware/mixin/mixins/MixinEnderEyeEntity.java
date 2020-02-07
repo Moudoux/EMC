@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinEnderEyeEntity {
     @Inject(method = "moveTowards", at = @At("HEAD"))
     public void moveTowards(BlockPos pos, CallbackInfo ci) {
-        EventStructureLocation event = new EventStructureLocation(new IBlockPos(pos));
+        EventStructureLocation event = new EventStructureLocation(new IBlockPos(pos), EventStructureLocation.StructureType.Stronghold);
         event.broadcast();
     }
 }
