@@ -45,7 +45,9 @@ public class IEntityPlayer {
 	private static double previousMeasureTime, currentTPS = 0;
 
 	public static void drawPlayer(int posX, int posY, int scale) {
-		InventoryScreen.drawEntity(posX, posY, scale, 0, 0, MinecraftClient.getInstance().player);
+		if (MinecraftClient.getInstance().player != null) {
+			InventoryScreen.drawEntity(posX, posY, scale, 0, 0, MinecraftClient.getInstance().player);
+		}
 	}
 
 	public static boolean isAtEdge() {
