@@ -242,7 +242,7 @@ public class IEntityPlayer {
 		if (IEntityPlayer.isNull()) {
 			return;
 		}
-		MinecraftClient.getInstance().player.setPos(MinecraftClient.getInstance().player.getX(),
+		MinecraftClient.getInstance().player.updatePosition(MinecraftClient.getInstance().player.getX(),
 				MinecraftClient.getInstance().player.getY() + y, MinecraftClient.getInstance().player.getZ());
 	}
 
@@ -250,7 +250,7 @@ public class IEntityPlayer {
 		if (IEntityPlayer.isNull()) {
 			return;
 		}
-		MinecraftClient.getInstance().player.setPos(x, y, z);
+		MinecraftClient.getInstance().player.updatePosition(x, y, z);
 	}
 
 	public static void setPositionAndRotation(double x, double y, double z, float yaw, float pitch) {
