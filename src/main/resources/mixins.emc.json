@@ -62,6 +62,7 @@
     "MixinTimer",
     "MixinVisGraph",
     "MixinWorldClient",
-    "MixinWorldRenderer"
+    "MixinWorldRenderer",
+    "MixinGlStateManager"
   ]
 }
