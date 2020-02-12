@@ -63,6 +63,7 @@
     "MixinTimer",
     "MixinVisGraph",
     "MixinWorldClient",
-    "MixinWorldRenderer"
+    "MixinWorldRenderer",
+    "MixinRenderSystem"
   ]
 }

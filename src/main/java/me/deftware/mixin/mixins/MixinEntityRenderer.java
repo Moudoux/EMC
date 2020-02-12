@@ -41,14 +41,6 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     @Shadow
     protected abstract void loadShader(Identifier p_loadShader_1_);
 
-    /* TODO: FIX
-    @Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "com/mojang/blaze3d/systems/RenderSystem.enableDepthTest()V"))
-    private void renderWorld(CallbackInfo ci) {
-        if (!((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "WORLD_DEPTH", true))) {
-            RenderSystem.disableDepthTest();
-        }
-    }*/
-
     @Inject(method = "renderHand", at = @At("HEAD"))
     private void renderHand(MatrixStack matrixStack_1, Camera camera_1, float float_1, CallbackInfo ci) {
         RenderSystem.pushMatrix();
