@@ -21,6 +21,7 @@
     "MixinEntityPlayerSP",
     "MixinEntityRenderer",
     "MixinFilledMapItem",
+    "MixinGlStateManager",
     "MixinGuiButton",
     "MixinGuiChat",
     "MixinGuiConnecting",
@@ -62,7 +63,6 @@
     "MixinTimer",
     "MixinVisGraph",
     "MixinWorldClient",
-    "MixinWorldRenderer",
-    "MixinGlStateManager"
+    "MixinWorldRenderer"
   ]
 }
