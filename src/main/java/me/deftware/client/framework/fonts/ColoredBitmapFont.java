@@ -19,6 +19,9 @@ public class ColoredBitmapFont extends BitmapFont {
         if (color == Color.black) {
             return super.drawString(x, y, ChatColor.stripColor(text), color);
         }
+        if (text == null) {
+            return 0;
+        }
 
         text = text.replaceAll(COLOR_CHAR + "+[l-o]", "");
         text = text.replaceAll(COLOR_CHAR + "+[l-o]", "");

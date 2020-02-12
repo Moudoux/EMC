@@ -252,12 +252,12 @@ public class BitmapFont implements EMCFont {
             return getStringWidthNonScaled(text);
         }
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
-        return (int) (fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) / NonScaledRenderer.getScale());
+        return text != null && fontMetrics != null ? (int) (fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) / NonScaledRenderer.getScale()) : 0;
     }
 
     public int getStringWidthNonScaled(String text) {
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
-        return fontMetrics.charsWidth(text.toCharArray(), 0, text.length());
+        return text != null && fontMetrics != null ? fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) : 0;
     }
 
     @Override

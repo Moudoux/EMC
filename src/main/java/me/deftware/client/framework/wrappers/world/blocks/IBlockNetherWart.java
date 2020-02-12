@@ -5,6 +5,7 @@ import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.client.framework.wrappers.world.IWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.NetherWartBlock;
+import net.minecraft.util.math.BlockPos;
 
 public class IBlockNetherWart extends IBlock {
 
@@ -14,6 +15,10 @@ public class IBlockNetherWart extends IBlock {
 
     public IBlockNetherWart(Block block) {
         super(block);
+    }
+
+    public IBlockNetherWart(Block mBlock, BlockPos pos) {
+        super(mBlock, pos);
     }
 
     public int getAge(IBlockPos pos) {

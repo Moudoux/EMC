@@ -1,6 +1,7 @@
 package me.deftware.client.framework.wrappers.world;
 
 import me.deftware.client.framework.wrappers.entity.IEntity;
+import me.deftware.client.framework.wrappers.entity.IEntityPlayer;
 import me.deftware.client.framework.wrappers.entity.ITileEntity;
 import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.world.blocks.IBlockCrops;
@@ -12,7 +13,10 @@ import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.WorldChunk;
 
 import java.util.ArrayList;
 
@@ -46,6 +50,42 @@ public class IWorld {
         return entities;
     }
 
+    public static ArrayList<IBlock> getLoadedBlocks() {
+        ArrayList<IBlock> blocks = new ArrayList<>();
+
+        if (MinecraftClient.getInstance().player != null && MinecraftClient.getInstance().world != null) {
+            WorldChunk currentChunk = MinecraftClient.getInstance().world.getWorldChunk(MinecraftClient.getInstance().player.getBlockPos());
+            for (BlockPos pos : currentChunk.getBlockEntityPositions()) {
+                blocks.add(new IBlock(currentChunk.getBlockState(pos).getBlock(), pos));
+            }
+        }
+
+        return blocks;
+    }
+
+    public static ArrayList<IBlock> getLoadedBlocks(int rangeFromPlayer) {
+        ArrayList<IBlock> blocks = new ArrayList<>();
+
+        if (MinecraftClient.getInstance().player != null && MinecraftClient.getInstance().world != null) {
+            for (int xRange = -rangeFromPlayer; xRange <= rangeFromPlayer; xRange++) {
+                for (int yRange = -rangeFromPlayer; yRange <= rangeFromPlayer; yRange++) {
+                    for (int zRange = -rangeFromPlayer; zRange <= rangeFromPlayer; zRange++) {
+                        int posX = (int) (IEntityPlayer.getPosX() + xRange);
+                        int posY = (int) MathHelper.clamp(IEntityPlayer.getPosY() + yRange, 0, 256);
+                        int posZ = (int) (IEntityPlayer.getPosZ() + zRange);
+
+                        IBlockPos pos = new IBlockPos(posX, posY, posZ);
+                        IBlock block = IWorld.getBlockFromPos(pos);
+
+                        blocks.add(block);
+                    }
+                }
+            }
+        }
+
+        return blocks;
+    }
+
     public static long getWorldTime() {
         if (MinecraftClient.getInstance().world == null) {
             return 0L;
@@ -65,11 +105,11 @@ public class IWorld {
 
     public static IBlock getBlockFromPos(IBlockPos pos) {
         Block mBlock = MinecraftClient.getInstance().world.getBlockState(pos.getPos()).getBlock();
-        IBlock block = new IBlock(mBlock);
+        IBlock block = new IBlock(mBlock, pos.getPos());
         if (block.instanceOf(IBlock.IBlockTypes.BlockCrops)) {
-            block = new IBlockCrops(mBlock);
+            block = new IBlockCrops(mBlock, pos.getPos());
         } else if (block.instanceOf(IBlock.IBlockTypes.BlockNetherWart)) {
-            block = new IBlockNetherWart(mBlock);
+            block = new IBlockNetherWart(mBlock, pos.getPos());
         }
         return block;
     }

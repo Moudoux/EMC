@@ -3,11 +3,14 @@ package me.deftware.client.framework.wrappers.world;
 import me.deftware.client.framework.wrappers.math.IVoxelShape;
 import net.minecraft.block.*;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
 public class IBlock {
 
     protected Block block;
+
+    protected IBlockPos pos;
 
     public IBlock(String name) {
         block = getBlockFromName(name);
@@ -15,6 +18,20 @@ public class IBlock {
 
     public IBlock(Block block) {
         this.block = block;
+    }
+
+    public IBlock(String name, BlockPos pos) {
+        block = getBlockFromName(name);
+        this.pos = new IBlockPos(pos);
+    }
+
+    public IBlock(Block block, BlockPos pos) {
+        this.block = block;
+        this.pos = new IBlockPos(pos);
+    }
+
+    public IBlockPos getBlockPos() {
+        return pos;
     }
 
     public static boolean isValidBlock(String name) {
