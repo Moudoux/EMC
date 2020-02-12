@@ -62,6 +62,10 @@ public class IBlock {
         return block == Blocks.AIR;
     }
 
+    public boolean isCaveAir() {
+        return block == Blocks.CAVE_AIR;
+    }
+
     public Block getBlock() {
         return block;
     }
