@@ -57,27 +57,14 @@ public abstract class IGuiScreen extends Screen {
      * Returns a string stored in the system clipboard.
      */
     public static String getClipboardString() {
-        try {
-            Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
-
-            if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                return (String) transferable.getTransferData(DataFlavor.stringFlavor);
-            }
-        } catch (Exception ignored) {
-        }
-
-        return "";
+       return MinecraftClient.getInstance().keyboard.getClipboard();
     }
 
     /**
      * Stores the given string in the system clipboard
      */
     public static void setClipboardString(String copyText) {
-        try {
-            StringSelection stringselection = new StringSelection(copyText);
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, null);
-        } catch (Exception ignored) {
-        }
+        MinecraftClient.getInstance().keyboard.setClipboard(copyText);
     }
 
     public static void openLink(String url) {
