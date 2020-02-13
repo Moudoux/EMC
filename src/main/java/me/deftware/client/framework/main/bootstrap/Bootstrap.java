@@ -16,7 +16,6 @@ import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.opengl.GL11;
 
 import java.io.File;
 import java.util.ArrayList;

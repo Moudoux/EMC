@@ -77,6 +77,7 @@ public class SettingsMap {
 		 * lightValue = 0 - 10
 		 * render = true | false
 		 * translucent = true | false
+		 * outline = true | false
 		 * custom_cactus_voxel = true | false
 		 * render_barrier_blocks = true | false
 		 * LIQUID_VOXEL_FULL = true | false

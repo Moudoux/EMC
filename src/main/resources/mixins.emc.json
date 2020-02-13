@@ -54,6 +54,7 @@
     "MixinRenderLivingBase",
     "MixinRenderManager",
     "MixinRenderPlayer",
+    "MixinRenderSystem",
     "MixinServerListEntryNormal",
     "MixinSkinManager",
     "MixinSplashScreen",
@@ -63,7 +64,6 @@
     "MixinTimer",
     "MixinVisGraph",
     "MixinWorldClient",
-    "MixinWorldRenderer",
-    "MixinRenderSystem"
+    "MixinWorldRenderer"
   ]
 }
