@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SettingsMap {
 
-	private static boolean overrideMode = false;
+	private static boolean overrideMode = false, overwriteMode = false;
 	private static final ConcurrentHashMap<Integer, ConcurrentHashMap<String, Object>> map = new ConcurrentHashMap<>();
 
 	/**
@@ -46,6 +46,10 @@ public class SettingsMap {
 		return SettingsMap.overrideMode;
 	}
 
+	public static boolean isOverwriteMode() {
+		return SettingsMap.overwriteMode;
+	}
+
 	/**
 	 * Used to toggle override mode, with override mod on EMC will use the setting defined for a map key no matter what
 	 *
@@ -53,6 +57,15 @@ public class SettingsMap {
 	 */
 	public static void setOverrideMode(boolean state) {
 		SettingsMap.overrideMode = state;
+	}
+
+	/**
+	 * Used to toggle overwrite mode, which compared to Override will only override if a settings value is present
+	 *
+	 * @param state
+	 */
+	public static void setOverwriteMode(boolean state) {
+		SettingsMap.overwriteMode = state;
 	}
 
 	/**

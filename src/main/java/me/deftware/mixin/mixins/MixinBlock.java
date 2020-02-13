@@ -73,7 +73,7 @@ public abstract class MixinBlock {
 
     @Inject(method = "shouldDrawSide", at = @At("HEAD"), cancellable = true)
     private static void shouldDrawSide(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, Direction direction_1, CallbackInfoReturnable<Boolean> callback) {
-        if (SettingsMap.isOverrideMode()) {
+        if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "render"))) {
             callback.setReturnValue(
                     (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "render", false));
         }
@@ -81,7 +81,7 @@ public abstract class MixinBlock {
 
     @Inject(method = "getRenderType", at = @At("HEAD"), cancellable = true)
     public void renderTypeSet(BlockState state, CallbackInfoReturnable<BlockRenderType> cir) {
-        if (SettingsMap.isOverrideMode()) {
+        if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(state.getBlock()), "render"))) {
             boolean doRender = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(state.getBlock()), "render", false);
             if (!doRender) {
                 cir.setReturnValue(BlockRenderType.INVISIBLE);

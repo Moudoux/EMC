@@ -27,7 +27,7 @@ public abstract class MixinOptiFineBlockModelRenderer {
         if (blockState_1.getBlock() instanceof FluidBlock) {
             ci.setReturnValue(((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "FLUIDS", true)));
         } else {
-            if (SettingsMap.isOverrideMode()) {
+            if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "render"))) {
                 if (!(boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "render", false)) {
                     ci.setReturnValue(false);
                 }
@@ -39,9 +39,7 @@ public abstract class MixinOptiFineBlockModelRenderer {
     private boolean renderModelFlat1(boolean checkSides) {
         try {
             if (SettingsMap.isOverrideMode()) {
-                if (SettingsMap.isOverrideMode()) {
-                    return false;
-                }
+                return false;
             }
         } catch (Exception exception) {}
 
