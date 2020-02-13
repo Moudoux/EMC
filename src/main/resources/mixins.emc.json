@@ -12,6 +12,7 @@
     "MixinBlockFluidRenderer",
     "MixinBlockModelRenderer",
     "MixinBlockSoulSand",
+    "MixinBlockState",
     "MixinChatSuggestion",
     "MixinClientBrandRetriever",
     "MixinCPacketPlayer",

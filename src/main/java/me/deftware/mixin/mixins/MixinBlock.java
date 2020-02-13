@@ -10,6 +10,7 @@ import me.deftware.client.framework.wrappers.world.IBlock;
 import net.minecraft.block.*;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
@@ -38,6 +39,8 @@ public abstract class MixinBlock {
     @Final
     protected boolean collidable;
 
+    @Shadow public abstract Item asItem();
+
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
     public void getOutlineShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, EntityContext entityContext_1, CallbackInfoReturnable<VoxelShape> ci) {
         EventCollideCheck event = new EventCollideCheck(new IBlock(blockState_1.getBlock()));
@@ -46,14 +49,20 @@ public abstract class MixinBlock {
             if (event.canCollide) {
                 ci.setReturnValue(VoxelShapes.empty());
             }
+        } else {
+            if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "outline"))) {
+                boolean doOutline = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "outline", false);
+                if (!doOutline) {
+                    ci.setReturnValue(VoxelShapes.empty());
+                }
+            }
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Inject(method = "getVelocityMultiplier", at = @At(value = "TAIL"), cancellable = true)
     private void onGetVelocityMultiplier(CallbackInfoReturnable<Float> cir) {
         if (velocityMultiplier != 1.0f) {
-            Block block = (Block) (Object) this;
+            Block block = Block.getBlockFromItem(this.asItem());
             Event event = null;
             if (block instanceof HoneyBlock) {
                 event = new EventSlowdown(EventSlowdown.SlowdownType.Honey);
@@ -105,7 +114,6 @@ public abstract class MixinBlock {
 
     @Inject(method = "calcBlockBreakingDelta", at = @At("HEAD"), cancellable = true)
     public void calcBlockBreakingDelta(BlockState blockState_1, PlayerEntity playerEntity_1, BlockView blockView_1, BlockPos blockPos_1, CallbackInfoReturnable<Float> ci) {
-
         float float_1 = blockState_1.getHardness(blockView_1, blockPos_1);
         EventBlockhardness event = new EventBlockhardness();
         event.broadcast();
@@ -124,11 +132,11 @@ public abstract class MixinBlock {
         if (event.modified) {
             ci.setReturnValue(event.shape);
         } else {
-            if ((Object) this instanceof FluidBlock) {
+            if (Block.getBlockFromItem(this.asItem()) instanceof FluidBlock) {
                 ci.setReturnValue((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "LIQUID_VOXEL_FULL", false)
                         ? VoxelShapes.fullCube()
                         : VoxelShapes.empty());
-            } else if ((Object) this instanceof SweetBerryBushBlock) {
+            } else if (Block.getBlockFromItem(this.asItem()) instanceof SweetBerryBushBlock) {
                 if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "custom_berry_voxel", false)) {
                     ci.setReturnValue(VoxelShapes.fullCube());
                 }
