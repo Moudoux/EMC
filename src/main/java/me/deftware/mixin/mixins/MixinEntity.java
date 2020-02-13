@@ -9,7 +9,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -39,10 +38,6 @@ public abstract class MixinEntity implements IMixinEntity {
 
     @Shadow
     protected boolean inNetherPortal;
-
-    @Shadow
-    @Final
-    protected DataTracker dataTracker;
 
     @Shadow
     @Final
@@ -116,11 +111,6 @@ public abstract class MixinEntity implements IMixinEntity {
     @Override
     public boolean getAFlag(int flag) {
         return getFlag(flag);
-    }
-
-    @Override
-    public DataTracker getTracker() {
-        return dataTracker;
     }
 
     @Override
