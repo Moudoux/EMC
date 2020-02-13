@@ -79,6 +79,16 @@ public abstract class MixinBlock {
         }
     }
 
+    @Inject(method = "getRenderType", at = @At("HEAD"), cancellable = true)
+    public void renderTypeSet(BlockState state, CallbackInfoReturnable<BlockRenderType> cir) {
+        if (SettingsMap.isOverrideMode()) {
+            boolean doRender = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(state.getBlock()), "render", false);
+            if (!doRender) {
+                cir.setReturnValue(BlockRenderType.INVISIBLE);
+            }
+        }
+    }
+
     @Inject(method = "getLuminance", at = @At("HEAD"), cancellable = true)
     public void getLuminance(BlockState blockState_1, CallbackInfoReturnable<Integer> callback) {
         callback.setReturnValue(
