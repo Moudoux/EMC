@@ -51,7 +51,7 @@ public abstract class MixinBlock {
             }
         } else {
             if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "outline"))) {
-                boolean doOutline = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "outline", false);
+                boolean doOutline = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "outline", true);
                 if (!doOutline) {
                     ci.setReturnValue(VoxelShapes.empty());
                 }
@@ -101,8 +101,8 @@ public abstract class MixinBlock {
     @Inject(method = "isTranslucent", at = @At("HEAD"), cancellable = true)
     public void getIsTranslucent(BlockState state, BlockView view, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(state.getBlock()), "translucent"))) {
-            boolean doRender = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(state.getBlock()), "translucent", false);
-            cir.setReturnValue(doRender);
+            cir.setReturnValue(
+                    (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(state.getBlock()), "translucent", false));
         }
     }
 

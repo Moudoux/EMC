@@ -31,7 +31,7 @@ public class MixinWorldRenderer {
     @Inject(method = "drawBlockOutline", at = @At("HEAD"), cancellable = true)
     private void drawBlockOutline(MatrixStack matrixStack, VertexConsumer vertexConsumer, Entity entity, double d, double e, double f, BlockPos blockPos, BlockState blockState, CallbackInfo ci) {
         if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(blockState.getBlock()), "outline"))) {
-            boolean doRender = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(blockState.getBlock()), "outline", false);
+            boolean doRender = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(blockState.getBlock()), "outline", true);
             if (!doRender) {
                 ci.cancel();
             }

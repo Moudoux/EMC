@@ -5,7 +5,10 @@ import me.deftware.client.framework.event.events.EventCollideCheck;
 import me.deftware.client.framework.event.events.EventVoxelShape;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.world.IBlock;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FluidBlock;
+import net.minecraft.block.SweetBerryBushBlock;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -42,7 +45,7 @@ public abstract class MixinBlockState {
             }
         } else {
             if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(this.getBlock()), "outline"))) {
-                boolean doOutline = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(this.getBlock()), "outline", false);
+                boolean doOutline = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(this.getBlock()), "outline", true);
                 if (!doOutline) {
                     ci.setReturnValue(VoxelShapes.empty());
                 }
@@ -50,21 +53,11 @@ public abstract class MixinBlockState {
         }
     }
 
-    @Inject(method = "getRenderType", at = @At("HEAD"), cancellable = true)
-    public void renderTypeSet(CallbackInfoReturnable<BlockRenderType> cir) {
-        if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(this.getBlock()), "render"))) {
-            boolean doRender = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(this.getBlock()), "render", false);
-            if (!doRender) {
-                cir.setReturnValue(BlockRenderType.INVISIBLE);
-            }
-        }
-    }
-
     @Inject(method = "isTranslucent", at = @At("HEAD"), cancellable = true)
     public void getIsTranslucent(BlockView view, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(this.getBlock()), "translucent"))) {
-            boolean doRender = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(this.getBlock()), "translucent", false);
-            cir.setReturnValue(doRender);
+            cir.setReturnValue(
+                    (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(this.getBlock()), "translucent", false));
         }
     }
 

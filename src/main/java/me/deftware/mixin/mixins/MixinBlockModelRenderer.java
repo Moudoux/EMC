@@ -26,8 +26,10 @@ public abstract class MixinBlockModelRenderer {
             ci.setReturnValue(((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "FLUIDS", true)));
         } else {
             if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "render"))) {
-                ci.setReturnValue(
-                        (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "render", false));
+                boolean doRender = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "render", false);
+                if (!doRender) {
+                    ci.setReturnValue(false);
+                }
             }
         }
     }
