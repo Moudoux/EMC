@@ -89,6 +89,14 @@ public abstract class MixinBlock {
         }
     }
 
+    @Inject(method = "isTranslucent", at = @At("HEAD"), cancellable = true)
+    public void getIsTranslucent(BlockState state, BlockView view, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(state.getBlock()), "translucent"))) {
+            boolean doRender = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(state.getBlock()), "translucent", false);
+            cir.setReturnValue(doRender);
+        }
+    }
+
     @Inject(method = "getLuminance", at = @At("HEAD"), cancellable = true)
     public void getLuminance(BlockState blockState_1, CallbackInfoReturnable<Integer> callback) {
         callback.setReturnValue(
