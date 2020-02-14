@@ -12,8 +12,13 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.server.network.packet.ChatMessageC2SPacket;
+import net.minecraft.server.network.packet.ClientCommandC2SPacket;
+import net.minecraft.server.network.packet.PlayerMoveC2SPacket;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,6 +27,39 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayerEntity.class)
 public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinEntityPlayerSP {
+
+    @Shadow
+    private boolean lastOnGround;
+
+    @Shadow
+    private boolean lastSprinting;
+
+    @Shadow
+    private boolean lastIsHoldingSneakKey;
+
+    @Shadow
+    private float lastYaw;
+
+    @Shadow
+    private float lastPitch;
+
+    @Shadow
+    private double lastX;
+
+    @Shadow
+    private double lastBaseY;
+
+    @Shadow
+    private double lastZ;
+
+    @Shadow
+    private int field_3923;
+
+    @Shadow
+    private boolean lastAutoJump = true;
+
+    @Shadow
+    protected abstract boolean isCamera();
 
     @Shadow
     @Final
@@ -120,14 +158,83 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         field_3922 = height;
     }
 
-
-    @Inject(method = "sendMovementPackets", at = @At(value = "HEAD"), cancellable = true)
-    private void onSendMovementPackets(CallbackInfo ci) {
-        ClientPlayerEntity entity = (ClientPlayerEntity) (Object) this;
-        EventPlayerWalking event = new EventPlayerWalking(entity.getX(), entity.getY(), entity.getZ(), yaw, pitch, onGround);
+    /**
+     * @author Deftware
+     * @reason
+     */
+    @Overwrite
+    private void sendMovementPackets() {
+        EventPlayerWalking event = new EventPlayerWalking(((ClientPlayerEntity) (Object) this).getX(), ((ClientPlayerEntity) (Object) this).getY(), ((ClientPlayerEntity) (Object) this).getZ(), yaw, pitch, onGround);
         event.broadcast();
         if (event.isCanceled()) {
-            ci.cancel();
+            return;
         }
+        boolean boolean_1 = this.isSprinting();
+        if (boolean_1 != this.lastSprinting) {
+            if (boolean_1) {
+                this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.START_SPRINTING));
+            } else {
+                this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.STOP_SPRINTING));
+            }
+
+            this.lastSprinting = boolean_1;
+        }
+
+        boolean boolean_2 = this.isSneaking();
+        if (boolean_2 != this.lastIsHoldingSneakKey) {
+            if (boolean_2) {
+                this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY));
+            } else {
+                this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) (Object) this, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
+            }
+
+            this.lastIsHoldingSneakKey = boolean_2;
+        }
+
+        if (isCamera()) {
+            Box axisalignedbb = getBoundingBox();
+            double d0 = ((ClientPlayerEntity) (Object) this).getX() - lastX;
+            double d1 = event.getPosY() - lastBaseY;
+            double d2 = ((ClientPlayerEntity) (Object) this).getZ() - lastZ;
+            double d3 = event.getRotationYaw() - lastYaw;
+            double d4 = event.getRotationPitch() - lastPitch;
+            ++field_3923;
+            boolean flag2 = d0 * d0 + d1 * d1 + d2 * d2 > 9.0E-4D || field_3923 >= 20;
+            boolean flag3 = d3 != 0.0D || d4 != 0.0D;
+
+            if (hasVehicle()) {
+                Vec3d vec3d_1 = ((ClientPlayerEntity) (Object) this).getVelocity();
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Both(vec3d_1.x, -999.0D, vec3d_1.z,
+                        event.getRotationYaw(), event.getRotationPitch(), event.isOnGround()));
+                flag2 = false;
+            } else if ((flag2 && flag3)) {
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.Both(((ClientPlayerEntity) (Object) this).getX(), event.getPosY(), ((ClientPlayerEntity) (Object) this).getZ(),
+                        event.getRotationYaw(), event.getRotationPitch(), event.isOnGround()));
+            } else if (flag2) {
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionOnly(((ClientPlayerEntity) (Object) this).getX(), event.getPosY(), ((ClientPlayerEntity) (Object) this).getZ(), event.isOnGround()));
+            } else if (flag3) {
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookOnly(event.getRotationYaw(), event.getRotationPitch(),
+                        event.isOnGround()));
+            } else if (lastOnGround != onGround) {
+                this.networkHandler.sendPacket(new PlayerMoveC2SPacket(event.isOnGround()));
+            }
+
+            if (flag2) {
+                this.lastX = ((ClientPlayerEntity) (Object) this).getX();
+                this.lastBaseY = axisalignedbb.y1;
+                this.lastZ = ((ClientPlayerEntity) (Object) this).getZ();
+                this.field_3923 = 0;
+            }
+
+            if (flag3) {
+                this.lastYaw = this.yaw;
+                this.lastPitch = this.pitch;
+            }
+
+            this.lastOnGround = this.onGround;
+            this.lastAutoJump = MinecraftClient.getInstance().options.autoJump;
+        }
+
     }
+
 }
