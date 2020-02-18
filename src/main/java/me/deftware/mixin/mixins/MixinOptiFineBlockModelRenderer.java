@@ -21,6 +21,9 @@ import java.util.Random;
 
 /**
  *  OptiFine overwrites hooks used by EMC for block render override, so we need to inject into OptiFine and re-add those hooks
+ *
+ *  NOTE! This only works for OptiFine F5 and above
+ *
  * @author Deftware
  */
 @SuppressWarnings("ALL")
