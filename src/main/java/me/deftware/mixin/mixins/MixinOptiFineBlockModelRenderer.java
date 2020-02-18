@@ -52,16 +52,24 @@ public abstract class MixinOptiFineBlockModelRenderer {
 
     @Inject(method = "renderModelSmooth", at = @At("RETURN"), remap = false, cancellable = true)
     public void renderModelSmoothInject(BlockRenderView world, BakedModel model, BlockState state, BlockPos pos, MatrixStack buffer, VertexConsumer vertexConsumer, boolean cull, Random random, long seed, int overlay, IModelData data, CallbackInfoReturnable<Boolean> ci) {
-        if (cull) {
-            ci.setReturnValue(renderModelSmooth(world, model, state, pos, buffer, vertexConsumer, false, random, seed, overlay, data));
-        }
+        try {
+            if (SettingsMap.isOverrideMode()) {
+                if (cull) {
+                    ci.setReturnValue(renderModelSmooth(world, model, state, pos, buffer, vertexConsumer, false, random, seed, overlay, data));
+                }
+            }
+        } catch (Exception exception) {}
     }
 
     @Inject(method = "renderModelFlat", at = @At("HEAD"), remap = false, cancellable = true)
     public void renderModelFlatInject(BlockRenderView view, BakedModel model, BlockState state, BlockPos pos, MatrixStack buffer, VertexConsumer vertexConsumer, boolean cull, Random random, long l, int i, IModelData data, CallbackInfoReturnable<Boolean> ci) {
-        if (cull) {
-            ci.setReturnValue(renderModelFlat(view, model, state, pos, buffer, vertexConsumer, false, random, l, i, data));
-        }
+        try {
+            if (SettingsMap.isOverrideMode()) {
+                if (cull) {
+                    ci.setReturnValue(renderModelFlat(view, model, state, pos, buffer, vertexConsumer, false, random, l, i, data));
+                }
+            }
+        } catch (Exception exception) {}
     }
 
 }
