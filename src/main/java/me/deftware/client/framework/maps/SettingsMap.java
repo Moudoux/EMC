@@ -23,6 +23,18 @@ public class SettingsMap {
 	}
 
 	/**
+	 * Removes a value, if it exists within a map
+	 *
+	 * @param mapKey The key of the map
+	 * @param key    The key of the current map
+	 */
+	public static void remove(int mapKey, String key) {
+		if (hasValue(mapKey, key)) {
+			SettingsMap.map.get(mapKey).remove(key);
+		}
+	}
+
+	/**
 	 * Returns a value from the map
 	 *
 	 * @param mapKey   The map you want to access
