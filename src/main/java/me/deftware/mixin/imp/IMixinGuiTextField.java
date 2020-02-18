@@ -49,4 +49,6 @@ public interface IMixinGuiTextField {
 
     int getCursorMax();
 
+    void setOverlay(boolean flag);
+
 }

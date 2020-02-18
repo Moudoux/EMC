@@ -1,5 +1,6 @@
 package me.deftware.mixin.mixins;
 
+import me.deftware.client.framework.event.events.EventChatboxType;
 import me.deftware.client.framework.fonts.EMCFont;
 import me.deftware.client.framework.utils.render.GraphicsUtil;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.awt.*;
+import java.lang.ref.WeakReference;
 import java.util.function.BiFunction;
 
 @Mixin(TextFieldWidget.class)
@@ -29,6 +31,9 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
     private boolean useMinecraftScaling = true;
     private boolean useCustomFont = false;
     private EMCFont customFont;
+
+    private boolean overlay = false;
+    private String overlayText = "";
 
     @Shadow
     private int maxLength;
@@ -60,6 +65,8 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
 
     @Shadow
     private boolean editable;
+
+    @Shadow public abstract String getText();
 
     @Override
     public int getHeight() {
@@ -149,6 +156,16 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
         if (!useMinecraftScaling) {
             GL11.glPopMatrix();
         }
+        if (overlay) {
+            String currentText = getText();
+            int currentWidth = ((IMixinGuiTextField) this).getFontRendererInstance().getStringWidth(currentText);
+            int x = isFocused() ? ((IMixinGuiTextField) this).getX() + 4 : ((IMixinGuiTextField) this).getX();
+            int y = isFocused() ? ((IMixinGuiTextField) this).getY() + (((IMixinGuiTextField) this).getHeight() - 8) / 2 : ((IMixinGuiTextField) this).getY();
+            ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(overlayText, x + currentWidth - 3, y - 2, Color.GRAY.getRGB());
+            WeakReference<EventChatboxType> event = new WeakReference<>(new EventChatboxType(getText(), overlayText));
+            event.get().broadcast();
+            overlayText = event.get().getOverlay();
+        }
     }
 
     @Redirect(method = "renderButton", at = @At(value = "INVOKE", target = "net/minecraft/client/font/TextRenderer.drawWithShadow(Ljava/lang/String;FFI)I"))
@@ -188,6 +205,11 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
     @Override
     public int getCursorMax() {
         return selectionStart;
+    }
+
+    @Override
+    public void setOverlay(boolean flag) {
+        overlay = flag;
     }
 
 }

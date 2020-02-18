@@ -1,10 +1,9 @@
 package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
-import me.deftware.mixin.components.InternalGuiTextField;
 
 /**
- * Triggered by EMC framework in {@link InternalGuiTextField}.
+ * Triggered by EMC framework in {@link me.deftware.mixin.mixins.MixinGuiTextField}.
  * when internal text field is initialized or character is typed into it
  */
 public class EventChatboxType extends Event {
