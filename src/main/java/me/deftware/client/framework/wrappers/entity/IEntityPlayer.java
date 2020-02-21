@@ -238,12 +238,28 @@ public class IEntityPlayer {
 		return MinecraftClient.getInstance().player.isCreative();
 	}
 
+	public static void setPositionX(int x) {
+		if (IEntityPlayer.isNull()) {
+			return;
+		}
+		MinecraftClient.getInstance().player.updatePosition(MinecraftClient.getInstance().player.getX() + x,
+				MinecraftClient.getInstance().player.getY(), MinecraftClient.getInstance().player.getZ());
+	}
+
 	public static void setPositionY(int y) {
 		if (IEntityPlayer.isNull()) {
 			return;
 		}
 		MinecraftClient.getInstance().player.updatePosition(MinecraftClient.getInstance().player.getX(),
 				MinecraftClient.getInstance().player.getY() + y, MinecraftClient.getInstance().player.getZ());
+	}
+
+	public static void setPositionZ(int z) {
+		if (IEntityPlayer.isNull()) {
+			return;
+		}
+		MinecraftClient.getInstance().player.updatePosition(MinecraftClient.getInstance().player.getX(),
+				MinecraftClient.getInstance().player.getY(), MinecraftClient.getInstance().player.getZ() + z);
 	}
 
 	public static void setPosition(double x, double y, double z) {
