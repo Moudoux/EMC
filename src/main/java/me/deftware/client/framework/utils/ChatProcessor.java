@@ -118,13 +118,13 @@ public class ChatProcessor {
 
     public static void printClientMessage(String chatMessage) {
         ChatProcessor.printChatMessage(ChatColor.AQUA.toString() + ChatColor.BOLD.toString()
-                + FrameworkConstants.FRAMEWORK_NAME + " " + ChatColor.RESET.toString()
+                + "EMC " + ChatColor.RESET.toString()
                 + ChatColor.GRAY.toString() + "> " + ChatColor.GRAY + chatMessage, false);
     }
 
     public static void printFrameworkMessage(String msg) {
         ChatProcessor.printChatMessage(ChatColor.AQUA.toString() + ChatColor.BOLD.toString()
-                + FrameworkConstants.FRAMEWORK_NAME + " " + ChatColor.RESET.toString()
+                + "EMC " + ChatColor.RESET.toString()
                 + ChatColor.GRAY.toString() + "> " + ChatColor.GRAY + msg, false);
     }
 

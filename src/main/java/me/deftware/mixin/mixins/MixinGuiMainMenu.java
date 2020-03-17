@@ -13,8 +13,7 @@ public class MixinGuiMainMenu {
 
     @Inject(method = "render", at = @At("RETURN"))
     public void render(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(
-                FrameworkConstants.FRAMEWORK_NAME + " v" + FrameworkConstants.VERSION + "." + FrameworkConstants.PATCH, 2, 2, 0xFFFFFF);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(FrameworkConstants.toDataString(), 2, 2, 0xFFFFFF);
     }
 
 }

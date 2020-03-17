@@ -1,5 +1,7 @@
 package me.deftware.client.framework.wrappers.gui;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Streams;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.utils.ResourceUtils;
@@ -11,6 +13,8 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Util;
 import org.lwjgl.glfw.GLFW;
@@ -18,47 +22,23 @@ import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class IGuiScreen extends Screen {
 
-    protected IGuiScreen parent = null;
-    protected boolean escGoesBack;
-    private boolean pause = true;
-    private HashMap<String, Texture> textureHashMap = new HashMap<>();
-
-    @Deprecated
-    public IGuiScreen(boolean pause) {
-        this("", true);
-    }
-
-    public IGuiScreen(String screenTitle, boolean escGoesBack) {
-        super(new LiteralText(screenTitle));
-        this.escGoesBack = escGoesBack;
-    }
-
-    public IGuiScreen() {
-        this("", false);
-    }
+    protected IGuiScreen parent;
+    protected boolean escGoesBack = true;
+    protected HashMap<String, Texture> textureHashMap = new HashMap<>();
 
     public IGuiScreen(IGuiScreen parent) {
-        this("", true);
+        super(new LiteralText(""));
         this.parent = parent;
     }
 
-    /**
-     * Returns a string stored in the system clipboard.
-     */
     public static String getClipboardString() {
        return MinecraftClient.getInstance().keyboard.getClipboard();
     }
 
-    /**
-     * Stores the given string in the system clipboard
-     */
     public static void setClipboardString(String copyText) {
         MinecraftClient.getInstance().keyboard.setClipboard(copyText);
     }
@@ -91,13 +71,18 @@ public abstract class IGuiScreen extends Screen {
         return MinecraftClient.getInstance().getWindow().getWidth();
     }
 
+    @Override
     public boolean mouseReleased(double x, double y, int button) {
-        children.forEach((listener) -> listener.mouseReleased(x, y, button));
+        onMouseReleased((int) Math.round(x), (int) Math.round(y), button);
+        super.mouseReleased(x, y, button);
         return false;
     }
 
-    public static boolean isWindowMinimized() {
-        return getDisplayWidth() == 0 || getDisplayHeight() == 0;
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+        onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        return false;
     }
 
     @Override
@@ -105,11 +90,6 @@ public abstract class IGuiScreen extends Screen {
         onDraw(mouseX, mouseY, partialTicks);
         super.render(mouseX, mouseY, partialTicks);
         onPostDraw(mouseX, mouseY, partialTicks);
-    }
-
-    @Override
-    public boolean isPauseScreen() {
-        return pause;
     }
 
     @Override
@@ -128,21 +108,6 @@ public abstract class IGuiScreen extends Screen {
     public void init() {
         super.init();
         onInitGui();
-        children.add(new Element() {
-
-            @Override
-            public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-                onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
-                return false;
-            }
-
-            @Override
-            public boolean mouseReleased(double mouseX, double mouseY, int mouseButton) {
-                onMouseReleased((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
-                return false;
-            }
-
-        });
     }
 
     @Override
@@ -151,13 +116,28 @@ public abstract class IGuiScreen extends Screen {
         super.removed();
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
     public boolean keyPressed(int keyCode, int action, int modifiers) {
-        onKeyPressed(keyCode, action, modifiers);
-        if (keyCode == GLFW.GLFW_KEY_ESCAPE && escGoesBack) {
-            IMinecraft.setGuiScreen(parent);
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+            if (escGoesBack) {
+                IMinecraft.setGuiScreen(parent);
+            }
+        } else {
+            onKeyPressed(keyCode, action, modifiers);
+            // TextFieldWidget inherits AbstractButtonWidget so this applies to both normal buttons and textfield's
+            if (keyCode == GLFW.GLFW_KEY_TAB && children.stream().anyMatch(e -> e instanceof AbstractButtonWidget && ((AbstractButtonWidget) e).active)) {
+                int i = Iterables.indexOf(children, e -> e instanceof AbstractButtonWidget && ((AbstractButtonWidget) e).isFocused()),
+                        newIndex = i == Iterables.indexOf(children, e -> e == children.stream().filter(t -> t instanceof AbstractButtonWidget && ((AbstractButtonWidget) t).active).reduce((first, second) -> second).get()) || i == -1 ?
+                                Iterables.indexOf(children, e -> e == children.stream().filter(t -> t instanceof AbstractButtonWidget && ((AbstractButtonWidget) t).active).findFirst().get()) : i + 1;
+                if (i != -1 && ((AbstractButtonWidget) children.get(i)).isFocused()) {
+                    children.get(newIndex).changeFocus(true);
+                }
+                children.get(newIndex).changeFocus(true);
+            }
+            super.keyPressed(keyCode, action, modifiers);
         }
-        return true;
+        return false;
     }
 
     public void addEventListener(CustomIGuiEventListener listener) {
@@ -174,10 +154,6 @@ public abstract class IGuiScreen extends Screen {
 
     public void drawDarkOverlay() {
         DrawableHelper.fill(0, 0, width, height, Integer.MIN_VALUE);
-    }
-
-    protected List<AbstractButtonWidget> getButtonList() {
-        return buttons;
     }
 
     protected void addButton(IGuiButton button) {
@@ -200,12 +176,7 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public void drawCenteredString(String text, int x, int y, int color) {
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(text,
-                x - MinecraftClient.getInstance().textRenderer.getStringWidth(text) / 2f, y, color);
-    }
-
-    public void setDoesGuiPauseGame(boolean state) {
-        pause = state;
+        this.drawCenteredString(MinecraftClient.getInstance().textRenderer, text, x, y, color);
     }
 
     protected void drawTexture(EMCMod mod, String texture, int x, int y, int width, int height) {
@@ -251,13 +222,11 @@ public abstract class IGuiScreen extends Screen {
         this.setFocused(listener);
     }
 
-    protected void onGuiClose() {
-    }
+    protected void onGuiClose() { }
 
     protected abstract void onInitGui();
 
-    protected void onPostDraw(int mouseX, int mouseY, float partialTicks) {
-    }
+    protected void onPostDraw(int mouseX, int mouseY, float partialTicks) { }
 
     protected abstract void onDraw(int mouseX, int mouseY, float partialTicks);
 

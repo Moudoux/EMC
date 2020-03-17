@@ -7,11 +7,13 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
@@ -26,7 +28,6 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
     @Shadow
     protected int itemUseTimeLeft;
 
-
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "hasStatusEffect", at = @At(value = "TAIL"), cancellable = true)
     private void onHasStatusEffect(StatusEffect effect, CallbackInfoReturnable<Boolean> cir) {
@@ -38,7 +39,6 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
         event.broadcast();
         cir.setReturnValue(event.isActive());
     }
-
 
     @Inject(method = "getJumpVelocity", at = @At(value = "TAIL"), cancellable = true)
     private void onGetJumpVelocity(CallbackInfoReturnable<Float> cir) {

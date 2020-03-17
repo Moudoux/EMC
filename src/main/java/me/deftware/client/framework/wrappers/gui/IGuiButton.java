@@ -43,8 +43,7 @@ public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventL
         }
     }
 
-    public void onButtonClick(double mouseX, double mouseY) {
-    }
+    public void onButtonClick(double mouseX, double mouseY) { }
 
     protected int onDraw(int mouseX, int mouseY) {
         return 0;
@@ -110,8 +109,18 @@ public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventL
         return getMessage();
     }
 
-    public void setButtonText(String text) {
+    public IGuiButton setButtonText(String text) {
         setMessage(text);
+        return this;
+    }
+
+    public void resetToAfter(int ms, String text) {
+        new Thread(() -> {
+            try {
+                Thread.sleep(ms);
+            } catch (InterruptedException ignored) { }
+            setButtonText(text);
+        }).start();
     }
 
 }

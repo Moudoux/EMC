@@ -1,7 +1,5 @@
 package me.deftware.client.framework.utils;
 
-import me.deftware.client.framework.FrameworkConstants;
-
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -42,7 +40,7 @@ public class WebUtils {
 		}
 
 		connection.setConnectTimeout(8 * 1000);
-		connection.setRequestProperty("User-Agent", FrameworkConstants.FRAMEWORK_NAME);
+		connection.setRequestProperty("User-Agent", "EMC");
 		connection.setRequestMethod("GET");
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));

@@ -15,6 +15,8 @@ import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.mob.SkeletonHorseEntity;
+import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.BowItem;
@@ -650,7 +652,7 @@ public class IEntityPlayer {
 		if (IEntityPlayer.isNull()) {
 			return false;
 		}
-		return MinecraftClient.getInstance().player.hasVehicle() && MinecraftClient.getInstance().player.getVehicle() instanceof HorseEntity;
+		return MinecraftClient.getInstance().player.hasVehicle() && MinecraftClient.getInstance().player.getVehicle() instanceof HorseBaseEntity;
 	}
 
 	public static boolean isInLiquid() {

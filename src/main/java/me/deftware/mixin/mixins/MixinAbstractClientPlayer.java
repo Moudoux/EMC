@@ -18,13 +18,11 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
     @Shadow
     private PlayerListEntry cachedScoreboardEntry;
 
-
     @Inject(method = "isSpectator", at = @At(value = "TAIL"), cancellable = true)
     private void onIsSpectator(CallbackInfoReturnable<Boolean> cir) {
         EventSpectator event = new EventSpectator(cir.getReturnValue());
         cir.setReturnValue(event.isSpectator());
     }
-
 
     @ModifyVariable(method = "getSpeed", ordinal = 0, at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;getAttributeInstance(Lnet/minecraft/entity/attribute/EntityAttribute;)Lnet/minecraft/entity/attribute/EntityAttributeInstance;"))
     private float onGetSpeed(float f) {

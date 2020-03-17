@@ -1,6 +1,5 @@
 package me.deftware.client.framework.wrappers.gui;
 
-import me.deftware.client.framework.fonts.EMCFont;
 import me.deftware.mixin.imp.IMixinGuiTextField;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -73,23 +72,5 @@ public class IGuiTextField extends TextFieldWidget implements CustomIGuiEventLis
     public void setPosY(int y) {
         ((IMixinGuiTextField) this).setY(y);
     }
-
-    public void setIEnableBackgroundDrawing(boolean state) {
-        setHasBorder(state);
-    }
-
-    public void setTextboxCustomFont(EMCFont font) {
-        ((IMixinGuiTextField) this).setCustomFont(font);
-    }
-
-    public void useTextboxCustomFont(boolean state) {
-        ((IMixinGuiTextField) this).setUseCustomFont(state);
-    }
-
-    public void useTextboxMinecraftScale(boolean state) {
-        ((IMixinGuiTextField) this).setUseMinecraftScaling(state);
-    }
-
-
 
 }
