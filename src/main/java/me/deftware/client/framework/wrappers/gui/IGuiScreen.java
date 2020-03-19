@@ -1,7 +1,6 @@
 package me.deftware.client.framework.wrappers.gui;
 
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Streams;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.utils.ResourceUtils;
@@ -13,8 +12,6 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Util;
 import org.lwjgl.glfw.GLFW;
@@ -22,7 +19,9 @@ import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 public abstract class IGuiScreen extends Screen {
 

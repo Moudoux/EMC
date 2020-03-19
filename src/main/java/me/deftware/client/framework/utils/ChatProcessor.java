@@ -1,7 +1,6 @@
 package me.deftware.client.framework.utils;
 
 import com.google.common.collect.EvictingQueue;
-import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.mixin.imp.IMixinGuiNewChat;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.ClickEvent;
