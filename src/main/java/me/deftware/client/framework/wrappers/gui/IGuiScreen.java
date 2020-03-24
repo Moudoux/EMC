@@ -121,6 +121,7 @@ public abstract class IGuiScreen extends Screen {
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
             if (escGoesBack) {
                 IMinecraft.setGuiScreen(parent);
+                return true;
             }
         } else {
             onKeyPressed(keyCode, action, modifiers);
