@@ -53,6 +53,7 @@ dependencies {
 	compile 'com.google.code.findbugs:jsr305:3.0.2'
 	modCompile "net.fabricmc:fabric-loader:0.7.6+build.180"
 	modCompile 'com.github.modmuss50:Fabric-ASM:b97939c03a'
+	modCompile 'io.github.prospector:modmenu:1.10.2+build.32'
 	include 'com.github.modmuss50:Fabric-ASM:b97939c03a'
 	compile files("deps/IModelData.jar")
 }

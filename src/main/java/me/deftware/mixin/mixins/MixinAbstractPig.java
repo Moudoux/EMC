@@ -14,7 +14,6 @@ public abstract class MixinAbstractPig {
     private void onIsSaddled(CallbackInfoReturnable<Boolean> cir) {
         EventSaddleCheck event = new EventSaddleCheck(cir.getReturnValue());
         event.broadcast();
-
         cir.setReturnValue(event.isState());
     }
 

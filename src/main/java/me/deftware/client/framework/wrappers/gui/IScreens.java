@@ -1,5 +1,7 @@
 package me.deftware.client.framework.wrappers.gui;
 
+import io.github.prospector.modmenu.gui.ModsScreen;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.SettingsScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
@@ -19,6 +21,10 @@ public class IScreens {
             screen = new SelectWorldScreen(parent);
         } else if (type.equals(Screen.Options)) {
             screen = new SettingsScreen(parent, MinecraftClient.getInstance().options);
+        } else if (type.equals(Screen.Mods)) {
+            if (FabricLoader.getInstance().isModLoaded("modmenu")) {
+                screen = new ModsScreen(parent);
+            }
         }
         return screen;
     }
@@ -33,7 +39,7 @@ public class IScreens {
     }
 
     public enum Screen {
-        Multiplayer, WorldSelection, Options, MainMenu
+        Multiplayer, WorldSelection, Options, MainMenu, Mods
     }
 
 }
