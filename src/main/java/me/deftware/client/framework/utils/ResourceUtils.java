@@ -4,6 +4,7 @@ import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.path.OSUtils;
 import me.deftware.client.framework.wrappers.IMinecraft;
+import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -70,6 +71,24 @@ public class ResourceUtils {
             return null;
         }
         return resource;
+    }
+
+    /**
+     * Returns a boolean of whether an external mod menu is present in this version
+     *
+     * @return Boolean depending on Mod Menu and MC Version/Modloader
+     */
+    public static boolean hasExternalModMenu() {
+        return hasSpecificMod("modmenu");
+    }
+
+    /**
+     * Returns a boolean of whether an external mod is present in this version
+     *
+     * @return Boolean depending on Mod ID and MC Version/Modloader
+     */
+    public static boolean hasSpecificMod(String modId) {
+        return FabricLoader.getInstance().isModLoaded(modId);
     }
 }
 
