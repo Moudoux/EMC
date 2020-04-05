@@ -65,6 +65,7 @@
     "MixinTimer",
     "MixinVisGraph",
     "MixinWorldClient",
-    "MixinWorldRenderer"
+    "MixinWorldRenderer",
+    "MixinDebugHud"
   ]
 }
