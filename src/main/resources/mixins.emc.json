@@ -16,7 +16,6 @@
     "MixinChatSuggestion",
     "MixinClientBrandRetriever",
     "MixinCPacketPlayer",
-    "MixinDebugHud",
     "MixinEnderEyeEntity",
     "MixinEntity",
     "MixinEntityLivingBase",
