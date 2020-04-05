@@ -14,11 +14,26 @@ public class FrameworkConstants {
     }
 
     public enum MappingSystem {
-        Yarn, YarnV2, MCPConfig
+        Yarn(new String[]{"Yarn", "Fabric", "FabricLoader"}),
+        YarnV2(Yarn.names),
+        MCPConfig(new String[]{"Forge", "MCP", "FML"});
+        private final String[] names;
+        MappingSystem(String[] names) {
+            this.names = names;
+        }
+        public String[] getNames() {
+            return names;
+        }
     }
-
     public enum MappingsLoader {
-        Fabric, MCP
+        Fabric(MappingSystem.Yarn.names), MCP(MappingSystem.MCPConfig.names);
+        private final String[] names;
+        MappingsLoader(String[] names) {
+            this.names = names;
+        }
+        public String[] getNames() {
+            return names;
+        }
     }
 
 }

@@ -62,6 +62,10 @@ public class SettingsMap {
 		return SettingsMap.overwriteMode;
 	}
 
+	public static ConcurrentHashMap<Integer, ConcurrentHashMap<String, Object>> getMap() {
+		return map;
+	}
+
 	/**
 	 * Used to toggle override mode, with override mod on EMC will use the setting defined for a map key no matter what
 	 *
