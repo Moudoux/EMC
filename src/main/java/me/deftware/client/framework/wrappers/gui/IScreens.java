@@ -1,8 +1,6 @@
 package me.deftware.client.framework.wrappers.gui;
 
-import io.github.prospector.modmenu.gui.ModsScreen;
 import me.deftware.client.framework.utils.ResourceUtils;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.SettingsScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
@@ -23,9 +21,10 @@ public class IScreens {
         } else if (type.equals(Screen.Options)) {
             screen = new SettingsScreen(parent, MinecraftClient.getInstance().options);
         } else if (type.equals(Screen.Mods)) {
+            /*
             if (ResourceUtils.hasSpecificMod("modmenu")) {
                 screen = new ModsScreen(parent);
-            }
+            }*/
         }
         return screen;
     }
