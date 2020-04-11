@@ -2,6 +2,7 @@ package me.deftware.client.framework.wrappers.gui;
 
 import me.deftware.client.framework.utils.ResourceUtils;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.SettingsScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
