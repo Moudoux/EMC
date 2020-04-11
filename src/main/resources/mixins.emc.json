@@ -66,6 +66,7 @@
     "MixinVisGraph",
     "MixinWorldClient",
     "MixinWorldRenderer",
-    "MixinDebugHud"
+    "MixinDebugHud",
+    "MixinWindow"
   ]
 }
