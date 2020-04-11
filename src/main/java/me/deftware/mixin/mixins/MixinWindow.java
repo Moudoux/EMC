@@ -21,8 +21,8 @@ public abstract class MixinWindow {
 			method = "<init>"
 	)
 	private void redirectDefaultWindowHints() {
+		GLFW.glfwDefaultWindowHints();
 		if (OSUtils.isMac()) {
-			GLFW.glfwDefaultWindowHints();
 			GLFW.glfwWindowHint(GLFW.GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW.GLFW_FALSE);
 		}
 	}
