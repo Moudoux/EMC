@@ -7,7 +7,6 @@ import me.deftware.client.framework.utils.HashUtils;
 import me.deftware.client.framework.utils.WebUtils;
 import net.fabricmc.loader.launch.knot.KnotClient;
 
-import javax.xml.ws.WebEndpoint;
 import java.io.File;
 
 /**
