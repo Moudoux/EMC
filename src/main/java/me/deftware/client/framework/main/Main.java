@@ -32,14 +32,18 @@ public class Main {
                File optifabricJar = new File(emcPath + File.separator + "optifabric.jar");
                File optifineModJar = new File(mcPath + File.separator + "mods" + File.separator + "optifine.jar");
                JsonObject json = new Gson().fromJson(WebUtils.get(dataUrl), JsonObject.class);
-               if (json.has(mcVersion) && optifineModJar.exists()) {
+               if (json.has(mcVersion)) {
                    JsonObject data = json.get(mcVersion).getAsJsonObject();
                    if (data.get("available").getAsBoolean()) {
-                       if (!data.get("sha1").getAsString().equalsIgnoreCase(HashUtils.getSha1(optifineModJar))) {
-                           optifineModJar.delete();
-                           if (optifabricJar.exists()) {
-                               optifabricJar.delete();
+                       if (optifineModJar.exists()) {
+                           if (!data.get("sha1").getAsString().equalsIgnoreCase(HashUtils.getSha1(optifineModJar))) {
+                               optifineModJar.delete();
+                               if (optifabricJar.exists()) {
+                                   optifabricJar.delete();
+                               }
                            }
+                       } else if (optifabricJar.exists()) {
+                           optifabricJar.delete();
                        }
                    }
                }
