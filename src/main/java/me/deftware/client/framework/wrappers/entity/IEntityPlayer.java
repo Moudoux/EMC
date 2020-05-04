@@ -488,7 +488,10 @@ public class IEntityPlayer {
 		float currentYaw = MinecraftClient.getInstance().player.yaw % 360;
 
 		if (fullCircleCalc) {
-			currentYaw = (currentYaw + 360) % 360;
+			currentYaw = (MinecraftClient.getInstance().player.yaw + 90) % 360;
+			if (currentYaw < 0) {
+				currentYaw += 360;
+			}
 		} else if (currentYaw > 180) {
 			currentYaw -= 360;
 		}

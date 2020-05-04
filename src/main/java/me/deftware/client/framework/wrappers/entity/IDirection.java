@@ -1,22 +1,37 @@
 package me.deftware.client.framework.wrappers.entity;
 
 public enum IDirection {
-    NORTH("North", 337.5f, 22.5f), // Middle: 0
-    NORTH_EAST("Northeast", 22.5f, 67.5f), // Middle: 45
-    EAST("East", 67.5f, 112.5f), // Middle: 90
-    SOUTH_EAST("Southeast", 112.5f, 157.5f), // Middle: 135
-    SOUTH("South", 157.5f, 202.5f), // Middle: 180
-    SOUTH_WEST("Southwest", 202.5f, 247.5f), // Middle: 225
-    WEST("West", 247.5f, 292.5f), // Middle: 270
-    NORTH_WEST("Northwest", 292.5f, 337.5f); // Middle: 315
+    NORTH("North", 247.5f, 292.5f),
+    NORTH_EAST("Northeast", 292.5f, 337.5f),
+    EAST("East", 337.5f, 360.0f, 0.0f, 22.5f),
+    SOUTH_EAST("Southeast", 22.5f, 67.5f),
+    SOUTH("South", 67.5f, 112.5f),
+    SOUTH_WEST("Southwest", 112.5f, 157.5f),
+    WEST("West", 157.5f, 202.5f),
+    NORTH_WEST("Northwest", 202.5f, 247.5f);
 
     private final float leftDegree, rightDegree;
+
+    private final float optionalLeftDegree, optionalRightDegree;
 
     private final String name;
 
     IDirection(final String name, final float leftDegree, final float rightDegree) {
         this.leftDegree = leftDegree;
         this.rightDegree = rightDegree;
+
+        this.optionalLeftDegree = leftDegree;
+        this.optionalRightDegree = rightDegree;
+
+        this.name = name;
+    }
+
+    IDirection(final String name, final float leftDegree, final float rightDegree, final float optionalLeftDegree, final float optionalRightDegree) {
+        this.leftDegree = leftDegree;
+        this.rightDegree = rightDegree;
+
+        this.optionalLeftDegree = optionalLeftDegree;
+        this.optionalRightDegree = optionalRightDegree;
 
         this.name = name;
     }
@@ -33,6 +48,14 @@ public enum IDirection {
         return rightDegree;
     }
 
+    public float getOptionalLeftDegree() {
+        return optionalLeftDegree;
+    }
+
+    public float getOptionalRightDegree() {
+        return optionalRightDegree;
+    }
+
     public String getName() {
         return name;
     }
@@ -41,7 +64,7 @@ public enum IDirection {
 
     public static IDirection getFrom(float lookDir) {
         for (IDirection possibleDir : VALUES) {
-            if (lookDir > possibleDir.leftDegree && lookDir < possibleDir.rightDegree) {
+            if ((lookDir > possibleDir.leftDegree && lookDir < possibleDir.rightDegree) || (lookDir > possibleDir.optionalLeftDegree && lookDir < possibleDir.optionalRightDegree)) {
                 return possibleDir;
             }
         }
