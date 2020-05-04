@@ -816,6 +816,10 @@ public class IEntityPlayer {
 			if (currentTPS > 20.0d) {
 				currentTPS = 20.0d;
 			}
+			// Also prevent it going below 20, which is also sometimes possible
+			if (currentTPS < 0.0d) {
+				currentTPS = 0.0d;
+			}
 
 			updatePreviousTotalWorldTime();
 		} else {
