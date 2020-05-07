@@ -19,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class EMCModArgument implements ArgumentType<EMCMod> {
 
-	private DynamicCommandExceptionType modNotFoundException = new DynamicCommandExceptionType((input) ->
+	private DynamicCommandExceptionType modNotFoundException = new DynamicCommandExceptionType(input ->
 			new ArgumentExceptionFunction(String.format("Could not find mod \"%s\"", input))
 	);
 

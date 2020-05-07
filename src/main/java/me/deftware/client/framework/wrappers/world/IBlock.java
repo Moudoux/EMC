@@ -2,6 +2,7 @@ package me.deftware.client.framework.wrappers.world;
 
 import me.deftware.client.framework.wrappers.math.IVoxelShape;
 import net.minecraft.block.*;
+import net.minecraft.fluid.WaterFluid;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
@@ -62,6 +63,10 @@ public class IBlock {
         return block == Blocks.AIR;
     }
 
+    public boolean isLiquid() {
+        return block == Blocks.WATER || block == Blocks.LAVA || block instanceof FluidBlock;
+    }
+
     public boolean isCaveAir() {
         return block == Blocks.CAVE_AIR;
     }
@@ -105,6 +110,8 @@ public class IBlock {
             return block instanceof FarmlandBlock;
         } else if (type.equals(IBlockTypes.BlockSoulSand)) {
             return block instanceof SoulSandBlock;
+        } else if (type.equals(IBlockTypes.FluidBlock)) {
+            return block instanceof FluidBlock;
         }
         return false;
     }
@@ -115,7 +122,7 @@ public class IBlock {
 
     public enum IBlockTypes {
         // Types
-        BlockContainer, BlockCrops,
+        BlockContainer, BlockCrops, FluidBlock,
 
         // Specific blocks
         BlockPumpkin, BlockMelon, BlockReed, BlockCactus, BlockNetherWart, BlockFarmland, BlockSoulSand

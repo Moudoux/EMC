@@ -149,6 +149,10 @@ public class IEntityPlayer {
 		MinecraftClient.getInstance().player.setSprinting(state);
 	}
 
+	public static boolean isSprinting() {
+		return MinecraftClient.getInstance().player.isSprinting();
+	}
+
 	public static float getMoveStrafing() {
 		return MinecraftClient.getInstance().player.sidewaysSpeed;
 	}
@@ -175,6 +179,10 @@ public class IEntityPlayer {
 
 	public static double getRidingEntityMotionZ() {
 		return MinecraftClient.getInstance().player.getVehicle().getVelocity().z;
+	}
+
+	public static int getHurtTime() {
+		return MinecraftClient.getInstance().player.hurtTime;
 	}
 
 	public static void ridingEntityMotionY(double y) {

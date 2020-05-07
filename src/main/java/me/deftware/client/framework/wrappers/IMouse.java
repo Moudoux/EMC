@@ -38,7 +38,7 @@ public class IMouse {
     }
 
     public static void onScroll(double x, double y) {
-        scrollCallbacks.forEach((cb) -> cb.onScroll(x, y));
+        scrollCallbacks.forEach(cb -> cb.onScroll(x, y));
     }
 
     @FunctionalInterface

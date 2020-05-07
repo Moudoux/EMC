@@ -19,7 +19,7 @@ public class DirectoryModDiscovery extends AbstractModDiscovery {
 
     @Override
     public void discover() {
-        Arrays.stream(Objects.requireNonNull(Bootstrap.EMC_ROOT.listFiles())).forEach((file) -> {
+        Arrays.stream(Objects.requireNonNull(Bootstrap.EMC_ROOT.listFiles())).forEach(file -> {
             File deleteFile = new File(file.getAbsolutePath() + ".delete"),
                     updateFile = new File(file.getAbsolutePath() + ".update");
             if (!file.isDirectory() && file.getName().endsWith(".jar")) {

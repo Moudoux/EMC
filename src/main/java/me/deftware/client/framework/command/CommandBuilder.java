@@ -8,6 +8,7 @@ import net.minecraft.server.command.ServerCommandSource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Wrapper for building EMC commands
@@ -25,9 +26,9 @@ public class CommandBuilder<T> {
      * @param execution
      * @return CommandBuilder
      */
-    public CommandBuilder<?> addCommand(String command, CommandExecution execution) {
+    public CommandBuilder<?> addCommand(String command, Consumer<CommandResult> execution) {
         return set(CommandManager.literal(command).executes(source -> {
-            execution.onExecute(new CommandResult(source));
+            execution.accept(new CommandResult(source));
             return 1;
         }));
     }
@@ -89,13 +90,6 @@ public class CommandBuilder<T> {
 
     protected LiteralArgumentBuilder<ServerCommandSource> build() {
         return builder;
-    }
-
-    @FunctionalInterface
-    public interface CommandExecution {
-
-        void onExecute(CommandResult result);
-
     }
 
 }

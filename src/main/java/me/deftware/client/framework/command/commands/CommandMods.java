@@ -14,7 +14,7 @@ public class CommandMods extends EMCModCommand {
 				ChatProcessor.printFrameworkMessage("No EMC mods are loaded");
 			} else {
 				ChatProcessor.printFrameworkMessage("== Loaded EMC mods ==");
-				Bootstrap.getMods().values().forEach((mod) -> {
+				Bootstrap.getMods().values().forEach(mod -> {
 					String name = mod.modInfo.get("name").getAsString();
 					int version = mod.modInfo.get("version").getAsInt();
 					String author = mod.modInfo.get("author").getAsString();

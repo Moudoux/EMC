@@ -9,6 +9,9 @@ import org.spongepowered.asm.mixin.Shadow;
 public class MixinCPacketPlayer implements IMixinCPacketPlayer {
 
     @Shadow
+    protected double y;
+
+    @Shadow
     protected boolean onGround;
 
     @Shadow
@@ -32,6 +35,16 @@ public class MixinCPacketPlayer implements IMixinCPacketPlayer {
     @Override
     public void setMoving(boolean state) {
         changePosition = state;
+    }
+
+    @Override
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    @Override
+    public double getY() {
+        return y;
     }
 
 }

@@ -19,6 +19,14 @@ public class ICPacketPlayer extends IPacket {
         ((IMixinCPacketPlayer) getPacket()).setOnGround(state);
     }
 
+    public void setY(double y) {
+        ((IMixinCPacketPlayer) getPacket()).setY(y);
+    }
+
+    public double getY() {
+        return ((IMixinCPacketPlayer) getPacket()).getY();
+    }
+
     public void setMoving(boolean state) {
         ((IMixinCPacketPlayer) getPacket()).setMoving(state);
     }

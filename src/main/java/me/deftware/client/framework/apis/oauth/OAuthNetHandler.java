@@ -15,7 +15,7 @@ public class OAuthNetHandler extends ClientLoginNetworkHandler {
 
     public OAuthNetHandler(ClientConnection networkManagerIn, MinecraftClient mcIn, Screen previousScreenIn,
                            OAuth.OAuthCallback callback) {
-        super(networkManagerIn, mcIn, previousScreenIn, (fakeConsumer) -> {
+        super(networkManagerIn, mcIn, previousScreenIn, fakeConsumer -> {
         });
         this.callback = callback;
     }

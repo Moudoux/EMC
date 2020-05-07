@@ -64,8 +64,6 @@ public class SettingsMap {
 
 	/**
 	 * Used to toggle override mode, with override mod on EMC will use the setting defined for a map key no matter what
-	 *
-	 * @param state
 	 */
 	public static void setOverrideMode(boolean state) {
 		SettingsMap.overrideMode = state;
@@ -73,8 +71,6 @@ public class SettingsMap {
 
 	/**
 	 * Used to toggle overwrite mode, which compared to Override will only override if a settings value is present
-	 *
-	 * @param state
 	 */
 	public static void setOverwriteMode(boolean state) {
 		SettingsMap.overwriteMode = state;
@@ -102,6 +98,7 @@ public class SettingsMap {
 		 * FLIP_USERNAMES = String,String...
 		 * CROSSHAIR = true | false
 		 * FLUIDS = true | false
+		 * MAIN_MENU_OVERLAY = true | false
 		 */
 		public static final int RENDER = 2;
 

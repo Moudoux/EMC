@@ -10,4 +10,8 @@ public interface IMixinCPacketPlayer {
 
 	void setMoving(boolean state);
 
+	void setY(double y);
+
+	double getY();
+
 }

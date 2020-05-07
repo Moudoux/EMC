@@ -15,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 
+@Deprecated
 public class JsonModDiscovery extends AbstractModDiscovery {
 
 	private static String manualJsonLocation;
