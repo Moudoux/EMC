@@ -43,7 +43,7 @@ public class Bootstrap {
     /**
      * ClasspathModDiscovery should always be the first item
      */
-    private static List<AbstractModDiscovery> modDiscoveries = new ArrayList<>(Arrays.asList(new ClasspathModDiscovery(), new JsonModDiscovery(), new JVMModDiscovery(), new DirectoryModDiscovery()));
+    private static List<AbstractModDiscovery> modDiscoveries = new ArrayList<>(Arrays.asList(new ClasspathModDiscovery(), new JVMModDiscovery(), new DirectoryModDiscovery()));
 
     public static void init() {
         try {
