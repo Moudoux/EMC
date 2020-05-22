@@ -15,7 +15,6 @@ public class MixinPlayerControllerMP implements IMixinPlayerControllerMP {
     @Shadow
     private boolean breakingBlock;
 
-
     @Inject(method = "getReachDistance", at = @At(value = "RETURN"), cancellable = true)
     private void onGetReachDistance(CallbackInfoReturnable<Float> cir) {
         cir.setReturnValue((float) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "BLOCK_REACH_DISTANCE", cir.getReturnValue()));
@@ -31,4 +30,5 @@ public class MixinPlayerControllerMP implements IMixinPlayerControllerMP {
     public void setPlayerHittingBlock(boolean state) {
         this.breakingBlock = state;
     }
+
 }

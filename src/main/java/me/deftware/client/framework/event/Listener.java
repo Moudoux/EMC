@@ -16,7 +16,7 @@ public class Listener {
         return method;
     }
 
-    Object getClassInstance() {
+    public Object getClassInstance() {
         return classInstance;
     }
 
