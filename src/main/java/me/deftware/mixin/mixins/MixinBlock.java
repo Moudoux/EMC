@@ -31,6 +31,10 @@ public abstract class MixinBlock {
     @Shadow
     private float velocityMultiplier;
 
+    @Final
+    @Shadow
+    private float slipperiness;
+
     @Shadow
     @Final
     protected int lightLevel;
@@ -59,6 +63,23 @@ public abstract class MixinBlock {
         }
     }
 
+    @Inject(method = "getSlipperiness", at = @At("TAIL"), cancellable = true)
+    public void getSlipperiness(CallbackInfoReturnable<Float> cir) {
+        if (slipperiness != 0.6f) {
+            Block block = Block.getBlockFromItem(this.asItem());
+            Event event = null;
+            if (block instanceof IceBlock) {
+                event = new EventSlowdown(EventSlowdown.SlowdownType.Slipperiness);
+            }
+            if (event != null) {
+                event.broadcast();
+                if (event.isCanceled()) {
+                    cir.setReturnValue(0.6f);
+                }
+            }
+        }
+    }
+
     @Inject(method = "getVelocityMultiplier", at = @At(value = "TAIL"), cancellable = true)
     private void onGetVelocityMultiplier(CallbackInfoReturnable<Float> cir) {
         if (velocityMultiplier != 1.0f) {
@@ -73,11 +94,9 @@ public abstract class MixinBlock {
                 event.broadcast();
                 if (event.isCanceled()) {
                     cir.setReturnValue(1.0f);
-                    return;
                 }
             }
         }
-        cir.setReturnValue(this.velocityMultiplier);
     }
 
     @Inject(method = "shouldDrawSide", at = @At("HEAD"), cancellable = true)

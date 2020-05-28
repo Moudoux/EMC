@@ -18,7 +18,7 @@ public class EventSlowdown extends Event {
 	}
 
 	public enum SlowdownType {
-		BerryBush, Soulsand, Web, Item_Use, Hunger, Blindness, Sneak, Honey
+		BerryBush, Soulsand, Web, Item_Use, Hunger, Blindness, Sneak, Honey, Slipperiness
 	}
 
 }
