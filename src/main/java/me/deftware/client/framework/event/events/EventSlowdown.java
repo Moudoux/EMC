@@ -8,6 +8,12 @@ import me.deftware.client.framework.event.Event;
 public class EventSlowdown extends Event {
 
 	private SlowdownType type;
+	private float multiplier = 1f;
+
+	public EventSlowdown(SlowdownType type, float multiplier) {
+		this.type = type;
+		this.multiplier = multiplier;
+	}
 
 	public EventSlowdown(SlowdownType type) {
 		this.type = type;
@@ -15,6 +21,14 @@ public class EventSlowdown extends Event {
 
 	public SlowdownType getType() {
 		return type;
+	}
+
+	public float getMultiplier() {
+		return multiplier;
+	}
+
+	public void setMultiplier(float value) {
+		multiplier = value;
 	}
 
 	public enum SlowdownType {

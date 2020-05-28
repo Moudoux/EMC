@@ -67,14 +67,14 @@ public abstract class MixinBlock {
     public void getSlipperiness(CallbackInfoReturnable<Float> cir) {
         if (slipperiness != 0.6f) {
             Block block = Block.getBlockFromItem(this.asItem());
-            Event event = null;
+            EventSlowdown event = null;
             if (block instanceof IceBlock) {
-                event = new EventSlowdown(EventSlowdown.SlowdownType.Slipperiness);
+                event = new EventSlowdown(EventSlowdown.SlowdownType.Slipperiness, 0.6f);
             }
             if (event != null) {
                 event.broadcast();
                 if (event.isCanceled()) {
-                    cir.setReturnValue(0.6f);
+                    cir.setReturnValue(event.getMultiplier());
                 }
             }
         }
@@ -84,7 +84,7 @@ public abstract class MixinBlock {
     private void onGetVelocityMultiplier(CallbackInfoReturnable<Float> cir) {
         if (velocityMultiplier != 1.0f) {
             Block block = Block.getBlockFromItem(this.asItem());
-            Event event = null;
+            EventSlowdown event = null;
             if (block instanceof HoneyBlock) {
                 event = new EventSlowdown(EventSlowdown.SlowdownType.Honey);
             } else if (block instanceof SoulSandBlock) {
@@ -93,7 +93,7 @@ public abstract class MixinBlock {
             if (event != null) {
                 event.broadcast();
                 if (event.isCanceled()) {
-                    cir.setReturnValue(1.0f);
+                    cir.setReturnValue(event.getMultiplier());
                 }
             }
         }
