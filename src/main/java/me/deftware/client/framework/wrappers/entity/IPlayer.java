@@ -13,6 +13,10 @@ public class IPlayer extends IEntity {
         this.player = player;
     }
 
+    public String getUUID() {
+        return player.getGameProfile().getId().toString();
+    }
+
     public PlayerEntity getPlayer() {
         return player;
     }

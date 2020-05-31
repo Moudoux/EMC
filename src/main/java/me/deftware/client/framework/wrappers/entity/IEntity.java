@@ -119,6 +119,10 @@ public class IEntity {
         return 0;
     }
 
+    public int getResponseTime() {
+        return MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(entity.getUuid()).getLatency();
+    }
+
     public float getRotationYaw(boolean fullCircleCalc) {
         float currentYaw = entity.yaw % 360;
 

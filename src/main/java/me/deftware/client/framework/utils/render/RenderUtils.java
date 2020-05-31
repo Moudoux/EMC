@@ -1,5 +1,7 @@
 package me.deftware.client.framework.utils.render;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.client.framework.wrappers.entity.*;
@@ -17,14 +19,21 @@ import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.texture.PlayerSkinTexture;
+import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -446,18 +455,39 @@ public class RenderUtils {
         DiffuseLighting.disable();
     }
 
-    public static void drawAltFace(String name, int x, int y, int w, int h, boolean selected) {
+    private static final HashMap<String, Pair<Boolean, Identifier>> loadedSkins = new HashMap<>();
+
+    private static void bindSkinTexture(String name, String uuid) {
+        GameProfile profile = new GameProfile(UUID.fromString(uuid), name);
+        if(loadedSkins.containsKey(name)) {
+            if (loadedSkins.get(name).getLeft()) {
+                MinecraftClient.getInstance().getTextureManager().bindTexture(loadedSkins.get(name).getRight());
+            } else {
+                MinecraftClient.getInstance().getTextureManager().bindTexture(DefaultSkinHelper.getTexture(profile.getId()));
+            }
+        } else {
+            loadedSkins.put(name, new Pair<>(false, null));
+            try {
+                MinecraftClient.getInstance().getSkinProvider().loadSkin(profile, (type, identifier, minecraftProfileTexture) -> {
+                    if (type == MinecraftProfileTexture.Type.SKIN) {
+                        loadedSkins.put(name, new Pair<>(true, identifier));
+                    }
+                }, true);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public static void drawAltFace(String name, String uuid, int x, int y, int w, int h, boolean selected) {
         try {
-            AbstractClientPlayerEntity.loadSkin(AbstractClientPlayerEntity.getSkinId(name), name)
-                    .load(MinecraftClient.getInstance().getResourceManager());
-            MinecraftClient.getInstance().getTextureManager().bindTexture(AbstractClientPlayerEntity.getSkinId(name));
+            bindSkinTexture(name, uuid);
             glEnable(GL_BLEND);
             glColor4f(0.9F, 0.9F, 0.9F, 1.0F);
             DrawableHelper.blit(x, y, 24, 24, w, h, 192, 192);
             DrawableHelper.blit(x, y, 120, 24, w, h, 192, 192);
             glDisable(GL_BLEND);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) { }
     }
 
     public static void nukerBox(IBlockPos IBlockPos, float damage) {

@@ -123,6 +123,7 @@ public abstract class IGuiScreen extends Screen {
                 IMinecraft.setGuiScreen(parent);
                 return true;
             }
+            return onGoBackRequested();
         } else {
             onKeyPressed(keyCode, action, modifiers);
             // TextFieldWidget inherits AbstractButtonWidget so this applies to both normal buttons and textfield's
@@ -244,5 +245,9 @@ public abstract class IGuiScreen extends Screen {
     protected abstract void onMouseClicked(int mouseX, int mouseY, int mouseButton);
 
     protected abstract void onGuiResize(int w, int h);
+
+    protected boolean onGoBackRequested() {
+        return false;
+    }
 
 }
