@@ -5,7 +5,7 @@ import net.minecraft.client.gui.screen.Screen;
 
 public class ScreenInstance {
 
-    protected Screen screen;
+    public Screen screen;
 
     public ScreenInstance(Screen screen) {
         this.screen = screen;

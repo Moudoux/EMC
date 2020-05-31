@@ -7,6 +7,7 @@ import me.deftware.client.framework.utils.ResourceUtils;
 import me.deftware.client.framework.utils.render.Texture;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.IResourceLocation;
+import me.deftware.client.framework.wrappers.gui.imp.ScreenInstance;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.Element;
@@ -25,9 +26,19 @@ import java.util.Objects;
 
 public abstract class IGuiScreen extends Screen {
 
+    protected ScreenInstance parentInstance;
     protected IGuiScreen parent;
     protected boolean escGoesBack = true;
     protected HashMap<String, Texture> textureHashMap = new HashMap<>();
+
+    public IGuiScreen() {
+        super(new LiteralText(""));
+    }
+
+    public IGuiScreen(ScreenInstance parent) {
+        super(new LiteralText(""));
+        this.parentInstance = parent;
+    }
 
     public IGuiScreen(IGuiScreen parent) {
         super(new LiteralText(""));
@@ -120,7 +131,7 @@ public abstract class IGuiScreen extends Screen {
     public boolean keyPressed(int keyCode, int action, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
             if (escGoesBack) {
-                IMinecraft.setGuiScreen(parent);
+                goback();
                 return true;
             }
             return onGoBackRequested();
@@ -205,6 +216,14 @@ public abstract class IGuiScreen extends Screen {
         MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         Screen.blit(x, y, 0, 0, width, height, width, height);
+    }
+
+    protected void goback() {
+        if (parentInstance != null) {
+            MinecraftClient.getInstance().openScreen(parentInstance.screen);
+        } else {
+            IMinecraft.setGuiScreen(parent);
+        }
     }
 
     public int getIGuiScreenWidth() {
