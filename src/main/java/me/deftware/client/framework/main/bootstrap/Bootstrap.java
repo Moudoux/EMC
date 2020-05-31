@@ -14,6 +14,7 @@ import me.deftware.client.framework.path.OSUtils;
 import me.deftware.client.framework.utils.Settings;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -53,6 +54,12 @@ public class Bootstrap {
             }
             if (System.getProperty("MCDir", "null").equalsIgnoreCase("null")) {
                 System.setProperty("MCDir", mcDir != null ? mcDir.getAbsolutePath() : "null");
+            }
+            File capesCache = new File(String.format("%s/libraries/EMC/capes/", OSUtils.getMCDir()));
+            if (!capesCache.exists()) {
+                if (!capesCache.mkdirs()) {
+                    Bootstrap.logger.warn("Failed to create EMC capes dir");
+                }
             }
             Bootstrap.logger.info(String.format("Loading EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
             EMC_ROOT = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator);

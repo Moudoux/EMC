@@ -890,6 +890,16 @@ public class IEntityPlayer {
 		((IMixinEntityPlayerSP) MinecraftClient.getInstance().player).setHorseJumpPower(f);
 	}
 
+	public static boolean isAlive() {
+		return MinecraftClient.getInstance().player.isAlive();
+	}
+
+	public static void setAlive(boolean flag) {
+		MinecraftClient.getInstance().player.removed = false;
+		MinecraftClient.getInstance().player.setHealth(20f);
+		MinecraftClient.getInstance().player.updatePosition(getPosX(), getPosY(), getPosZ());
+	}
+
 	public enum HandItem {
 		ItemBow
 	}

@@ -17,6 +17,7 @@ public class OAuth {
 
     public static void oAuth(OAuthCallback callback) {
         new Thread(() -> {
+            Thread.currentThread().setName("OAuth thread");
             try {
                 InetAddress inetaddress = InetAddress.getByName(OAuth.ip);
                 OAuthNetworkManager manager = OAuthNetworkManager.connect(inetaddress, OAuth.port,

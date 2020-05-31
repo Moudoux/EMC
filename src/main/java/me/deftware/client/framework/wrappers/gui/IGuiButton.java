@@ -116,6 +116,7 @@ public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventL
 
     public void resetToAfter(int ms, String text) {
         new Thread(() -> {
+            Thread.currentThread().setName("Button reset thread");
             try {
                 Thread.sleep(ms);
             } catch (InterruptedException ignored) { }

@@ -71,6 +71,10 @@ public class IEntity {
         return entity.getDisplayName().asFormattedString();
     }
 
+    public int getTicksExisted() {
+        return entity.age;
+    }
+
     public boolean isDead() {
         return !entity.isAlive();
     }
