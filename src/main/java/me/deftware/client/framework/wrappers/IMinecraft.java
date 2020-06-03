@@ -25,11 +25,15 @@ import net.minecraft.container.GenericContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.network.packet.ChatMessageC2SPacket;
+import net.minecraft.util.Pair;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("All")
 public class IMinecraft {
@@ -190,6 +194,34 @@ public class IMinecraft {
 
     public static void setGuiScreen(IGuiScreen screen) {
         MinecraftClient.getInstance().openScreen(screen);
+    }
+
+    public static net.minecraft.client.gui.screen.Screen getScreenInstance(Class<?> screenClass, Pair<Class<?>, Object>... constructorParameters) {
+        if (screenClass != null) {
+            try {
+                final List<Class<?>> paramList = new ArrayList<>();
+                final List<Object> targetList = new ArrayList<>();
+
+                for (Pair<Class<?>, Object> constructorSet : constructorParameters) {
+                    paramList.add(constructorSet.getLeft());
+                    targetList.add(constructorSet.getRight());
+                }
+                Constructor<?> screenConstructor = screenClass.getConstructor(paramList.toArray(new Class<?>[paramList.size()]));
+                return (net.minecraft.client.gui.screen.Screen) screenConstructor.newInstance(targetList.toArray(new Object[targetList.size()]));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public static net.minecraft.client.gui.screen.Screen getScreenInstance(String classPath, Pair<Class<?>, Object>... constructorParameters) {
+        try {
+            return getScreenInstance(Class.forName(classPath), constructorParameters);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public static void openInventory(IGuiInventory inventory) {
