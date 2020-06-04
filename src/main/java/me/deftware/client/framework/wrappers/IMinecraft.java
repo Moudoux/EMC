@@ -7,13 +7,13 @@ import me.deftware.client.framework.wrappers.entity.IEntity.EntityType;
 import me.deftware.client.framework.wrappers.gui.IGuiInventory;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import me.deftware.client.framework.wrappers.gui.IScreens;
-import me.deftware.client.framework.wrappers.gui.IScreens.Screen;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.mixin.imp.IMixinMinecraft;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.ConnectScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.ContainerScreen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
@@ -29,10 +29,12 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("All")
@@ -196,39 +198,32 @@ public class IMinecraft {
         MinecraftClient.getInstance().openScreen(screen);
     }
 
-    public static net.minecraft.client.gui.screen.Screen getScreenInstance(Class<?> screenClass, Pair<Class<?>, Object>... constructorParameters) {
-        if (screenClass != null) {
-            try {
-                final List<Class<?>> paramList = new ArrayList<>();
-                final List<Object> targetList = new ArrayList<>();
-
-                for (Pair<Class<?>, Object> constructorSet : constructorParameters) {
-                    paramList.add(constructorSet.getLeft());
-                    targetList.add(constructorSet.getRight());
-                }
-                Constructor<?> screenConstructor = screenClass.getConstructor(paramList.toArray(new Class<?>[paramList.size()]));
-                return (net.minecraft.client.gui.screen.Screen) screenConstructor.newInstance(targetList.toArray(new Object[targetList.size()]));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    public static net.minecraft.client.gui.screen.Screen getScreenInstance(String classPath, Pair<Class<?>, Object>... constructorParameters) {
+    /**
+     * For internal use only! Does NOT return a compatible {@link IGuiScreen} for use in EMC mods!
+     *
+     * @return Returns an instance of a class in the current classpath, however it does NOT return a current instance, but a new one.
+     */
+    @Nullable
+    public static Screen createScreenInstance(Object clazz, Pair<Class<?>, Object>... constructorParameters) {
         try {
-            return getScreenInstance(Class.forName(classPath), constructorParameters);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
+            Class<?> screenClass = clazz instanceof Class ? (Class<?>) clazz : Class.forName((String) clazz);
+            List<Class<?>> paramList = new ArrayList<>();
+            List<Object> targetList = new ArrayList<>();
+            Arrays.stream(constructorParameters).forEach(c -> {
+                paramList.add(c.getLeft());
+                targetList.add(c.getRight());
+            });
+            return (Screen) screenClass.getConstructor(paramList.toArray(new Class<?>[paramList.size()]))
+                    .newInstance(targetList.toArray(new Object[targetList.size()]));
+        } catch (Exception ignored) { }
+        return null;
     }
 
     public static void openInventory(IGuiInventory inventory) {
         MinecraftClient.getInstance().openScreen(inventory);
     }
 
-    public static void setGuiScreenType(Screen screen) {
+    public static void setGuiScreenType(IScreens.ScreenType screen) {
         MinecraftClient.getInstance().openScreen(IScreens.translate(screen, null));
     }
 
