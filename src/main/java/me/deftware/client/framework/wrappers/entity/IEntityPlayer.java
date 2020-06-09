@@ -840,6 +840,13 @@ public class IEntityPlayer {
 	}
 
 	/**
+	 * Retrieves the Raw TPS, in Double Format
+	 */
+	public static double getRawTPS() {
+		return currentTPS;
+	}
+
+	/**
 	 * Sets the TotalWorldTime to whatever it is at the moment, effectively updating it
 	 */
 	private static void updatePreviousTotalWorldTime() {
