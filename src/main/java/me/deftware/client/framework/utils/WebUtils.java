@@ -118,4 +118,11 @@ public class WebUtils {
 
 		urlConnection.setRequestProperty("Cookie", cookieHeader.toString());
 	}
+
+	public static String getMavenUrl(String name, String url) {
+		String[] data = name.split(":");
+		String type = data.length > 3 ? data[3] : "";
+		return String.format("%s%s/%s/%s/%s-%s%s.jar", url, data[0].replaceAll("\\.", "/"), data[1], data[2], data[1], data[2], type);
+	}
+
 }

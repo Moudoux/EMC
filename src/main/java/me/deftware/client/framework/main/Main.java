@@ -21,6 +21,7 @@ public class Main {
         if (emcJar != null && mcDir != null) {
             validateOptiFine(emcJar.getParentFile().getAbsolutePath(), mcDir.getAbsolutePath());
         }
+        System.setProperty("SUBSYSTEM", "true");
         KnotClient.main(args);
     }
 

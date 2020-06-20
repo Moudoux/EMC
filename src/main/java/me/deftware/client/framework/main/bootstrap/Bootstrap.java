@@ -8,6 +8,7 @@ import me.deftware.client.framework.command.commands.*;
 import me.deftware.client.framework.event.EventBus;
 import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.main.bootstrap.discovery.*;
+import me.deftware.client.framework.main.validation.Validator;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.path.LocationUtil;
 import me.deftware.client.framework.path.OSUtils;
@@ -75,6 +76,11 @@ public class Bootstrap {
                 }
             }
             Bootstrap.logger.debug("EMC root is {}", EMC_ROOT.getAbsolutePath());
+            FrameworkConstants.VALID_EMC_INSTANCE = Validator.isValidEMCInstance();
+            if (!FrameworkConstants.VALID_EMC_INSTANCE) {
+                Bootstrap.logger.warn("EMC instance is not up to date! This may cause instability or crashes.");
+            }
+            FrameworkConstants.SUBSYSTEM_IN_USE = System.getProperty("SUBSYSTEM", "false").equalsIgnoreCase("true");
             EMCSettings = new Settings();
             EMCSettings.initialize(null);
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", EMCSettings.getFloat("RENDER_SCALE", 1.0f));
