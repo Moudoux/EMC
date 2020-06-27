@@ -104,22 +104,22 @@ public class BitmapFont implements EMCFont {
     protected void characterGenerate(char character, Color color) {
         String letterBuffer = String.valueOf(character);
         int textwidth = getStringWidthNonScaled(letterBuffer);
-
         int textheight = getStringHeightNonScaled(letterBuffer);
+        if (textheight > 0 && textwidth > 0 && !letterBuffer.isEmpty()) {
+            BufferedImage characterTexture = new BufferedImage(textwidth, textheight, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D graphics = characterTexture.createGraphics();
+            graphics.setFont(stdFont);
+            graphics.setColor(color);
+            if (antialiased) {
+                graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            }
+            graphics.drawString(letterBuffer, 0, textheight - textheight / 4);
+            graphics.dispose();
 
-        BufferedImage characterTexture = new BufferedImage(textwidth, textheight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics = characterTexture.createGraphics();
-        graphics.setFont(stdFont);
-        graphics.setColor(color);
-        if (antialiased) {
-            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            textureIDStore.put(character, GraphicsUtil.loadTextureFromBufferedImage(characterTexture));
+            textureDimensionsStore.put(character, new int[]{characterTexture.getWidth(), characterTexture.getHeight()});
         }
-        graphics.drawString(letterBuffer, 0, textheight - textheight / 4);
-        graphics.dispose();
-
-        textureIDStore.put(character, GraphicsUtil.loadTextureFromBufferedImage(characterTexture));
-        textureDimensionsStore.put(character, new int[]{characterTexture.getWidth(), characterTexture.getHeight()});
     }
 
     /**
