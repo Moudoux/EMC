@@ -1,5 +1,6 @@
 package me.deftware.mixin.mixins;
 
+import com.mojang.authlib.minecraft.MinecraftSessionService;
 import me.deftware.client.framework.event.events.EventGuiScreenDisplay;
 import me.deftware.client.framework.event.events.EventShutdown;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
@@ -43,6 +44,11 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
     private static int currentFps;
 
     @Shadow
+    @Final
+    @Mutable
+    private MinecraftSessionService sessionService;
+
+    @Shadow
     public abstract void openScreen(Screen screen);
 
     @Override
@@ -64,6 +70,11 @@ public abstract class MixinMinecraft implements IMixinMinecraft {
         EventGuiScreenDisplay event = new EventGuiScreenDisplay(screen);
         event.broadcast();
         return event.isCanceled() ? null : event.getScreen();
+    }
+
+    @Override
+    public void setSessionService(MinecraftSessionService service) {
+        sessionService = service;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package me.deftware.mixin.imp;
 
+import com.mojang.authlib.minecraft.MinecraftSessionService;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.Session;
@@ -28,5 +29,7 @@ public interface IMixinMinecraft {
     boolean getIsWindowFocused();
 
     int getFPS();
+
+    void setSessionService(MinecraftSessionService service);
 
 }

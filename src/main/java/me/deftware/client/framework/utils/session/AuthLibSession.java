@@ -18,10 +18,12 @@ import java.util.UUID;
 public class AuthLibSession {
 
 	private final UserAuthentication userAuthentication;
+	private final YggdrasilAuthenticationService authenticationService;
 	private Session session;
 
 	public AuthLibSession(CustomYggdrasil yggdrasil) {
-		userAuthentication = new YggdrasilUserAuthentication(new YggdrasilAuthenticationService(Proxy.NO_PROXY, UUID.randomUUID().toString()), Agent.MINECRAFT);
+        authenticationService = new YggdrasilAuthenticationService(Proxy.NO_PROXY, UUID.randomUUID().toString());
+		userAuthentication = new YggdrasilUserAuthentication(authenticationService, Agent.MINECRAFT);
 	}
 
 	public AuthLibSession() {
@@ -67,6 +69,7 @@ public class AuthLibSession {
 
 	public void setSession(Session session) {
 		((IMixinMinecraft) MinecraftClient.getInstance()).setSession(buildSession());
+		((IMixinMinecraft) MinecraftClient.getInstance()).setSessionService(authenticationService.createMinecraftSessionService());
 	}
 
 }
