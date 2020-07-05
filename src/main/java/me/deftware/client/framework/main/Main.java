@@ -2,20 +2,24 @@ package me.deftware.client.framework.main;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import me.deftware.client.framework.main.preprocessor.PreProcessorMan;
 import me.deftware.client.framework.path.LocationUtil;
 import me.deftware.client.framework.utils.HashUtils;
 import me.deftware.client.framework.utils.WebUtils;
 import net.fabricmc.loader.launch.knot.KnotClient;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is only used when running in the fabric environment
  * Minecraft > 1.14
  */
 public class Main {
+
+    private static PreProcessorMan preProcessor;
+    public static List<String> logging = new ArrayList<>();
 
     public static void main(String[] args) {
         File emcJar = LocationUtil.getEMC().toFile(), mcDir = LocationUtil.getMinecraftDir().toFile();
@@ -26,6 +30,13 @@ public class Main {
             validateFilesSizes(emcJar.getParentFile());
         }
         System.setProperty("SUBSYSTEM", "true");
+        preProcessor = new PreProcessorMan(emcJar);
+        try {
+            preProcessor.run();
+        } catch (Throwable ignored) { }
+        for (int i = 0; i < logging.size(); i++) {
+            System.setProperty("logging" + i, logging.get(i));
+        }
         KnotClient.main(args);
     }
 
@@ -39,6 +50,7 @@ public class Main {
             try {
                 if (file.exists()) {
                     if (file.length() == 0) {
+                        logging.add("Removed invalid fabric mod " + file.getName());
                         if (!file.delete()) {
                             // cant really do much now
                         }

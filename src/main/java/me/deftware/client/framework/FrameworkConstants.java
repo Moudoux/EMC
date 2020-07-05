@@ -2,6 +2,9 @@ package me.deftware.client.framework;
 
 import me.deftware.client.framework.wrappers.IMinecraft;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FrameworkConstants {
 
     public static double VERSION = 14.0;

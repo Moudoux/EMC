@@ -7,6 +7,7 @@ import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.commands.*;
 import me.deftware.client.framework.event.EventBus;
 import me.deftware.client.framework.main.EMCMod;
+import me.deftware.client.framework.main.Main;
 import me.deftware.client.framework.main.bootstrap.discovery.*;
 import me.deftware.client.framework.main.validation.Validator;
 import me.deftware.client.framework.maps.SettingsMap;
@@ -49,6 +50,10 @@ public class Bootstrap {
 
     public static void init() {
         try {
+            for (int i = 0; i < 200; i++) {
+                if (System.getProperty("logging" + i, "null").equalsIgnoreCase("null")) break;
+                logger.info(System.getProperty("logging" + i));
+            }
             File emcJar = LocationUtil.getEMC().toFile(), mcDir = LocationUtil.getMinecraftDir().toFile();
             if (System.getProperty("EMCDir", "null").equalsIgnoreCase("null")) {
                 System.setProperty("EMCDir", emcJar != null ? emcJar.getParentFile().getAbsolutePath() : "null");
