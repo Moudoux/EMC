@@ -50,9 +50,10 @@ public class Bootstrap {
 
     public static void init() {
         try {
+            System.out.println("Hello world");
             for (int i = 0; i < 200; i++) {
                 if (System.getProperty("logging" + i, "null").equalsIgnoreCase("null")) break;
-                logger.info(System.getProperty("logging" + i));
+                logger.debug(System.getProperty("logging" + i));
             }
             File emcJar = LocationUtil.getEMC().toFile(), mcDir = LocationUtil.getMinecraftDir().toFile();
             if (System.getProperty("EMCDir", "null").equalsIgnoreCase("null")) {

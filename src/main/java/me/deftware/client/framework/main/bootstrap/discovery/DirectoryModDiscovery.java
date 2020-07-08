@@ -55,10 +55,11 @@ public class DirectoryModDiscovery extends AbstractModDiscovery {
 
 		DirectoryModEntry(File file) throws Exception {
 			super(file, null);
-			JarURLConnection connection = (JarURLConnection) new URL("jar", "", "file:" + getFile().getAbsolutePath() + "!/client.json").openConnection();
+			String path = getFile().toURI().toURL().getFile();
+			JarURLConnection connection = (JarURLConnection) new URL("jar", "", "file:" + path + "!/client.json").openConnection();
 			// Create classLoader
 			classLoader = URLClassLoader.newInstance(
-					new URL[]{new URL("jar", "", "file:" + getFile().getAbsolutePath() + "!/")},
+					new URL[]{new URL("jar", "", "file:" + path + "!/")},
 					Bootstrap.class.getClassLoader());
 			// Open and read json file
 			BufferedReader buffer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
