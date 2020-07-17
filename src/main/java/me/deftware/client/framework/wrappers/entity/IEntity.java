@@ -224,7 +224,7 @@ public class IEntity {
     }
 
     public boolean isInvisibleToPlayer() {
-        return entity.canSeePlayer(MinecraftClient.getInstance().player);
+        return entity.isInvisibleTo(MinecraftClient.getInstance().player);
     }
 
     public boolean canBeSeen() {

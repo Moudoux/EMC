@@ -4,7 +4,6 @@ import me.deftware.client.framework.utils.render.Texture;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
-import net.minecraft.client.util.math.MatrixStack;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -35,14 +34,14 @@ public class ToastImpl implements Toast {
 	}
 
 	@Override
-	public Visibility draw(MatrixStack matrices, ToastManager manager, long startTime) {
+	public Visibility draw(ToastManager manager, long startTime) {
 		// Texture
 		manager.getGame().getTextureManager().bindTexture(TOASTS_TEX);
 		GL11.glColor3f(1.0F, 1.0F, 1.0F);
-		manager.drawTexture(matrices, 0, 0, 0, 0, width, height);
+		manager.blit(0, 0, 0, 0, width, height);
 
 		// Title
-		manager.getGame().textRenderer.draw(matrices, title, 30.0F, 7.0F, -1);
+		manager.getGame().textRenderer.draw(title, 30.0F, 7.0F, -1);
 
 		// Draw text
 		if (text != null && text.length != 0) {
@@ -51,7 +50,7 @@ public class ToastImpl implements Toast {
 					index++;
 				}
 			}
-			manager.getGame().textRenderer.draw(matrices, text[index], 30.0F, 18f, -1);
+			manager.getGame().textRenderer.draw(text[index], 30.0F, 18f, -1);
 		}
 
 		// Icon
@@ -59,7 +58,7 @@ public class ToastImpl implements Toast {
 			GL11.glPushMatrix();
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			icon.updateTexture();
-			Screen.drawTexture(matrices, 4, 4, 0, 0, iconWidth, iconHeight, iconWidth, iconHeight);
+			Screen.blit(4, 4, 0, 0, iconWidth, iconHeight, iconWidth, iconHeight);
 			GL11.glPopMatrix();
 		}
 		return startTime >= visibilityTime ? Visibility.HIDE : Visibility.SHOW;

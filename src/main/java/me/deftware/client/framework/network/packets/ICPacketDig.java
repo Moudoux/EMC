@@ -4,7 +4,7 @@ import me.deftware.client.framework.network.IPacket;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.client.framework.wrappers.world.IEnumFacing;
 import net.minecraft.network.Packet;
-import net.minecraft.server.network.packet.PlayerActionC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 
 public class ICPacketDig extends IPacket {
 

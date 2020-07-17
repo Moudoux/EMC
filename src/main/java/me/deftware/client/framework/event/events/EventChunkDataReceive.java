@@ -2,7 +2,7 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.wrappers.world.IChunkPos;
-import net.minecraft.client.network.packet.ChunkDataS2CPacket;
+import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import net.minecraft.util.math.ChunkPos;
 
 public class EventChunkDataReceive extends Event {

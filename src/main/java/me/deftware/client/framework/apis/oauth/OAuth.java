@@ -2,8 +2,8 @@ package me.deftware.client.framework.apis.oauth;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.NetworkState;
-import net.minecraft.server.network.packet.HandshakeC2SPacket;
-import net.minecraft.server.network.packet.LoginHelloC2SPacket;
+import net.minecraft.network.packet.c2s.handshake.HandshakeC2SPacket;
+import net.minecraft.network.packet.c2s.login.LoginHelloC2SPacket;
 
 import java.net.InetAddress;
 

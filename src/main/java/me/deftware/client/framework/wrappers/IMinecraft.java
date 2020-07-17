@@ -24,14 +24,13 @@ import net.minecraft.client.options.AoOption;
 import net.minecraft.container.GenericContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.server.network.packet.ChatMessageC2SPacket;
+import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.util.Pair;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;

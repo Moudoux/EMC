@@ -16,9 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntityRenderer.class)
 public abstract class MixinRenderLivingBase<T extends LivingEntity> {
 
-    @Inject(method = "method_4056", at = @At("HEAD"), cancellable = true)
-    private void isVisible(T p_193115_1_, CallbackInfoReturnable<Boolean> ci) {
-        EventRenderPlayerModel event = new EventRenderPlayerModel(p_193115_1_);
+    @Inject(method = "isFullyVisible", at = @At("HEAD"), cancellable = true)
+    private void isVisible(T entity, CallbackInfoReturnable<Boolean> ci) {
+        EventRenderPlayerModel event = new EventRenderPlayerModel(entity);
         event.broadcast();
         if (event.isShouldRender()) {
             ci.setReturnValue(true);
@@ -26,11 +26,11 @@ public abstract class MixinRenderLivingBase<T extends LivingEntity> {
     }
 
     @Inject(method = "setupTransforms", at = @At("RETURN"))
-    protected void setupTransforms(T livingEntity_1, MatrixStack matrixStack_1, float x, float y, float z, CallbackInfo ci) {
-        if (!(livingEntity_1 instanceof PlayerEntity)) {
+    protected void setupTransforms(T entity, MatrixStack matrices, float x, float y, float z, CallbackInfo ci) {
+        if (!(entity instanceof PlayerEntity)) {
             return;
         }
-        String s = ((PlayerEntity) livingEntity_1).getGameProfile().getName(); //TextFormatting.getTextWithoutFormattingCodes(((EntityPlayer) entityLivingBaseIn).getGameProfile().getName());
+        String s = ((PlayerEntity) entity).getGameProfile().getName(); //TextFormatting.getTextWithoutFormattingCodes(((EntityPlayer) entityLivingBaseIn).getGameProfile().getName());
         String names = (String) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "FLIP_USERNAMES", "");
         if (s != null && !names.equals("")) {
             boolean flip = false;
@@ -45,8 +45,8 @@ public abstract class MixinRenderLivingBase<T extends LivingEntity> {
                 flip = names.equals(s);
             }
             if (flip) {
-                matrixStack_1.translate(0.0D, livingEntity_1.getHeight() + 0.1F, 0.0D);
-                matrixStack_1.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180.0F));
+                matrices.translate(0.0D, entity.getHeight() + 0.1F, 0.0D);
+                matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180.0F));
             }
         }
     }
