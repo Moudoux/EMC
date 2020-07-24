@@ -31,7 +31,7 @@ public class IClassHandler {
         }
 
         public boolean isInstance() {
-            return screen.getClass() == clazz;
+            return screen != null && screen.getClass() == clazz;
         }
 
     }
