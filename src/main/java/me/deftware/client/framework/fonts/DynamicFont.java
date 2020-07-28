@@ -81,8 +81,8 @@ public class DynamicFont implements EMCFont {
     @SuppressWarnings("Duplicates")
     public int generateString(String text, Color color) {
         String key = text + color.getRGB() + bold + fontName;
-        int textwidth = getPrimitiveWidthNonScaled(text);
-        int textheight = getPrimitiveHeightNonScaled(text);
+        int textwidth = getStringWidthNonScaled(text);
+        int textheight = getStringHeightNonScaled(text);
         if (!memorysaving && textureStore.containsKey(key)) {
             textTexture = textureStore.get(key);
         } else {
@@ -193,29 +193,29 @@ public class DynamicFont implements EMCFont {
     }
 
     @Override
-    public int getPrimitiveWidth(String text) {
+    public int getStringWidth(String text) {
         if (!scaling) {
-            return getPrimitiveWidthNonScaled(text);
+            return getStringWidthNonScaled(text);
         }
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return (int) (fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) / NonScaledRenderer.getScale());
     }
 
-    public int getPrimitiveWidthNonScaled(String text) {
+    public int getStringWidthNonScaled(String text) {
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return fontMetrics.charsWidth(text.toCharArray(), 0, text.length());
     }
 
     @Override
-    public int getPrimitiveHeight(String text) {
+    public int getStringHeight(String text) {
         if (!scaling) {
-            return getPrimitiveHeightNonScaled(text);
+            return getStringHeightNonScaled(text);
         }
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return (int) (fontMetrics.getHeight() / NonScaledRenderer.getScale());
     }
 
-    public int getPrimitiveHeightNonScaled(String text) {
+    public int getStringHeightNonScaled(String text) {
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return fontMetrics.getHeight();
     }

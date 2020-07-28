@@ -23,8 +23,8 @@ public class ColoredDynamicFont extends DynamicFont {
             return super.generateString(ChatColor.stripColor(text), color);
         }
         String key = text + color.getRGB() + bold + fontName;
-        int textwidth = getPrimitiveWidthNonScaled(text);
-        int textheight = getPrimitiveHeightNonScaled(text);
+        int textwidth = getStringWidthNonScaled(text);
+        int textheight = getStringHeightNonScaled(text);
         if (!memorysaving && textureStore.containsKey(key)) {
             textTexture = textureStore.get(key);
         } else {
@@ -53,7 +53,7 @@ public class ColoredDynamicFont extends DynamicFont {
                         // Next char will be a color code
                         skip = true;
                         if (!currentText.equals("")) {
-                            graphics.drawString(currentText, getPrimitiveWidthNonScaled(drawnText) + 1, textheight - textheight / 4);
+                            graphics.drawString(currentText, getStringWidthNonScaled(drawnText) + 1, textheight - textheight / 4);
                             drawnText += currentText;
                         }
                     } else {
@@ -62,7 +62,7 @@ public class ColoredDynamicFont extends DynamicFont {
                 }
             }
             if (!currentText.equals("")) {
-                graphics.drawString(currentText, getPrimitiveWidthNonScaled(drawnText) + 1, textheight - textheight / 4);
+                graphics.drawString(currentText, getStringWidthNonScaled(drawnText) + 1, textheight - textheight / 4);
             }
 
             graphics.dispose();
@@ -78,8 +78,8 @@ public class ColoredDynamicFont extends DynamicFont {
     }
 
     @Override
-    public int getPrimitiveWidth(String text) {
-        return super.getPrimitiveWidthNonScaled(ChatColor.stripColor(text));
+    public int getStringWidth(String text) {
+        return super.getStringWidthNonScaled(ChatColor.stripColor(text));
     }
 
 }

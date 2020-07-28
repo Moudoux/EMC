@@ -1,7 +1,6 @@
 package me.deftware.client.framework.utils;
 
 import com.google.gson.*;
-import lombok.Getter;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.path.OSUtils;
 import me.deftware.client.framework.wrappers.IMinecraft;

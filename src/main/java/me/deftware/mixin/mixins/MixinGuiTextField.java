@@ -172,7 +172,7 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
     public int render(TextRenderer self, String text, float x, float y, int color) {
         if (useCustomFont) {
             customFont.drawString((int) x, (int) y - 6, text, new Color(color), true);
-            return (int) (x + customFont.getPrimitiveWidth(text) + 1f);
+            return (int) (x + customFont.getStringWidth(text) + 1f);
         } else {
             return this.textRenderer.drawWithShadow(text, x, y, color);
         }
