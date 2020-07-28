@@ -85,6 +85,7 @@ public class Bootstrap {
             }
             FrameworkConstants.SUBSYSTEM_IN_USE = System.getProperty("SUBSYSTEM", "false").equalsIgnoreCase("true");
             EMCSettings = new Settings("EMC");
+            EMCSettings.setupShutdownHook();
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", EMCSettings.getPrimitive("RENDER_SCALE", 1.0f));
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_FONT_SHADOWS", EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true));
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getPrimitive("commandtrigger", "."));

@@ -184,29 +184,37 @@ public class Settings {
 		Thread-safe types
 	 */
 
+	// Because Minecraft doesnt use Gson >=2.8.2 which exposes the Gson deepCopy method, we have to use our own
+	public static <T> T deepCopy(T object, Class<T> type) {
+		try {
+			Gson gson = new Gson(); return gson.fromJson(gson.toJson(object, type), type);
+		} catch (Exception ignored) { }
+		return null;
+	}
+
 	// Getters
 
 	public synchronized JsonObject deepCopy() {
-		return config.deepCopy();
+		return deepCopy(config, JsonObject.class);
 	}
 
 	public synchronized JsonObject getObject(String key) {
-		return config.has(key) ? config.getAsJsonObject(key).deepCopy() : null;
+		return config.has(key) ? deepCopy(config.getAsJsonObject(key), JsonObject.class) : null;
 	}
 
 	public synchronized JsonArray getArray(String key) {
-		return config.has(key) ? config.getAsJsonArray(key).deepCopy() : null;
+		return config.has(key) ? deepCopy(config.getAsJsonArray(key), JsonArray.class) : null;
 	}
 
 	// Setters
 
 	public synchronized Settings putObject(String key, JsonObject object) {
-		config.add(key, object.deepCopy());
+		config.add(key, deepCopy(object, JsonObject.class));
 		return this;
 	}
 
 	public synchronized Settings putArray(String key, JsonArray object) {
-		config.add(key, object.deepCopy());
+		config.add(key, deepCopy(object, JsonArray.class));
 		return this;
 	}
 

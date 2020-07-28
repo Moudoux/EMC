@@ -23,6 +23,7 @@ public abstract class EMCMod {
 		modInfo = json;
 		try {
 			settings = new Settings(modInfo.get("name").getAsString());
+			settings.setupShutdownHook();
 		} catch (Exception ex) {
 			Bootstrap.logger.error("Could not load config file for {}", modInfo.get("name").getAsString());
 		}
