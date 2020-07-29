@@ -26,21 +26,13 @@ public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventL
     }
 
     @Override
-    public boolean mouseClicked(double double_1, double double_2, int int_1) {
-        if (this.active) {
-            if (int_1 == 0) {
-                boolean boolean_1 = this.isButtonHovered();
-                if (boolean_1) {
-                    this.playDownSound(MinecraftClient.getInstance().getSoundManager());
-                    onButtonClick(x, y);
-                    return true;
-                }
-            }
-
-            return false;
-        } else {
-            return false;
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (button == 0 && this.clicked(mouseX, mouseY)) {
+            this.playDownSound(MinecraftClient.getInstance().getSoundManager());
+            onButtonClick(x, y);
+            return true;
         }
+        return false;
     }
 
     public void onButtonClick(double mouseX, double mouseY) { }
