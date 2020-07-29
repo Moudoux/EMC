@@ -17,6 +17,10 @@ public class MixinGuiEditSign implements IMixinGuiEditSign {
     @Shadow
     private int currentRow;
 
+    @Shadow
+    @Final
+    private String[] field_24285;
+
     @Override
     public int getEditLine() {
         return currentRow;
@@ -25,6 +29,11 @@ public class MixinGuiEditSign implements IMixinGuiEditSign {
     @Override
     public SignBlockEntity getTileSign() {
         return sign;
+    }
+
+    @Override
+    public void setTextOnLine(String text, int line) {
+        field_24285[line] = text;
     }
 
 }

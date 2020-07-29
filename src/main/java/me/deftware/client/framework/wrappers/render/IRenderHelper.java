@@ -1,7 +1,7 @@
 package me.deftware.client.framework.wrappers.render;
 
 import net.minecraft.client.render.DiffuseLighting;
-import net.minecraft.client.util.math.Matrix4f;
+import net.minecraft.util.math.Matrix4f;
 
 public class IRenderHelper {
 

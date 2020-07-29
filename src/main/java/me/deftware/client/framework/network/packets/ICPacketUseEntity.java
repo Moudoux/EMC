@@ -7,7 +7,7 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 public class ICPacketUseEntity extends IPacket {
 
     public ICPacketUseEntity(IEntity entity) {
-        super(new PlayerInteractEntityC2SPacket(entity.getEntity()));
+        super(new PlayerInteractEntityC2SPacket(entity.getEntity(), entity.getEntity().isSneaking()));
     }
 
 }

@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers.item;
 
+import me.deftware.client.framework.utils.ChatProcessor;
 import me.deftware.client.framework.wrappers.item.items.IItemArmor;
 import me.deftware.client.framework.wrappers.world.IBlock;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
@@ -116,7 +117,7 @@ public class IItemStack {
     }
 
     public static boolean areItemStackTagsEqual(IItemStack one, IItemStack two) {
-        return ItemStack.areEqualIgnoreDamage(one.getStack(), two.getStack());
+        return ItemStack.areEqual(one.getStack(), two.getStack());
     }
 
     public boolean isItemEqual(IItemStack stack) {
@@ -140,7 +141,7 @@ public class IItemStack {
     }
 
     public String getDisplayName() {
-        return stack.getName().getString();
+        return ChatProcessor.getStringFromText(stack.getName());
     }
 
     public int getItemID() {
@@ -148,7 +149,7 @@ public class IItemStack {
     }
 
     public float getStrVsBlock(IBlockPos pos) {
-        return stack.getMiningSpeed(MinecraftClient.getInstance().world.getBlockState(pos.getPos()));
+        return stack.getMiningSpeedMultiplier(MinecraftClient.getInstance().world.getBlockState(pos.getPos()));
     }
 
     public boolean isEmpty() {

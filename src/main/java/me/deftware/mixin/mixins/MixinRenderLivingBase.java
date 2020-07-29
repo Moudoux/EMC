@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntityRenderer.class)
 public abstract class MixinRenderLivingBase<T extends LivingEntity> {
 
-    @Inject(method = "isFullyVisible", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "isVisible", at = @At("HEAD"), cancellable = true)
     private void isVisible(T entity, CallbackInfoReturnable<Boolean> ci) {
         EventRenderPlayerModel event = new EventRenderPlayerModel(entity);
         event.broadcast();

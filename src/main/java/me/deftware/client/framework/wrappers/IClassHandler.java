@@ -1,6 +1,8 @@
 package me.deftware.client.framework.wrappers;
 
+import me.deftware.client.framework.utils.ChatProcessor;
 import me.deftware.mixin.imp.IMixinGuiEditSign;
+import me.deftware.mixin.imp.IMixinSignBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.SignEditScreen;
@@ -51,11 +53,12 @@ public class IClassHandler {
         }
 
         public String getText(int line) {
-            return ((IMixinGuiEditSign) screen).getTileSign().text[line].getString();
+            return ChatProcessor.getStringFromText(((IMixinSignBlockEntity) ((IMixinGuiEditSign) screen).getTileSign()).getTextRows()[line]);
         }
 
         public void setText(String text, int line) {
-            ((IMixinGuiEditSign) screen).getTileSign().text[line] = new LiteralText(text);
+            ((IMixinGuiEditSign) screen).setTextOnLine(text, line);
+            ((IMixinGuiEditSign) screen).getTileSign().setTextOnRow(line, new LiteralText(text));
         }
 
         public void save() {

@@ -20,7 +20,7 @@ public class Texture {
     public Texture(int width, int height, boolean clear) {
         this.width = width;
         this.height = height;
-        this.nativeImage = new NativeImage(NativeImage.Format.RGBA, width, height, clear);
+        this.nativeImage = new NativeImage(NativeImage.Format.ABGR, width, height, clear);
         this.dynamicTexture = new NativeImageBackedTexture(nativeImage);
     }
 
@@ -98,12 +98,12 @@ public class Texture {
     }
 
     public int fillFromBufferedRGBImage(BufferedImage img) {
-        return fillFromBufferedFormatImage(img, NativeImage.Format.RGB);
+        return fillFromBufferedFormatImage(img, NativeImage.Format.BGR);
     }
 
 
     public int fillFromBufferedRGBAImage(BufferedImage img) {
-        return fillFromBufferedFormatImage(img, NativeImage.Format.RGBA);
+        return fillFromBufferedFormatImage(img, NativeImage.Format.ABGR);
     }
 
     public int clearPixels() {
@@ -130,7 +130,7 @@ public class Texture {
         int rgb = ((red & 0xFF) << 16) |
                 ((green & 0xFF) << 8) |
                 ((blue & 0xFF));
-        this.nativeImage.setPixelRgba(x, y, rgb);
+        this.nativeImage.setPixelColor(x, y, rgb);
     }
 
     public void setPixel(int x, int y, int red, int green, int blue, int alpha) {
@@ -138,15 +138,15 @@ public class Texture {
                 ((red & 0xFF) << 16) |
                 ((green & 0xFF) << 8) |
                 ((blue & 0xFF));
-        this.nativeImage.setPixelRgba(x, y, rgba);
+        this.nativeImage.setPixelColor(x, y, rgba);
     }
 
     public void setPixel(int x, int y, int rgba) {
-        this.nativeImage.setPixelRgba(x, y, rgba);
+        this.nativeImage.setPixelColor(x, y, rgba);
     }
 
     public int getPixel(int x, int y) {
-        return this.nativeImage.getPixelRgba(x, y);
+        return this.nativeImage.getPixelColor(x, y);
     }
 
     public byte getAlpha(int x, int y) {

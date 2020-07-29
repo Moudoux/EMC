@@ -13,6 +13,7 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Util;
 import org.lwjgl.glfw.GLFW;
@@ -96,9 +97,9 @@ public abstract class IGuiScreen extends Screen {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         onDraw(mouseX, mouseY, partialTicks);
-        super.render(mouseX, mouseY, partialTicks);
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
         onPostDraw(mouseX, mouseY, partialTicks);
     }
 
@@ -161,11 +162,19 @@ public abstract class IGuiScreen extends Screen {
     }
 
     protected void drawIDefaultBackground() {
-        renderBackground();
+        drawIDefaultBackground(new MatrixStack());
+    }
+
+    protected void drawIDefaultBackground(MatrixStack matrixStack) {
+        renderBackground(matrixStack);
     }
 
     public void drawDarkOverlay() {
-        DrawableHelper.fill(0, 0, width, height, Integer.MIN_VALUE);
+        drawDarkOverlay(new MatrixStack());
+    }
+
+    public void drawDarkOverlay(MatrixStack matrixStack) {
+        DrawableHelper.fill(matrixStack, 0, 0, width, height, Integer.MIN_VALUE);
     }
 
     protected void addButton(IGuiButton button) {
@@ -188,10 +197,18 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public void drawCenteredString(String text, int x, int y, int color) {
-        this.drawCenteredString(MinecraftClient.getInstance().textRenderer, text, x, y, color);
+        this.drawCenteredString(new MatrixStack(), text, x, y, color);
+    }
+
+    public void drawCenteredString(MatrixStack matrixStack, String text, int x, int y, int color) {
+        this.drawCenteredString(matrixStack, MinecraftClient.getInstance().textRenderer, text, x, y, color);
     }
 
     protected void drawTexture(EMCMod mod, String texture, int x, int y, int width, int height) {
+        drawTexture(mod, new MatrixStack(), texture, x, y, width, height);
+    }
+
+    protected void drawTexture(EMCMod mod, MatrixStack matrixStack, String texture, int x, int y, int width, int height) {
         GL11.glPushMatrix();
         if (!textureHashMap.containsKey(texture)) {
             try {
@@ -208,14 +225,18 @@ public abstract class IGuiScreen extends Screen {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             textureHashMap.get(texture).updateTexture();
         }
-        Screen.blit(x, y, 0, 0, width, height, width, height);
+        Screen.drawTexture(matrixStack, x, y, 0, 0, width, height, width, height);
         GL11.glPopMatrix();
     }
 
     protected void drawTexture(IResourceLocation texture, int x, int y, int width, int height) {
+        drawTexture(texture, new MatrixStack(), x, y, width, height);
+    }
+
+    protected void drawTexture(IResourceLocation texture, MatrixStack matrixStack, int x, int y, int width, int height) {
         MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Screen.blit(x, y, 0, 0, width, height, width, height);
+        Screen.drawTexture(matrixStack, x, y, 0, 0, width, height, width, height);
     }
 
     protected void goback() {
@@ -235,7 +256,11 @@ public abstract class IGuiScreen extends Screen {
     }
 
     public void drawITintBackground(int tint) {
-        renderBackground(tint);
+        drawITintBackground(new MatrixStack(), tint);
+    }
+
+    public void drawITintBackground(MatrixStack matrixStack, int tint) {
+        renderBackground(matrixStack, tint);
     }
 
     public void setFocusedComponent(CustomIGuiEventListener listener) {

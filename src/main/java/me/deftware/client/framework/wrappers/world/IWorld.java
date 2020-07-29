@@ -7,12 +7,14 @@ import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.world.blocks.IBlockCrops;
 import me.deftware.client.framework.wrappers.world.blocks.IBlockNetherWart;
 import me.deftware.mixin.imp.IMixinWorldClient;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.function.MaterialPredicate;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -123,7 +125,7 @@ public class IWorld {
     }
 
     public int getActualHeight() {
-        return world.getEffectiveHeight();
+        return world.getHeight();
     }
 
     public IChunk getChunk(IBlockPos pos) {
@@ -135,8 +137,10 @@ public class IWorld {
     }
 
     public boolean containsAnyLiquid(IAxisAlignedBB aabb) {
-        return world.containsBlockWithMaterial(aabb.getAABB(), Material.WATER) ||
-                world.containsBlockWithMaterial(aabb.getAABB(), Material.LAVA);
+        MaterialPredicate waterPredicate = MaterialPredicate.create(Material.WATER);
+        MaterialPredicate lavaPredicate = MaterialPredicate.create(Material.LAVA);
+
+        return world.method_29546(aabb.getAABB()).anyMatch((blockState) -> waterPredicate.test(blockState) || lavaPredicate.test(blockState));
     }
 
 

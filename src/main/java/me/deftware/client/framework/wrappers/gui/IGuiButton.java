@@ -3,26 +3,41 @@ package me.deftware.client.framework.wrappers.gui;
 import me.deftware.mixin.imp.IMixinGuiButton;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventListener {
 
     public IGuiButton(int id, int x, int y, String buttonText) {
+        this(id, x, y, new LiteralText(buttonText));
+    }
+
+    public IGuiButton(int id, int x, int y, LiteralText buttonText) {
         super(x, y, 200, 20, buttonText);
     }
 
     public IGuiButton(int id, int x, int y, int widthIn, int heightIn, String buttonText) {
+        this(id, x, y, widthIn, heightIn, new LiteralText(buttonText));
+    }
+
+    public IGuiButton(int id, int x, int y, int widthIn, int heightIn, LiteralText buttonText) {
         super(x, y, widthIn, heightIn, buttonText);
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float float_1) {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float float_1) {
         if (onDraw(mouseX, mouseY) == 0) {
-            super.render(mouseX, mouseY, float_1);
+            super.render(matrixStack, mouseX, mouseY, float_1);
         }
     }
 
     public void drawCenteredString(String text, int x, int y, int color) {
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(text, x - MinecraftClient.getInstance().textRenderer.getStringWidth(text) / 2f, y, color);
+        drawCenteredString(new MatrixStack(), text, x, y, color);
+    }
+
+    public void drawCenteredString(MatrixStack matrixStack, String text, int x, int y, int color) {
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrixStack, text, x - MinecraftClient.getInstance().textRenderer.getWidth(text) / 2f, y, color);
     }
 
     @Override
@@ -98,10 +113,18 @@ public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventL
     }
 
     public String getButtonText() {
+        return getRawButtonText().asString();
+    }
+
+    public Text getRawButtonText() {
         return getMessage();
     }
 
     public IGuiButton setButtonText(String text) {
+        return setButtonText(new LiteralText(text));
+    }
+
+    public IGuiButton setButtonText(Text text) {
         setMessage(text);
         return this;
     }

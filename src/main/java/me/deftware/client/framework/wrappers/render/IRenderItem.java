@@ -19,7 +19,7 @@ public class IRenderItem {
     }
 
     public static void renderItemAndEffectIntoGUI(IItemStack stack, int x, int y) {
-        IRenderItem.getRenderItem().renderGuiItem(stack.getStack(), x, y);
+        IRenderItem.getRenderItem().renderInGui(stack.getStack(), x, y);
     }
 
     public static void renderItemOverlayIntoGUI(IItemStack stack, int x, int y, String text) {

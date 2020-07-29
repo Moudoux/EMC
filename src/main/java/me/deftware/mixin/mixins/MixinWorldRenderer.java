@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(WorldRenderer.class)
 public class MixinWorldRenderer {
 
-    @Inject(method = "method_22713", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "tickRainSplashing", at = @At("HEAD"), cancellable = true)
     private void renderRain(Camera camera, CallbackInfo ci) {
         EventWeather event = new EventWeather(EventWeather.WeatherType.Rain);
         event.broadcast();

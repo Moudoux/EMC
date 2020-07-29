@@ -2,13 +2,13 @@ package me.deftware.client.framework.wrappers.gui;
 
 import me.deftware.client.framework.utils.ResourceUtils;
 import me.deftware.client.framework.wrappers.IMinecraft;
+import me.deftware.mixin.imp.IMixinTitleScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.SettingsScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import net.minecraft.client.gui.screen.options.OptionsScreen;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
-import net.minecraft.realms.RealmsBridge;
 import net.minecraft.util.Pair;
 
 import java.util.Objects;
@@ -24,7 +24,7 @@ public class IScreens {
         } else if (type.equals(ScreenType.WorldSelection)) {
             screen = new SelectWorldScreen(parent);
         } else if (type.equals(ScreenType.Options)) {
-            screen = new SettingsScreen(parent, MinecraftClient.getInstance().options);
+            screen = new OptionsScreen(parent, MinecraftClient.getInstance().options);
         } else if (type.equals(ScreenType.Mods)) {
             if (ResourceUtils.hasSpecificMod("modmenu")) {
                 screen = Objects.requireNonNull(IMinecraft.createScreenInstance("io.github.prospector.modmenu.gui.ModsScreen", new Pair<>(Screen.class, parent)));
@@ -38,8 +38,8 @@ public class IScreens {
     }
 
     public static void switchToRealms(IGuiScreen parent) {
-        RealmsBridge realmsbridge = new RealmsBridge();
-        realmsbridge.switchToRealms(parent);
+        TitleScreen screen = new TitleScreen();
+        ((IMixinTitleScreen) screen).switchToRealmsPub();
     }
 
     public enum ScreenType {

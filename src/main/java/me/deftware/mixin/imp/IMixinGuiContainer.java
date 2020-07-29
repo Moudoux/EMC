@@ -1,6 +1,6 @@
 package me.deftware.mixin.imp;
 
-import net.minecraft.container.Slot;
+import net.minecraft.screen.slot.Slot;
 
 public interface IMixinGuiContainer {
 

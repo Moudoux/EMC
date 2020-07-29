@@ -5,7 +5,7 @@ import net.minecraft.util.Language;
 public class TranslationUtil {
 
     public static String translate(String key) {
-        return Language.getInstance().translate(key);
+        return Language.getInstance().get(key);
     }
 
 }

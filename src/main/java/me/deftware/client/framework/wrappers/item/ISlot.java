@@ -1,6 +1,6 @@
 package me.deftware.client.framework.wrappers.item;
 
-import net.minecraft.container.Slot;
+import net.minecraft.screen.slot.Slot;
 
 public class ISlot {
 

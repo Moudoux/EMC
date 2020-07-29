@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.event.events.EventRenderHotbar;
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.util.math.MatrixStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,7 +22,7 @@ public class MixinGuiIngame {
     }
 
     @Inject(method = "renderHotbar", at = @At("HEAD"))
-    private void renderHotbar(float partialTicks, CallbackInfo ci) {
+    private void renderHotbar(float partialTicks, MatrixStack matrixStack, CallbackInfo ci) {
         new EventRenderHotbar().broadcast();
     }
 

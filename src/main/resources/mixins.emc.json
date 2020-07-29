@@ -22,7 +22,6 @@
     "MixinEntityPlayerSP",
     "MixinEntityRenderer",
     "MixinFilledMapItem",
-    "MixinGlStateManager",
     "MixinGuiButton",
     "MixinGuiChat",
     "MixinGuiConnecting",
@@ -57,8 +56,10 @@
     "MixinRenderPlayer",
     "MixinRenderSystem",
     "MixinServerListEntryNormal",
+    "MixinSignBlockEntity",
     "MixinSplashScreen",
     "MixinSweetBerryBushBlock",
+    "MixinStrider",
     "MixinTextRenderer",
     "MixinTextureManager",
     "MixinTimer",
@@ -66,6 +67,8 @@
     "MixinWorldClient",
     "MixinWorldRenderer",
     "MixinDebugHud",
-    "MixinWindow"
+    "MixinWindow",
+    "MixinAbstractBlock",
+    "MixinFrameBuffer"
   ]
 }

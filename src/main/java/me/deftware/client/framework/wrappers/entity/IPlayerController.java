@@ -2,9 +2,9 @@ package me.deftware.client.framework.wrappers.entity;
 
 import me.deftware.mixin.imp.IMixinPlayerControllerMP;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.container.SlotActionType;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.Hand;
 
 public class IPlayerController {

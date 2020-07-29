@@ -1,6 +1,7 @@
 package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
+import me.deftware.client.framework.utils.ChatProcessor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -15,7 +16,7 @@ public class EventNametagRender extends Event {
     public EventNametagRender(Entity entity) {
         isPlayer = entity instanceof PlayerEntity;
         if (isPlayer) {
-            name = entity.getName().asFormattedString();
+            name = ChatProcessor.getStringFromText(entity.getName());
         }
     }
 

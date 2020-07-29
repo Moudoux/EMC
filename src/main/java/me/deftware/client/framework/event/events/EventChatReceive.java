@@ -2,6 +2,7 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.utils.ChatProcessor;
+import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 
 /**
@@ -15,6 +16,10 @@ public class EventChatReceive extends Event {
         this.itc = itc;
     }
 
+    public EventChatReceive(StringRenderable itc) {
+        this.itc = (Text) itc;
+    }
+
     public Text getItc() {
         return itc;
     }
@@ -25,15 +30,15 @@ public class EventChatReceive extends Event {
 
     public void setColorCodes() {
         itc = ChatProcessor.getLiteralText(
-                ChatProcessor.convertColorCodes(itc.asFormattedString()));
+                ChatProcessor.convertColorCodes(ChatProcessor.getStringFromText(itc)));
     }
 
     public String getMessage() {
-        return itc.getString();
+        return ChatProcessor.getStringFromText(itc);
     }
 
     public void replace(String original, String _new) {
-        String message = itc.asFormattedString();
+        String message = ChatProcessor.getStringFromText(itc);
         itc = ChatProcessor.getLiteralText(message.replace(original, _new));
     }
 

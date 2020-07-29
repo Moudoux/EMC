@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers.world;
 
+import me.deftware.client.framework.utils.ChatProcessor;
 import me.deftware.client.framework.wrappers.math.IVoxelShape;
 import net.minecraft.block.*;
 import net.minecraft.fluid.WaterFluid;
@@ -80,7 +81,7 @@ public class IBlock {
     }
 
     public String getLocalizedName() {
-        return block.getName().getString();
+        return ChatProcessor.getStringFromText(block.getName());
     }
 
     public String getBlockKey() {

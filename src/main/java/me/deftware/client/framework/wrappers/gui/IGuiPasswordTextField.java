@@ -7,6 +7,7 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.math.MatrixStack;
 
 @SuppressWarnings("All")
 public class IGuiPasswordTextField extends IGuiTextField {
@@ -19,11 +20,11 @@ public class IGuiPasswordTextField extends IGuiTextField {
     }
 
     @Override
-    public void renderButton(int int_1, int int_2, float float_1) {
+    public void renderButton(MatrixStack matrixStack, int int_1, int int_2, float float_1) {
         if (this.isVisible()) {
             if (((IMixinGuiTextField) this).getHasBorder()) {
-                fill(this.x - 1, this.y - 1, this.x + this.width + 1, this.y + this.height + 1, -6250336);
-                fill(this.x, this.y, this.x + this.width, this.y + this.height, -16777216);
+                fill(matrixStack, this.x - 1, this.y - 1, this.x + this.width + 1, this.y + this.height + 1, -6250336);
+                fill(matrixStack, this.x, this.y, this.x + this.width, this.y + this.height, -16777216);
             }
 
             int int_3 = ((IMixinGuiTextField) this).getIsEditble() ? this.enabledColor : this.disabledColor;
@@ -50,7 +51,7 @@ public class IGuiPasswordTextField extends IGuiTextField {
 
             if (!string_1.isEmpty()) {
                 String string_2 = boolean_1 ? string_1.substring(0, int_4) : string_1;
-                int_8 = ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(((IMixinGuiTextField) this).getRenderTextProvider().apply(string_2, ((IMixinGuiTextField) this).getLineScrollOffset()), (float)int_6, (float)int_7, int_3);
+                int_8 = ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(matrixStack, ((IMixinGuiTextField) this).getRenderTextProvider().apply(string_2, ((IMixinGuiTextField) this).getLineScrollOffset()), (float)int_6, (float)int_7, int_3);
             }
 
             boolean boolean_3 = ((IMixinGuiTextField) this).getCursorMax() < this.getText().length() || this.getText().length() >= ((IMixinGuiTextField) this).getMaxTextLength();
@@ -63,11 +64,11 @@ public class IGuiPasswordTextField extends IGuiTextField {
             }
 
             if (!string_1.isEmpty() && boolean_1 && int_4 < string_1.length()) {
-                ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(((IMixinGuiTextField) this).getRenderTextProvider().apply(string_1.substring(int_4), ((IMixinGuiTextField) this).getCursorMax()), (float)int_8, (float)int_7, int_3);
+                ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(matrixStack, ((IMixinGuiTextField) this).getRenderTextProvider().apply(string_1.substring(int_4), ((IMixinGuiTextField) this).getCursorMax()), (float)int_8, (float)int_7, int_3);
             }
 
             if (!boolean_3 && ((IMixinGuiTextField) this).getSuggestion() != null) {
-                ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(((IMixinGuiTextField) this).getSuggestion(), (float)(int_9 - 1), (float)int_7, -8355712);
+                ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(matrixStack, ((IMixinGuiTextField) this).getSuggestion(), (float)(int_9 - 1), (float)int_7, -8355712);
             }
 
             int var10002;
@@ -78,14 +79,14 @@ public class IGuiPasswordTextField extends IGuiTextField {
                     var10002 = int_9 + 1;
                     var10003 = int_7 + 1;
                     ((IMixinGuiTextField) this).getFontRendererInstance().getClass();
-                    DrawableHelper.fill(int_9, var10001, var10002, var10003 + 9, -3092272);
+                    DrawableHelper.fill(matrixStack, int_9, var10001, var10002, var10003 + 9, -3092272);
                 } else {
-                    ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow("_", (float)int_9, (float)int_7, int_3);
+                    ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(matrixStack, "_", (float)int_9, (float)int_7, int_3);
                 }
             }
 
             if (int_5 != int_4) {
-                int int_10 = int_6 + ((IMixinGuiTextField) this).getFontRendererInstance().getStringWidth(string_1.substring(0, int_5));
+                int int_10 = int_6 + ((IMixinGuiTextField) this).getFontRendererInstance().getWidth(string_1.substring(0, int_5));
                 var10002 = int_7 - 1;
                 var10003 = int_10 - 1;
                 int var10004 = int_7 + 1;

@@ -31,7 +31,7 @@ public class IInventory {
 
     public static void swapHands() {
         MinecraftClient.getInstance().player.networkHandler.sendPacket(new PlayerActionC2SPacket(
-                PlayerActionC2SPacket.Action.SWAP_HELD_ITEMS, BlockPos.ORIGIN, Direction.DOWN));
+                PlayerActionC2SPacket.Action.SWAP_ITEM_WITH_OFFHAND, BlockPos.ORIGIN, Direction.DOWN));
     }
 
     public static void openEntityInventory(IEntity entity) {

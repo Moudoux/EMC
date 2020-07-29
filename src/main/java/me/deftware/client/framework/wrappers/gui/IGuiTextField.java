@@ -3,12 +3,14 @@ package me.deftware.client.framework.wrappers.gui;
 import me.deftware.mixin.imp.IMixinGuiTextField;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
 import org.lwjgl.glfw.GLFW;
 
 public class IGuiTextField extends TextFieldWidget implements CustomIGuiEventListener {
 
     public IGuiTextField(int id, int x, int y, int width, int height) {
-        super(MinecraftClient.getInstance().textRenderer, x, y, width, height, "");
+        super(MinecraftClient.getInstance().textRenderer, x, y, width, height, new LiteralText(""));
     }
 
     public String getTextboxText() {
@@ -46,7 +48,11 @@ public class IGuiTextField extends TextFieldWidget implements CustomIGuiEventLis
     }
 
     public void onDraw(int mouseX, int mouseY, float partialTicks) {
-        renderButton(mouseX, mouseY, partialTicks);
+        onDraw(new MatrixStack(), mouseX, mouseY, partialTicks);
+    }
+
+    public void onDraw(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        renderButton(matrixStack, mouseX, mouseY, partialTicks);
     }
 
     public void doCursorTick() {

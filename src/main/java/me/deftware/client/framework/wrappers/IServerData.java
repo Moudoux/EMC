@@ -1,6 +1,7 @@
 package me.deftware.client.framework.wrappers;
 
 
+import me.deftware.client.framework.utils.ChatProcessor;
 import net.minecraft.client.network.ServerInfo;
 
 public class IServerData extends ServerInfo {
@@ -10,7 +11,7 @@ public class IServerData extends ServerInfo {
     }
 
     public String getIMotd() {
-        return label;
+        return ChatProcessor.getStringFromText(label);
     }
 
     public boolean isIPinged() {
@@ -30,7 +31,7 @@ public class IServerData extends ServerInfo {
     }
 
     public String getIGameVersion() {
-        return version;
+        return ChatProcessor.getStringFromText(version);
     }
 
     public int getIVersion() {
@@ -38,7 +39,7 @@ public class IServerData extends ServerInfo {
     }
 
     public String getIPopulationInfo() {
-        return playerCountLabel;
+        return ChatProcessor.getStringFromText(playerCountLabel);
     }
 
     public long getIPingToServer() {

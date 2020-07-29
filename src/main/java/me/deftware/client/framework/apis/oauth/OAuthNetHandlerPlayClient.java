@@ -1,6 +1,7 @@
 package me.deftware.client.framework.apis.oauth;
 
 import com.mojang.authlib.GameProfile;
+import me.deftware.client.framework.utils.ChatProcessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -19,8 +20,8 @@ public class OAuthNetHandlerPlayClient extends ClientPlayNetworkHandler {
 
     @Override
     public void onDisconnect(DisconnectS2CPacket packetIn) {
-        String code = packetIn.getReason().getString().split("\n")[0].split("\"")[1].replace("\"", "");
-        String time = packetIn.getReason().getString().split("\n")[2]
+        String code = ChatProcessor.getStringFromText(packetIn.getReason()).split("\n")[0].split("\"")[1].replace("\"", "");
+        String time = ChatProcessor.getStringFromText(packetIn.getReason()).split("\n")[2]
                 .substring("Your code will expire in ".length() + 1);
         callback.callback(true, code, time);
         getConnection().disconnect(packetIn.getReason());

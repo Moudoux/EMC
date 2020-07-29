@@ -8,6 +8,8 @@ import me.deftware.mixin.imp.IMixinGuiTextField;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.Text;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,8 +26,8 @@ import java.util.function.BiFunction;
 @Mixin(TextFieldWidget.class)
 public abstract class MixinGuiTextField extends AbstractButtonWidget implements IMixinGuiTextField {
 
-    public MixinGuiTextField(int int_1, int int_2, String string_1) {
-        super(int_1, int_2, string_1);
+    public MixinGuiTextField(int int_1, int int_2, Text string_1) {
+        super(int_1, int_2, 200, 20, string_1);
     }
 
     private boolean useMinecraftScaling = true;
@@ -144,7 +146,7 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
     }
 
     @Inject(method = "renderButton", at = @At("HEAD"))
-    public void drawTextField(int p_drawTextField_1_, int p_drawTextField_2_, float p_drawTextField_3_, CallbackInfo ci) {
+    public void drawTextField(MatrixStack matrixStack, int p_drawTextField_1_, int p_drawTextField_2_, float p_drawTextField_3_, CallbackInfo ci) {
         if (!useMinecraftScaling) {
             GL11.glPushMatrix();
             GraphicsUtil.prepareMatrix(IGuiScreen.getDisplayWidth(), IGuiScreen.getDisplayHeight());
@@ -152,29 +154,29 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
     }
 
     @Inject(method = "renderButton", at = @At("RETURN"))
-    public void drawTextFieldReturn(int p_drawTextField_1_, int p_drawTextField_2_, float p_drawTextField_3_, CallbackInfo ci) {
+    public void drawTextFieldReturn(MatrixStack matrixStack, int p_drawTextField_1_, int p_drawTextField_2_, float p_drawTextField_3_, CallbackInfo ci) {
         if (!useMinecraftScaling) {
             GL11.glPopMatrix();
         }
         if (overlay) {
             String currentText = getText();
-            int currentWidth = ((IMixinGuiTextField) this).getFontRendererInstance().getStringWidth(currentText);
+            int currentWidth = ((IMixinGuiTextField) this).getFontRendererInstance().getWidth(currentText);
             int x = isFocused() ? ((IMixinGuiTextField) this).getX() + 4 : ((IMixinGuiTextField) this).getX();
             int y = isFocused() ? ((IMixinGuiTextField) this).getY() + (((IMixinGuiTextField) this).getHeight() - 8) / 2 : ((IMixinGuiTextField) this).getY();
-            ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(overlayText, x + currentWidth - 3, y - 2, Color.GRAY.getRGB());
+            ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(matrixStack, overlayText, x + currentWidth - 3, y - 2, Color.GRAY.getRGB());
             WeakReference<EventChatboxType> event = new WeakReference<>(new EventChatboxType(getText(), overlayText));
             event.get().broadcast();
             overlayText = event.get().getOverlay();
         }
     }
 
-    @Redirect(method = "renderButton", at = @At(value = "INVOKE", target = "net/minecraft/client/font/TextRenderer.drawWithShadow(Ljava/lang/String;FFI)I"))
-    public int render(TextRenderer self, String text, float x, float y, int color) {
+    @Redirect(method = "renderButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;drawWithShadow(Lnet/minecraft/client/util/math/MatrixStack;Ljava/lang/String;FFI)I"))
+    public int render(TextRenderer self, MatrixStack matrixStack, String text, float x, float y, int color) {
         if (useCustomFont) {
             customFont.drawString((int) x, (int) y - 6, text, new Color(color), true);
             return (int) (x + customFont.getStringWidth(text) + 1f);
         } else {
-            return this.textRenderer.drawWithShadow(text, x, y, color);
+            return this.textRenderer.drawWithShadow(matrixStack, text, x, y, color);
         }
     }
 

@@ -1,6 +1,7 @@
 package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
+import me.deftware.client.framework.utils.ChatProcessor;
 import net.minecraft.entity.Entity;
 
 /**
@@ -13,7 +14,7 @@ public class EventRenderPlayerModel extends Event {
 	private String name;
 
 	public EventRenderPlayerModel(Entity entity) {
-		this.name = entity.getName().asFormattedString();
+		this.name = ChatProcessor.getStringFromText(entity.getName());
 	}
 
 	public String getName() {

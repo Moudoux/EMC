@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers.entity;
 
+import me.deftware.client.framework.utils.ChatProcessor;
 import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.client.framework.wrappers.world.IChunkPos;
@@ -18,8 +19,7 @@ import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.Projectile;
-
+import net.minecraft.entity.projectile.ProjectileEntity;
 import java.math.BigDecimal;
 
 @SuppressWarnings("All")
@@ -44,7 +44,7 @@ public class IEntity {
     }
 
     public boolean isOnGround() {
-        return entity.onGround;
+        return entity.isOnGround();
     }
 
     public float getStepHeight() {
@@ -68,7 +68,7 @@ public class IEntity {
     }
 
     public String getFormattedDisplayName() {
-        return entity.getDisplayName().asFormattedString();
+        return ChatProcessor.getStringFromText(entity.getDisplayName());
     }
 
     public int getTicksExisted() {
@@ -89,7 +89,7 @@ public class IEntity {
     }
 
     public String getEntityTypeName() {
-        return entity.getType().getName().asFormattedString();
+        return ChatProcessor.getStringFromText(entity.getType().getName());
     }
 
     public boolean isPlayer() {
@@ -170,7 +170,7 @@ public class IEntity {
 
     public float getMaxHealth() {
         if (entity instanceof LivingEntity) {
-            return ((LivingEntity) entity).getMaximumHealth();
+            return ((LivingEntity) entity).getMaxHealth();
         }
         return 0;
     }
@@ -295,7 +295,7 @@ public class IEntity {
         } else if (e.equals(EntityType.ENTITY_ITEM)) {
             return entity instanceof ItemEntity;
         } else if (e.equals(EntityType.ENTITY_PROJECTILE)) {
-            return entity instanceof Projectile;
+            return entity instanceof ProjectileEntity;
         } else if (e.equals(EntityType.Entity_Ageable)) {
             return entity instanceof PassiveEntity;
         } else if (e.equals(EntityType.EntityAmbientCreature)) {
@@ -355,7 +355,7 @@ public class IEntity {
         } else if (e.equals(EntityType.ENTITY_SPIDER)) {
             return entity instanceof SpiderEntity;
         } else if (e.equals(EntityType.ENTITY_ZOMBIE_PIGMAN)) {
-            return entity instanceof ZombiePigmanEntity;
+            return entity instanceof ZombifiedPiglinEntity;
         } else if (e.equals(EntityType.ENTITY_ENDERMAN)) {
             return entity instanceof EndermanEntity;
         } else if (e.equals(EntityType.ENTITY_WITHER_SKELETON)) {

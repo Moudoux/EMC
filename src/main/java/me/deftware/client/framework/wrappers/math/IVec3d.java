@@ -23,7 +23,7 @@ public class IVec3d {
     }
 
     public IVec3d(Vec3i vector) {
-        this.vector = new Vec3d(vector);
+        this.vector = new Vec3d(vector.getX(), vector.getY(), vector.getZ());
         this.fluentVector = this.vector;
     }
 

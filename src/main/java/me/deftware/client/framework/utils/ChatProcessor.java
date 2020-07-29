@@ -3,18 +3,20 @@ package me.deftware.client.framework.utils;
 import com.google.common.collect.EvictingQueue;
 import me.deftware.mixin.imp.IMixinGuiNewChat;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Style;
+import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 
-@SuppressWarnings("all")
+/**
+ * This class has been deprecated, and a new method of managing internal Minecraft strings will be added later
+ */
+@Deprecated
 public class ChatProcessor {
 
     private static final Pattern URL_PATTERN = Pattern
@@ -54,38 +56,71 @@ public class ChatProcessor {
         return message;
     }
 
+    /**
+     * Internal use only! >1.16 Only!
+     * Does not support events either
+     */
+    public static String getStringFromText(Text text) {
+        StringBuilder result = new StringBuilder();
+        text.visit((style, string) -> {
+            if (!string.trim().isEmpty()) { // Make sure its not a new line
+                // Formatting styles
+                if (style.isBold()) {
+                    string = Formatting.BOLD.toString() + string;
+                }
+                if (style.isUnderlined()) {
+                    string = Formatting.UNDERLINE.toString() + string;
+                }
+                if (style.isItalic()) {
+                    string = Formatting.ITALIC.toString() + string;
+                }
+                if (style.isObfuscated()) {
+                    string = Formatting.OBFUSCATED.toString() + string;
+                }
+                if (style.isStrikethrough()) {
+                    string = Formatting.STRIKETHROUGH.toString() + string;
+                }
+                // Color; Only supports the old style Minecraft color, no hex or rgb values are support
+                if (style.getColor() != null && style.getColor().getName() != null) {
+                    for (Formatting formatting : Formatting.values()) {
+                        if (formatting.isColor() && formatting.getName().equalsIgnoreCase(style.getColor().getName())) {
+                            string = formatting.toString() + string;
+                            break;
+                        }
+                    }
+                }
+            }
+            // Append string
+            result.append(string);
+            return Optional.empty();
+        }, text.getStyle());
+        return result.toString();
+    }
+
     public static LiteralText getLiteralText(String chatMessage) {
-        LiteralText LiteralText = new LiteralText("");
+        LiteralText text = new LiteralText("");
         if (chatMessage != null) {
             String[] messageParts = chatMessage.split(" ");
             int pathIndex = 0;
-
             for (String messagePart : messageParts) {
                 LiteralText append = new LiteralText(messagePart);
-                Style chatStyle = new Style();
-
+                Style chatStyle = Style.EMPTY;
                 if (ChatProcessor.URL_PATTERN.matcher(ChatColor.stripColor(messagePart)).matches()) {
-                    chatStyle.setUnderline(true);
-                    chatStyle.setClickEvent(new ClickEvent(
-                            ClickEvent.Action.OPEN_URL, ChatColor.stripColor(messagePart)));
+                    chatStyle = chatStyle.withFormatting(Formatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, ChatColor.stripColor(messagePart)));
                 }
-
                 String currentPath = chatMessage.substring(0, chatMessage.indexOf(messagePart, pathIndex));
                 String lastColor = ChatColor.getLastColors(currentPath);
-
                 if (lastColor.length() >= 2) {
                     char formattingChar = lastColor.charAt(1);
-                    ChatProcessor.formatChatStyle(chatStyle, formattingChar);
+                    chatStyle = ChatProcessor.formatChatStyle(chatStyle, formattingChar);
                 }
-
                 append.setStyle(chatStyle);
-                LiteralText.append(append);
-                LiteralText.append(" ");
+                text.append(append);
+                text.append(new LiteralText( " "));
                 pathIndex += messagePart.length() - 1;
             }
         }
-
-        return LiteralText;
+        return text;
     }
 
     public static void sendMessages() {
@@ -154,34 +189,28 @@ public class ChatProcessor {
     private static Style formatChatStyle(Style chatStyle, char formattingChar) {
         switch (formattingChar) {
             case 'k':
-                chatStyle.setObfuscated(true);
+                chatStyle = chatStyle.withFormatting(Formatting.OBFUSCATED);
                 break;
             case 'm':
-                chatStyle.setStrikethrough(true);
+                chatStyle = chatStyle.withFormatting(Formatting.STRIKETHROUGH);
                 break;
             case 'l':
-                chatStyle.setBold(true);
+                chatStyle = chatStyle.withFormatting(Formatting.BOLD);
                 break;
             case 'n':
-                chatStyle.setUnderline(true);
+                chatStyle = chatStyle.withFormatting(Formatting.UNDERLINE);
                 break;
             case 'o':
-                chatStyle.setItalic(true);
+                chatStyle = chatStyle.withFormatting(Formatting.ITALIC);
                 break;
             case 'r':
-                chatStyle.setObfuscated(false);
-                chatStyle.setStrikethrough(false);
-                chatStyle.setBold(false);
-                chatStyle.setUnderline(false);
-                chatStyle.setItalic(false);
-                chatStyle.setColor(ChatProcessor.getTextFormattingByValue('r'));
+                chatStyle = Style.EMPTY;
                 break;
             case 'p':
             case 'q':
             default:
-                chatStyle.setColor(ChatProcessor.getTextFormattingByValue(formattingChar));
+                chatStyle = chatStyle.withColor(ChatProcessor.getTextFormattingByValue(formattingChar));
         }
-
         return chatStyle;
     }
 

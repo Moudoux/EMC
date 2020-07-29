@@ -4,11 +4,11 @@ package me.deftware.client.framework.wrappers.item;
 import me.deftware.client.framework.wrappers.entity.IEntity;
 import me.deftware.client.framework.wrappers.entity.IEntityPlayer;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.container.Slot;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
+import net.minecraft.screen.slot.Slot;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,7 +84,7 @@ public class IInventoryWrapper {
             return new ArrayList<>();
         }
         ArrayList<ISlot> slots = new ArrayList<>();
-        for (Slot d : MinecraftClient.getInstance().player.container.slots) {
+        for (Slot d : MinecraftClient.getInstance().player.currentScreenHandler.slots) {
             slots.add(new ISlot(d));
         }
         return slots;
@@ -108,7 +108,7 @@ public class IInventoryWrapper {
         if (IEntityPlayer.isNull()) {
             return null;
         }
-        return new IItemStack(MinecraftClient.getInstance().player.inventory.getInvStack(id));
+        return new IItemStack(MinecraftClient.getInstance().player.inventory.getStack(id));
     }
 
     public static int getFirstEmptyStack() {

@@ -15,22 +15,22 @@ public class IAxisAlignedBB {
 
     public IAxisAlignedBB(Box aabb) {
         bb = aabb;
-        x1 = bb.x1;
-        y1 = bb.y1;
-        z1 = bb.z1;
-        x2 = bb.x2;
-        y2 = bb.y2;
-        z2 = bb.z2;
+        x1 = bb.minX;
+        y1 = bb.minY;
+        z1 = bb.minZ;
+        x2 = bb.maxX;
+        y2 = bb.maxY;
+        z2 = bb.maxZ;
     }
 
     public IAxisAlignedBB(double x, double y, double z, double x1, double y1, double z1) {
         bb = new Box(x, y, z, x1, y1, z1);
-        this.x1 = bb.x1;
-        this.y1 = bb.y1;
-        this.z1 = bb.z1;
-        x2 = bb.x2;
-        y2 = bb.y2;
-        z2 = bb.z2;
+        this.x1 = bb.minX;
+        this.y1 = bb.minY;
+        this.z1 = bb.minZ;
+        x2 = bb.maxX;
+        y2 = bb.maxY;
+        z2 = bb.maxZ;
     }
 
     public Box getAABB() {
