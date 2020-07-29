@@ -34,9 +34,9 @@ public interface EMCFont {
 
     int drawOnScreen(int x, int y);
 
-    int getStringWidth(String text);
+    int getPrimitiveWidth(String text);
 
-    int getStringHeight(String text);
+    int getPrimitiveHeight(String text);
 
     int getLastRenderedHeight();
 

@@ -27,7 +27,7 @@ public abstract class MixinTextRenderer {
     private void draw(String text, float x, float y, int color, Matrix4f matrix, boolean shadow, CallbackInfoReturnable<Integer> ci) {
         if (!alreadyRendering && shadow) {
             alreadyRendering = true;
-            ci.setReturnValue(draw(text, x, y, color, matrix, Bootstrap.EMCSettings != null && Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true)));
+            ci.setReturnValue(draw(text, x, y, color, matrix, Bootstrap.EMCSettings != null && Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true)));
             alreadyRendering = false;
         }
     }
@@ -36,7 +36,7 @@ public abstract class MixinTextRenderer {
     public void draw(String text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int backgroundColor, int light, CallbackInfoReturnable<Integer> ci) {
         if (!alreadyRendering && shadow) {
             alreadyRendering = true;
-            ci.setReturnValue(draw(text, x, y, color, Bootstrap.EMCSettings != null && Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true), matrix, vertexConsumerProvider, seeThrough, backgroundColor, light));
+            ci.setReturnValue(draw(text, x, y, color, Bootstrap.EMCSettings != null && Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true), matrix, vertexConsumerProvider, seeThrough, backgroundColor, light));
             alreadyRendering = false;
         }
     }
@@ -45,7 +45,7 @@ public abstract class MixinTextRenderer {
     private void drawInternal(String text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int backgroundColor, int light, CallbackInfoReturnable<Integer> ci) {
         if (!alreadyRendering && shadow) {
             alreadyRendering = true;
-            ci.setReturnValue(drawInternal(text, x, y, color, Bootstrap.EMCSettings != null && Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true), matrix, vertexConsumerProvider, seeThrough, backgroundColor, light));
+            ci.setReturnValue(drawInternal(text, x, y, color, Bootstrap.EMCSettings != null && Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true), matrix, vertexConsumerProvider, seeThrough, backgroundColor, light));
             alreadyRendering = false;
         }
     }
@@ -54,7 +54,7 @@ public abstract class MixinTextRenderer {
     private void drawLayer(String text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int underlineColor, int light, CallbackInfoReturnable<Float> ci) {
         if (!alreadyRendering && shadow) {
             alreadyRendering = true;
-            ci.setReturnValue(drawLayer(text, x, y, color, Bootstrap.EMCSettings != null && Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true), matrix, vertexConsumerProvider, seeThrough, underlineColor, light));
+            ci.setReturnValue(drawLayer(text, x, y, color, Bootstrap.EMCSettings != null && Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true), matrix, vertexConsumerProvider, seeThrough, underlineColor, light));
             alreadyRendering = false;
         }
     }

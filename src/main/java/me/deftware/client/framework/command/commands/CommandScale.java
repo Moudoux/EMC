@@ -26,7 +26,7 @@ public class CommandScale extends EMCModCommand {
                                                         return 1;
                                                     }
                                                     NonScaledRenderer.setScale(r.getFloat("size"));
-                                                    Bootstrap.EMCSettings.saveFloat("RENDER_SCALE", r.getFloat("size"));
+                                                    Bootstrap.EMCSettings.putPrimitive("RENDER_SCALE", r.getFloat("size"));
                                                     IChat.sendClientMessage("Gui scale has been set to \"" + r.getFloat("size") + "\"");
                                                     return 1;
                                                 })
@@ -36,7 +36,7 @@ public class CommandScale extends EMCModCommand {
                         LiteralArgumentBuilder.literal("restore")
                                 .executes(c -> {
                                     NonScaledRenderer.setScale(1.0f);
-                                    Bootstrap.EMCSettings.saveFloat("RENDER_SCALE", 1.0f);
+                                    Bootstrap.EMCSettings.putPrimitive("RENDER_SCALE", 1.0f);
                                     IChat.sendClientMessage("Gui scale has been reset to \"1.0\"");
                                     return 1;
                                 })

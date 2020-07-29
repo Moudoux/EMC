@@ -27,7 +27,7 @@ public class CommandTrigger extends EMCModCommand {
                                                         return 1;
                                                     }
                                                     SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", r.getString("prefix"));
-                                                    Bootstrap.EMCSettings.saveString("commandtrigger", r.getString("prefix"));
+                                                    Bootstrap.EMCSettings.putPrimitive("commandtrigger", r.getString("prefix"));
                                                     IChat.sendClientMessage("Set command trigger to \"" + r.getString("prefix") + "\"");
                                                     return 1;
                                                 })
@@ -37,7 +37,7 @@ public class CommandTrigger extends EMCModCommand {
                         LiteralArgumentBuilder.literal("restore")
                                 .executes(c -> {
                                     SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".");
-                                    Bootstrap.EMCSettings.saveString("commandtrigger", ".");
+                                    Bootstrap.EMCSettings.putPrimitive("commandtrigger", ".");
                                     IChat.sendClientMessage("Command trigger has been reset to \".\" (single dot)");
                                     return 1;
                                 })

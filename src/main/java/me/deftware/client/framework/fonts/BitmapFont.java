@@ -103,8 +103,8 @@ public class BitmapFont implements EMCFont {
 
     protected void characterGenerate(char character, Color color) {
         String letterBuffer = String.valueOf(character);
-        int textwidth = getStringWidthNonScaled(letterBuffer);
-        int textheight = getStringHeightNonScaled(letterBuffer);
+        int textwidth = getPrimitiveWidthNonScaled(letterBuffer);
+        int textheight = getPrimitiveHeightNonScaled(letterBuffer);
         if (textheight > 0 && textwidth > 0 && !letterBuffer.isEmpty()) {
             BufferedImage characterTexture = new BufferedImage(textwidth, textheight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = characterTexture.createGraphics();
@@ -136,12 +136,12 @@ public class BitmapFont implements EMCFont {
 
     @Override
     public int drawString(int x, int y, String text) {
-        return drawString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+        return drawString(x, y, text, Color.white, Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true));
     }
 
     @Override
     public int drawStringWithShadow(int x, int y, String text) {
-        return drawString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+        return drawString(x, y, text, Color.white, Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true));
     }
 
     @Override
@@ -160,7 +160,7 @@ public class BitmapFont implements EMCFont {
 
     @Override
     public int drawStringWithShadow(int x, int y, String text, Color color) {
-        return drawString(x, y, text, color, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+        return drawString(x, y, text, color, Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true));
     }
 
     @Override
@@ -177,7 +177,7 @@ public class BitmapFont implements EMCFont {
         for (int character = 0; character < buffer.length; character++) {
 
             if (buffer[character] == ' ') {
-                offset += getStringWidthNonScaled(" ");
+                offset += getPrimitiveWidthNonScaled(" ");
                 continue;
             } else if (!textureIDStore.containsKey(buffer[character])) {
                 buffer[character] = '?';
@@ -208,12 +208,12 @@ public class BitmapFont implements EMCFont {
 
     @Override
     public int drawCenteredString(int x, int y, String text) {
-        return drawCenteredString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+        return drawCenteredString(x, y, text, Color.white, Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true));
     }
 
     @Override
     public int drawCenteredStringWithShadow(int x, int y, String text) {
-        return drawCenteredString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+        return drawCenteredString(x, y, text, Color.white, Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true));
     }
 
     @Override
@@ -232,12 +232,12 @@ public class BitmapFont implements EMCFont {
 
     @Override
     public int drawCenteredStringWithShadow(int x, int y, String text, Color color) {
-        return drawCenteredString(x, y, text, color, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+        return drawCenteredString(x, y, text, color, Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true));
     }
 
     @Override
     public int drawCenteredString(int x, int y, String text, Color color) {
-        drawString(x - (getStringWidthNonScaled(ChatColor.stripColor(text)) / 2), y - (getStringHeightNonScaled(ChatColor.stripColor(text)) / 2), text, color);
+        drawString(x - (getPrimitiveWidthNonScaled(ChatColor.stripColor(text)) / 2), y - (getPrimitiveHeightNonScaled(ChatColor.stripColor(text)) / 2), text, color);
         return 0;
     }
 
@@ -247,29 +247,29 @@ public class BitmapFont implements EMCFont {
     }
 
     @Override
-    public int getStringWidth(String text) {
+    public int getPrimitiveWidth(String text) {
         if (!scaling) {
-            return getStringWidthNonScaled(text);
+            return getPrimitiveWidthNonScaled(text);
         }
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return text != null && fontMetrics != null ? (int) (fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) / NonScaledRenderer.getScale()) : 0;
     }
 
-    public int getStringWidthNonScaled(String text) {
+    public int getPrimitiveWidthNonScaled(String text) {
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return text != null && fontMetrics != null ? fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) : 0;
     }
 
     @Override
-    public int getStringHeight(String text) {
+    public int getPrimitiveHeight(String text) {
         if (!scaling) {
-            return getStringHeightNonScaled(text);
+            return getPrimitiveHeightNonScaled(text);
         }
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return (int) (fontMetrics.getHeight() / NonScaledRenderer.getScale());
     }
 
-    public int getStringHeightNonScaled(String text) {
+    public int getPrimitiveHeightNonScaled(String text) {
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return fontMetrics.getHeight();
     }

@@ -81,8 +81,8 @@ public class DynamicFont implements EMCFont {
     @SuppressWarnings("Duplicates")
     public int generateString(String text, Color color) {
         String key = text + color.getRGB() + bold + fontName;
-        int textwidth = getStringWidthNonScaled(text);
-        int textheight = getStringHeightNonScaled(text);
+        int textwidth = getPrimitiveWidthNonScaled(text);
+        int textheight = getPrimitiveHeightNonScaled(text);
         if (!memorysaving && textureStore.containsKey(key)) {
             textTexture = textureStore.get(key);
         } else {
@@ -109,12 +109,12 @@ public class DynamicFont implements EMCFont {
 
     @Override
     public int drawString(int x, int y, String text) {
-        return drawString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+        return drawString(x, y, text, Color.white, Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true));
     }
 
     @Override
     public int drawStringWithShadow(int x, int y, String text) {
-        return drawString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+        return drawString(x, y, text, Color.white, Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true));
     }
 
     @Override
@@ -124,7 +124,7 @@ public class DynamicFont implements EMCFont {
 
     @Override
     public int drawStringWithShadow(int x, int y, String text, Color color) {
-        return drawString(x, y, text, color, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+        return drawString(x, y, text, color, Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true));
     }
 
     @Override
@@ -147,12 +147,12 @@ public class DynamicFont implements EMCFont {
 
     @Override
     public int drawCenteredString(int x, int y, String text) {
-        return drawCenteredString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+        return drawCenteredString(x, y, text, Color.white, Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true));
     }
 
     @Override
     public int drawCenteredStringWithShadow(int x, int y, String text) {
-        return drawCenteredString(x, y, text, Color.white, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+        return drawCenteredString(x, y, text, Color.white, Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true));
     }
 
     @Override
@@ -162,7 +162,7 @@ public class DynamicFont implements EMCFont {
     
     @Override
     public int drawCenteredStringWithShadow(int x, int y, String text, Color color) {
-        return drawCenteredString(x, y, text, color, Bootstrap.EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
+        return drawCenteredString(x, y, text, color, Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true));
     }
 
     @Override
@@ -193,29 +193,29 @@ public class DynamicFont implements EMCFont {
     }
 
     @Override
-    public int getStringWidth(String text) {
+    public int getPrimitiveWidth(String text) {
         if (!scaling) {
-            return getStringWidthNonScaled(text);
+            return getPrimitiveWidthNonScaled(text);
         }
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return (int) (fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) / NonScaledRenderer.getScale());
     }
 
-    public int getStringWidthNonScaled(String text) {
+    public int getPrimitiveWidthNonScaled(String text) {
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return fontMetrics.charsWidth(text.toCharArray(), 0, text.length());
     }
 
     @Override
-    public int getStringHeight(String text) {
+    public int getPrimitiveHeight(String text) {
         if (!scaling) {
-            return getStringHeightNonScaled(text);
+            return getPrimitiveHeightNonScaled(text);
         }
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return (int) (fontMetrics.getHeight() / NonScaledRenderer.getScale());
     }
 
-    public int getStringHeightNonScaled(String text) {
+    public int getPrimitiveHeightNonScaled(String text) {
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
         return fontMetrics.getHeight();
     }

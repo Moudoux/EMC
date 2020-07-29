@@ -38,7 +38,7 @@ public class ColoredBitmapFont extends BitmapFont {
                     // Next char will be a color code
                     skip = true;
                     if (!currentText.equals("")) {
-                        super.drawString(x + getStringWidthNonScaled(drawnText), y, currentText, color);
+                        super.drawString(x + getPrimitiveWidthNonScaled(drawnText), y, currentText, color);
                         drawnText += currentText;
                     }
                 } else {
@@ -47,7 +47,7 @@ public class ColoredBitmapFont extends BitmapFont {
             }
         }
         if (!currentText.equals("")) {
-            super.drawString(x + getStringWidthNonScaled(drawnText), y, currentText, color);
+            super.drawString(x + getPrimitiveWidthNonScaled(drawnText), y, currentText, color);
         }
 
 

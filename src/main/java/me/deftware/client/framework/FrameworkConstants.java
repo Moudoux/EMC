@@ -8,7 +8,7 @@ import java.util.List;
 public class FrameworkConstants {
 
     public static double VERSION = 14.0;
-    public static int PATCH = 2, SCHEME = 3;
+    public static int PATCH = 3, SCHEME = 3;
 
     public static boolean VALID_EMC_INSTANCE = false, SUBSYSTEM_IN_USE = false;
     public static String FRAMEWORK_MAVEN_URL = "https://gitlab.com/EMC-Framework/maven/raw/master/";

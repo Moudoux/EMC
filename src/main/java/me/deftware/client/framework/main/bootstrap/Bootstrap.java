@@ -7,7 +7,6 @@ import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.commands.*;
 import me.deftware.client.framework.event.EventBus;
 import me.deftware.client.framework.main.EMCMod;
-import me.deftware.client.framework.main.Main;
 import me.deftware.client.framework.main.bootstrap.discovery.*;
 import me.deftware.client.framework.main.validation.Validator;
 import me.deftware.client.framework.maps.SettingsMap;
@@ -16,7 +15,6 @@ import me.deftware.client.framework.path.OSUtils;
 import me.deftware.client.framework.utils.Settings;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -86,11 +84,10 @@ public class Bootstrap {
                 Bootstrap.logger.warn("EMC instance is not up to date! This may cause instability or crashes.");
             }
             FrameworkConstants.SUBSYSTEM_IN_USE = System.getProperty("SUBSYSTEM", "false").equalsIgnoreCase("true");
-            EMCSettings = new Settings();
-            EMCSettings.initialize(null);
-            SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", EMCSettings.getFloat("RENDER_SCALE", 1.0f));
-            SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_FONT_SHADOWS", EMCSettings.getBool("RENDER_FONT_SHADOWS", true));
-            SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getString("commandtrigger", "."));
+            EMCSettings = new Settings("EMC");
+            SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", EMCSettings.getPrimitive("RENDER_SCALE", 1.0f));
+            SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_FONT_SHADOWS", EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true));
+            SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getPrimitive("commandtrigger", "."));
             modDiscoveries.forEach(discovery -> {
                 discovery.discover();
                 if (discovery.getSize() != 0) {
