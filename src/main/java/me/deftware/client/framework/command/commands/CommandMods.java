@@ -1,25 +1,29 @@
 package me.deftware.client.framework.command.commands;
 
+import me.deftware.client.framework.chat.ChatBuilder;
+import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.EMCModCommand;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.utils.ChatProcessor;
 
 public class CommandMods extends EMCModCommand {
 
 	@Override
 	public CommandBuilder<?> getCommandBuilder() {
 		return new CommandBuilder<>().addCommand("mods", result -> {
-			if (Bootstrap.modsInfo == null || Bootstrap.getMods().isEmpty()) {
-				ChatProcessor.printFrameworkMessage("No EMC mods are loaded");
-			} else {
-				ChatProcessor.printFrameworkMessage("== Loaded EMC mods ==");
-				Bootstrap.getMods().values().forEach(mod -> {
-					String name = mod.modInfo.get("name").getAsString();
-					int version = mod.modInfo.get("version").getAsInt();
-					String author = mod.modInfo.get("author").getAsString();
-					ChatProcessor.printFrameworkMessage(name + " version " + version + " made by " + author);
-				});
+			new ChatBuilder().withPrefix().withText(
+					Bootstrap.modsInfo == null || Bootstrap.getMods().isEmpty() ?
+							 "No EMC mods are loaded" : "== Loaded EMC Mods =="
+			).withColor(ChatColors.GRAY).build().print();
+			if (Bootstrap.modsInfo != null || !Bootstrap.getMods().isEmpty()) {
+				Bootstrap.getMods().values().forEach(mod ->
+					new ChatBuilder().withPrefix().withText(String.format(
+							"%s by %s version %s",
+							mod.modInfo.get("name").getAsString(),
+							mod.modInfo.get("author").getAsString(),
+							mod.modInfo.get("version").getAsInt())
+					).withColor(ChatColors.GRAY).build().print()
+				);
 			}
 		});
 	}

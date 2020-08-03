@@ -1,7 +1,9 @@
 package me.deftware.client.framework.event.events;
 
+import lombok.Getter;
+import lombok.Setter;
+import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.event.Event;
-import me.deftware.client.framework.utils.ChatProcessor;
 import net.minecraft.entity.Entity;
 
 /**
@@ -10,23 +12,12 @@ import net.minecraft.entity.Entity;
  */
 public class EventRenderPlayerModel extends Event {
 
-	private boolean shouldRender = false;
-	private String name;
+	private @Getter @Setter boolean shouldRender = false;
+	private final @Getter ChatMessage name;
 
 	public EventRenderPlayerModel(Entity entity) {
-		this.name = ChatProcessor.getStringFromText(entity.getName());
+		this.name = new ChatMessage().fromText(entity.getName());
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public boolean isShouldRender() {
-		return shouldRender;
-	}
-
-	public void setShouldRender(boolean shouldRender) {
-		this.shouldRender = shouldRender;
-	}
 
 }

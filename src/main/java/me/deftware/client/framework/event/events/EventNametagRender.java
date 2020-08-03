@@ -1,7 +1,9 @@
 package me.deftware.client.framework.event.events;
 
+import lombok.Getter;
+import lombok.Setter;
+import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.event.Event;
-import me.deftware.client.framework.utils.ChatProcessor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -10,22 +12,13 @@ import net.minecraft.entity.player.PlayerEntity;
  */
 public class EventNametagRender extends Event {
 
-    private boolean isPlayer;
-    private String name = "";
+    private @Getter final boolean isPlayer;
+    private @Getter ChatMessage name;
 
     public EventNametagRender(Entity entity) {
-        isPlayer = entity instanceof PlayerEntity;
-        if (isPlayer) {
-            name = ChatProcessor.getStringFromText(entity.getName());
+        if (isPlayer = entity instanceof PlayerEntity) {
+            name = new ChatMessage().fromText(entity.getName());
         }
-    }
-
-    public boolean isPlayer() {
-        return isPlayer;
-    }
-
-    public String getName() {
-        return name;
     }
 
 }

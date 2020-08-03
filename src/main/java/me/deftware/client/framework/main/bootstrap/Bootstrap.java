@@ -79,7 +79,7 @@ public class Bootstrap {
                 }
             }
             Bootstrap.logger.debug("EMC root is {}", EMC_ROOT.getAbsolutePath());
-            FrameworkConstants.VALID_EMC_INSTANCE = Validator.isValidEMCInstance();
+            FrameworkConstants.VALID_EMC_INSTANCE = Validator.isValidInstance();
             if (!FrameworkConstants.VALID_EMC_INSTANCE) {
                 Bootstrap.logger.warn("EMC instance is not up to date! This may cause instability or crashes.");
             }

@@ -5,6 +5,7 @@ import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import java.awt.*;
 import java.util.HashMap;
 
+@Deprecated
 public class FontManager {
 
     private static HashMap<String, EMCFont> fontStore = new HashMap<>();

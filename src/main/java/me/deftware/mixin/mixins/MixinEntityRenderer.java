@@ -1,11 +1,11 @@
 package me.deftware.mixin.mixins;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.deftware.client.framework.chat.hud.ChatHud;
 import me.deftware.client.framework.event.events.EventHurtcam;
 import me.deftware.client.framework.event.events.EventRender2D;
 import me.deftware.client.framework.event.events.EventRender3D;
 import me.deftware.client.framework.maps.SettingsMap;
-import me.deftware.client.framework.utils.ChatProcessor;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
@@ -66,7 +66,10 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;render(Lnet/minecraft/client/util/math/MatrixStack;F)V"))
     private void onRender2D(CallbackInfo cb) {
-        ChatProcessor.sendMessages();
+        Runnable operation = ChatHud.getChatMessageQueue().poll();
+        if (operation != null) {
+            operation.run();
+        }
         new EventRender2D(0f).broadcast();
     }
 

@@ -1,9 +1,10 @@
 package me.deftware.client.framework.command.commands;
 
+import me.deftware.client.framework.chat.ChatBuilder;
+import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.EMCModCommand;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.utils.ChatProcessor;
 
 import static com.mojang.brigadier.builder.LiteralArgumentBuilder.literal;
 
@@ -26,7 +27,7 @@ public class CommandUnload extends EMCModCommand {
                 )*/
                 .executes(c -> {
                     Bootstrap.ejectMods();
-                    ChatProcessor.printFrameworkMessage("Unloaded all EMC mods, Minecraft is now running as vanilla");
+                    new ChatBuilder().withPrefix().withText("Unloaded all EMC mods, Minecraft is now running as vanilla").withColor(ChatColors.GRAY).build().print();
                     return 1;
                 }));
     }

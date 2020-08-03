@@ -1,7 +1,7 @@
 package me.deftware.mixin.mixins;
 
+import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.event.events.EventServerPinged;
-import me.deftware.client.framework.utils.ChatProcessor;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.util.math.MatrixStack;
@@ -12,6 +12,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(MultiplayerServerListWidget.ServerEntry.class)
 public class MixinServerListEntryNormal {
@@ -26,35 +29,33 @@ public class MixinServerListEntryNormal {
     public void render(MatrixStack matrixStack, int int_1, int int_2, int int_3, int int_4, int int_5, int int_6, int int_7, boolean boolean_1, float float_1, CallbackInfo ci) {
         if (server.ping > 1 && !sentEvent) {
             sentEvent = true;
-            StringBuilder population = new StringBuilder();
+            List<ChatMessage> populationInfo = new ArrayList<>();
             if (server.playerListSummary != null) {
                 for (Text text : server.playerListSummary) {
-                    population.append(textToString(text)).append(", ");
+                    populationInfo.add(new ChatMessage().fromText(text));
                 }
             }
-            EventServerPinged event = new EventServerPinged(textToString(server.label), population.toString(), textToString(server.version), textToString(server.playerCountLabel), server.protocolVersion, server.ping);
+            EventServerPinged event = new EventServerPinged(
+                    new ChatMessage().fromText(server.label),
+                    new ChatMessage().fromText(server.playerCountLabel),
+                    new ChatMessage().fromText(server.version),
+                    populationInfo,
+                    server.protocolVersion,
+                    server.ping
+            );
             event.broadcast();
-            server.label = stringToText(event.getServerMOTD());
+            server.label = event.getServerMOTD().build();
             if (server.playerListSummary != null) {
                 server.playerListSummary.clear();
-                for (String player : event.getPlayerList().split(", ")) {
-                    server.playerListSummary.add(stringToText(player));
+                for (ChatMessage player : event.getPopulationInfo()) {
+                    server.playerListSummary.add(player.build());
                 }
             }
-            server.version = stringToText(event.getGameVersion());
-            server.playerCountLabel = stringToText(event.getPopulationInfo());
+            server.version = event.getGameVersion().build();
+            server.playerCountLabel = event.getPlayerList().build();
             server.protocolVersion = event.getVersion();
             server.ping = event.getPingToServer();
         }
-    }
-
-    private String textToString(Text text) {
-        if (text == null) return "";
-        return ChatProcessor.getStringFromText(text);
-    }
-
-    private Text stringToText(String text) {
-        return ChatProcessor.getLiteralText(text);
     }
 
 }

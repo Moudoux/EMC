@@ -8,34 +8,36 @@ import me.deftware.client.framework.utils.WebUtils;
 import java.io.File;
 
 /**
- * Making sure EMC is up to date
+ * Validation util for the running instance of EMC
  *
  * @author Deftware
  */
 public class Validator {
 
-	public static String CACHED_LOCAL_HASH = "";
+	private static String cachedLocalChecksum, cachedRemoteChecksum;
 
-	public static String getLocalEMCHash() throws Exception {
-		if (!CACHED_LOCAL_HASH.isEmpty()) {
-			return CACHED_LOCAL_HASH;
+	public static String getLocalChecksum() throws Exception {
+		if (cachedLocalChecksum != null && !cachedLocalChecksum.isEmpty()) {
+			return cachedLocalChecksum;
 		}
 		LocationUtil emc = LocationUtil.getEMC();
 		File physicalFile = emc.toFile();
 		if (physicalFile == null || !physicalFile.exists()) {
 			throw new Exception("EMC jar file not found! This should be impossible.");
 		}
-		CACHED_LOCAL_HASH = HashUtils.getSha1(physicalFile);
-		return CACHED_LOCAL_HASH;
+		return cachedLocalChecksum = HashUtils.getSha1(physicalFile).trim().toLowerCase();
 	}
 
-	public static String getRemoteEMCHash() throws Exception {
-		return WebUtils.get(WebUtils.getMavenUrl(FrameworkConstants.getFrameworkMaven(), FrameworkConstants.FRAMEWORK_MAVEN_URL) + ".sha1");
+	public static String getRemoteChecksum() throws Exception {
+		if (cachedRemoteChecksum != null && !cachedRemoteChecksum.isEmpty()) {
+			return cachedRemoteChecksum;
+		}
+		return cachedRemoteChecksum = WebUtils.get(WebUtils.getMavenUrl(FrameworkConstants.getFrameworkMaven(), FrameworkConstants.FRAMEWORK_MAVEN_URL) + ".sha1").trim().toLowerCase();
 	}
 
-	public static boolean isValidEMCInstance() {
+	public static boolean isValidInstance() {
 		try {
-			return getLocalEMCHash().trim().equalsIgnoreCase(getRemoteEMCHash().trim());
+			return getLocalChecksum().equalsIgnoreCase(getRemoteChecksum());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

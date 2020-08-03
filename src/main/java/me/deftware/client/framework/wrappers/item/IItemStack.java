@@ -1,6 +1,6 @@
 package me.deftware.client.framework.wrappers.item;
 
-import me.deftware.client.framework.utils.ChatProcessor;
+import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.wrappers.item.items.IItemArmor;
 import me.deftware.client.framework.wrappers.world.IBlock;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
@@ -140,8 +140,8 @@ public class IItemStack {
         return stack;
     }
 
-    public String getDisplayName() {
-        return ChatProcessor.getStringFromText(stack.getName());
+    public ChatMessage getDisplayName() {
+        return new ChatMessage().fromText(stack.getName());
     }
 
     public int getItemID() {

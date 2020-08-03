@@ -1,21 +1,17 @@
 package me.deftware.mixin.mixins;
 
+import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.event.events.EventGetItemToolTip;
 import me.deftware.client.framework.event.events.EventGuiScreenDraw;
 import me.deftware.client.framework.event.events.EventGuiScreenPostDraw;
-import me.deftware.client.framework.utils.ChatProcessor;
 import me.deftware.client.framework.wrappers.item.IItem;
 import me.deftware.mixin.imp.IMixinGuiScreen;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.font.TextVisitFactory;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.StringRenderable;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,7 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Mixin(Screen.class)
 public class MixinGuiScreen implements IMixinGuiScreen {
@@ -74,15 +69,15 @@ public class MixinGuiScreen implements IMixinGuiScreen {
 
     @Inject(method = "getTooltipFromItem", at = @At(value = "TAIL"), cancellable = true)
     private void onGetTooltipFromItem(ItemStack stack, CallbackInfoReturnable<List<Text>> cir) {
-        List<String> list = new ArrayList<>();
+        List<ChatMessage> list = new ArrayList<>();
         for (Text text : cir.getReturnValue()) {
-            list.add(ChatProcessor.getStringFromText(text));
+            list.add(new ChatMessage().fromText(text));
         }
         EventGetItemToolTip event = new EventGetItemToolTip(list, new IItem(stack.getItem()));
         event.broadcast();
         List<Text> modifiedTextList = new ArrayList<>();
-        for (String text : event.getList()) {
-            modifiedTextList.add(ChatProcessor.getLiteralText(text));
+        for (ChatMessage text : event.getList()) {
+            modifiedTextList.add(text.build());
         }
         cir.setReturnValue(modifiedTextList);
     }

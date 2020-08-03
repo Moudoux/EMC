@@ -9,6 +9,8 @@ import org.lwjgl.glfw.GLFW;
 
 public class IGuiTextField extends TextFieldWidget implements CustomIGuiEventListener {
 
+    private final MatrixStack stack = new MatrixStack();
+
     public IGuiTextField(int id, int x, int y, int width, int height) {
         super(MinecraftClient.getInstance().textRenderer, x, y, width, height, new LiteralText(""));
     }
@@ -48,11 +50,7 @@ public class IGuiTextField extends TextFieldWidget implements CustomIGuiEventLis
     }
 
     public void onDraw(int mouseX, int mouseY, float partialTicks) {
-        onDraw(new MatrixStack(), mouseX, mouseY, partialTicks);
-    }
-
-    public void onDraw(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        renderButton(matrixStack, mouseX, mouseY, partialTicks);
+        renderButton(stack, mouseX, mouseY, partialTicks);
     }
 
     public void doCursorTick() {

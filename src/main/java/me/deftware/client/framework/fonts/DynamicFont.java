@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 @SuppressWarnings("ALL")
+@Deprecated
 public class DynamicFont implements EMCFont {
 
     protected Texture textTexture;

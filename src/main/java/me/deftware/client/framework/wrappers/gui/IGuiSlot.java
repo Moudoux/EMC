@@ -7,6 +7,8 @@ import net.minecraft.client.util.math.MatrixStack;
 @SuppressWarnings("all")
 public abstract class IGuiSlot extends AlwaysSelectedEntryListWidget implements CustomIGuiEventListener {
 
+    private static final MatrixStack stack = new MatrixStack();
+
     public IGuiSlot(int width, int height, int topIn, int bottomIn, int slotHeightIn) {
         super(MinecraftClient.getInstance(), width, height, topIn, bottomIn, slotHeightIn);
     }
@@ -27,11 +29,7 @@ public abstract class IGuiSlot extends AlwaysSelectedEntryListWidget implements 
     }
 
     public void doDraw(int mouseX, int mouseY, float partialTicks) {
-        doDraw(new MatrixStack(), mouseX, mouseY, partialTicks);
-    }
-
-    public void doDraw(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        render(matrixStack, mouseX, mouseY, partialTicks);
+        render(stack, mouseX, mouseY, partialTicks);
     }
 
     public void clickElement(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {

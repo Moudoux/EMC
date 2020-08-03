@@ -1,6 +1,6 @@
 package me.deftware.client.framework.wrappers.entity;
 
-import me.deftware.client.framework.utils.ChatProcessor;
+import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.client.framework.wrappers.world.IChunkPos;
@@ -67,8 +67,8 @@ public class IEntity {
         return entity instanceof PlayerEntity ? ((PlayerEntity) entity).getGameProfile().getName() : null;
     }
 
-    public String getFormattedDisplayName() {
-        return ChatProcessor.getStringFromText(entity.getDisplayName());
+    public ChatMessage getFormattedDisplayName() {
+        return new ChatMessage().fromText(entity.getDisplayName());
     }
 
     public int getTicksExisted() {
@@ -79,17 +79,12 @@ public class IEntity {
         return !entity.isAlive();
     }
 
-    @Deprecated
-    public boolean isMod() {
-        return entity instanceof MobEntity || entity instanceof LivingEntity;
-    }
-
     public boolean isMob() {
         return entity instanceof MobEntity || entity instanceof LivingEntity;
     }
 
     public String getEntityTypeName() {
-        return ChatProcessor.getStringFromText(entity.getType().getName());
+        return new ChatMessage().fromText(entity.getType().getName()).toString(false);
     }
 
     public boolean isPlayer() {

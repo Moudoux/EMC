@@ -1,6 +1,6 @@
 package me.deftware.client.framework.wrappers.item;
 
-import me.deftware.client.framework.utils.ChatProcessor;
+import me.deftware.client.framework.chat.ChatMessage;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -22,8 +22,8 @@ public class IEnchantment {
         return item;
     }
 
-    public String getName() {
-        return ChatProcessor.getStringFromText(new TranslatableText(item.getTranslationKey()));
+    public ChatMessage getName() {
+        return new ChatMessage().fromText(new TranslatableText(item.getTranslationKey()));
     }
 
     public String getTranslationKey() {

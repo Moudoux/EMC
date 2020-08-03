@@ -9,6 +9,8 @@ import net.minecraft.client.util.math.MatrixStack;
 @SuppressWarnings("ALL")
 public class StringList extends EntryListWidget {
 
+	private final MatrixStack stack = new MatrixStack();
+
 	public StringList(int width, int height, int top, int bottom, int itemHeight) {
 		super(MinecraftClient.getInstance(), width, height, top, bottom, itemHeight);
 	}
@@ -22,11 +24,7 @@ public class StringList extends EntryListWidget {
 	}
 
 	public void doDraw(int mouseX, int mouseY, float delta) {
-		doDraw(new MatrixStack(), mouseX, mouseY, delta);
-	}
-
-	public void doDraw(MatrixStack matrixStack, int mouseX, int mouseY, float delta) {
-		this.render(matrixStack, mouseX, mouseY, delta);
+		this.render(stack, mouseX, mouseY, delta);
 	}
 
 	public void addToEventListener(IGuiScreen screen) {

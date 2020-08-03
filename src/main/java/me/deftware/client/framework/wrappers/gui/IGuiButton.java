@@ -1,5 +1,8 @@
 package me.deftware.client.framework.wrappers.gui;
 
+import lombok.Getter;
+import lombok.Setter;
+import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.mixin.imp.IMixinGuiButton;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
@@ -7,22 +10,16 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
-public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventListener {
+public abstract class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventListener {
 
-    public IGuiButton(int id, int x, int y, String buttonText) {
-        this(id, x, y, new LiteralText(buttonText));
+    private @Getter @Setter boolean shouldPlaySound = true;
+
+    public IGuiButton(int id, int x, int y, ChatMessage buttonText) {
+        super(x, y, 200, 20, buttonText.build());
     }
 
-    public IGuiButton(int id, int x, int y, LiteralText buttonText) {
-        super(x, y, 200, 20, buttonText);
-    }
-
-    public IGuiButton(int id, int x, int y, int widthIn, int heightIn, String buttonText) {
-        this(id, x, y, widthIn, heightIn, new LiteralText(buttonText));
-    }
-
-    public IGuiButton(int id, int x, int y, int widthIn, int heightIn, LiteralText buttonText) {
-        super(x, y, widthIn, heightIn, buttonText);
+    public IGuiButton(int id, int x, int y, int widthIn, int heightIn, ChatMessage buttonText) {
+        super(x, y, widthIn, heightIn, buttonText.build());
     }
 
     @Override
@@ -32,25 +29,17 @@ public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventL
         }
     }
 
-    public void drawCenteredString(String text, int x, int y, int color) {
-        drawCenteredString(new MatrixStack(), text, x, y, color);
-    }
-
-    public void drawCenteredString(MatrixStack matrixStack, String text, int x, int y, int color) {
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrixStack, text, x - MinecraftClient.getInstance().textRenderer.getWidth(text) / 2f, y, color);
-    }
-
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (button == 0 && this.clicked(mouseX, mouseY)) {
-            this.playDownSound(MinecraftClient.getInstance().getSoundManager());
+            if (shouldPlaySound) this.playDownSound(MinecraftClient.getInstance().getSoundManager());
             onButtonClick(x, y);
             return true;
         }
         return false;
     }
 
-    public void onButtonClick(double mouseX, double mouseY) { }
+    public abstract void onButtonClick(double mouseX, double mouseY);
 
     protected int onDraw(int mouseX, int mouseY) {
         return 0;
@@ -112,24 +101,16 @@ public class IGuiButton extends AbstractButtonWidget implements CustomIGuiEventL
         ((IMixinGuiButton) this).setIsHovered(state);
     }
 
-    public String getButtonText() {
-        return getRawButtonText().asString();
+    public ChatMessage getButtonText() {
+        return new ChatMessage().fromText(getMessage());
     }
 
-    public Text getRawButtonText() {
-        return getMessage();
-    }
-
-    public IGuiButton setButtonText(String text) {
-        return setButtonText(new LiteralText(text));
-    }
-
-    public IGuiButton setButtonText(Text text) {
-        setMessage(text);
+    public IGuiButton setButtonText(ChatMessage text) {
+        setMessage(text.build());
         return this;
     }
 
-    public void resetToAfter(int ms, String text) {
+    public void resetToAfter(int ms, ChatMessage text) {
         new Thread(() -> {
             Thread.currentThread().setName("Button reset thread");
             try {

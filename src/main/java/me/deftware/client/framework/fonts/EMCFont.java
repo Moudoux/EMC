@@ -2,6 +2,7 @@ package me.deftware.client.framework.fonts;
 
 import java.awt.*;
 
+@Deprecated
 public interface EMCFont {
 
     int initialize (Color color, String extras);

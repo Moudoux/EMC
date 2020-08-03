@@ -7,17 +7,14 @@ import net.minecraft.client.util.math.MatrixStack;
 public class ScreenInstance {
 
     public Screen screen;
+    private final MatrixStack stack = new MatrixStack();
 
     public ScreenInstance(Screen screen) {
         this.screen = screen;
     }
 
     public void doDrawTexturedModalRect(int x, int y, int u, int v, int width, int height) {
-        doDrawTexturedModalRect(new MatrixStack(), x, y, u, v, width, height);
-    }
-
-    public void doDrawTexturedModalRect(MatrixStack matrixStack, int x, int y, int u, int v, int width, int height) {
-        screen.drawTexture(matrixStack, x, y, u, v, width, height);
+        screen.drawTexture(stack, x, y, u, v, width, height);
     }
 
 }

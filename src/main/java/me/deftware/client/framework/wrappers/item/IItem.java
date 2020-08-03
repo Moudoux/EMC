@@ -1,6 +1,6 @@
 package me.deftware.client.framework.wrappers.item;
 
-import me.deftware.client.framework.utils.ChatProcessor;
+import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.mixin.imp.IMixinItemTool;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
@@ -22,8 +22,8 @@ public class IItem {
         return item;
     }
 
-    public String getName() {
-        return ChatProcessor.getStringFromText(item.getName());
+    public ChatMessage getName() {
+        return new ChatMessage().fromText(item.getName());
     }
 
     public String getTranslationKey() {

@@ -1,10 +1,10 @@
-package me.deftware.client.framework.utils;
+package me.deftware.client.framework.maps;
 
 import java.util.*;
 
 public class MultiMap<K, V> {
 
-    private Map<K, Collection<V>> map = new HashMap<>();
+    private final Map<K, Collection<V>> map = new HashMap<>();
 
     /**
      * Add the specified set to the map

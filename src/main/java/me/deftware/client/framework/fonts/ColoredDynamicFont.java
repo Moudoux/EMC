@@ -1,14 +1,14 @@
 package me.deftware.client.framework.fonts;
 
-import me.deftware.client.framework.utils.ChatColor;
+import me.deftware.client.framework.chat.style.ChatStyle;
 import me.deftware.client.framework.utils.render.ColorUtil;
 import me.deftware.client.framework.utils.render.Texture;
+import net.minecraft.util.Formatting;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static me.deftware.client.framework.utils.ChatColor.COLOR_CHAR;
-
+@Deprecated
 public class ColoredDynamicFont extends DynamicFont {
 
     public ColoredDynamicFont(String fontName, int fontSize, int modifiers) {
@@ -20,7 +20,7 @@ public class ColoredDynamicFont extends DynamicFont {
     public int generateString(String text, Color color) {
         if (color == Color.black) {
             // Assume its a shadow
-            return super.generateString(ChatColor.stripColor(text), color);
+            return super.generateString(Formatting.strip(text), color);
         }
         String key = text + color.getRGB() + bold + fontName;
         int textwidth = getStringWidthNonScaled(text);
@@ -38,8 +38,8 @@ public class ColoredDynamicFont extends DynamicFont {
             }
 
             // Remove formatting codes as we dont support those...
-            text = text.replaceAll(COLOR_CHAR + "+[l-o]", "");
-            text = text.replaceAll(COLOR_CHAR + "+[l-o]", "");
+            text = text.replaceAll(ChatStyle.getFormattingChar() + "+[l-o]", "");
+            text = text.replaceAll(ChatStyle.getFormattingChar() + "+[l-o]", "");
 
             String currentText = "", drawnText = "";
             boolean skip = false;
@@ -49,7 +49,7 @@ public class ColoredDynamicFont extends DynamicFont {
                     skip = false;
                     currentText = "";
                 } else {
-                    if (character.equalsIgnoreCase("&") || character.equalsIgnoreCase(Character.toString(COLOR_CHAR))) {
+                    if (character.equalsIgnoreCase("&") || character.equalsIgnoreCase(Character.toString(ChatStyle.getFormattingChar()))) {
                         // Next char will be a color code
                         skip = true;
                         if (!currentText.equals("")) {
@@ -79,7 +79,7 @@ public class ColoredDynamicFont extends DynamicFont {
 
     @Override
     public int getStringWidth(String text) {
-        return super.getStringWidthNonScaled(ChatColor.stripColor(text));
+        return super.getStringWidthNonScaled(Formatting.strip(text));
     }
 
 }

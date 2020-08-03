@@ -1,11 +1,11 @@
 package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.utils.ChatColor;
 import me.deftware.client.framework.utils.render.GraphicsUtil;
 import me.deftware.client.framework.utils.render.NonScaledRenderer;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.gui.IGuiScreen;
+import net.minecraft.util.Formatting;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 @SuppressWarnings("Duplicates")
+@Deprecated
 public class BitmapFont implements EMCFont {
 
     protected int lastRenderedWidth;
@@ -237,7 +238,7 @@ public class BitmapFont implements EMCFont {
 
     @Override
     public int drawCenteredString(int x, int y, String text, Color color) {
-        drawString(x - (getStringWidthNonScaled(ChatColor.stripColor(text)) / 2), y - (getStringHeightNonScaled(ChatColor.stripColor(text)) / 2), text, color);
+        drawString(x - (getStringWidthNonScaled(Formatting.strip(text)) / 2), y - (getStringHeightNonScaled(Formatting.strip(text)) / 2), text, color);
         return 0;
     }
 

@@ -19,9 +19,9 @@ import java.util.UUID;
  */
 public class AuthLibSession {
 
+	private Session session;
 	private final UserAuthentication userAuthentication;
 	private final YggdrasilAuthenticationService authenticationService;
-	private Session session;
 
 	private AuthLibSession(Environment yggdrasil) {
 		// Custom yggdrasil as an argument below is only applicable for Minecraft 1.16 and above. Prior version of Minecraft do not need it.
@@ -77,6 +77,10 @@ public class AuthLibSession {
 	public void setSession(Session session) {
 		((IMixinMinecraft) MinecraftClient.getInstance()).setSession(buildSession());
 		((IMixinMinecraft) MinecraftClient.getInstance()).setSessionService(authenticationService.createMinecraftSessionService());
+	}
+
+	public void setOfflineSession(String username) {
+		((IMixinMinecraft) MinecraftClient.getInstance()).setSession(new Session(username, "", "0", "legacy"));
 	}
 
 }

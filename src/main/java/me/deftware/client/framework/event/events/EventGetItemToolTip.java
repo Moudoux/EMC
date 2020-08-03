@@ -1,5 +1,7 @@
 package me.deftware.client.framework.event.events;
 
+import lombok.Getter;
+import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.wrappers.item.IItem;
 
@@ -7,20 +9,12 @@ import java.util.List;
 
 public class EventGetItemToolTip extends Event {
 
-    private List<String> list;
-    private IItem item;
+    private final @Getter List<ChatMessage> list;
+    private final @Getter IItem item;
 
-    public EventGetItemToolTip(List<String> list, IItem item) {
+    public EventGetItemToolTip(List<ChatMessage> list, IItem item) {
         this.list = list;
         this.item = item;
-    }
-
-    public IItem getItem() {
-        return item;
-    }
-
-    public List<String> getList() {
-        return list;
     }
 
 }

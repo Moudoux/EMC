@@ -1,22 +1,25 @@
 package me.deftware.client.framework.command.commands;
 
 import me.deftware.client.framework.apis.oauth.OAuth;
+import me.deftware.client.framework.chat.ChatBuilder;
+import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.EMCModCommand;
-import me.deftware.client.framework.utils.ChatColor;
-import me.deftware.client.framework.wrappers.IChat;
 
 public class CommandOAuth extends EMCModCommand {
 
 	@Override
 	public CommandBuilder<?> getCommandBuilder() {
 		return new CommandBuilder<>().addCommand("auth", result -> {
-			IChat.sendClientMessage("Authenticating...");
+			new ChatBuilder().withPrefix().withText("Authenticating...").withColor(ChatColors.GRAY).build().print();
 			OAuth.oAuth((status, code, time) -> {
 				if (status) {
-					IChat.sendClientMessage("Your authentication code is " + ChatColor.BOLD + ChatColor.AQUA + code + ChatColor.RESET + ChatColor.GRAY + ", your code will expire in " + ChatColor.RED + time);
+					new ChatBuilder().withPrefix().withText("Your authentication code is").withColor(ChatColors.GRAY).append().withSpace()
+							.withText(code).setBold().withColor(ChatColors.AQUA).append().withSpace()
+							.withText("and will expire in").withColor(ChatColors.GRAY).append().withSpace()
+							.withText(time).withColor(ChatColors.RED).build().print();
 				} else {
-					IChat.sendClientMessage("Authentication failed.");
+					new ChatBuilder().withPrefix().withText("Authentication failed").withColor(ChatColors.RED).build().print();
 				}
 			});
 		});

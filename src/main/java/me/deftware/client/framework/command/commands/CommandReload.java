@@ -1,9 +1,10 @@
 package me.deftware.client.framework.command.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import me.deftware.client.framework.chat.ChatBuilder;
+import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.EMCModCommand;
-import me.deftware.client.framework.wrappers.IChat;
 import me.deftware.client.framework.wrappers.entity.IEntity;
 import me.deftware.client.framework.wrappers.world.IWorld;
 
@@ -15,7 +16,7 @@ public class CommandReload extends EMCModCommand {
                 .then(
                         LiteralArgumentBuilder.literal("skins")
                                 .executes(c -> {
-                                    IChat.sendClientMessage("Reloading skins...");
+                                    new ChatBuilder().withPrefix().withText("Reloading skins...").withColor(ChatColors.GRAY).build().print();
                                     for (IEntity entity : IWorld.getLoadedEntities()) {
                                         entity.reloadSkin();
                                     }

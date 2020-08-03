@@ -1,10 +1,10 @@
 package me.deftware.mixin.mixins;
 
+import me.deftware.client.framework.chat.ChatBuilder;
+import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.event.events.*;
-import me.deftware.client.framework.utils.ChatColor;
-import me.deftware.client.framework.utils.ChatProcessor;
-import me.deftware.client.framework.wrappers.IChat;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.mixin.imp.IMixinEntityPlayerSP;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -75,45 +75,21 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
     @Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
     public void sendChatMessage(String message, CallbackInfo ci) {
         String trigger = CommandRegister.getCommandTrigger();
-        if (message.startsWith(trigger) && !trigger.equals("")) {
-            try {
-                if (message.startsWith(trigger + "say")) {
-                    if (!message.contains(" ")) {
-                        ChatProcessor.printClientMessage(
-                                "Invalid syntax, please use: " + ChatColor.AQUA + trigger + "say <Message>");
-                        return;
-                    }
-                    networkHandler.sendPacket(new ChatMessageC2SPacket(message.substring((trigger + "say ").length())));
-                    ci.cancel();
-                    return;
+        EventChatSend event = new EventChatSend(message).broadcast();
+        if (!event.isCanceled()) {
+            if (event.isDispatch() || !message.startsWith(trigger)) {
+                networkHandler.sendPacket(new ChatMessageC2SPacket(event.getMessage()));
+            } else {
+                try {
+                    CommandRegister.getDispatcher().execute(message.substring(CommandRegister.getCommandTrigger().length()), MinecraftClient.getInstance().player.getCommandSource());
+                } catch (Exception ex) {
+                    Bootstrap.logger.error("Failed to execute command", ex);
+                    new ChatBuilder().withText(ex.getMessage()).withColor(ChatColors.RED).build().print();
                 }
-                CommandRegister.getDispatcher().execute(message.substring(CommandRegister.getCommandTrigger().length()), MinecraftClient.getInstance().player.getCommandSource());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                IChat.sendClientMessage(ex.getMessage());
             }
-            ci.cancel();
-        } else if (message.startsWith("#")) {
-            message = message.startsWith("# ") ? message.substring(2) : message.substring(1);
-            if (message.equals("")) {
-                ChatProcessor.printClientMessage("Invalid syntax, please use: " + ChatColor.AQUA + "# <Message>");
-                ci.cancel();
-                return;
-            }
-            new EventIRCMessage(message).broadcast();
-            ci.cancel();
-            return;
         }
-        EventChatSend event = new EventChatSend(message);
-        event.broadcast();
-        if (event.isCanceled()) {
-            ci.cancel();
-        } else if (!event.getMessage().equals(message)) {
-            networkHandler.sendPacket(new ChatMessageC2SPacket(event.getMessage()));
-            ci.cancel();
-        }
+        ci.cancel();
     }
-
 
     @Override
     public void setHorseJumpPower(float height) {

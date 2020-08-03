@@ -1,13 +1,13 @@
 package me.deftware.client.framework.fonts;
 
-import me.deftware.client.framework.utils.ChatColor;
+import me.deftware.client.framework.chat.style.ChatStyle;
 import me.deftware.client.framework.utils.render.ColorUtil;
+import net.minecraft.util.Formatting;
 
 import java.awt.*;
 
-import static me.deftware.client.framework.utils.ChatColor.COLOR_CHAR;
-
 @SuppressWarnings("Duplicates")
+@Deprecated
 public class ColoredBitmapFont extends BitmapFont {
 
     public ColoredBitmapFont(String fontName, int fontSize, int modifiers) {
@@ -17,14 +17,14 @@ public class ColoredBitmapFont extends BitmapFont {
     @Override
     public int drawString(int x, int y, String text, Color color) {
         if (color == Color.black) {
-            return super.drawString(x, y, ChatColor.stripColor(text), color);
+            return super.drawString(x, y, Formatting.strip(text), color);
         }
         if (text == null) {
             return 0;
         }
 
-        text = text.replaceAll(COLOR_CHAR + "+[l-o]", "");
-        text = text.replaceAll(COLOR_CHAR + "+[l-o]", "");
+        text = text.replaceAll( ChatStyle.getFormattingChar() + "+[l-o]", "");
+        text = text.replaceAll(ChatStyle.getFormattingChar() + "+[l-o]", "");
 
         String currentText = "", drawnText = "";
         boolean skip = false;
@@ -34,7 +34,7 @@ public class ColoredBitmapFont extends BitmapFont {
                 skip = false;
                 currentText = "";
             } else {
-                if (character.equalsIgnoreCase("&") || character.equalsIgnoreCase(Character.toString(COLOR_CHAR))) {
+                if (character.equalsIgnoreCase("&") || character.equalsIgnoreCase(Character.toString(ChatStyle.getFormattingChar()))) {
                     // Next char will be a color code
                     skip = true;
                     if (!currentText.equals("")) {

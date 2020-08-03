@@ -13,9 +13,9 @@ import java.util.zip.ZipFile;
 
 public class ResourceUtils {
 
-    /*
+    /**
      * Returns a byte stream of a target resource
-     * @param modName Native name of the mod the resource corresponds to (name from client.json
+     * @param mod Native name of the mod the resource corresponds to (name from client.json
      * @param resourcePath Path to the resource, no slash at the begining is required
      *
      * @return InputStream
@@ -33,7 +33,7 @@ public class ResourceUtils {
         return in;
     }
 
-    /*
+    /**
      * Returns a byte stream of a target resource from .minecraft folder
      * @param resourcePath Path to the resource, no slash at the begining is required
      *
@@ -51,7 +51,7 @@ public class ResourceUtils {
         return resource;
     }
 
-    /*
+    /**
      * Returns a byte stream of a target resource from users home folder
      * @param resourcePath Path to the resource, no slash at the begining is required
      *

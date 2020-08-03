@@ -1,7 +1,9 @@
 package me.deftware.client.framework.event.events;
 
+import lombok.Getter;
+import lombok.Setter;
+import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.event.Event;
-import me.deftware.client.framework.utils.ChatProcessor;
 import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 
@@ -10,36 +12,10 @@ import net.minecraft.text.Text;
  */
 public class EventChatReceive extends Event {
 
-    private Text itc;
+    private @Getter @Setter ChatMessage message;
 
-    public EventChatReceive(Text itc) {
-        this.itc = itc;
-    }
-
-    public EventChatReceive(StringRenderable itc) {
-        this.itc = (Text) itc;
-    }
-
-    public Text getItc() {
-        return itc;
-    }
-
-    public void setItc(Text itc) {
-        this.itc = itc;
-    }
-
-    public void setColorCodes() {
-        itc = ChatProcessor.getLiteralText(
-                ChatProcessor.convertColorCodes(ChatProcessor.getStringFromText(itc)));
-    }
-
-    public String getMessage() {
-        return ChatProcessor.getStringFromText(itc);
-    }
-
-    public void replace(String original, String _new) {
-        String message = ChatProcessor.getStringFromText(itc);
-        itc = ChatProcessor.getLiteralText(message.replace(original, _new));
+    public EventChatReceive(ChatMessage message) {
+        this.message = message;
     }
 
 }

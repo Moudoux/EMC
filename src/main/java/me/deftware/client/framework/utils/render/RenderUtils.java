@@ -480,17 +480,15 @@ public class RenderUtils {
         }
     }
 
-    public static void drawAltFace(String name, String uuid, int x, int y, int w, int h, boolean selected) {
-        drawAltFace(new MatrixStack(), name, uuid, x, y, w, h, selected);
-    }
+    private static final MatrixStack stack = new MatrixStack();
 
-    public static void drawAltFace(MatrixStack matrixStack, String name, String uuid, int x, int y, int w, int h, boolean selected) {
+    public static void drawAltFace(String name, String uuid, int x, int y, int w, int h, boolean selected) {
         try {
             bindSkinTexture(name, uuid);
             glEnable(GL_BLEND);
             glColor4f(0.9F, 0.9F, 0.9F, 1.0F);
-            DrawableHelper.drawTexture(matrixStack, x, y, 24, 24, w, h, 192, 192);
-            DrawableHelper.drawTexture(matrixStack, x, y, 120, 24, w, h, 192, 192);
+            DrawableHelper.drawTexture(stack, x, y, 24, 24, w, h, 192, 192);
+            DrawableHelper.drawTexture(stack, x, y, 120, 24, w, h, 192, 192);
             glDisable(GL_BLEND);
         } catch (Exception ignored) { }
     }

@@ -2,14 +2,16 @@ package me.deftware.client.framework.wrappers.gui;
 
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.systems.RenderSystem;
+import lombok.Getter;
+import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.utils.ResourceUtils;
+import me.deftware.client.framework.utils.Tuple;
 import me.deftware.client.framework.utils.render.Texture;
 import me.deftware.client.framework.wrappers.IMinecraft;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.client.framework.wrappers.gui.imp.ScreenInstance;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
@@ -23,14 +25,20 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Deftware
+ */
 public abstract class IGuiScreen extends Screen {
 
-    protected ScreenInstance parentInstance;
     protected IGuiScreen parent;
     protected boolean escGoesBack = true;
+    protected ScreenInstance parentInstance;
     protected HashMap<String, Texture> textureHashMap = new HashMap<>();
+    protected @Getter List<Tuple<Integer, Integer, LiteralText>> compiledText = new ArrayList<>();
+    private final MatrixStack stack = new MatrixStack();
 
     public IGuiScreen() {
         super(new LiteralText(""));
@@ -100,6 +108,9 @@ public abstract class IGuiScreen extends Screen {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         onDraw(mouseX, mouseY, partialTicks);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
+        for (Tuple<Integer, Integer, LiteralText> text : compiledText) {
+            textRenderer.drawWithShadow(stack, text.getRight(), text.getLeft(), text.getMiddle(), 0xFFFFFF);
+        }
         onPostDraw(mouseX, mouseY, partialTicks);
     }
 
@@ -127,12 +138,12 @@ public abstract class IGuiScreen extends Screen {
         super.removed();
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public boolean keyPressed(int keyCode, int action, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
             if (escGoesBack) {
-                goback();
+                goBack();
                 return true;
             }
             return onGoBackRequested();
@@ -161,25 +172,27 @@ public abstract class IGuiScreen extends Screen {
         this.children.add(listener);
     }
 
-    protected void drawIDefaultBackground() {
-        drawIDefaultBackground(new MatrixStack());
+    /**
+     * @param tint Default value is 0
+     */
+    protected void renderBackgroundWrap(int tint) {
+        renderBackground(stack, tint);
     }
 
-    protected void drawIDefaultBackground(MatrixStack matrixStack) {
-        renderBackground(matrixStack);
-    }
-
-    public void drawDarkOverlay() {
-        drawDarkOverlay(new MatrixStack());
-    }
-
-    public void drawDarkOverlay(MatrixStack matrixStack) {
-        DrawableHelper.fill(matrixStack, 0, 0, width, height, Integer.MIN_VALUE);
-    }
-
-    protected void addButton(IGuiButton button) {
+    protected IGuiScreen addButton(IGuiButton button) {
         children.add(button);
         buttons.add(button);
+        return this;
+    }
+
+    protected IGuiScreen addText(int x, int y, ChatMessage text) {
+        compiledText.add(new Tuple<>(x, y, text.build()));
+        return this;
+    }
+
+    protected IGuiScreen addCenteredText(int x, int y, ChatMessage text) {
+        compiledText.add(new Tuple<>(x - MinecraftClient.getInstance().textRenderer.getWidth(text.build()) / 2, y, text.build()));
+        return this;
     }
 
     protected ArrayList<IGuiButton> getIButtonList() {
@@ -196,19 +209,12 @@ public abstract class IGuiScreen extends Screen {
         buttons.clear();
     }
 
-    public void drawCenteredString(String text, int x, int y, int color) {
-        this.drawCenteredString(new MatrixStack(), text, x, y, color);
-    }
-
-    public void drawCenteredString(MatrixStack matrixStack, String text, int x, int y, int color) {
-        this.drawCenteredString(matrixStack, MinecraftClient.getInstance().textRenderer, text, x, y, color);
+    protected void clearTexts() {
+        compiledText.clear();
     }
 
     protected void drawTexture(EMCMod mod, String texture, int x, int y, int width, int height) {
-        drawTexture(mod, new MatrixStack(), texture, x, y, width, height);
-    }
-
-    protected void drawTexture(EMCMod mod, MatrixStack matrixStack, String texture, int x, int y, int width, int height) {
+        // TODO: Redo this function
         GL11.glPushMatrix();
         if (!textureHashMap.containsKey(texture)) {
             try {
@@ -225,21 +231,17 @@ public abstract class IGuiScreen extends Screen {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             textureHashMap.get(texture).updateTexture();
         }
-        Screen.drawTexture(matrixStack, x, y, 0, 0, width, height, width, height);
+        Screen.drawTexture(stack, x, y, 0, 0, width, height, width, height);
         GL11.glPopMatrix();
     }
 
     protected void drawTexture(IResourceLocation texture, int x, int y, int width, int height) {
-        drawTexture(texture, new MatrixStack(), x, y, width, height);
-    }
-
-    protected void drawTexture(IResourceLocation texture, MatrixStack matrixStack, int x, int y, int width, int height) {
         MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Screen.drawTexture(matrixStack, x, y, 0, 0, width, height, width, height);
+        Screen.drawTexture(stack, x, y, 0, 0, width, height, width, height);
     }
 
-    protected void goback() {
+    protected void goBack() {
         if (parentInstance != null) {
             MinecraftClient.getInstance().openScreen(parentInstance.screen);
         } else {
@@ -253,14 +255,6 @@ public abstract class IGuiScreen extends Screen {
 
     public int getIGuiScreenHeight() {
         return height;
-    }
-
-    public void drawITintBackground(int tint) {
-        drawITintBackground(new MatrixStack(), tint);
-    }
-
-    public void drawITintBackground(MatrixStack matrixStack, int tint) {
-        renderBackground(matrixStack, tint);
     }
 
     public void setFocusedComponent(CustomIGuiEventListener listener) {

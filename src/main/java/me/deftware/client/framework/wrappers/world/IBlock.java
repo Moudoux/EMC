@@ -1,9 +1,8 @@
 package me.deftware.client.framework.wrappers.world;
 
-import me.deftware.client.framework.utils.ChatProcessor;
+import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.wrappers.math.IVoxelShape;
 import net.minecraft.block.*;
-import net.minecraft.fluid.WaterFluid;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
@@ -80,8 +79,8 @@ public class IBlock {
         return Registry.BLOCK.getRawId(block);
     }
 
-    public String getLocalizedName() {
-        return ChatProcessor.getStringFromText(block.getName());
+    public ChatMessage getLocalizedName() {
+        return new ChatMessage().fromText(block.getName());
     }
 
     public String getBlockKey() {
