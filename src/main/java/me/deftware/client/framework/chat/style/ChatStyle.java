@@ -75,14 +75,14 @@ public class ChatStyle {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
+		// Color
+		if (color != null) builder.append(color.toString());
 		// Formatting
 		if (bold) builder.append(Formatting.BOLD.toString());
 		if (underline) builder.append(Formatting.UNDERLINE.toString());
 		if (italic) builder.append(Formatting.ITALIC.toString());
 		if (obfuscated) builder.append(Formatting.OBFUSCATED.toString());
 		if (strikethrough) builder.append(Formatting.STRIKETHROUGH.toString());
-		// Color
-		if (color != null) builder.append(color.toString());
 		return builder.toString();
 	}
 
