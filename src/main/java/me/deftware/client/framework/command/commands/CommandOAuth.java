@@ -16,7 +16,7 @@ public class CommandOAuth extends EMCModCommand {
 				if (status) {
 					new ChatBuilder().withPrefix().withText("Your authentication code is").withColor(ChatColors.GRAY).append().withSpace()
 							.withText(code).setBold().withColor(ChatColors.AQUA).append().withSpace()
-							.withText("and will expire in").withColor(ChatColors.GRAY).append().withSpace()
+							.withText("and will expire").withColor(ChatColors.GRAY).append()
 							.withText(time).withColor(ChatColors.RED).build().print();
 				} else {
 					new ChatBuilder().withPrefix().withText("Authentication failed").withColor(ChatColors.RED).build().print();

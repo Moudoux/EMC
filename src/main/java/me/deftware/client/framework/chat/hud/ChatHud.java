@@ -37,11 +37,11 @@ public class ChatHud {
 	}
 
 	public static void remove(ChatHudLine line) {
-		remove(line.getLineId());
+		getMixinHudImpl().removeMessage(line);
 	}
 
 	public static void remove(int id) {
-		getMixinHudImpl().removeMessageLine(id);
+		getMixinHudImpl().removeLine(id);
 	}
 
 }

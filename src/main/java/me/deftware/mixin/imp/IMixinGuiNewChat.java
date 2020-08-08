@@ -11,6 +11,8 @@ public interface IMixinGuiNewChat {
 
 	List<ChatHudLine> getLines();
 
-	void removeMessageLine(int id);
+	void removeMessage(ChatHudLine line);
+
+	void removeLine(int index);
 
 }
