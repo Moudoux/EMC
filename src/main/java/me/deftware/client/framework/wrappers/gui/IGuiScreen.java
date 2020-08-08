@@ -175,8 +175,12 @@ public abstract class IGuiScreen extends Screen {
     /**
      * @param tint Default value is 0
      */
-    protected void renderBackgroundWrap(int tint) {
-        renderBackground(stack, tint);
+    protected void renderBackgroundWrap(int offset) {
+        renderBackground(stack, offset);
+    }
+
+    protected void renderBackgroundTextureWrap(int offset) {
+        this.renderBackgroundTexture(offset);
     }
 
     protected IGuiScreen addButton(IGuiButton button) {
