@@ -6,6 +6,7 @@ import me.deftware.client.framework.wrappers.entity.ITileEntity;
 import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.world.blocks.IBlockCrops;
 import me.deftware.client.framework.wrappers.world.blocks.IBlockNetherWart;
+import me.deftware.mixin.imp.IMixinWorld;
 import me.deftware.mixin.imp.IMixinWorldClient;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -21,6 +22,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class IWorld {
 
@@ -30,26 +33,14 @@ public class IWorld {
         this.world = world;
     }
 
-    public static ArrayList<IEntity> getLoadedEntities() {
-        ArrayList<IEntity> entities = new ArrayList<>();
-        if (MinecraftClient.getInstance().world == null || ((IMixinWorldClient) MinecraftClient.getInstance().world).getLoadedEntities() == null) {
-            return entities;
-        }
-        for (Entity entity : ((IMixinWorldClient) MinecraftClient.getInstance().world).getLoadedEntities().values()) {
-            entities.add(new IEntity(entity));
-        }
-        return entities;
+    @SuppressWarnings("ConstantConditions")
+    public static HashMap<Integer, IEntity> getLoadedEntities() {
+        return ((IMixinWorldClient) MinecraftClient.getInstance().world).getIEntities();
     }
 
-    public static ArrayList<ITileEntity> getLoadedTileEntities() {
-        ArrayList<ITileEntity> entities = new ArrayList<>();
-        if (MinecraftClient.getInstance().world == null) {
-            return entities;
-        }
-        for (BlockEntity entity : MinecraftClient.getInstance().world.blockEntities) {
-            entities.add(new ITileEntity(entity));
-        }
-        return entities;
+    @SuppressWarnings("ConstantConditions")
+    public static Collection<ITileEntity> getLoadedTileEntities() {
+        return ((IMixinWorld) MinecraftClient.getInstance().world).getEmcTileEntities();
     }
 
     public static ArrayList<IBlock> getLoadedBlocks() {

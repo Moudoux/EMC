@@ -163,6 +163,10 @@ public class IEntity {
         return entity.getHeight();
     }
 
+    public boolean isOnFire() {
+        return entity.isOnFire();
+    }
+
     public float getMaxHealth() {
         if (entity instanceof LivingEntity) {
             return ((LivingEntity) entity).getMaxHealth();
@@ -419,7 +423,7 @@ public class IEntity {
         return false;
     }
 
-    public enum EntityType {
+	public enum EntityType {
         ENTITY_PLAYER_SP, EntityOtherPlayerMP, ENTITY_PLAYER, EntityAnimal, EntitySlime, EntityGolem, EntityFlying, EntityMob, EntityWaterMob,
         ENTITY_LIVING_BASE, ENTITY_LIVING, Entity_Ageable, EntityAmbientCreature, ENTITY_ITEM, ENTITY_PROJECTILE,
         /*

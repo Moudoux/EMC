@@ -17,7 +17,7 @@ public class CommandReload extends EMCModCommand {
                         LiteralArgumentBuilder.literal("skins")
                                 .executes(c -> {
                                     new ChatBuilder().withPrefix().withText("Reloading skins...").withColor(ChatColors.GRAY).build().print();
-                                    for (IEntity entity : IWorld.getLoadedEntities()) {
+                                    for (IEntity entity : IWorld.getLoadedEntities().values()) {
                                         entity.reloadSkin();
                                     }
                                     return 1;
