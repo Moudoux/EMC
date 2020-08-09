@@ -211,6 +211,7 @@ public abstract class IGuiScreen extends Screen {
 
     protected void clearButtons() {
         buttons.clear();
+        children.removeIf(element -> element instanceof IGuiButton);
     }
 
     protected void clearTexts() {
