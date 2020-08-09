@@ -458,7 +458,7 @@ public class RenderUtils {
 
     private static final HashMap<String, Pair<Boolean, Identifier>> loadedSkins = new HashMap<>();
 
-    private static void bindSkinTexture(String name, String uuid) {
+    public static void bindSkinTexture(String name, String uuid) {
         GameProfile profile = new GameProfile(UUID.fromString(uuid), name);
         if(loadedSkins.containsKey(name)) {
             if (loadedSkins.get(name).getLeft()) {

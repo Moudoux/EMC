@@ -12,34 +12,16 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class SkinRenderer {
 
     private static final MatrixStack stack = new MatrixStack();
-    private static ArrayList<String> loaded = new ArrayList<>();
 
-    private static void downloadAndBindSkinTexture(String name) {
-        Identifier location = AbstractClientPlayerEntity.getSkinId(name);
-        if (loaded.contains(name)) {
-            MinecraftClient.getInstance().getTextureManager().bindTexture(location);
-            return;
-        }
-        loaded.add(name);
+    public static void drawAltBody(String name, String uuid, int x, int y, int width, int height) {
         try {
-            PlayerSkinTexture img =
-                    AbstractClientPlayerEntity.loadSkin(AbstractClientPlayerEntity.getSkinId(name), name);
-            img.load(MinecraftClient.getInstance().getResourceManager());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        MinecraftClient.getInstance().getTextureManager().bindTexture(location);
-    }
-
-    public static void drawAltBody(String name, int x, int y, int width, int height) {
-        try {
-            downloadAndBindSkinTexture(name);
-            boolean slim = DefaultSkinHelper
-                    .getModel(ClientPlayerEntity.getOfflinePlayerUuid(name)).equals("slim");
+            RenderUtils.bindSkinTexture(name, uuid);
+            boolean slim = DefaultSkinHelper.getModel(UUID.fromString(uuid)).equals("slim");
 
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glColor4f(1, 1, 1, 1);

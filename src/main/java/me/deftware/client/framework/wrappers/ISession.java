@@ -9,7 +9,7 @@ public class ISession {
     }
 
     public static String getIPlayerID() {
-        return MinecraftClient.getInstance().getSession().getSessionId();
+        return MinecraftClient.getInstance().getSession().getUuid();
     }
 
     public static String getIUsername() {
