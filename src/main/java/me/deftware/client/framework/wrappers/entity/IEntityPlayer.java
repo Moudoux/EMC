@@ -52,6 +52,15 @@ public class IEntityPlayer {
 		}
 	}
 
+	private static IPlayer playerCache;
+
+	public static IPlayer getIPlayer() {
+		if (playerCache == null || playerCache.getEntityID() != MinecraftClient.getInstance().player.getEntityId()) {
+			playerCache = (IPlayer) IEntity.fromEntity(MinecraftClient.getInstance().player);
+		}
+		return playerCache;
+	}
+
 	public static boolean isAtEdge() {
 		return MinecraftClient.getInstance().world.getCollisions(MinecraftClient.getInstance().player, MinecraftClient.getInstance().player.getBoundingBox().offset(0, -0.5, 0).expand(-0.001, 0, -0.001), (foundEntity) -> {
 			return true;
@@ -89,7 +98,7 @@ public class IEntityPlayer {
 
 	public static IEntity getRidingEntity() {
 		if (MinecraftClient.getInstance().player.getVehicle() != null) {
-			return new IEntity(MinecraftClient.getInstance().player.getVehicle());
+			return IEntity.fromEntity(MinecraftClient.getInstance().player.getVehicle());
 		}
 		return null;
 	}
@@ -134,7 +143,7 @@ public class IEntityPlayer {
 	}
 
 	public static IEntity clonePlayer() {
-		return new IEntity(new IEntityOtherPlayerMP());
+		return IEntity.fromEntity(new IEntityOtherPlayerMP());
 	}
 
 	public static boolean isAirBorne() {

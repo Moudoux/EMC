@@ -76,7 +76,7 @@ public class IInventoryWrapper {
     }
 
     public static IItemStack getHeldItem(boolean offhand) {
-        return IInventoryWrapper.getHeldItem(new IEntity(MinecraftClient.getInstance().player), offhand);
+        return IInventoryWrapper.getHeldItem(IEntityPlayer.getIPlayer(), offhand);
     }
 
     public static ArrayList<ISlot> getSlots() {

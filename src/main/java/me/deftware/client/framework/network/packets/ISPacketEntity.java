@@ -17,7 +17,7 @@ public class ISPacketEntity extends IPacket {
 	}
 
 	public IEntity getEntity() {
-		return new IEntity(((EntityS2CPacket) packet).getEntity(MinecraftClient.getInstance().world));
+		return IEntity.fromEntity(((EntityS2CPacket) packet).getEntity(MinecraftClient.getInstance().world));
 	}
 
 }

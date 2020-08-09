@@ -118,7 +118,7 @@ public class IMinecraft {
     public static IEntity getPointedEntity() {
         Entity pointedEntity = MinecraftClient.getInstance().targetedEntity;
         if (pointedEntity != null && pointedEntity instanceof LivingEntity) {
-            return new IEntity(pointedEntity);
+            return IEntity.fromEntity(pointedEntity);
         }
         return null;
     }
@@ -265,7 +265,7 @@ public class IMinecraft {
         if(MinecraftClient.getInstance().getCameraEntity() == null) {
             return null;
         }
-        return new IEntity(MinecraftClient.getInstance().getCameraEntity());
+        return IEntity.fromEntity(MinecraftClient.getInstance().getCameraEntity());
     }
 
     public static boolean isInventoryOpen() {
@@ -307,7 +307,7 @@ public class IMinecraft {
         if (!isEntityHit()) {
             return null;
         }
-        return new IEntity(((EntityHitResult) MinecraftClient.getInstance().crosshairTarget).getEntity());
+        return IEntity.fromEntity(((EntityHitResult) MinecraftClient.getInstance().crosshairTarget).getEntity());
     }
 
     public static boolean entityHitInstanceOf(EntityType type) {

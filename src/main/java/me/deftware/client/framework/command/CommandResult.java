@@ -21,7 +21,7 @@ public class CommandResult {
 
 	public IEntity getEntity(String node) throws Exception {
 		try {
-			return new IEntity(EntityArgumentType.getEntity((CommandContext<ServerCommandSource>) context, node));
+			return IEntity.fromEntity(EntityArgumentType.getEntity((CommandContext<ServerCommandSource>) context, node));
 		} catch (Exception ex) {
 			// Will throw most likely if not in a Server
 			return null;

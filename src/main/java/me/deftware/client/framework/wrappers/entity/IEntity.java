@@ -4,6 +4,7 @@ import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.wrappers.math.IAxisAlignedBB;
 import me.deftware.client.framework.wrappers.world.IBlockPos;
 import me.deftware.client.framework.wrappers.world.IChunkPos;
+import me.deftware.client.framework.wrappers.world.IWorld;
 import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
 import me.deftware.mixin.imp.IMixinNetworkPlayerInfo;
 import net.minecraft.client.MinecraftClient;
@@ -26,9 +27,23 @@ import java.math.BigDecimal;
 public class IEntity {
 
     private Entity entity;
+    private IItemEntity cachedIItemEntity;
+    private IMob cachedIMob;
 
-    public IEntity(Entity entity) {
+    protected IEntity(Entity entity) {
         this.entity = entity;
+        if (isMob()) {
+            cachedIMob = new IMob(entity);
+        } else if (isItem()) {
+            cachedIItemEntity = new IItemEntity(entity);
+        }
+    }
+
+    public static IEntity fromEntity(Entity entity) {
+        if (entity instanceof PlayerEntity) {
+            return new IPlayer((PlayerEntity) entity);
+        }
+        return new IEntity(entity);
     }
 
     public Entity getEntity() {
@@ -96,15 +111,15 @@ public class IEntity {
     }
 
     public IItemEntity getIItemEntity() {
-        return new IItemEntity(entity);
+        return cachedIItemEntity;
     }
 
     public IMob getIMob() {
-        return new IMob(entity);
+        return cachedIMob;
     }
 
     public IPlayer getIPlayer() {
-        return new IPlayer((PlayerEntity) entity);
+        return (IPlayer) this;
     }
 
     public float getHealth() {

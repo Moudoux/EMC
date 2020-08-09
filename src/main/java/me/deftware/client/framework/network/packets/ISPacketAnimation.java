@@ -21,7 +21,7 @@ public class ISPacketAnimation extends IPacket {
 	}
 
 	public IEntity getEntity() {
-		return new IEntity(MinecraftClient.getInstance().world.getEntityById(getEntityID()));
+		return IEntity.fromEntity(MinecraftClient.getInstance().world.getEntityById(getEntityID()));
 	}
 
 }

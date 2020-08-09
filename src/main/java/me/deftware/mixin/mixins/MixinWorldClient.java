@@ -39,7 +39,7 @@ public class MixinWorldClient implements IMixinWorldClient {
 
     @Inject(method = "addEntityPrivate", at = @At("TAIL"))
     private void addEntityPrivate(int id, Entity entity, CallbackInfo ci) {
-        entities.put(id, new IEntity(entity));
+        entities.put(id, IEntity.fromEntity(entity));
     }
 
     @Inject(method = "removeEntity", at = @At("TAIL"))
