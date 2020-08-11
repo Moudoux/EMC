@@ -68,7 +68,7 @@ public class ChatStyle {
 		if (color != null) style = color.applyToStyle(style);
 		// Other
 		if (clickEvent != null) style = style.withClickEvent(clickEvent.toEvent());
-		if (hoverEvent != null) style = style.setHoverEvent(hoverEvent.toEvent());
+		if (hoverEvent != null) style = style.withHoverEvent(hoverEvent.toEvent());
 		return style;
 	}
 

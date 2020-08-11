@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.event.Event;
-import net.minecraft.text.StringRenderable;
-import net.minecraft.text.Text;
 
 /**
  * Triggered by Minecraft chat listener at the moment the message is drawn to screen

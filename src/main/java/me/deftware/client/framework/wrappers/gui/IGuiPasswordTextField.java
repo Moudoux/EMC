@@ -8,6 +8,7 @@ import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.OrderedText;
 
 @SuppressWarnings("All")
 public class IGuiPasswordTextField extends IGuiTextField {
@@ -52,6 +53,7 @@ public class IGuiPasswordTextField extends IGuiTextField {
             if (!string_1.isEmpty()) {
                 String string_2 = boolean_1 ? string_1.substring(0, int_4) : string_1;
                 int_8 = ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(matrixStack, ((IMixinGuiTextField) this).getRenderTextProvider().apply(string_2, ((IMixinGuiTextField) this).getLineScrollOffset()), (float)int_6, (float)int_7, int_3);
+                //int_8 = this.textRenderer.drawWithShadow(matrixStack, (OrderedText) ((IMixinGuiTextField) this).getRenderTextProvider().apply(string_2, ((IMixinGuiTextField) this).getLineScrollOffset()), (float)int_6, (float)int_7, int_3);
             }
 
             boolean boolean_3 = ((IMixinGuiTextField) this).getCursorMax() < this.getText().length() || this.getText().length() >= ((IMixinGuiTextField) this).getMaxTextLength();

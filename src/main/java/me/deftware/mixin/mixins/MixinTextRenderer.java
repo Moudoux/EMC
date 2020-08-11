@@ -3,7 +3,7 @@ package me.deftware.mixin.mixins;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.text.StringRenderable;
+import net.minecraft.text.OrderedText;
 import net.minecraft.util.math.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,20 +16,20 @@ public abstract class MixinTextRenderer {
 
     private static boolean alreadyRendering = false;
 
-    @Shadow protected abstract int draw(StringRenderable text, float x, float y, int color, Matrix4f matrix, boolean shadow);
+    @Shadow protected abstract int draw(OrderedText text, float x, float y, int color, Matrix4f matrix, boolean shadow);
 
-    @Shadow public abstract int draw(StringRenderable text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int backgroundColor, int light);
+    @Shadow public abstract int draw(OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int backgroundColor, int light);
 
-    @Shadow protected abstract int drawInternal(StringRenderable text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int backgroundColor, int light);
+    @Shadow protected abstract int drawInternal(OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int backgroundColor, int light);
 
     @Shadow protected abstract int drawInternal(String text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, boolean seeThrough, int backgroundColor, int light, boolean rightToLeft);
 
     @Shadow protected abstract float drawLayer(String text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int underlineColor, int light);
 
-    @Shadow protected abstract float drawLayer(StringRenderable text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int underlineColor, int light);
+    @Shadow protected abstract float drawLayer(OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int underlineColor, int light);
 
-    @Inject(method = "draw(Lnet/minecraft/text/StringRenderable;FFILnet/minecraft/util/math/Matrix4f;Z)I", at = @At("INVOKE"), cancellable = true)
-    private void draw(StringRenderable text, float x, float y, int color, Matrix4f matrix, boolean shadow, CallbackInfoReturnable<Integer> ci) {
+    @Inject(method = "draw(Lnet/minecraft/text/OrderedText;FFILnet/minecraft/util/math/Matrix4f;Z)I", at = @At("INVOKE"), cancellable = true)
+    private void draw(OrderedText text, float x, float y, int color, Matrix4f matrix, boolean shadow, CallbackInfoReturnable<Integer> ci) {
         if (!alreadyRendering && shadow) {
             alreadyRendering = true;
             ci.setReturnValue(draw(text, x, y, color, matrix, Bootstrap.EMCSettings != null && Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true)));
@@ -37,8 +37,8 @@ public abstract class MixinTextRenderer {
         }
     }
 
-    @Inject(method = "draw(Lnet/minecraft/text/StringRenderable;FFIZLnet/minecraft/util/math/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;ZII)I", at = @At("INVOKE"), cancellable = true)
-    public void draw(StringRenderable text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int backgroundColor, int light, CallbackInfoReturnable<Integer> ci) {
+    @Inject(method = "draw(Lnet/minecraft/text/OrderedText;FFIZLnet/minecraft/util/math/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;ZII)I", at = @At("INVOKE"), cancellable = true)
+    public void draw(OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int backgroundColor, int light, CallbackInfoReturnable<Integer> ci) {
         if (!alreadyRendering && shadow) {
             alreadyRendering = true;
             ci.setReturnValue(draw(text, x, y, color, Bootstrap.EMCSettings != null && Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true), matrix, vertexConsumerProvider, seeThrough, backgroundColor, light));
@@ -55,8 +55,8 @@ public abstract class MixinTextRenderer {
         }
     }
 
-    @Inject(method = "drawInternal(Lnet/minecraft/text/StringRenderable;FFIZLnet/minecraft/util/math/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;ZII)I", at = @At("INVOKE"), cancellable = true)
-    private void drawInternalText(StringRenderable text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int backgroundColor, int light, CallbackInfoReturnable<Integer> ci) {
+    @Inject(method = "drawInternal(Lnet/minecraft/text/OrderedText;FFIZLnet/minecraft/util/math/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;ZII)I", at = @At("INVOKE"), cancellable = true)
+    private void drawInternalText(OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int backgroundColor, int light, CallbackInfoReturnable<Integer> ci) {
         if (!alreadyRendering && shadow) {
             alreadyRendering = true;
             ci.setReturnValue(drawInternal(text, x, y, color, Bootstrap.EMCSettings != null && Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true), matrix, vertexConsumerProvider, seeThrough, backgroundColor, light));
@@ -64,8 +64,8 @@ public abstract class MixinTextRenderer {
         }
     }
 
-    @Inject(method = "drawLayer(Lnet/minecraft/text/StringRenderable;FFIZLnet/minecraft/util/math/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;ZII)F", at = @At("INVOKE"), cancellable = true)
-    private void drawLayerText(StringRenderable text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int underlineColor, int light, CallbackInfoReturnable<Float> ci) {
+    @Inject(method = "drawLayer(Lnet/minecraft/text/OrderedText;FFIZLnet/minecraft/util/math/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;ZII)F", at = @At("INVOKE"), cancellable = true)
+    private void drawLayerText(OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumerProvider, boolean seeThrough, int underlineColor, int light, CallbackInfoReturnable<Float> ci) {
         if (!alreadyRendering && shadow) {
             alreadyRendering = true;
             ci.setReturnValue(drawLayer(text, x, y, color, Bootstrap.EMCSettings != null && Bootstrap.EMCSettings.getPrimitive("RENDER_FONT_SHADOWS", true), matrix, vertexConsumerProvider, seeThrough, underlineColor, light));

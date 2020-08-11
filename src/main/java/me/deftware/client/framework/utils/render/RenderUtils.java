@@ -55,7 +55,7 @@ public class RenderUtils {
     }
 
     public static IMixinRenderManager getRenderManager() {
-        return (IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderManager();
+        return (IMixinRenderManager) MinecraftClient.getInstance().getEntityRenderDispatcher();
     }
 
     public static void disableShader() {

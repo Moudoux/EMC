@@ -20,7 +20,7 @@ import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.main.Main;
 import net.minecraft.client.network.ServerInfo;
-import net.minecraft.client.options.AoOption;
+import net.minecraft.client.options.AoMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
@@ -41,7 +41,7 @@ public class IMinecraft {
 
     public static IServerData lastServer = null;
     private static IServerData iServerCache = null;
-    public static AoOption ao = null;
+    public static AoMode ao = null;
 
     public static File getMinecraftFile() throws URISyntaxException {
         return new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
@@ -141,7 +141,7 @@ public class IMinecraft {
         }
         if (SettingsMap.isOverrideMode()) {
             ao = MinecraftClient.getInstance().options.ao;
-            MinecraftClient.getInstance().options.ao = AoOption.OFF;
+            MinecraftClient.getInstance().options.ao = AoMode.OFF;
         } else {
             MinecraftClient.getInstance().options.ao = ao;
         }
@@ -165,7 +165,7 @@ public class IMinecraft {
     }
 
     public static int thridPersonView() {
-        return MinecraftClient.getInstance().options.perspective;
+        return MinecraftClient.getInstance().options.getPerspective().ordinal();
     }
 
     public static int getGuiScaleRaw() {
