@@ -5,6 +5,7 @@ import me.deftware.client.framework.chat.hud.ChatHud;
 import me.deftware.client.framework.event.events.EventHurtcam;
 import me.deftware.client.framework.event.events.EventRender2D;
 import me.deftware.client.framework.event.events.EventRender3D;
+import me.deftware.client.framework.event.events.EventRender3DNoBobbing;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
@@ -53,6 +54,8 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Inject(method = "renderHand", at = @At("HEAD"))
     private void renderHand(MatrixStack matrixStack_1, Camera camera_1, float partialTicks, CallbackInfo ci) {
+        // Normal 3d event
+        loadPushPop(() -> new EventRender3D(partialTicks).broadcast(), matrixStack_1);
         // Camera model stack without bobbing applied
         MatrixStack projectionMatrix = new MatrixStack();
         projectionMatrix.peek().getModel().multiply(this.getBasicProjectionMatrix(camera, partialTicks, true));
@@ -61,7 +64,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
         MatrixStack cameraMatrix = new MatrixStack();
         cameraMatrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(camera.getPitch()));
         cameraMatrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(camera.getYaw() + 180f));
-        loadPushPop(() -> new EventRender3D(partialTicks).broadcast(), cameraMatrix);
+        loadPushPop(() -> new EventRender3DNoBobbing(partialTicks).broadcast(), cameraMatrix);
         // Reset projection
         MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrixStack_1.peek().getModel());
     }
