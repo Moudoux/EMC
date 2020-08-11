@@ -8,18 +8,23 @@ import me.deftware.client.framework.event.events.EventRender3D;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.wrappers.IResourceLocation;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -30,8 +35,6 @@ import java.util.function.Predicate;
 @Mixin(GameRenderer.class)
 public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
-    private float partialTicks = 0;
-
     @Shadow
     private float movementFovMultiplier;
 
@@ -41,18 +44,35 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     @Shadow
     protected abstract void loadShader(Identifier p_loadShader_1_);
 
+    @Shadow
+    public abstract Matrix4f getBasicProjectionMatrix(Camera camera, float f, boolean bl);
+
+    @Shadow
+    @Final
+    private Camera camera;
+
     @Inject(method = "renderHand", at = @At("HEAD"))
-    private void renderHand(MatrixStack matrixStack_1, Camera camera_1, float float_1, CallbackInfo ci) {
-        RenderSystem.pushMatrix();
-        RenderSystem.loadIdentity();
-        RenderSystem.multMatrix(matrixStack_1.peek().getModel());
-        new EventRender3D(partialTicks).broadcast();
-        RenderSystem.popMatrix();
+    private void renderHand(MatrixStack matrixStack_1, Camera camera_1, float partialTicks, CallbackInfo ci) {
+        // Camera model stack without bobbing applied
+        MatrixStack projectionMatrix = new MatrixStack();
+        projectionMatrix.peek().getModel().multiply(this.getBasicProjectionMatrix(camera, partialTicks, true));
+        MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(projectionMatrix.peek().getModel());
+        // Camera transformation stack
+        MatrixStack cameraMatrix = new MatrixStack();
+        cameraMatrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(camera.getPitch()));
+        cameraMatrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(camera.getYaw() + 180f));
+        loadPushPop(() -> new EventRender3D(partialTicks).broadcast(), cameraMatrix);
+        // Reset projection
+        MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrixStack_1.peek().getModel());
     }
 
-    @Inject(method = "renderWorld", at = @At("HEAD"))
-    private void updateCameraAndRender(float partialTicks, long finishTimeNano, MatrixStack stack, CallbackInfo ci) {
-        this.partialTicks = partialTicks;
+    @Unique
+    private void loadPushPop(Runnable action, MatrixStack stack) {
+        RenderSystem.pushMatrix();
+        RenderSystem.loadIdentity();
+        RenderSystem.multMatrix(stack.peek().getModel());
+        action.run();
+        RenderSystem.popMatrix();
     }
 
     @Inject(method = "bobViewWhenHurt", at = @At("HEAD"), cancellable = true)
