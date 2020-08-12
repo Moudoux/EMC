@@ -31,6 +31,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @Mixin(GameRenderer.class)
@@ -52,29 +53,36 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     @Final
     private Camera camera;
 
+    @Unique
+    private final Consumer<Float> renderEvent = partialTicks -> new EventRender3D(partialTicks).broadcast();
+
+    @Unique
+    private final Consumer<Float> renderEventNoBobbing = partialTicks -> new EventRender3DNoBobbing(partialTicks).broadcast();
+
     @Inject(method = "renderHand", at = @At("HEAD"))
     private void renderHand(MatrixStack matrixStack_1, Camera camera_1, float partialTicks, CallbackInfo ci) {
         // Normal 3d event
-        loadPushPop(() -> new EventRender3D(partialTicks).broadcast(), matrixStack_1);
+        loadPushPop(renderEvent, matrixStack_1, partialTicks);
         // Camera model stack without bobbing applied
-        MatrixStack projectionMatrix = new MatrixStack();
-        projectionMatrix.peek().getModel().multiply(this.getBasicProjectionMatrix(camera, partialTicks, true));
-        MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(projectionMatrix.peek().getModel());
+        MatrixStack matrix = new MatrixStack();
+        matrix.push();
+        matrix.peek().getModel().multiply(this.getBasicProjectionMatrix(camera, partialTicks, true));
+        MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrix.peek().getModel());
         // Camera transformation stack
-        MatrixStack cameraMatrix = new MatrixStack();
-        cameraMatrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(camera.getPitch()));
-        cameraMatrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(camera.getYaw() + 180f));
-        loadPushPop(() -> new EventRender3DNoBobbing(partialTicks).broadcast(), cameraMatrix);
+        matrix.pop();
+        matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(camera.getPitch()));
+        matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(camera.getYaw() + 180f));
+        loadPushPop(renderEventNoBobbing, matrix, partialTicks);
         // Reset projection
         MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrixStack_1.peek().getModel());
     }
 
     @Unique
-    private void loadPushPop(Runnable action, MatrixStack stack) {
+    private void loadPushPop(Consumer<Float> action, MatrixStack stack, float partialTicks) {
         RenderSystem.pushMatrix();
         RenderSystem.loadIdentity();
         RenderSystem.multMatrix(stack.peek().getModel());
-        action.run();
+        action.accept(partialTicks);
         RenderSystem.popMatrix();
     }
 
