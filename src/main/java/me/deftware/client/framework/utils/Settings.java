@@ -22,25 +22,45 @@ import java.util.function.Consumer;
  */
 public class Settings {
 
-	private final File configFile;
 	private final JsonObject config;
+	private final File configFile;
 	private final Queue<Consumer<Void>> shutdownQueue = new ConcurrentLinkedQueue<>();
 
-	public Settings(String modName) throws Exception {
+	public Settings(String modName) {
 		configFile = new File(String.format("%s/libraries/EMC/%s/configs/%s_config.json", OSUtils.getMCDir(), IMinecraft.getMinecraftVersion(), modName));
 		JsonObject jsonObject;
-		// Check if file exists
-		if (!configFile.exists()) {
-			// Create a new file
-			if (!configFile.createNewFile()) {
-				throw new Exception("Failed to create config file for " + modName);
+		try {
+			// Load config from file
+			jsonObject = configFile.exists() ?
+					new Gson().fromJson(getConfigFileContents(), JsonObject.class) : createConfig(configFile);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			Bootstrap.logger.error("Failed to load config for {}, resetting it...", modName);
+			// Delete old config file
+			if (configFile.exists() && !configFile.delete()) {
+				Bootstrap.logger.error("Failed to delete {}", configFile.getName());
 			}
-			jsonObject = new JsonObject();
-			jsonObject.addProperty("version", 4.0);
-		} else {
-			jsonObject = new Gson().fromJson(getConfigFileContents(), JsonObject.class);
+			// Create new
+			jsonObject = createConfig(configFile);
 		}
 		config = jsonObject;
+	}
+
+	private JsonObject createConfig(File file) {
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("version", 4.0);
+		try {
+			if (!configFile.exists()) {
+				// Create a new file
+				if (!configFile.createNewFile()) {
+					throw new Exception("Failed to create config file for " + file.getName());
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			Bootstrap.logger.error("Failed to create config {}", file.getName());
+		}
+		return jsonObject;
 	}
 
 	public void setupShutdownHook() {

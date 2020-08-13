@@ -21,12 +21,8 @@ public abstract class EMCMod {
 
 	public void init(JsonObject json) {
 		modInfo = json;
-		try {
-			settings = new Settings(modInfo.get("name").getAsString());
-			settings.setupShutdownHook();
-		} catch (Exception ex) {
-			Bootstrap.logger.error("Could not load config file for {}", modInfo.get("name").getAsString());
-		}
+		settings = new Settings(modInfo.get("name").getAsString());
+		settings.setupShutdownHook();
 		physicalFile = LocationUtil.getClassPhysicalLocation(this.getClass()).toFile();
 		Bootstrap.logger.debug("Physical jar of {} is {}", modInfo.get("name").getAsString(), physicalFile.getAbsolutePath());
 		initialize();

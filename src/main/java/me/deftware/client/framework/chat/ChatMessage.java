@@ -6,6 +6,7 @@ import me.deftware.client.framework.chat.style.ChatStyle;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class ChatMessage {
 	public String toString(boolean withFormatting) {
 		StringBuilder builder = new StringBuilder();
 		for (ChatSection section : sectionList) {
-			builder.append(withFormatting ? section.getStyle().toString() : "").append(section.getText());
+			builder.append(withFormatting ? Formatting.RESET.toString() + section.getStyle().toString() : "").append(section.getText());
 		}
 		return builder.toString();
 	}
