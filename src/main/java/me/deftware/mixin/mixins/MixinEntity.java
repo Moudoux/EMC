@@ -74,14 +74,6 @@ public abstract class MixinEntity implements IMixinEntity {
         }
     }
 
-    @Inject(at = @At("HEAD"), cancellable = true, method = "shouldRender(D)Z")
-    public void shouldRender(double distance, CallbackInfoReturnable<Boolean> info) {
-        if (GameCamera.isActive()) {
-            info.setReturnValue(true);
-            info.cancel();
-        }
-    }
-
     @Inject(method = "getPose", at = @At(value = "TAIL"), cancellable = true)
     private void onGetPose(CallbackInfoReturnable<EntityPose> cir) {
         if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "SWIMMING_MODE_OVERRIDE", false)) {

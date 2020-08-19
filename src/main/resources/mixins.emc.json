@@ -75,6 +75,7 @@
     "MixinItems",
     "MixinEnchantments",
     "MixinStatusEffects",
-    "MixinCamera"
+    "MixinCamera",
+    "MixinEntityHitResult"
   ]
 }
