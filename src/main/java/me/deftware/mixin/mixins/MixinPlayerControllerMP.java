@@ -7,6 +7,7 @@ import me.deftware.mixin.imp.IMixinPlayerControllerMP;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -41,7 +42,7 @@ public class MixinPlayerControllerMP implements IMixinPlayerControllerMP {
 
     @Inject(method = "attackEntity", at = @At("HEAD"), cancellable = true)
     public void attackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
-        if (target == null || target == player || target == GameCamera.fakePlayer) {
+        if (target == null || target == player || (GameCamera.isActive() && target == GameCamera.fakePlayer)) {
             ci.cancel();
         } else {
             EventAttackEntity event = new EventAttackEntity(player, target);
