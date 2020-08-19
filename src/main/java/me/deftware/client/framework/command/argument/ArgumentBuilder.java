@@ -1,6 +1,5 @@
 package me.deftware.client.framework.command.argument;
 
-
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 
@@ -8,6 +7,10 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * @author Deftware
+ */
+@Deprecated
 public class ArgumentBuilder {
 
 	public static CompletableFuture<Suggestions> getSuggestions(ArrayList<String> options, SuggestionsBuilder builder) {

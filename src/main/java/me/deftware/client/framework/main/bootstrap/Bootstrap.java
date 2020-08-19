@@ -6,14 +6,15 @@ import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.commands.*;
 import me.deftware.client.framework.event.EventBus;
+import me.deftware.client.framework.input.Keyboard;
 import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.main.bootstrap.discovery.*;
 import me.deftware.client.framework.main.validation.Validator;
 import me.deftware.client.framework.maps.SettingsMap;
-import me.deftware.client.framework.path.LocationUtil;
-import me.deftware.client.framework.path.OSUtils;
-import me.deftware.client.framework.utils.Settings;
-import me.deftware.client.framework.wrappers.IMinecraft;
+import me.deftware.client.framework.minecraft.Minecraft;
+import me.deftware.client.framework.util.path.LocationUtil;
+import me.deftware.client.framework.util.path.OSUtils;
+import me.deftware.client.framework.config.Settings;
 import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +29,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * This class is responsible for bootstrapping (initialization) process of EMC framework
  * it handles loading all of the mods, connecting with event listeners and checking
  * for available updates
+ *
+ * @author Deftware
  */
 public class Bootstrap {
 
@@ -48,6 +51,7 @@ public class Bootstrap {
 
     public static void init() {
         try {
+            Keyboard.populateCodePoints();
             for (int i = 0; i < 200; i++) {
                 if (System.getProperty("logging" + i, "null").equalsIgnoreCase("null")) break;
                 logger.debug(System.getProperty("logging" + i));
@@ -59,14 +63,14 @@ public class Bootstrap {
             if (System.getProperty("MCDir", "null").equalsIgnoreCase("null")) {
                 System.setProperty("MCDir", mcDir != null ? mcDir.getAbsolutePath() : "null");
             }
-            File capesCache = new File(String.format("%s/libraries/EMC/capes/", OSUtils.getMCDir()));
+            File capesCache = new File(Minecraft.getRunDir(), "libraries/EMC/capes/");
             if (!capesCache.exists()) {
                 if (!capesCache.mkdirs()) {
                     Bootstrap.logger.warn("Failed to create EMC capes dir");
                 }
             }
             Bootstrap.logger.info(String.format("Loading EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
-            EMC_ROOT = new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + IMinecraft.getMinecraftVersion() + File.separator);
+            EMC_ROOT = new File(Minecraft.getRunDir(), "libraries" + File.separator + "EMC" + File.separator + Minecraft.getMinecraftVersion() + File.separator);
             EMC_CONFIGS = new File(EMC_ROOT.getAbsolutePath() + File.separator + "configs" + File.separator);
             if (!EMC_ROOT.exists()) {
                 if (!EMC_ROOT.mkdirs()) {

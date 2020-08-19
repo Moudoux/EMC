@@ -7,6 +7,8 @@ import me.deftware.client.framework.main.bootstrap.Bootstrap;
 /**
  * This class describes the way events are defined in EMC framework and handles the process of
  * delivering events to all of the loaded mods
+ *
+ * @author Deftware
  */
 public class Event {
 

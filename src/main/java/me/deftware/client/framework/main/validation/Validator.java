@@ -1,9 +1,9 @@
 package me.deftware.client.framework.main.validation;
 
 import me.deftware.client.framework.FrameworkConstants;
-import me.deftware.client.framework.path.LocationUtil;
-import me.deftware.client.framework.utils.HashUtils;
-import me.deftware.client.framework.utils.WebUtils;
+import me.deftware.client.framework.util.HashUtils;
+import me.deftware.client.framework.util.path.LocationUtil;
+import me.deftware.client.framework.util.WebUtils;
 
 import java.io.File;
 

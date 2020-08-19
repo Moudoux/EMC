@@ -2,10 +2,13 @@ package me.deftware.client.framework.event;
 
 import java.lang.reflect.Method;
 
+/**
+ * @author Deftware
+ */
 public class Listener {
 
-    private Method method;
-    private Object classInstance;
+    private final Method method;
+    private final Object classInstance;
 
     public Listener(Method method, Object classInstance) {
         this.method = method;

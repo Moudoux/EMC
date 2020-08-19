@@ -9,8 +9,11 @@ import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.CommandResult;
 import me.deftware.client.framework.command.EMCModCommand;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.utils.render.NonScaledRenderer;
+import me.deftware.client.framework.render.batching.RenderStack;
 
+/**
+ * @author Deftware
+ */
 public class CommandScale extends EMCModCommand {
 
     @Override
@@ -26,7 +29,7 @@ public class CommandScale extends EMCModCommand {
                                                         new ChatBuilder().withPrefix().withText("Error! Scale must be between 0.2 and 4.0!").withColor(ChatColors.RED).build().print();
                                                         return 1;
                                                     }
-                                                    NonScaledRenderer.setScale(r.getFloat("size"));
+                                                    RenderStack.setScale(r.getFloat("size"));
                                                     Bootstrap.EMCSettings.putPrimitive("RENDER_SCALE", r.getFloat("size"));
                                                     new ChatBuilder().withPrefix().withText(
                                                             String.format("Gui scale has been set to \"%s\"", r.getFloat("size"))
@@ -38,7 +41,7 @@ public class CommandScale extends EMCModCommand {
                 .then(
                         LiteralArgumentBuilder.literal("restore")
                                 .executes(c -> {
-                                    NonScaledRenderer.setScale(1.0f);
+                                    RenderStack.setScale(1.0f);
                                     Bootstrap.EMCSettings.putPrimitive("RENDER_SCALE", 1.0f);
                                     new ChatBuilder().withPrefix().withText("Scale has been reset to 1.0!").withColor(ChatColors.GRAY).build().print();
                                     return 1;

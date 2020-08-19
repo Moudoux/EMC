@@ -5,6 +5,7 @@ import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.event.events.*;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
+import me.deftware.client.framework.render.camera.GameCamera;
 import me.deftware.mixin.imp.IMixinEntityPlayerSP;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -19,9 +20,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClientPlayerEntity.class)
 public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinEntityPlayerSP {
+
+    @Shadow
+    @Final
+    protected MinecraftClient client;
 
     @Shadow
     @Final
@@ -32,6 +38,14 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
     @Shadow
     public abstract boolean isUsingItem();
+    
+    @Inject(at = @At("HEAD"), cancellable = true, method = "isCamera")
+    public void isCamera(CallbackInfoReturnable<Boolean> info) {
+        if (GameCamera.isActive()) {
+            info.setReturnValue(true);
+            info.cancel();
+        }
+    }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "net/minecraft/client/network/ClientPlayerEntity.isUsingItem()Z", ordinal = 0))
     private boolean itemUseSlowdownEvent(ClientPlayerEntity self) {

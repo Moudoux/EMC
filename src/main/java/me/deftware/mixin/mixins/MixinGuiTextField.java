@@ -1,9 +1,6 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventChatboxType;
-import me.deftware.client.framework.fonts.EMCFont;
-import me.deftware.client.framework.utils.render.GraphicsUtil;
-import me.deftware.client.framework.wrappers.gui.IGuiScreen;
 import me.deftware.mixin.imp.IMixinGuiTextField;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
@@ -11,10 +8,10 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
-import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -31,11 +28,10 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
         super(int_1, int_2, 200, 20, string_1);
     }
 
-    private boolean useMinecraftScaling = true;
-    private boolean useCustomFont = false;
-    private EMCFont customFont;
+    @Unique
+    private boolean overlay = false, passwordField = false;
 
-    private boolean overlay = false;
+    @Unique
     private String overlayText = "";
 
     @Shadow
@@ -131,34 +127,13 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
         this.width = width;
     }
 
-    @Override
-    public void setUseMinecraftScaling(boolean state) {
-        useMinecraftScaling = state;
-    }
-
-    @Override
-    public void setUseCustomFont(boolean state) {
-        useCustomFont = state;
-    }
-
-    @Override
-    public void setCustomFont(EMCFont font) {
-        customFont = font;
-    }
-
-    @Inject(method = "renderButton", at = @At("HEAD"))
-    public void drawTextField(MatrixStack matrixStack, int p_drawTextField_1_, int p_drawTextField_2_, float p_drawTextField_3_, CallbackInfo ci) {
-        if (!useMinecraftScaling) {
-            GL11.glPushMatrix();
-            GraphicsUtil.prepareMatrix(IGuiScreen.getDisplayWidth(), IGuiScreen.getDisplayHeight());
-        }
+    @Unique @Override
+    public void setPasswordField(boolean flag) {
+        this.passwordField = flag;
     }
 
     @Inject(method = "renderButton", at = @At("RETURN"))
     public void drawTextFieldReturn(MatrixStack matrixStack, int p_drawTextField_1_, int p_drawTextField_2_, float p_drawTextField_3_, CallbackInfo ci) {
-        if (!useMinecraftScaling) {
-            GL11.glPopMatrix();
-        }
         if (overlay) {
             String currentText = getText();
             int currentWidth = ((IMixinGuiTextField) this).getFontRendererInstance().getWidth(currentText);
@@ -171,14 +146,17 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
         }
     }
 
-    @Redirect(method = "renderButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;drawWithShadow(Lnet/minecraft/client/util/math/MatrixStack;Ljava/lang/String;FFI)I"))
-    public int render(TextRenderer self, MatrixStack matrixStack, String text, float x, float y, int color) {
-        if (useCustomFont) {
-            customFont.drawString((int) x, (int) y - 6, text, new Color(color), true);
-            return (int) (x + customFont.getStringWidth(text) + 1f);
-        } else {
-            return this.textRenderer.drawWithShadow(matrixStack, text, x, y, color);
+    @Redirect(method = "renderButton", at = @At(value = "INVOKE", target = "Ljava/util/function/BiFunction;apply(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"))
+    public Object render(BiFunction<String, Integer, OrderedText> biFunction, Object text, Object index) {
+        String data = (String) text;
+        if (passwordField) {
+            StringBuilder hidden = new StringBuilder();
+            for (int i = 0; i < data.length(); i++) {
+                hidden.append("*");
+            }
+            data = hidden.toString();
         }
+        return renderTextProvider.apply(data, (int) index);
     }
 
     public int getMaxTextLength() {
@@ -191,7 +169,7 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
     }
 
     @Override
-    public boolean getIsEditble() {
+    public boolean getIsEditable() {
         return editable;
     }
 

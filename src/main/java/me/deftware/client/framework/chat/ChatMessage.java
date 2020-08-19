@@ -3,6 +3,7 @@ package me.deftware.client.framework.chat;
 import lombok.Getter;
 import me.deftware.client.framework.chat.hud.ChatHud;
 import me.deftware.client.framework.chat.style.ChatStyle;
+import me.deftware.client.framework.fonts.minecraft.FontRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -36,6 +37,23 @@ public class ChatMessage {
 			return toString(false).equalsIgnoreCase(((ChatMessage) object).toString(false));
 		}
 		return false;
+	}
+
+	public ChatMessage trimToWidth(int width) {
+		String text = toString(true);
+		if (FontRenderer.getStringWidth(text) > width) {
+			StringBuilder builder = new StringBuilder();
+			for (String _char : text.split("")) {
+				if (FontRenderer.getStringWidth(builder.toString() + _char + "...") < width - 6) {
+					builder.append(_char);
+				} else {
+					builder.append("...");
+					break;
+				}
+			}
+			text = builder.toString();
+		}
+		return new ChatMessage().fromString(text);
 	}
 
 	public ChatMessage fromString(String text) {

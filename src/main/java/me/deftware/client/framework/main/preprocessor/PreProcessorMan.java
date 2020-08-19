@@ -3,11 +3,14 @@ package me.deftware.client.framework.main.preprocessor;
 import com.google.gson.JsonObject;
 import me.deftware.client.framework.main.Main;
 import me.deftware.client.framework.main.bootstrap.discovery.ClasspathModDiscovery;
-import me.deftware.client.framework.path.OSUtils;
+import me.deftware.client.framework.util.path.OSUtils;
 
 import java.io.File;
 import java.util.HashMap;
 
+/**
+ * @author Deftware
+ */
 public class PreProcessorMan implements Runnable {
 
 	private final File emcJar;
@@ -46,7 +49,8 @@ public class PreProcessorMan implements Runnable {
 	}
 
 	public File getEMCModsDir() {
-		return new File(OSUtils.getMCDir() + "libraries" + File.separator + "EMC" + File.separator + getMinecraftVersion() + File.separator);
+		// TODO: Remove OSUtils.getDefaultMinecraftPath()
+		return new File(OSUtils.getDefaultMinecraftPath() + "libraries" + File.separator + "EMC" + File.separator + getMinecraftVersion() + File.separator);
 	}
 
 	public String getMinecraftVersion() {

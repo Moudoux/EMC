@@ -1,33 +1,25 @@
 package me.deftware.mixin.mixins;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import me.deftware.client.framework.maps.SettingsMap;
-import me.deftware.client.framework.wrappers.entity.IEntity;
+import me.deftware.client.framework.entity.Entity;
+import me.deftware.client.framework.entity.types.EntityPlayer;
 import me.deftware.mixin.imp.IMixinWorldClient;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 @Mixin(ClientWorld.class)
 public class MixinWorldClient implements IMixinWorldClient {
 
-    @Shadow
-    @Final
-    private Int2ObjectMap<Entity> regularEntities;
-
     @Unique
-    private final HashMap<Integer, IEntity> entities = new HashMap<>();
+    private final Int2ObjectMap<Entity> entities = new Int2ObjectOpenHashMap<>();
 
     @ModifyVariable(method = "randomBlockDisplayTick(IIIILjava/util/Random;ZLnet/minecraft/util/math/BlockPos$Mutable;)V", at = @At("HEAD"))
     public boolean randomBlockDisplayTick(boolean p_animateTick_6_) {
@@ -38,8 +30,9 @@ public class MixinWorldClient implements IMixinWorldClient {
     }
 
     @Inject(method = "addEntityPrivate", at = @At("TAIL"))
-    private void addEntityPrivate(int id, Entity entity, CallbackInfo ci) {
-        entities.put(id, IEntity.fromEntity(entity));
+    private void addEntityPrivate(int id, net.minecraft.entity.Entity entity, CallbackInfo ci) {
+        entities.put(id, entity instanceof PlayerEntity ?
+                new EntityPlayer((PlayerEntity) entity) : Entity.newInstance(entity));
     }
 
     @Inject(method = "removeEntity", at = @At("TAIL"))
@@ -48,13 +41,9 @@ public class MixinWorldClient implements IMixinWorldClient {
     }
 
     @Override
-    public HashMap<Integer, IEntity> getIEntities() {
+    @Unique
+    public Int2ObjectMap<Entity> getLoadedEntitiesAccessor() {
         return entities;
-    }
-
-    @Override
-    public Int2ObjectMap<Entity> getLoadedEntities() {
-        return regularEntities;
     }
 
 }

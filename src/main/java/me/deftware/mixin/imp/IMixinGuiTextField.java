@@ -1,6 +1,5 @@
 package me.deftware.mixin.imp;
 
-import me.deftware.client.framework.fonts.EMCFont;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.text.OrderedText;
 
@@ -32,17 +31,11 @@ public interface IMixinGuiTextField {
 
     void setWidth(int width);
 
-    void setUseMinecraftScaling(boolean state);
-
-    void setUseCustomFont(boolean state);
-
-    void setCustomFont(EMCFont font);
-
     int getMaxTextLength();
 
     boolean getHasBorder();
 
-    boolean getIsEditble();
+    boolean getIsEditable();
 
     BiFunction<String, Integer, OrderedText> getRenderTextProvider();
 
@@ -51,5 +44,7 @@ public interface IMixinGuiTextField {
     int getCursorMax();
 
     void setOverlay(boolean flag);
+
+    void setPasswordField(boolean flag);
 
 }

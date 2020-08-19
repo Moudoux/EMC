@@ -2,10 +2,13 @@ package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventAttackEntity;
 import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.render.camera.GameCamera;
 import me.deftware.mixin.imp.IMixinPlayerControllerMP;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,8 +35,20 @@ public class MixinPlayerControllerMP implements IMixinPlayerControllerMP {
 
     @Inject(method = "attackEntity", at = @At("HEAD"))
     public void attackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
-        EventAttackEntity event = new EventAttackEntity(player, target);
-        event.broadcast();
+        if (target.equals(player) || target.equals(GameCamera.fakePlayer)) {
+            ci.cancel();
+        } else {
+            EventAttackEntity event = new EventAttackEntity(player, target);
+            event.broadcast();
+        }
+    }
+
+    @Inject(at = @At("HEAD"), method = "interactEntity", cancellable = true)
+    private void interactEntity(PlayerEntity player, Entity target, Hand hand, CallbackInfoReturnable<ActionResult> info) {
+        if (target.equals(player)) {
+            info.setReturnValue(ActionResult.FAIL);
+            info.cancel();
+        }
     }
 
     @Override

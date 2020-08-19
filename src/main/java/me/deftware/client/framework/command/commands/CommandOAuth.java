@@ -1,11 +1,14 @@
 package me.deftware.client.framework.command.commands;
 
-import me.deftware.client.framework.apis.oauth.OAuth;
+import me.deftware.client.framework.oauth.OAuth;
 import me.deftware.client.framework.chat.ChatBuilder;
 import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.EMCModCommand;
 
+/**
+ * @author Deftware
+ */
 public class CommandOAuth extends EMCModCommand {
 
 	@Override

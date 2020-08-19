@@ -2,10 +2,8 @@ package me.deftware.mixin.mixins;
 
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import me.deftware.client.framework.event.PacketCircuit;
 import me.deftware.client.framework.event.events.EventPacketReceive;
 import me.deftware.client.framework.event.events.EventPacketSend;
-import me.deftware.client.framework.network.IPacket;
 import me.deftware.mixin.imp.IMixinNetworkManager;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
@@ -37,13 +35,7 @@ public abstract class MixinNetworkManager implements IMixinNetworkManager {
         if (event.isCanceled()) {
             return;
         }
-
-        // Run it through the circuits.
-        IPacket ipacket = event.getIPacket();
-        ipacket = PacketCircuit.handlePacket(ipacket);
-
-        // Packets can be null if out of the circuits and can be blocked from being sent.
-        if(ipacket != null) sendImmediately(ipacket.getPacket(), futureListeners);
+        sendImmediately(event.getPacket(), futureListeners);
     }
 
     public void sendPacketImmediately(Packet<?> packet) {

@@ -4,6 +4,8 @@ import me.deftware.client.framework.main.Main;
 
 /**
  * Allows maven dependencies to run code prior to Minecraft launching
+ *
+ * @author Deftware
  */
 public abstract class ModPreProcessor implements Runnable {
 

@@ -11,6 +11,9 @@ import me.deftware.client.framework.command.EMCModCommand;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.maps.SettingsMap;
 
+/**
+ * @author Deftware
+ */
 public class CommandTrigger extends EMCModCommand {
 
     @Override

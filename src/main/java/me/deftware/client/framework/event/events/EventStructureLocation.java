@@ -1,34 +1,35 @@
 package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
-import me.deftware.client.framework.wrappers.world.IBlockPos;
+import me.deftware.client.framework.math.position.BlockPosition;
+import me.deftware.client.framework.math.position.DoubleBlockPosition;
 
 public class EventStructureLocation extends Event {
-    private IBlockPos pos;
 
-    private StructureType type;
+    private final BlockPosition pos;
+    private final StructureType type;
 
     public EventStructureLocation(double posX, double posY, double posZ, StructureType type) {
-        this.pos = new IBlockPos(posX, posY, posZ);
+        this.pos = new DoubleBlockPosition(posX, posY, posZ);
         this.type = type;
     }
 
     public EventStructureLocation(double posX, double posY, double posZ) {
-        this.pos = new IBlockPos(posX, posY, posZ);
+        this.pos = new DoubleBlockPosition(posX, posY, posZ);
         this.type = StructureType.Stronghold;
     }
 
-    public EventStructureLocation(IBlockPos pos, StructureType type) {
+    public EventStructureLocation(BlockPosition pos, StructureType type) {
         this.pos = pos;
         this.type = type;
     }
 
-    public EventStructureLocation(IBlockPos pos) {
+    public EventStructureLocation(BlockPosition pos) {
         this.pos = pos;
         this.type = StructureType.Stronghold;
     }
 
-    public IBlockPos getPos() {
+    public BlockPosition getPos() {
         return pos;
     }
 
@@ -39,4 +40,5 @@ public class EventStructureLocation extends Event {
     public enum StructureType {
         Stronghold, BuriedTreasure
     }
+
 }

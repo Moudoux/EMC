@@ -2,8 +2,8 @@ package me.deftware.client.framework.main;
 
 import com.google.gson.JsonObject;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.path.LocationUtil;
-import me.deftware.client.framework.utils.Settings;
+import me.deftware.client.framework.util.path.LocationUtil;
+import me.deftware.client.framework.config.Settings;
 
 import java.io.File;
 import java.net.URLClassLoader;
@@ -11,6 +11,8 @@ import java.net.URLClassLoader;
 /**
  * This is a parent class for all of the mods loaded by EMC.
  * Your mod must extend this class
+ *
+ * @author Deftware
  */
 public abstract class EMCMod {
 

@@ -1,7 +1,7 @@
 package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
-import me.deftware.client.framework.wrappers.entity.IEntity;
+import me.deftware.client.framework.entity.Entity;
 
 /**
  * Triggered by EMC framework when ray trace is being calculated.
@@ -11,13 +11,13 @@ import me.deftware.client.framework.wrappers.entity.IEntity;
 @Deprecated
 public class EventRayTrace extends Event {
 
-	private IEntity entity;
+	private Entity entity;
 
-	public EventRayTrace(IEntity entity) {
+	public EventRayTrace(Entity entity) {
 		this.entity = entity;
 	}
 
-	public IEntity getEntity() {
+	public Entity getEntity() {
 		return entity;
 	}
 

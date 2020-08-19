@@ -1,7 +1,6 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventMouseClick;
-import me.deftware.client.framework.wrappers.IMouse;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,18 +13,16 @@ public class MixinMouseHelper {
 
     @Inject(method = "onMouseButton", at = @At("HEAD"))
     private void mouseButtonCallback(long windowPointer, int button, int action, int modifiers, CallbackInfo ci) {
-        if (windowPointer != MinecraftClient.getInstance().getWindow().getHandle() || MinecraftClient.getInstance().currentScreen != null) {
-            return;
+        if (windowPointer == MinecraftClient.getInstance().getWindow().getHandle() || MinecraftClient.getInstance().currentScreen != null) {
+            new EventMouseClick(button, action, modifiers).broadcast();
         }
-        new EventMouseClick(button, action, modifiers).broadcast();
     }
 
     @Inject(method = "onMouseScroll", at = @At("HEAD"))
     private void scrollCallback(long windowPointer, double xoffset, double yoffset, CallbackInfo ci) {
-        if (windowPointer != MinecraftClient.getInstance().getWindow().getHandle()) {
-            return;
+        if (windowPointer == MinecraftClient.getInstance().getWindow().getHandle()) {
+            me.deftware.client.framework.input.Mouse.onScroll(xoffset, yoffset);
         }
-        IMouse.onScroll(xoffset, yoffset);
     }
 
 

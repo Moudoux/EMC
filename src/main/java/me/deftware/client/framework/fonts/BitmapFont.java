@@ -1,10 +1,10 @@
 package me.deftware.client.framework.fonts;
 
+import me.deftware.client.framework.gui.GuiScreen;
+import me.deftware.client.framework.helper.RenderHelper;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.utils.render.GraphicsUtil;
-import me.deftware.client.framework.utils.render.NonScaledRenderer;
-import me.deftware.client.framework.wrappers.IMinecraft;
-import me.deftware.client.framework.wrappers.gui.IGuiScreen;
+import me.deftware.client.framework.render.batching.RenderStack;
+import me.deftware.client.framework.render.texture.GraphicsUtil;
 import net.minecraft.util.Formatting;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.opengl.GL11;
@@ -167,13 +167,13 @@ public class BitmapFont implements EMCFont {
     @Override
     public int drawString(int x, int y, String text, Color color) {
         if (scaling) {
-            x *= NonScaledRenderer.getScale();
-            y *= NonScaledRenderer.getScale();
+            x *= RenderStack.getScale();
+            y *= RenderStack.getScale();
         }
 
         char[] buffer = text.toCharArray();
         GL11.glPushMatrix();
-        GraphicsUtil.prepareMatrix(IGuiScreen.getDisplayWidth(), IGuiScreen.getDisplayHeight());
+        GraphicsUtil.prepareMatrix(GuiScreen.getDisplayWidth(), GuiScreen.getDisplayHeight());
         int offset = 0;
         for (int character = 0; character < buffer.length; character++) {
 
@@ -201,8 +201,7 @@ public class BitmapFont implements EMCFont {
         GL11.glPopMatrix();
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        NonScaledRenderer.resetScale();
-        IMinecraft.triggerGuiRenderer();
+        RenderStack.reloadMinecraftMatrix();
         lastRenderedWidth = offset;
         return 0;
     }
@@ -253,7 +252,7 @@ public class BitmapFont implements EMCFont {
             return getStringWidthNonScaled(text);
         }
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
-        return text != null && fontMetrics != null ? (int) (fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) / NonScaledRenderer.getScale()) : 0;
+        return text != null && fontMetrics != null ? (int) (fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) / RenderStack.getScale()) : 0;
     }
 
     public int getStringWidthNonScaled(String text) {
@@ -267,7 +266,7 @@ public class BitmapFont implements EMCFont {
             return getStringHeightNonScaled(text);
         }
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
-        return (int) (fontMetrics.getHeight() / NonScaledRenderer.getScale());
+        return (int) (fontMetrics.getHeight() / RenderStack.getScale());
     }
 
     public int getStringHeightNonScaled(String text) {

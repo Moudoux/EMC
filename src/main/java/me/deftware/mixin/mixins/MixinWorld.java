@@ -1,16 +1,16 @@
 package me.deftware.mixin.mixins;
 
-import me.deftware.client.framework.wrappers.entity.ITileEntity;
+import me.deftware.client.framework.entity.block.TileEntity;
 import me.deftware.mixin.imp.IMixinWorld;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -22,36 +22,32 @@ import java.util.List;
 public abstract class MixinWorld implements IMixinWorld {
 
 	@Shadow
-	@Final
-	public List<BlockEntity> blockEntities;
-
-	@Shadow
-	@Final
-	protected List<BlockEntity> unloadedBlockEntities;
-
-	@Shadow
 	public abstract BlockEntity getBlockEntity(BlockPos pos);
 
 	@Unique
-	public final HashMap<BlockEntity, ITileEntity> emcTileEntities = new HashMap<>();
+	public final HashMap<BlockEntity, TileEntity> emcTileEntities = new HashMap<>();
 
 	@Override
-	public Collection<ITileEntity> getEmcTileEntities() {
+	@Unique
+	public Collection<TileEntity> getLoadedTilesAccessor() {
 		return emcTileEntities.values();
 	}
 
 	@Inject(method = "addBlockEntity", at = @At("TAIL"))
 	public void addBlockEntity(BlockEntity blockEntity, CallbackInfoReturnable<Boolean> ci) {
-		emcTileEntities.put(blockEntity, new ITileEntity(blockEntity));
+		emcTileEntities.put(blockEntity, TileEntity.newInstance(blockEntity));
 	}
 
-	@Inject(method = "tickBlockEntities", at = @At("HEAD"))
-	private void tickBlockEntities(CallbackInfo info) {
-		if (!unloadedBlockEntities.isEmpty()) {
-			for (BlockEntity entity : unloadedBlockEntities) {
-				emcTileEntities.remove(entity);
-			}
-		}
+	@Redirect(method = "tickBlockEntities", at = @At(value = "INVOKE", target = "Ljava/util/List;removeAll(Ljava/util/Collection;)Z", ordinal = 1))
+	private boolean onRemoveEntityIf(List<BlockEntity> list, Collection<BlockEntity> entities) {
+		for (BlockEntity entity : entities) emcTileEntities.remove(entity);
+		return list.removeAll(entities);
+	}
+
+	@Redirect(method = "tickBlockEntities", at = @At(value = "INVOKE", target = "Ljava/util/List;remove(Ljava/lang/Object;)Z"))
+	private boolean onRemoveEntity(List<BlockEntity> list, Object entity) {
+		emcTileEntities.remove((BlockEntity) entity);
+		return list.remove((BlockEntity) entity);
 	}
 
 	@Inject(method = "removeBlockEntity", at = @At("HEAD"))

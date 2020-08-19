@@ -1,9 +1,9 @@
 package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.utils.render.GraphicsUtil;
-import me.deftware.client.framework.utils.render.NonScaledRenderer;
-import me.deftware.client.framework.utils.render.Texture;
+import me.deftware.client.framework.render.batching.RenderStack;
+import me.deftware.client.framework.render.texture.GraphicsUtil;
+import me.deftware.client.framework.render.texture.Texture;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -189,7 +189,7 @@ public class DynamicFont implements EMCFont {
         prepareForRendering(); //BINDING
         GraphicsUtil.drawQuads(x, y, getLastRenderedWidth(), getLastRenderedHeight());
         GL11.glPopMatrix();
-        NonScaledRenderer.resetScale();
+        RenderStack.reloadMinecraftMatrix();
         return 0;
     }
 
@@ -199,7 +199,7 @@ public class DynamicFont implements EMCFont {
             return getStringWidthNonScaled(text);
         }
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
-        return (int) (fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) / NonScaledRenderer.getScale());
+        return (int) (fontMetrics.charsWidth(text.toCharArray(), 0, text.length()) / RenderStack.getScale());
     }
 
     public int getStringWidthNonScaled(String text) {
@@ -213,7 +213,7 @@ public class DynamicFont implements EMCFont {
             return getStringHeightNonScaled(text);
         }
         FontMetrics fontMetrics = new Canvas().getFontMetrics(stdFont);
-        return (int) (fontMetrics.getHeight() / NonScaledRenderer.getScale());
+        return (int) (fontMetrics.getHeight() / RenderStack.getScale());
     }
 
     public int getStringHeightNonScaled(String text) {

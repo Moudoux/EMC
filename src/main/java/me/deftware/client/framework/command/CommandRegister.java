@@ -13,6 +13,8 @@ import java.util.Map;
 
 /**
  * Handles custom EMC commands
+ *
+ * @author Deftware
  */
 public class CommandRegister {
 

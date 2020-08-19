@@ -8,6 +8,9 @@ import me.deftware.client.framework.main.bootstrap.Bootstrap;
 
 import static com.mojang.brigadier.builder.LiteralArgumentBuilder.literal;
 
+/**
+ * @author Deftware
+ */
 public class CommandUnload extends EMCModCommand {
 
     @Override

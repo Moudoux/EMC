@@ -7,6 +7,9 @@ import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.EMCModCommand;
 import me.deftware.client.framework.maps.SettingsMap;
 
+/**
+ * @author Deftware
+ */
 public class CommandHelp extends EMCModCommand {
 
 	@Override

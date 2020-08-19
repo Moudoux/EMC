@@ -7,7 +7,8 @@ import me.deftware.client.framework.event.events.EventRender2D;
 import me.deftware.client.framework.event.events.EventRender3D;
 import me.deftware.client.framework.event.events.EventRender3DNoBobbing;
 import me.deftware.client.framework.maps.SettingsMap;
-import me.deftware.client.framework.wrappers.IResourceLocation;
+import me.deftware.client.framework.minecraft.Minecraft;
+import me.deftware.client.framework.util.minecraft.MinecraftIdentifier;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
@@ -97,7 +98,13 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;render(Lnet/minecraft/client/util/math/MatrixStack;F)V"))
     private void onRender2D(CallbackInfo cb) {
+        // Chat queue
         Runnable operation = ChatHud.getChatMessageQueue().poll();
+        if (operation != null) {
+            operation.run();
+        }
+        // Other actions
+        operation = Minecraft.RENDER_THREAD.poll();
         if (operation != null) {
             operation.run();
         }
@@ -105,7 +112,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     }
 
     @Override
-    public void loadCustomShader(IResourceLocation location) {
+    public void loadCustomShader(MinecraftIdentifier location) {
         loadShader(location);
     }
 

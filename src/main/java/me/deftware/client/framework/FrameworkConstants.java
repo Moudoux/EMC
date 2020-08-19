@@ -1,13 +1,13 @@
 package me.deftware.client.framework;
 
-import me.deftware.client.framework.wrappers.IMinecraft;
+import me.deftware.client.framework.minecraft.Minecraft;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * @author Deftware
+ */
 public class FrameworkConstants {
 
-    public static double VERSION = 15.0;
+    public static double VERSION = 16.0;
     public static int PATCH = 0, SCHEME = 4;
 
     public static boolean VALID_EMC_INSTANCE = false, SUBSYSTEM_IN_USE = false;
@@ -29,7 +29,7 @@ public class FrameworkConstants {
                 mavenName += "-v2";
             }
         }
-        return mavenName + ":latest-" + IMinecraft.getMinecraftVersion();
+        return mavenName + ":latest-" + Minecraft.getMinecraftVersion();
     }
 
     public enum MappingSystem {

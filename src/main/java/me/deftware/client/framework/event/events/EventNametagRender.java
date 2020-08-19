@@ -1,24 +1,29 @@
 package me.deftware.client.framework.event.events;
 
-import lombok.Getter;
-import lombok.Setter;
-import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.event.Event;
+import me.deftware.mixin.imp.IMixinWorldClient;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+
+import java.util.Objects;
 
 /**
  * Triggered when entity (including player) nametag is being rendered
  */
 public class EventNametagRender extends Event {
 
-    private @Getter final boolean isPlayer;
-    private @Getter ChatMessage name;
+    private me.deftware.client.framework.entity.Entity entity;
 
     public EventNametagRender(Entity entity) {
-        if (isPlayer = entity instanceof PlayerEntity) {
-            name = new ChatMessage().fromText(entity.getName());
+        me.deftware.client.framework.entity.Entity emcEntity
+                = Objects.requireNonNull(((IMixinWorldClient) MinecraftClient.getInstance().world)).getLoadedEntitiesAccessor().getOrDefault(entity.getEntityId(), null);
+        if (emcEntity != null) {
+            this.entity = emcEntity;
         }
+    }
+
+    public me.deftware.client.framework.entity.Entity getEntity() {
+        return entity;
     }
 
 }

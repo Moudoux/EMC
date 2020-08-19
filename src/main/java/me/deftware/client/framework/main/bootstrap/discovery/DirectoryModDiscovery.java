@@ -15,6 +15,9 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * @author Deftware
+ */
 public class DirectoryModDiscovery extends AbstractModDiscovery {
 
 	@Override

@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * @author Deftware
+ */
 public abstract class AbstractModDiscovery {
 
     List<AbstractModEntry> entries = new ArrayList<>();

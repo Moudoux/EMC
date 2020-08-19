@@ -1,7 +1,7 @@
 package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
-import me.deftware.client.framework.network.IPacket;
+import me.deftware.client.framework.network.PacketWrapper;
 import net.minecraft.network.Packet;
 
 /**
@@ -23,12 +23,12 @@ public class EventPacketSend extends Event {
         this.packet = packet;
     }
 
-    public void setPacket(IPacket packet) {
+    public void setPacket(PacketWrapper packet) {
         this.packet = packet.getPacket();
     }
 
-    public IPacket getIPacket() {
-        return IPacket.translatePacket(packet);
+    public PacketWrapper getIPacket() {
+        return PacketWrapper.translatePacket(packet);
     }
 
 }

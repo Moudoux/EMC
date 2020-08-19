@@ -1,7 +1,7 @@
 package me.deftware.mixin.mixins;
 
-import me.deftware.client.framework.wrappers.IMinecraft;
-import me.deftware.client.framework.wrappers.IServerData;
+import me.deftware.client.framework.minecraft.Minecraft;
+import me.deftware.client.framework.util.minecraft.ServerConnectionInfo;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,7 +13,7 @@ public class MixinGuiConnecting {
 
     @Inject(method = "connect", at = @At("HEAD"))
     private void connect(String ip, int port, CallbackInfo ci) {
-        IMinecraft.lastServer = new IServerData("Server", ip + ":" + port, false);
+        Minecraft.lastConnectedServer = new ServerConnectionInfo("Server", ip + ":" + port, false);
     }
 
 }

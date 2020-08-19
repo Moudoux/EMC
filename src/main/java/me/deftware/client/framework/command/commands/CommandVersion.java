@@ -5,8 +5,11 @@ import me.deftware.client.framework.chat.ChatBuilder;
 import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.EMCModCommand;
-import me.deftware.client.framework.wrappers.IMinecraft;
+import me.deftware.client.framework.minecraft.Minecraft;
 
+/**
+ * @author Deftware
+ */
 public class CommandVersion extends EMCModCommand {
 
 	@Override
@@ -16,8 +19,8 @@ public class CommandVersion extends EMCModCommand {
 			new ChatBuilder().withPrefix().withText(FrameworkConstants.toDataString()).withColor(ChatColors.GRAY).build().print();
 			new ChatBuilder().withPrefix().withText(String.format(
 					"Minecraft version %s protocol %s",
-					IMinecraft.getMinecraftVersion(),
-					IMinecraft.getMinecraftProtocolVersion()
+					Minecraft.getMinecraftVersion(),
+					Minecraft.getMinecraftProtocolVersion()
 			)).withColor(ChatColors.GRAY).build().print();
 			new ChatBuilder().withPrefix().withText(
 					"EMC mappings is " + FrameworkConstants.MAPPING_LOADER.name()

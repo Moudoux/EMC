@@ -1,25 +1,25 @@
 package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
-import me.deftware.client.framework.wrappers.world.IBlock;
+import me.deftware.client.framework.world.block.Block;
 
 /**
  * Triggered by Minecraft block when checking collision
  */
 public class EventCollideCheck extends Event {
 
-	private IBlock block;
+	private final Block block;
 	public boolean updated = false, canCollide;
 
-	public EventCollideCheck(IBlock block) {
+	public EventCollideCheck(Block block) {
 		this.block = block;
 	}
 
-	public IBlock getBlock() {
+	public Block getBlock() {
 		return block;
 	}
 
-	public void setisCollidable(boolean canCollide) {
+	public void setCollidable(boolean canCollide) {
 		updated = true;
 		this.canCollide = canCollide;
 	}

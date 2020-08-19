@@ -1,6 +1,8 @@
 package me.deftware.client.framework.lang;
 
 /**
+ * TODO
+ *
  * @author Deftware
  */
 public interface ILanguage {

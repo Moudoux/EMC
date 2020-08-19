@@ -7,6 +7,9 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 
+/**
+ * @author Deftware, Ananas
+ */
 public class EventBus {
 
     private static final Object lock = new Object();

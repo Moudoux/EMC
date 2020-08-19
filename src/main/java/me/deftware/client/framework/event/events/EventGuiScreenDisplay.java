@@ -1,7 +1,7 @@
 package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
-import me.deftware.client.framework.wrappers.gui.IGuiScreen;
+import me.deftware.client.framework.gui.GuiScreen;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
@@ -13,7 +13,7 @@ import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 public class EventGuiScreenDisplay extends Event {
 
     private Screen screen;
-    private ScreenTypes type;
+    private final ScreenTypes type;
 
     public EventGuiScreenDisplay(Screen screen) {
         this.screen = screen;
@@ -32,7 +32,7 @@ public class EventGuiScreenDisplay extends Event {
         return screen;
     }
 
-    public void setScreen(IGuiScreen screen) {
+    public void setScreen(GuiScreen screen) {
         this.screen = screen;
     }
 

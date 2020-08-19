@@ -1,8 +1,7 @@
 package me.deftware.client.framework.fonts;
 
 import me.deftware.client.framework.chat.style.ChatStyle;
-import me.deftware.client.framework.utils.render.ColorUtil;
-import me.deftware.client.framework.utils.render.Texture;
+import me.deftware.client.framework.render.texture.Texture;
 import net.minecraft.util.Formatting;
 
 import java.awt.*;

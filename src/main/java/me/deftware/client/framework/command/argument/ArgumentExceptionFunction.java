@@ -2,6 +2,9 @@ package me.deftware.client.framework.command.argument;
 
 import com.mojang.brigadier.Message;
 
+/**
+ * @author Deftware
+ */
 public class ArgumentExceptionFunction implements Message {
 
 	private String message;

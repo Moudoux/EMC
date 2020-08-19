@@ -5,9 +5,12 @@ import me.deftware.client.framework.chat.ChatBuilder;
 import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.EMCModCommand;
-import me.deftware.client.framework.wrappers.entity.IEntity;
-import me.deftware.client.framework.wrappers.world.IWorld;
+import me.deftware.client.framework.entity.Entity;
+import me.deftware.client.framework.world.World;
 
+/**
+ * @author Deftware
+ */
 public class CommandReload extends EMCModCommand {
 
     @Override
@@ -17,9 +20,7 @@ public class CommandReload extends EMCModCommand {
                         LiteralArgumentBuilder.literal("skins")
                                 .executes(c -> {
                                     new ChatBuilder().withPrefix().withText("Reloading skins...").withColor(ChatColors.GRAY).build().print();
-                                    for (IEntity entity : IWorld.getLoadedEntities().values()) {
-                                        entity.reloadSkin();
-                                    }
+                                    World.getLoadedEntities().forEach(Entity::reloadSkin);
                                     return 1;
                                 })
                 )

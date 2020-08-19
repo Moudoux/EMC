@@ -2,6 +2,9 @@ package me.deftware.client.framework.maps;
 
 import java.util.*;
 
+/**
+ * @author Deftware
+ */
 public class MultiMap<K, V> {
 
     private final Map<K, Collection<V>> map = new HashMap<>();

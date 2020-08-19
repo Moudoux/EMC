@@ -1,6 +1,6 @@
 package me.deftware.mixin.mixins;
 
-import me.deftware.client.framework.path.OSUtils;
+import me.deftware.client.framework.util.path.OSUtils;
 import net.minecraft.client.util.Window;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;

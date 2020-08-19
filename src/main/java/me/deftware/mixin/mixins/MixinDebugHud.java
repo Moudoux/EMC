@@ -1,6 +1,6 @@
 package me.deftware.mixin.mixins;
 
-import me.deftware.client.framework.wrappers.gui.DebugHudWrapper;
+import me.deftware.client.framework.helper.ScreenHelper;
 import net.minecraft.client.gui.hud.DebugHud;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
+import java.util.function.Function;
 
 @Mixin(DebugHud.class)
 public class MixinDebugHud {
@@ -23,7 +24,7 @@ public class MixinDebugHud {
 	}
 
 	private List<String> getModifiedList(List<String> stringData) {
-		for (DebugHudWrapper.StringModifier modifier : DebugHudWrapper.modifiers) {
+		for (Function<List<String>, List<String>> modifier : ScreenHelper.debugHudModifiers) {
 			stringData = modifier.apply(stringData);
 		}
 		return stringData;

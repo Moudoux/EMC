@@ -6,6 +6,9 @@ import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.EMCModCommand;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 
+/**
+ * @author Deftware
+ */
 public class CommandMods extends EMCModCommand {
 
 	@Override

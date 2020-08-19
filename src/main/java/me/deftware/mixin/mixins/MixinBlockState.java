@@ -4,7 +4,6 @@ import me.deftware.client.framework.event.events.EventBlockhardness;
 import me.deftware.client.framework.event.events.EventCollideCheck;
 import me.deftware.client.framework.event.events.EventVoxelShape;
 import me.deftware.client.framework.maps.SettingsMap;
-import me.deftware.client.framework.wrappers.world.IBlock;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -33,7 +32,7 @@ public abstract class MixinBlockState {
 
     @Inject(method = "getOutlineShape(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/ShapeContext;)Lnet/minecraft/util/shape/VoxelShape;", at = @At("HEAD"), cancellable = true)
     public void getOutlineShape(BlockView blockView_1, BlockPos blockPos_1, ShapeContext entityContext_1, CallbackInfoReturnable<VoxelShape> ci) {
-        EventCollideCheck event = new EventCollideCheck(new IBlock(this.getBlock()));
+        EventCollideCheck event = new EventCollideCheck(me.deftware.client.framework.world.block.Block.newInstance(this.getBlock()));
         event.broadcast();
         if (event.updated) {
             if (event.canCollide) {
@@ -78,7 +77,7 @@ public abstract class MixinBlockState {
 
     @Inject(method = "getCollisionShape(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/ShapeContext;)Lnet/minecraft/util/shape/VoxelShape;", at = @At("HEAD"), cancellable = true)
     public void getCollisionShape(BlockView blockView_1, BlockPos blockPos_1, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {
-        EventVoxelShape event = new EventVoxelShape(this.getOutlineShape(blockView_1, blockPos_1), new IBlock(this.getBlock()));
+        EventVoxelShape event = new EventVoxelShape(this.getOutlineShape(blockView_1, blockPos_1), me.deftware.client.framework.world.block.Block.newInstance(this.getBlock()));
         event.broadcast();
         if (event.modified) {
             ci.setReturnValue(event.shape);

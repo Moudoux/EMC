@@ -5,7 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.wrappers.IMinecraft;
+import me.deftware.client.framework.minecraft.Minecraft;
 import net.minecraft.client.main.Main;
 
 import java.io.BufferedReader;
@@ -16,6 +16,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Deftware
+ */
 public class ClasspathModDiscovery extends AbstractModDiscovery {
 
 	@Override
@@ -24,7 +27,7 @@ public class ClasspathModDiscovery extends AbstractModDiscovery {
 			int start = 25;
 			List<JsonObject> classpathMods = getClasspathMods();
 			for (JsonObject data : classpathMods) {
-				System.setProperty("emcMod" + start, data.get("id").getAsString() + "," + data.get("name").getAsString().replace("%mc%", IMinecraft.getMinecraftVersion()) + "," + data.get("maven").getAsString());
+				System.setProperty("emcMod" + start, data.get("id").getAsString() + "," + data.get("name").getAsString().replace("%mc%", Minecraft.getMinecraftVersion()) + "," + data.get("maven").getAsString());
 				start++;
 			}
 			Bootstrap.logger.info("ClasspathModDiscovery found {} entries", classpathMods.size());

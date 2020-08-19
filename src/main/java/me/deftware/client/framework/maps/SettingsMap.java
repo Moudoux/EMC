@@ -4,6 +4,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Used to store and modify Minecraft settings, this is used instead of Events because it is faster
+ *
+ * @author Deftware
  */
 public class SettingsMap {
 

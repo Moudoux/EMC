@@ -1,23 +1,22 @@
 package me.deftware.client.framework.event.events;
 
+import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.event.Event;
-import me.deftware.client.framework.wrappers.entity.IEntity;
-import net.minecraft.entity.Entity;
 
 public class EventAttackEntity extends Event {
 
-	private IEntity player, target;
+	private final Entity player, target;
 
-	public EventAttackEntity(Entity player, Entity target) {
-		this.player = IEntity.fromEntity(player);
-		this.target = IEntity.fromEntity(target);
+	public EventAttackEntity(net.minecraft.entity.Entity player, net.minecraft.entity.Entity target) {
+		this.player = Entity.newInstance(player);
+		this.target = Entity.newInstance(target);
 	}
 
-	public IEntity getPlayer() {
+	public Entity getPlayer() {
 		return player;
 	}
 
-	public IEntity getTarget() {
+	public Entity getTarget() {
 		return target;
 	}
 

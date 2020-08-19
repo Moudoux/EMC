@@ -1,7 +1,9 @@
 package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
-import me.deftware.client.framework.wrappers.IMinecraft;
+import me.deftware.client.framework.minecraft.Minecraft;
+
+import java.util.Objects;
 
 /**
  * Triggered when user disconnects from a server.
@@ -9,16 +11,14 @@ import me.deftware.client.framework.wrappers.IMinecraft;
  */
 public class EventDisconnected extends Event {
 
+	private final String address = Objects.requireNonNull(Minecraft.getLastConnectedServer()).getIPAccessor();
+
 	public String getIP() {
-		return IMinecraft.lastServer.getIIP().contains(":") ? IMinecraft.lastServer.getIIP().split(":")[0]
-				: IMinecraft.lastServer.getIIP();
+		return address.contains(":") ? address.split(":")[0] : address;
 	}
 
-
 	public int getPort() {
-		return IMinecraft.lastServer.getIIP().contains(":")
-				? Integer.parseInt(IMinecraft.lastServer.getIIP().split(":")[1])
-				: 25565;
+		return address.contains(":") ? Integer.parseInt(address.split(":")[1]) : 25565;
 	}
 
 }

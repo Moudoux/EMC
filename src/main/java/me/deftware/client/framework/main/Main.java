@@ -1,7 +1,7 @@
 package me.deftware.client.framework.main;
 
 import me.deftware.client.framework.main.preprocessor.PreProcessorMan;
-import me.deftware.client.framework.path.LocationUtil;
+import me.deftware.client.framework.util.path.LocationUtil;
 import net.fabricmc.loader.launch.knot.KnotClient;
 
 import java.io.File;
@@ -11,6 +11,8 @@ import java.util.List;
 /**
  * This class is only used when running in the fabric environment
  * Minecraft > 1.14
+ *
+ * @author Deftware
  */
 public class Main {
 

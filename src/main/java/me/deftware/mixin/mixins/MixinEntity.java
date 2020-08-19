@@ -4,14 +4,18 @@ import me.deftware.client.framework.event.events.EventKnockback;
 import me.deftware.client.framework.event.events.EventSlowdown;
 import me.deftware.client.framework.event.events.EventSneakingCheck;
 import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.render.camera.GameCamera;
 import me.deftware.mixin.imp.IMixinEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -61,6 +65,22 @@ public abstract class MixinEntity implements IMixinEntity {
     @Shadow
     protected Vec3d movementMultiplier;
 
+    @Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)
+    public void changeLookDirection(double dx, double dy, CallbackInfo ci) {
+        if (((Entity) (Object) this) == MinecraftClient.getInstance().player && GameCamera.isActive()) {
+            GameCamera.fakePlayer.changeLookDirection(dx, dy);
+            GameCamera.fakePlayer.setHeadYaw(GameCamera.fakePlayer.yaw);
+            ci.cancel();
+        }
+    }
+
+    @Inject(at = @At("HEAD"), cancellable = true, method = "shouldRender(D)Z")
+    public void shouldRender(double distance, CallbackInfoReturnable<Boolean> info) {
+        if (GameCamera.isActive()) {
+            info.setReturnValue(true);
+            info.cancel();
+        }
+    }
 
     @Inject(method = "getPose", at = @At(value = "TAIL"), cancellable = true)
     private void onGetPose(CallbackInfoReturnable<EntityPose> cir) {

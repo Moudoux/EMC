@@ -12,6 +12,8 @@ import java.util.function.Consumer;
 
 /**
  * Wrapper for building EMC commands
+ *
+ * @author Deftware
  */
 public class CommandBuilder<T> {
 

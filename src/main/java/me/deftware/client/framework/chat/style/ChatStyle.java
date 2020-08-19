@@ -44,7 +44,7 @@ public class ChatStyle {
 
 	public void fromStyle(Style style) {
 		// Color
-		color = new ChatColors.ChatColor(style.getColor(), null);
+		if(style.getColor() != null) color = new ChatColors.ChatColor(style.getColor(), null);
 		// Formatting
 		bold = style.isBold();
 		underline = style.isUnderlined();
@@ -88,7 +88,7 @@ public class ChatStyle {
 
 	public ChatStyle deepCopy() {
 		ChatStyle copy = new ChatStyle();
-		copy.color = color.deepCopy();
+		if (color != null) copy.color = color.deepCopy();
 		copy.bold = bold;
 		copy.italic = italic;
 		copy.obfuscated = obfuscated;

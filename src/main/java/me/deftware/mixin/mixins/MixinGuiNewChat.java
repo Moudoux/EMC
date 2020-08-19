@@ -45,7 +45,10 @@ public abstract class MixinGuiNewChat implements IMixinGuiNewChat {
     @Override
     public void removeMessage(ChatHudLine line) {
         messages.removeIf(message -> message.getText().getString().equalsIgnoreCase(line.getMessage().toString(false)));
-        visibleMessages.removeIf(message -> ((Text)message.getText()).getString().equalsIgnoreCase(line.getMessage().toString(false)));
+        visibleMessages.removeIf(message -> {
+            System.out.println(message.getText().toString());
+            return false;
+        });
     }
 
     @Override

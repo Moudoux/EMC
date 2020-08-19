@@ -3,8 +3,9 @@ package me.deftware.mixin.mixins;
 import me.deftware.client.framework.event.events.EventFovModifier;
 import me.deftware.client.framework.event.events.EventSpectator;
 import me.deftware.client.framework.maps.SettingsMap;
-import me.deftware.client.framework.path.OSUtils;
-import me.deftware.client.framework.utils.HashUtils;
+import me.deftware.client.framework.minecraft.Minecraft;
+import me.deftware.client.framework.util.HashUtils;
+import me.deftware.client.framework.util.path.OSUtils;
 import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -60,7 +61,7 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
             		ci.setReturnValue(capeIdentifier);
 	            } else {
 		            capeIdentifier = new Identifier(String.format("capes/%s.png", uidHash));
-		            PlayerSkinTexture playerSkinTexture = new PlayerSkinTexture(new File(String.format("%s/libraries/EMC/capes/%s.png", OSUtils.getMCDir(), uidHash)),
+		            PlayerSkinTexture playerSkinTexture = new PlayerSkinTexture(new File(String.format("%s/libraries/EMC/capes/%s.png", Minecraft.getRunDir().getAbsolutePath(), uidHash)),
 				            (String) SettingsMap.getValue(SettingsMap.MapKeys.CAPES_TEXTURE, id, ""), DefaultSkinHelper.getTexture(), false, () -> {
 		            	capeLoaded = true;
 		            });

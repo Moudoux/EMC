@@ -7,6 +7,7 @@ import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.chat.style.ChatStyle;
 import net.minecraft.util.Language;
 
+import java.awt.*;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -106,6 +107,19 @@ public class ChatBuilder {
 
 	public ChatBuilder withColor(ChatColors.ChatColor color) {
 		currentSection.getStyle().setColor(color);
+		return this;
+	}
+
+	public ChatBuilder replaceEmptyColor(ChatColors color) {
+		return replaceEmptyColor(color.getChatColor());
+	}
+
+	public ChatBuilder replaceEmptyColor(ChatColors.ChatColor color) {
+		for (ChatSection section : message.getSectionList()) {
+			if (section.getStyle().getColor() == null) {
+				section.getStyle().setColor(color);
+			}
+		}
 		return this;
 	}
 

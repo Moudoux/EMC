@@ -1,6 +1,7 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventGuiScreenPostDraw;
+import me.deftware.client.framework.gui.GuiScreen;
 import me.deftware.mixin.imp.IMixinGuiContainer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -30,7 +31,9 @@ public class MixinGuiContainer extends MixinGuiScreen implements IMixinGuiContai
 
     @Inject(method = "drawMouseoverTooltip", at = @At("RETURN"))
     private void drawMouseoverTooltip(MatrixStack matrices, int x, int y, CallbackInfo ci) {
-        new EventGuiScreenPostDraw((Screen) (Object) this, x, y).broadcast();
+        if (!(((Screen) (Object) this) instanceof GuiScreen)) {
+            new EventGuiScreenPostDraw(this.screenInstance.get(), x, y).broadcast();
+        }
     }
 
 }

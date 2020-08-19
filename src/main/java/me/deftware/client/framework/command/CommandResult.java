@@ -2,11 +2,14 @@ package me.deftware.client.framework.command;
 
 import com.mojang.brigadier.arguments.*;
 import com.mojang.brigadier.context.CommandContext;
-import me.deftware.client.framework.wrappers.entity.IEntity;
+import me.deftware.client.framework.chat.ChatMessage;
+import me.deftware.client.framework.entity.Entity;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 
-@SuppressWarnings("ALL")
+/**
+ * @author Deftware
+ */
 public class CommandResult {
 
 	private CommandContext<?> context;
@@ -19,16 +22,11 @@ public class CommandResult {
 		return StringArgumentType.getString(context, node);
 	}
 
-	public IEntity getEntity(String node) throws Exception {
-		try {
-			return IEntity.fromEntity(EntityArgumentType.getEntity((CommandContext<ServerCommandSource>) context, node));
-		} catch (Exception ex) {
-			// Will throw most likely if not in a Server
-			return null;
-		}
+	public Entity getEntity(String node) throws Exception {
+		return Entity.newInstance(EntityArgumentType.getEntity((CommandContext<ServerCommandSource>) context, node));
 	}
 
-	public String getEntityName(String node) throws Exception {
+	public ChatMessage getEntityName(String node) throws Exception {
 		return getEntity(node).getName();
 	}
 
