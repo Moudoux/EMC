@@ -6,6 +6,7 @@ import me.deftware.client.framework.event.events.EventHurtcam;
 import me.deftware.client.framework.event.events.EventRender2D;
 import me.deftware.client.framework.event.events.EventRender3D;
 import me.deftware.client.framework.event.events.EventRender3DNoBobbing;
+import me.deftware.client.framework.helper.WindowHelper;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.client.framework.util.minecraft.MinecraftIdentifier;
@@ -62,20 +63,22 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Inject(method = "renderHand", at = @At("HEAD"))
     private void renderHand(MatrixStack matrixStack_1, Camera camera_1, float partialTicks, CallbackInfo ci) {
-        // Normal 3d event
-        loadPushPop(renderEvent, matrixStack_1, partialTicks);
-        // Camera model stack without bobbing applied
-        MatrixStack matrix = new MatrixStack();
-        matrix.push();
-        matrix.peek().getModel().multiply(this.getBasicProjectionMatrix(camera, partialTicks, true));
-        MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrix.peek().getModel());
-        // Camera transformation stack
-        matrix.pop();
-        matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(camera.getPitch()));
-        matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(camera.getYaw() + 180f));
-        loadPushPop(renderEventNoBobbing, matrix, partialTicks);
-        // Reset projection
-        MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrixStack_1.peek().getModel());
+       if (WindowHelper.isFocused()) {
+           // Normal 3d event
+           loadPushPop(renderEvent, matrixStack_1, partialTicks);
+           // Camera model stack without bobbing applied
+           MatrixStack matrix = new MatrixStack();
+           matrix.push();
+           matrix.peek().getModel().multiply(this.getBasicProjectionMatrix(camera, partialTicks, true));
+           MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrix.peek().getModel());
+           // Camera transformation stack
+           matrix.pop();
+           matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(camera.getPitch()));
+           matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(camera.getYaw() + 180f));
+           loadPushPop(renderEventNoBobbing, matrix, partialTicks);
+           // Reset projection
+           MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrixStack_1.peek().getModel());
+       }
     }
 
     @Unique
@@ -98,17 +101,19 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;render(Lnet/minecraft/client/util/math/MatrixStack;F)V"))
     private void onRender2D(CallbackInfo cb) {
-        // Chat queue
-        Runnable operation = ChatHud.getChatMessageQueue().poll();
-        if (operation != null) {
-            operation.run();
+        if (WindowHelper.isFocused()) {
+            // Chat queue
+            Runnable operation = ChatHud.getChatMessageQueue().poll();
+            if (operation != null) {
+                operation.run();
+            }
+            // Other actions
+            operation = Minecraft.RENDER_THREAD.poll();
+            if (operation != null) {
+                operation.run();
+            }
+            new EventRender2D(0f).broadcast();
         }
-        // Other actions
-        operation = Minecraft.RENDER_THREAD.poll();
-        if (operation != null) {
-            operation.run();
-        }
-        new EventRender2D(0f).broadcast();
     }
 
     @Override

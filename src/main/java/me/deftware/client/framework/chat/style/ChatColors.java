@@ -7,6 +7,9 @@ import net.minecraft.text.Style;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 
+import javax.annotation.Nullable;
+import java.awt.*;
+
 /**
  * @author Deftware
  */
@@ -48,7 +51,7 @@ public enum ChatColors {
 		return Formatting.byCode(code).toString();
 	}
 
-	public static @AllArgsConstructor class ChatColor {
+	public static class ChatColor {
 
 		/**
 		 * Only available in Minecraft >= 1.16
@@ -59,6 +62,16 @@ public enum ChatColors {
 		 * Old style legacy color system
 		 */
 		private @Setter Formatting formatting;
+
+		private @Getter Color color;
+
+		public ChatColor(TextColor color, Formatting formatting) {
+			this.textColor = color;
+			this.formatting = formatting;
+			if (formatting.getColorValue() != null) {
+				this.color = new Color(formatting.getColorValue());
+			}
+		}
 
 		public Style applyToStyle(Style style) {
 			if (textColor != null) {

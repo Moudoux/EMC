@@ -36,6 +36,11 @@ public class CircleRenderStack extends RenderStack<CircleRenderStack> {
 			float y = (float) (radius + 1 * Math.cos(i * 0.12566370614359174D));
 			GL11.glVertex2f(xx + x, yy + y);
 		}
+		for (int i = 0; i < 50; i++) {
+			float x = (float) (radius * Math.sin(i * 0.12566370614359174D));
+			float y = (float) (radius * Math.cos(i * 0.12566370614359174D));
+			GL11.glVertex2f(xx + x, yy + y);
+		}
 		return this;
 	}
 

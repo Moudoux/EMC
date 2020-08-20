@@ -1,12 +1,12 @@
 package me.deftware.client.framework.render.batching;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.deftware.client.framework.event.events.EventScaleChange;
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * new RenderStackImpl()
@@ -21,7 +21,7 @@ import java.awt.*;
 @SuppressWarnings("unchecked")
 public abstract class RenderStack<T> {
 
-	protected float red, green, blue, alpha, lineWidth = 2f;
+	public static final CopyOnWriteArrayList<Runnable> scaleChangeCallback = new CopyOnWriteArrayList<>();
 
 	public static float getScale() {
 		return (float) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", 1.0f);
@@ -29,8 +29,10 @@ public abstract class RenderStack<T> {
 
 	public static void setScale(float scale) {
 		SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", scale);
-		new EventScaleChange().broadcast();
+		scaleChangeCallback.forEach(Runnable::run);
 	}
+
+	protected float red, green, blue, alpha, lineWidth = 2f;
 
 	public T setupMatrix() {
 		return setupMatrix(MinecraftClient.getInstance().getWindow().getWidth(), MinecraftClient.getInstance().getWindow().getHeight());
@@ -70,7 +72,7 @@ public abstract class RenderStack<T> {
 
 	public T begin(int mode) {
 		GL11.glBegin(mode);
-		glColor(Color.red, 100f); // Default color
+		glColor(Color.white, 100f); // Default color
 		return (T) this;
 	}
 
