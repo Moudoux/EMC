@@ -1,5 +1,6 @@
 package me.deftware.client.framework.helper;
 
+import me.deftware.client.framework.gui.GuiScreen;
 import me.deftware.client.framework.util.minecraft.MinecraftIdentifier;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
 import me.deftware.mixin.imp.IMixinMinecraft;
@@ -46,6 +47,10 @@ public class WindowHelper {
 
 	public static boolean isFocused() {
 		return ((IMixinMinecraft) MinecraftClient.getInstance()).getIsWindowFocused();
+	}
+
+	public static boolean isMinimized() {
+		return GuiScreen.getDisplayHeight() == 0 && GuiScreen.getDisplayWidth() == 0;
 	}
 
 	public static int getFPS() {

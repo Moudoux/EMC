@@ -4,8 +4,8 @@ import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.item.IItem;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.world.block.types.CropBlock;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FluidBlock;
+import me.deftware.client.framework.world.block.types.StorageBlock;
+import net.minecraft.block.*;
 import net.minecraft.item.Item;
 import net.minecraft.util.registry.Registry;
 
@@ -17,9 +17,12 @@ public class Block implements IItem {
 	protected final net.minecraft.block.Block block;
 	protected BlockPosition blockPosition;
 
+	@SuppressWarnings("DuplicateCondition")
 	public static Block newInstance(net.minecraft.block.Block block) {
 		if (block instanceof net.minecraft.block.CropBlock) {
 			return new CropBlock(block);
+		} else if (block instanceof ChestBlock || block instanceof TrappedChestBlock || block instanceof BarrelBlock) {
+			return new StorageBlock(block);
 		}
 		return new Block(block);
 	}

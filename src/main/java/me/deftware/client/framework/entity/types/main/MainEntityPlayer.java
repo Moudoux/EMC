@@ -108,10 +108,6 @@ public class MainEntityPlayer extends RotationLogic {
 		}
 	}
 
-	public float getTestYaw() {
-		return entity.yaw;
-	}
-
 	@Override
 	public float getRotationYaw() {
 		return GameCamera.isActive() ? GameCamera.fakePlayer.yaw : entity.yaw;
@@ -120,6 +116,10 @@ public class MainEntityPlayer extends RotationLogic {
 	@Override
 	public float getRotationPitch() {
 		return GameCamera.isActive() ? GameCamera.fakePlayer.pitch : entity.pitch;
+	}
+
+	public void closeHandledScreen() {
+		getMinecraftEntity().closeHandledScreen();
 	}
 
 }

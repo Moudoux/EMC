@@ -68,7 +68,7 @@ public enum ChatColors {
 		public ChatColor(TextColor color, Formatting formatting) {
 			this.textColor = color;
 			this.formatting = formatting;
-			if (formatting.getColorValue() != null) {
+			if (formatting != null && formatting.getColorValue() != null) {
 				this.color = new Color(formatting.getColorValue());
 			}
 		}

@@ -63,7 +63,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Inject(method = "renderHand", at = @At("HEAD"))
     private void renderHand(MatrixStack matrixStack_1, Camera camera_1, float partialTicks, CallbackInfo ci) {
-       if (WindowHelper.isFocused()) {
+       if (!WindowHelper.isMinimized()) {
            // Normal 3d event
            loadPushPop(renderEvent, matrixStack_1, partialTicks);
            // Camera model stack without bobbing applied
@@ -101,7 +101,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;render(Lnet/minecraft/client/util/math/MatrixStack;F)V"))
     private void onRender2D(CallbackInfo cb) {
-        if (WindowHelper.isFocused()) {
+        if (!WindowHelper.isMinimized()) {
             // Chat queue
             Runnable operation = ChatHud.getChatMessageQueue().poll();
             if (operation != null) {

@@ -1,5 +1,7 @@
 package me.deftware.client.framework.world.block;
 
+import me.deftware.client.framework.math.position.BlockPosition;
+
 /**
  * @author Deftware
  */
@@ -16,6 +18,13 @@ public class BlockState {
 	public net.minecraft.block.BlockState getMinecraftBlockState() {
 		return blockState;
 	}
+
+	public Block getBlock(BlockPosition position) {
+		Block block = Block.newInstance(getMinecraftBlockState().getBlock());
+		block.setBlockPosition(position);
+		return block;
+	}
+
 
 	public Material getMaterial() {
 		return material;

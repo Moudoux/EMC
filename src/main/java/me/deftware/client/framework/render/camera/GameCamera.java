@@ -1,5 +1,6 @@
 package me.deftware.client.framework.render.camera;
 
+import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.world.World;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.KeyboardInput;
@@ -35,6 +36,10 @@ public class GameCamera {
 			MinecraftClient.getInstance().setCameraEntity(fakePlayer);
 			if (MinecraftClient.getInstance().player.input instanceof KeyboardInput) MinecraftClient.getInstance().player.input = new DummyInput();
 		}
+	}
+
+	public static boolean isCameraEntity(Entity entity) {
+		return entity.getMinecraftEntity() == fakePlayer;
 	}
 
 	public static void disable() {
