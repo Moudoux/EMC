@@ -2,6 +2,7 @@ package me.deftware.client.framework.main;
 
 import me.deftware.client.framework.main.preprocessor.PreProcessorMan;
 import me.deftware.client.framework.util.path.LocationUtil;
+import me.deftware.client.framework.util.path.OSUtils;
 import net.fabricmc.loader.launch.knot.KnotClient;
 
 import java.io.File;
@@ -19,7 +20,7 @@ public class Main {
     public static List<String> logging = new ArrayList<>();
 
     public static void main(String[] args) {
-        File emcJar = LocationUtil.getEMC().toFile(), mcDir = LocationUtil.getMinecraftDir().toFile();
+        File emcJar = LocationUtil.getEMC().toFile(), mcDir = new File(OSUtils.getDefaultMinecraftPath());
         System.setProperty("EMCDir", emcJar != null ? emcJar.getParentFile().getAbsolutePath() : "null");
         System.setProperty("MCDir", mcDir != null ? mcDir.getAbsolutePath() : "null");
         System.setProperty("SUBSYSTEM", "true");

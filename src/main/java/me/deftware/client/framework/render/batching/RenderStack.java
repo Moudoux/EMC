@@ -2,6 +2,7 @@ package me.deftware.client.framework.render.batching;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.render.shader.Shader;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.opengl.GL11;
 
@@ -32,21 +33,20 @@ public abstract class RenderStack<T> {
 		scaleChangeCallback.forEach(Runnable::run);
 	}
 
+	protected boolean customMatrix = true;
 	protected float red, green, blue, alpha, lineWidth = 2f;
+	protected Shader shader;
 
 	public T setupMatrix() {
-		return setupMatrix(MinecraftClient.getInstance().getWindow().getWidth(), MinecraftClient.getInstance().getWindow().getHeight());
-	}
-
-	public T setupMatrix(int matrixWidth, int matrixHeight) {
 		GL11.glPushMatrix();
-		reloadCustomMatrix(matrixWidth, matrixHeight);
+		if (customMatrix) reloadCustomMatrix();
 		// Setup gl
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glLineWidth(lineWidth);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glEnable(GL11.GL_LINE_SMOOTH);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		GL11.glDepthMask(false);
 		return (T) this;
 	}
 
@@ -57,6 +57,16 @@ public abstract class RenderStack<T> {
 
 	public T glColor(Color color) {
 		return glColor(color, color.getAlpha());
+	}
+
+	public T glShader(Shader shader) {
+		this.shader = shader;
+		return (T) this;
+	}
+
+	public T glOverrideMatrix(boolean flag) {
+		this.customMatrix = flag;
+		return (T) this;
 	}
 
 	public T glColor(Color color, float alpha) {
@@ -71,19 +81,28 @@ public abstract class RenderStack<T> {
 	public abstract T begin();
 
 	public T begin(int mode) {
-		GL11.glBegin(mode);
-		glColor(Color.white, 100f); // Default color
+		if (shader != null) {
+			shader.bind();
+		} else {
+			GL11.glBegin(mode);
+			glColor(Color.white, 100f); // Default color
+		}
 		return (T) this;
 	}
 
 	public void end() {
 		GL11.glEnd();
+		if (shader != null) shader.unbind();
 		GL11.glPopMatrix();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		reloadMinecraftMatrix();
+		if (customMatrix) reloadMinecraftMatrix();
+		RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
 	}
 
-	public static void reloadCustomMatrix(int matrixWidth, int matrixHeight) {
+	/**
+	 * Creates a 1 to 1 pixel matrix
+	 */
+	public static void reloadCustomMatrix() {
 		// Change matrix
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -91,7 +110,7 @@ public abstract class RenderStack<T> {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0.0D, matrixWidth, matrixHeight, 0.0D, 1000.0D, 3000.0D);
+		GL11.glOrtho(0.0D, MinecraftClient.getInstance().getWindow().getWidth(), MinecraftClient.getInstance().getWindow().getHeight(), 0.0D, 1000.0D, 3000.0D);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
 		GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
@@ -106,7 +125,6 @@ public abstract class RenderStack<T> {
 		RenderSystem.matrixMode(5888);
 		RenderSystem.loadIdentity();
 		RenderSystem.translatef(0.0F, 0.0F, -2000.0F);
-		RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
 	}
 
 }

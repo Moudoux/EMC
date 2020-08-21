@@ -23,6 +23,10 @@ public class ScreenHelper {
 
 	public static final List<Function<List<String>, List<String>>> debugHudModifiers = new CopyOnWriteArrayList<>();
 
+	public static boolean isScreenOpen() {
+		return MinecraftClient.getInstance().currentScreen != null;
+	}
+
 	public static boolean isChatOpen() {
 		if (MinecraftClient.getInstance().currentScreen != null) {
 			return MinecraftClient.getInstance().currentScreen instanceof ChatScreen;

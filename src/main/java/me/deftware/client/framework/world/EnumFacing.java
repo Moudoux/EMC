@@ -26,4 +26,13 @@ public enum EnumFacing {
 		return direction;
 	}
 
+	public static EnumFacing fromMinecraft(Direction direction) {
+		for (EnumFacing facing : values()) {
+			if (facing.getFacing() == direction) {
+				return facing;
+			}
+		}
+		return NORTH;
+	}
+
 }

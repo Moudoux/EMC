@@ -31,9 +31,9 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 	}
 
 	@Override
-	public FontRenderStack setupMatrix(int matrixWidth, int matrixHeight) {
+	public FontRenderStack setupMatrix() {
 		GL11.glPushMatrix();
-		if (matrix) reloadCustomMatrix(matrixWidth, matrixHeight);
+		if (matrix) reloadCustomMatrix();
 		return this;
 	}
 

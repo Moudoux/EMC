@@ -6,6 +6,7 @@ import me.deftware.client.framework.event.events.EventHurtcam;
 import me.deftware.client.framework.event.events.EventRender2D;
 import me.deftware.client.framework.event.events.EventRender3D;
 import me.deftware.client.framework.event.events.EventRender3DNoBobbing;
+import me.deftware.client.framework.helper.GlStateHelper;
 import me.deftware.client.framework.helper.WindowHelper;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.minecraft.Minecraft;
@@ -78,6 +79,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
            loadPushPop(renderEventNoBobbing, matrix, partialTicks);
            // Reset projection
            MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrixStack_1.peek().getModel());
+           GlStateHelper.enableLighting();
        }
     }
 

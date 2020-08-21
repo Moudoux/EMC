@@ -1,9 +1,8 @@
-package me.deftware.client.framework.render.batching.minecraft;
+package me.deftware.client.framework.render.batching;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.helper.RenderHelper;
 import me.deftware.client.framework.math.box.BoundingBox;
-import me.deftware.client.framework.render.batching.RenderStack;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
@@ -24,7 +23,7 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 	}
 
 	@Override
-	public CubeRenderStack setupMatrix(int matrixWidth, int matrixHeight) {
+	public CubeRenderStack setupMatrix() {
 		RenderSystem.clearCurrentColor();
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glEnable(GL_BLEND);

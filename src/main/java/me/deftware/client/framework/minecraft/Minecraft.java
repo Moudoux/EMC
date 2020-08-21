@@ -6,6 +6,8 @@ import me.deftware.client.framework.entity.types.main.MainEntityPlayer;
 import me.deftware.client.framework.gui.GuiScreen;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.math.position.DoubleBlockPosition;
+import me.deftware.client.framework.util.hitresult.CrosshairResult;
+import me.deftware.client.framework.util.minecraft.BlockSwingResult;
 import me.deftware.client.framework.util.minecraft.ServerConnectionInfo;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
@@ -44,15 +46,15 @@ public class Minecraft {
 				return null;
 			}, Entity::newInstance);
 
-	private static final ComparedConversion<net.minecraft.util.math.BlockPos, BlockPosition> hitBlock =
+	private static final ComparedConversion<HitResult, BlockSwingResult> hitBlock =
 			new ComparedConversion<>(() -> {
 				if (MinecraftClient.getInstance().crosshairTarget != null) {
 					if (MinecraftClient.getInstance().crosshairTarget.getType() == HitResult.Type.BLOCK) {
-						return ((BlockHitResult) MinecraftClient.getInstance().crosshairTarget).getBlockPos();
+						return MinecraftClient.getInstance().crosshairTarget;
 					}
 				}
 				return null;
-			}, DoubleBlockPosition::fromMinecraftBlockPos);
+			}, BlockSwingResult::new);
 
 	private static final ComparedConversion<ServerInfo, ServerConnectionInfo> connectedServer =
 			new ComparedConversion<>(() -> MinecraftClient.getInstance().getCurrentServerEntry(), ServerConnectionInfo::new);
@@ -139,7 +141,7 @@ public class Minecraft {
 	}
 
 	@Nullable
-	public static BlockPosition getHitBlock() {
+	public static BlockSwingResult getHitBlock() {
 		return hitBlock.get();
 	}
 

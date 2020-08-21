@@ -14,7 +14,7 @@ import java.io.File;
  */
 public class Validator {
 
-	private static String cachedLocalChecksum, cachedRemoteChecksum;
+	public static String cachedLocalChecksum, cachedRemoteChecksum;
 
 	public static String getLocalChecksum() throws Exception {
 		if (cachedLocalChecksum != null && !cachedLocalChecksum.isEmpty()) {

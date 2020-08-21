@@ -13,9 +13,9 @@ public class CircleRenderStack extends RenderStack<CircleRenderStack> {
 	}
 
 	@Override
-	public CircleRenderStack setupMatrix(int matrixWidth, int matrixHeight) {
+	public CircleRenderStack setupMatrix() {
 		GL11.glPushMatrix();
-		reloadCustomMatrix(matrixWidth, matrixHeight);
+		if (customMatrix) reloadCustomMatrix();
 		// Setup gl
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -30,11 +30,6 @@ public class CircleRenderStack extends RenderStack<CircleRenderStack> {
 			xx *= getScale();
 			yy *= getScale();
 			radius *= getScale();
-		}
-		for (int i = 0; i < 50; i++) {
-			float x = (float) (radius + 1 * Math.sin(i * 0.12566370614359174D));
-			float y = (float) (radius + 1 * Math.cos(i * 0.12566370614359174D));
-			GL11.glVertex2f(xx + x, yy + y);
 		}
 		for (int i = 0; i < 50; i++) {
 			float x = (float) (radius * Math.sin(i * 0.12566370614359174D));
