@@ -1,6 +1,8 @@
 package me.deftware.client.framework.render.batching;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import lombok.Getter;
+import lombok.Setter;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.render.shader.Shader;
 import net.minecraft.client.MinecraftClient;
@@ -22,6 +24,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @SuppressWarnings("unchecked")
 public abstract class RenderStack<T> {
 
+	public static @Getter boolean inCustomMatrix = false;
 	public static final CopyOnWriteArrayList<Runnable> scaleChangeCallback = new CopyOnWriteArrayList<>();
 
 	public static float getScale() {
@@ -33,9 +36,8 @@ public abstract class RenderStack<T> {
 		scaleChangeCallback.forEach(Runnable::run);
 	}
 
-	protected boolean customMatrix = true;
-	protected float red, green, blue, alpha, lineWidth = 2f;
-	protected Shader shader;
+	protected @Setter boolean customMatrix = true, locked = false;
+	protected float red = 1f, green = 1f, blue = 1f, alpha = 1f, lineWidth = 2f;
 
 	public T setupMatrix() {
 		GL11.glPushMatrix();
@@ -59,11 +61,6 @@ public abstract class RenderStack<T> {
 		return glColor(color, color.getAlpha());
 	}
 
-	public T glShader(Shader shader) {
-		this.shader = shader;
-		return (T) this;
-	}
-
 	public T glOverrideMatrix(boolean flag) {
 		this.customMatrix = flag;
 		return (T) this;
@@ -81,28 +78,26 @@ public abstract class RenderStack<T> {
 	public abstract T begin();
 
 	public T begin(int mode) {
-		if (shader != null) {
-			shader.bind();
-		} else {
-			GL11.glBegin(mode);
-			glColor(Color.white, 100f); // Default color
-		}
+		GL11.glBegin(mode);
+		GL11.glColor4f(this.red, this.green, this.blue, this.alpha);
 		return (T) this;
 	}
 
 	public void end() {
 		GL11.glEnd();
-		if (shader != null) shader.unbind();
-		GL11.glPopMatrix();
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		if (customMatrix) reloadMinecraftMatrix();
-		RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
+		if (!locked) {
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glPopMatrix();
+			if (customMatrix) reloadMinecraftMatrix();
+		}
 	}
 
 	/**
 	 * Creates a 1 to 1 pixel matrix
 	 */
 	public static void reloadCustomMatrix() {
+		inCustomMatrix = true;
 		// Change matrix
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -115,9 +110,12 @@ public abstract class RenderStack<T> {
 		GL11.glLoadIdentity();
 		GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
 		GL11.glColor4f(1f, 1f, 1f, 1f);
+		RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
 	}
 
 	public static void reloadMinecraftMatrix() {
+		inCustomMatrix = false;
+		// Revert back to Minecraft
 		RenderSystem.matrixMode(5889);
 		RenderSystem.loadIdentity();
 		RenderSystem.ortho(0.0D, MinecraftClient.getInstance().getWindow().getFramebufferWidth() / MinecraftClient.getInstance().getWindow().getScaleFactor(),
@@ -125,6 +123,7 @@ public abstract class RenderStack<T> {
 		RenderSystem.matrixMode(5888);
 		RenderSystem.loadIdentity();
 		RenderSystem.translatef(0.0F, 0.0F, -2000.0F);
+		RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
 	}
 
 }
