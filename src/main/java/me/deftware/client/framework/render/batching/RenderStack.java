@@ -37,7 +37,7 @@ public abstract class RenderStack<T> {
 	}
 
 	protected @Setter boolean customMatrix = true, locked = false;
-	protected float red = 1f, green = 1f, blue = 1f, alpha = 0f, lineWidth = 2f;
+	protected float red = 1f, green = 1f, blue = 1f, alpha = 1f, lineWidth = 2f;
 
 	public T setupMatrix() {
 		GL11.glPushMatrix();
@@ -86,8 +86,10 @@ public abstract class RenderStack<T> {
 	public void end() {
 		GL11.glEnd();
 		if (!locked) {
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glDepthMask(true);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL11.glPopMatrix();
 			if (customMatrix) reloadMinecraftMatrix();
 		}

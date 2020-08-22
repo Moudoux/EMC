@@ -16,7 +16,7 @@ public class QuadRenderStack extends RenderStack<QuadRenderStack> {
 	}
 
 	public QuadRenderStack drawRect(double x, double y, double xx, double yy, boolean scaling) {
-		return drawRect(x, y, xx, y, scaling, null);
+		return drawRect(x, y, xx, yy, scaling, null);
 	}
 
 	public QuadRenderStack drawRect(double x, double y, double xx, double yy, boolean scaling, Shader shader) {
