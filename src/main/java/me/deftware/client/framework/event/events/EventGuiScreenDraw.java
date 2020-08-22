@@ -34,8 +34,8 @@ public class EventGuiScreenDraw extends Event {
         ((IMixinGuiScreen) screen.getMinecraftScreen()).getEventList().add(button);
     }
 
-    public List<Button> getIButtonList() {
-        return ((IMixinGuiScreen) screen).getEmcButtons();
+    public List<Button> getEmcButtons() {
+        return ((IMixinGuiScreen) screen.getMinecraftScreen()).getEmcButtons();
     }
 
     public int getMouseX() {

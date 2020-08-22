@@ -13,9 +13,12 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * @author Deftware
+ * @author Deftware, CDAGaming
  */
 public class World {
+
+	private static long previousTotalWorldTime;
+	private static double previousMeasureTime, currentTPS = 0;
 
 	public static boolean isLoaded() {
 		return MinecraftClient.getInstance().world != null;
@@ -75,6 +78,39 @@ public class World {
 				dimension.getRegistryKey() == net.minecraft.world.World.END ? 1 :
 						dimension.getRegistryKey() == net.minecraft.world.World.NETHER ? -1
 								: dimension.getDimension().hashCode();
+	}
+
+	public static double getTPS() {
+		if (World.isLoaded()) {
+			if (World.getWorldTime() == 0) return 0.0D;
+			if (getTimeInSeconds() - previousMeasureTime < 3.0) {
+				return currentTPS;
+			}
+			currentTPS = ((double) (World.getWorldTime() - previousTotalWorldTime)) / (getTimeInSeconds() - previousMeasureTime);
+
+			// Limits TPS to not go above 20, sometimes possible
+			if (currentTPS > 20.0d) {
+				currentTPS = 20.0d;
+			}
+			// Also prevent it going below 20, which is also sometimes possible
+			if (currentTPS < 0.0d) {
+				currentTPS = 0.0d;
+			}
+
+			updatePreviousTotalWorldTime();
+		} else {
+			currentTPS = 0.0d;
+		}
+		return currentTPS;
+	}
+
+	private static void updatePreviousTotalWorldTime() {
+		previousTotalWorldTime = World.getWorldTime();
+		previousMeasureTime = getTimeInSeconds();
+	}
+
+	public static double getTimeInSeconds() {
+		return (System.currentTimeMillis() / 1000d);
 	}
 
 }

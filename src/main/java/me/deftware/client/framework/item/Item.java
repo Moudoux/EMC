@@ -52,7 +52,6 @@ public class Item implements IItem {
 	}
 
 	public boolean isAir() {
-		// TODO: Verify this
 		return getMinecraftItem() == Blocks.AIR.asItem();
 	}
 
