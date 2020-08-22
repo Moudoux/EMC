@@ -37,7 +37,7 @@ public abstract class RenderStack<T> {
 	}
 
 	protected @Setter boolean customMatrix = true, locked = false;
-	protected float red = 1f, green = 1f, blue = 1f, alpha = 1f, lineWidth = 2f;
+	protected float red = 1f, green = 1f, blue = 1f, alpha = 0f, lineWidth = 2f;
 
 	public T setupMatrix() {
 		GL11.glPushMatrix();

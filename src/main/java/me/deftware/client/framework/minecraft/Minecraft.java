@@ -4,6 +4,7 @@ import me.deftware.client.framework.conversion.ComparedConversion;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.types.main.MainEntityPlayer;
 import me.deftware.client.framework.gui.GuiScreen;
+import me.deftware.client.framework.helper.ScreenHelper;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.math.position.DoubleBlockPosition;
 import me.deftware.client.framework.util.hitresult.CrosshairResult;
@@ -67,6 +68,35 @@ public class Minecraft {
 	@Nullable
 	public static MainEntityPlayer getPlayer() {
 		return mainPlayer.get();
+	}
+
+	public static int getMinecraftChatScaledYOffset() {
+		if (ScreenHelper.isChatOpen()) {
+			int chatHeight = 24, multiplier = getRealScaledMultiplier(), scaleFactor = (int) MinecraftClient.getInstance().getWindow().getScaleFactor();
+			if (scaleFactor == 0) return chatHeight;
+			chatHeight *= multiplier;
+			if (scaleFactor % 2 == 0) chatHeight += 5;
+			return chatHeight;
+		}
+		return 0;
+	}
+
+	public static int getMinecraftChatScaledXOffset() {
+		if (ScreenHelper.isChatOpen()) {
+			int chatX = 4, multiplier = getRealScaledMultiplier(), scaleFactor = (int) MinecraftClient.getInstance().getWindow().getScaleFactor();
+			if (scaleFactor == 0) return chatX;
+			chatX *= multiplier;
+			return chatX;
+		}
+		return 4;
+	}
+
+	public static int getRealScaledMultiplier() {
+		int scaleFactor = (int) MinecraftClient.getInstance().getWindow().getScaleFactor();
+		if (scaleFactor != 0) {
+			scaleFactor /= scaleFactor % 2 == 0 ? 2 : 1.8;
+		}
+		return scaleFactor;
 	}
 
 	public static void openScreen(GuiScreen screen) {

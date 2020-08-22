@@ -1,5 +1,6 @@
 package me.deftware.client.framework.render.batching.font;
 
+import lombok.Setter;
 import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.chat.ChatSection;
 import me.deftware.client.framework.chat.style.ChatStyle;
@@ -16,7 +17,7 @@ import java.awt.*;
 public class FontRenderStack extends RenderStack<FontRenderStack> {
 
 	private int offset = 0;
-	private boolean shadow = true, scaled, matrix = true;
+	private @Setter boolean shadow = true, scaled, matrix = true;
 	private final LegacyBitmapFont font;
 
 	public FontRenderStack(IFontProvider font) {

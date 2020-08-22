@@ -22,13 +22,9 @@ public class CommandScale extends EMCModCommand {
                 .then(
                         LiteralArgumentBuilder.literal("set")
                                 .then(
-                                        RequiredArgumentBuilder.argument("size", FloatArgumentType.floatArg())
+                                        RequiredArgumentBuilder.argument("size", FloatArgumentType.floatArg(0.2f, 4.0f))
                                                 .executes(c -> {
                                                     CommandResult r = new CommandResult(c);
-                                                    if (r.getFloat("size") < 0.2 || r.getFloat("size") > 4.0f) {
-                                                        new ChatBuilder().withPrefix().withText("Error! Scale must be between 0.2 and 4.0!").withColor(ChatColors.RED).build().print();
-                                                        return 1;
-                                                    }
                                                     RenderStack.setScale(r.getFloat("size"));
                                                     Bootstrap.EMCSettings.putPrimitive("RENDER_SCALE", r.getFloat("size"));
                                                     new ChatBuilder().withPrefix().withText(
@@ -39,7 +35,7 @@ public class CommandScale extends EMCModCommand {
                                 )
                 )
                 .then(
-                        LiteralArgumentBuilder.literal("restore")
+                        LiteralArgumentBuilder.literal("reset")
                                 .executes(c -> {
                                     RenderStack.setScale(1.0f);
                                     Bootstrap.EMCSettings.putPrimitive("RENDER_SCALE", 1.0f);
