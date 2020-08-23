@@ -18,7 +18,7 @@ public abstract class MixinWindow {
 					value = "INVOKE",
 					target = "Lorg/lwjgl/glfw/GLFW;glfwDefaultWindowHints()V"
 			),
-			method = "<init>"
+			method = "<init>", remap = false
 	)
 	private void redirectDefaultWindowHints() {
 		GLFW.glfwDefaultWindowHints();
