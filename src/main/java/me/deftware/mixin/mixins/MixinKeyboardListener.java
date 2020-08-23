@@ -14,12 +14,14 @@ public class MixinKeyboardListener {
 
     @Inject(method = "onKey", at = @At(value = "INVOKE", target = "net/minecraft/client/util/InputUtil.isKeyPressed(JI)Z", ordinal = 5))
     private void onKeyEvent(long windowPointer, int keyCode, int scanCode, int action, int modifiers, CallbackInfo ci) {
-        new EventKeyAction(keyCode, action, modifiers).broadcast();
+        if (keyCode >= 32 && keyCode <= 348) {
+            new EventKeyAction(keyCode, action, modifiers).broadcast();
+        }
     }
 
     @Inject(method = "onChar", at = @At("HEAD"))
     private void onCharEvent(long windowPointer, int codePoint, int modifiers, CallbackInfo ci) {
-        if (windowPointer == MinecraftClient.getInstance().getWindow().getHandle() && MinecraftClient.getInstance().currentScreen == null) {
+        if (windowPointer == MinecraftClient.getInstance().getWindow().getHandle() && MinecraftClient.getInstance().currentScreen == null && codePoint >= 32 && codePoint <= 348) {
             if (Character.charCount(codePoint) == 1) {
                 new EventCharacter((char) codePoint, modifiers).broadcast();
             } else {

@@ -74,7 +74,7 @@ public abstract class MixinGuiNewChat implements IMixinGuiNewChat {
         return list;
     }
 
-    @ModifyVariable(method = "addMessage(Lnet/minecraft/text/Text;I)V", at = @At("HEAD"))
+    @ModifyVariable(method = "addMessage(Lnet/minecraft/text/Text;)V", at = @At("HEAD"))
     public Text addMessage(Text chatComponent) {
         event = new EventChatReceive(new ChatMessage().fromText(chatComponent)).broadcast();
         return event.getMessage().build();
