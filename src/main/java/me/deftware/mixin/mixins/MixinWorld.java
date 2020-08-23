@@ -1,6 +1,7 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.entity.block.TileEntity;
+import me.deftware.client.framework.event.events.EventTileBlockRemoved;
 import me.deftware.mixin.imp.IMixinWorld;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
@@ -40,7 +41,9 @@ public abstract class MixinWorld implements IMixinWorld {
 
 	@Redirect(method = "tickBlockEntities", at = @At(value = "INVOKE", target = "Ljava/util/List;removeAll(Ljava/util/Collection;)Z", ordinal = 1))
 	private boolean onRemoveEntityIf(List<BlockEntity> list, Collection<BlockEntity> entities) {
-		for (BlockEntity entity : entities) emcTileEntities.remove(entity);
+		for (BlockEntity entity : entities) {
+			new EventTileBlockRemoved(emcTileEntities.remove(entity));
+		};
 		return list.removeAll(entities);
 	}
 
