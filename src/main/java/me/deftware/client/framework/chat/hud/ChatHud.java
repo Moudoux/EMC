@@ -28,6 +28,9 @@ public class ChatHud {
 		addMessage(message, 0);
 	}
 
+	/**
+	 * By specifying a line you can override a message in chat
+	 */
 	public static void addMessage(ChatMessage message, int line) {
 		getMixinHudImpl().setTheChatLine(message.build(), line, MinecraftClient.getInstance().inGameHud.getTicks(), false);
 	}
