@@ -29,20 +29,20 @@ public class MixinNetworkPlayerInfo implements IMixinNetworkPlayerInfo {
     @Override
     public void reloadTextures() {
         textures.clear();
-        MinecraftClient.getInstance().getSkinProvider().loadSkin(this.profile, (p_210250_1_, p_210250_2_, p_210250_3_) -> {
-            switch (p_210250_1_) {
+        MinecraftClient.getInstance().getSkinProvider().loadSkin(this.profile, (type, id, texture) -> {
+            switch (type) {
                 case SKIN:
-                    this.textures.put(MinecraftProfileTexture.Type.SKIN, p_210250_2_);
-                    this.model = p_210250_3_.getMetadata("model");
+                    this.textures.put(MinecraftProfileTexture.Type.SKIN, id);
+                    this.model = texture.getMetadata("model");
                     if (this.model == null) {
                         this.model = "default";
                     }
                     break;
                 case CAPE:
-                    this.textures.put(MinecraftProfileTexture.Type.CAPE, p_210250_2_);
+                    this.textures.put(MinecraftProfileTexture.Type.CAPE, id);
                     break;
                 case ELYTRA:
-                    this.textures.put(MinecraftProfileTexture.Type.ELYTRA, p_210250_2_);
+                    this.textures.put(MinecraftProfileTexture.Type.ELYTRA, id);
             }
 
         }, true);

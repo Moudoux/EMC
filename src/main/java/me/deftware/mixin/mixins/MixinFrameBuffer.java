@@ -21,7 +21,7 @@ public abstract class MixinFrameBuffer {
 
 	public @Shadow int textureWidth;
 	public @Shadow int textureHeight;
-	public @Shadow int depthAttachment;
+	private @Shadow int depthAttachment;
 
 	@Redirect(method = "initFbo", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;texImage2D(IIIIIIIILjava/nio/IntBuffer;)V", ordinal = 0))
 	private void texImage2D(int target, int level, int internalFormat, int width, int height, int border, int format, int type, IntBuffer pixels) {

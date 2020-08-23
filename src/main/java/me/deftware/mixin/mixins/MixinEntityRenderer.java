@@ -47,7 +47,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     private float lastMovementFovMultiplier;
 
     @Shadow
-    protected abstract void loadShader(Identifier p_loadShader_1_);
+    protected abstract void loadShader(Identifier identifier);
 
     @Shadow
     public abstract Matrix4f getBasicProjectionMatrix(Camera camera, float f, boolean bl);
@@ -63,22 +63,22 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     private final Consumer<Float> renderEventNoBobbing = partialTicks -> new EventRender3DNoBobbing(partialTicks).broadcast();
 
     @Inject(method = "renderHand", at = @At("HEAD"))
-    private void renderHand(MatrixStack matrixStack_1, Camera camera_1, float partialTicks, CallbackInfo ci) {
+    private void renderHand(MatrixStack matrixStack, Camera camera, float partialTicks, CallbackInfo ci) {
        if (!WindowHelper.isMinimized()) {
            // Normal 3d event
-           loadPushPop(renderEvent, matrixStack_1, partialTicks);
+           loadPushPop(renderEvent, matrixStack, partialTicks);
            // Camera model stack without bobbing applied
            MatrixStack matrix = new MatrixStack();
            matrix.push();
-           matrix.peek().getModel().multiply(this.getBasicProjectionMatrix(camera, partialTicks, true));
+           matrix.peek().getModel().multiply(this.getBasicProjectionMatrix(this.camera, partialTicks, true));
            MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrix.peek().getModel());
            // Camera transformation stack
            matrix.pop();
-           matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(camera.getPitch()));
-           matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(camera.getYaw() + 180f));
+           matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(this.camera.getPitch()));
+           matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(this.camera.getYaw() + 180f));
            loadPushPop(renderEventNoBobbing, matrix, partialTicks);
            // Reset projection
-           MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrixStack_1.peek().getModel());
+           MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrixStack.peek().getModel());
            GlStateHelper.enableLighting();
        }
     }

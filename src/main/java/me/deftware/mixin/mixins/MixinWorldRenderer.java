@@ -24,7 +24,7 @@ public class MixinWorldRenderer {
     }
 
     @Inject(method = "renderWeather", at = @At("HEAD"), cancellable = true)
-    private void renderWeather(LightmapTextureManager manager, float f, double d, double e, double g, CallbackInfo ci) {
+    private void renderWeather(LightmapTextureManager manager, float tickDelta, double posX, double posY, double posZ, CallbackInfo ci) {
         EventWeather event = new EventWeather(EventWeather.WeatherType.Rain);
         event.broadcast();
         if (event.isCanceled()) {

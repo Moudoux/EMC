@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * Makes EMCs block rendering override compatible with the Sodium performance mod
  */
+@SuppressWarnings("InvalidInjectorMethodSignature")
 @Mixin(value = BlockOcclusionCache.class, remap = false)
 public class MixinSodiumBlockOcclusionCache {
 

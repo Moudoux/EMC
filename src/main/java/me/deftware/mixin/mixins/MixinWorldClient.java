@@ -22,11 +22,11 @@ public class MixinWorldClient implements IMixinWorldClient {
     private final Int2ObjectMap<Entity> entities = new Int2ObjectOpenHashMap<>();
 
     @ModifyVariable(method = "randomBlockDisplayTick(IIIILjava/util/Random;ZLnet/minecraft/util/math/BlockPos$Mutable;)V", at = @At("HEAD"))
-    public boolean randomBlockDisplayTick(boolean p_animateTick_6_) {
+    public boolean randomBlockDisplayTick(boolean spawnBarrierBlocks) {
         if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "render_barrier_blocks", false)) {
             return true;
         }
-        return p_animateTick_6_;
+        return spawnBarrierBlocks;
     }
 
     @Inject(method = "addEntityPrivate", at = @At("TAIL"))

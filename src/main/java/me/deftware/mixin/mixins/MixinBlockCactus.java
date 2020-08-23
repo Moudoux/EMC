@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinBlockCactus {
 
     @Inject(method = "getCollisionShape", at = @At(value = "TAIL"), cancellable = true)
-    private void onGetCollisionShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ePos, CallbackInfoReturnable<VoxelShape> cir) {
+    private void onGetCollisionShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "custom_cactus_voxel", false)) {
             cir.setReturnValue(VoxelShapes.fullCube());
         }

@@ -19,9 +19,9 @@ public class MixinMouseHelper {
     }
 
     @Inject(method = "onMouseScroll", at = @At("HEAD"))
-    private void scrollCallback(long windowPointer, double xoffset, double yoffset, CallbackInfo ci) {
+    private void scrollCallback(long windowPointer, double horizontal, double vertical, CallbackInfo ci) {
         if (windowPointer == MinecraftClient.getInstance().getWindow().getHandle()) {
-            me.deftware.client.framework.input.Mouse.onScroll(xoffset, yoffset);
+            me.deftware.client.framework.input.Mouse.onScroll(horizontal, vertical);
         }
     }
 

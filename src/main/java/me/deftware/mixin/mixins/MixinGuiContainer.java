@@ -29,6 +29,7 @@ public class MixinGuiContainer extends MixinGuiScreen implements IMixinGuiContai
         this.shouldSendPostRenderEvent = false;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Inject(method = "drawMouseoverTooltip", at = @At("RETURN"))
     private void drawMouseoverTooltip(MatrixStack matrices, int x, int y, CallbackInfo ci) {
         if (!(((Screen) (Object) this) instanceof GuiScreen)) {

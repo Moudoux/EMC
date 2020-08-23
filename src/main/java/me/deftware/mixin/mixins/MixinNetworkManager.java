@@ -19,6 +19,7 @@ public abstract class MixinNetworkManager implements IMixinNetworkManager {
     @Shadow
     protected abstract void sendImmediately(Packet<?> packet_1, GenericFutureListener<? extends Future<? super Void>> genericFutureListener_1);
 
+    @SuppressWarnings("unchecked")
     @Redirect(method = "channelRead0", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;handlePacket(Lnet/minecraft/network/Packet;Lnet/minecraft/network/listener/PacketListener;)V"))
     private void channelRead0(Packet<PacketListener> packet, PacketListener listener) {
         EventPacketReceive event = new EventPacketReceive(packet);

@@ -2,12 +2,16 @@ package me.deftware.client.framework.world;
 
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.block.TileEntity;
+import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.world.block.Block;
 import me.deftware.client.framework.world.block.BlockState;
 import me.deftware.mixin.imp.IMixinWorld;
 import me.deftware.mixin.imp.IMixinWorldClient;
+import net.minecraft.block.FluidBlock;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.registry.Registry;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -65,6 +69,19 @@ public class World {
 
 	public static void removeEntityFromWorld(int id) {
 		Objects.requireNonNull(MinecraftClient.getInstance().world).removeEntity(id);
+	}
+
+	public static void determineRenderState(net.minecraft.block.BlockState state, CallbackInfoReturnable<Boolean> ci) {
+		if (state.getBlock() instanceof FluidBlock) {
+			ci.setReturnValue(((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "FLUIDS", true)));
+		} else {
+			if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(state.getBlock()), "render"))) {
+				boolean doRender = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(state.getBlock()), "render", false);
+				if (!doRender) {
+					ci.setReturnValue(false);
+				}
+			}
+		}
 	}
 
 	/**

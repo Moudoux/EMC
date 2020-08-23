@@ -16,14 +16,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinSplashScreen {
 
     @Inject(method = "init", at = @At("HEAD"))
-    private static void init(MinecraftClient minecraftClient_1, CallbackInfo ci) {
+    private static void init(MinecraftClient client, CallbackInfo ci) {
         if (!Bootstrap.initialized) {
             Bootstrap.init();
         }
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Util;getMeasuringTimeMs()J", ordinal = 1))
-    private long render(MatrixStack matrixStack, int int_1, int int_2, float float_1) {
+    private long render(MatrixStack matrixStack, int mouseX, int mouseY, float tickDelta) {
         if (!Bootstrap.initialized) {
             Bootstrap.initialized = true;
             Bootstrap.getMods().values().forEach(EMCMod::postInit);

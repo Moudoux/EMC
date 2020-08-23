@@ -32,10 +32,10 @@ public class MixinRenderManager implements IMixinRenderManager {
     }
 
     @Inject(method = "configure", at = @At("HEAD"))
-    public void configure(World world_1, Camera camera_1, Entity entity_1, CallbackInfo ci) {
-        renderPosX = camera_1.getPos().x;
-        renderPosY = camera_1.getPos().y;
-        renderPosZ = camera_1.getPos().z;
+    public void configure(World world, Camera camera, Entity target, CallbackInfo ci) {
+        renderPosX = camera.getPos().x;
+        renderPosY = camera.getPos().y;
+        renderPosZ = camera.getPos().z;
     }
 
 }

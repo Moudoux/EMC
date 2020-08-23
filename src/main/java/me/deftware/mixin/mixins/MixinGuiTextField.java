@@ -132,8 +132,9 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
         this.passwordField = flag;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Inject(method = "renderButton", at = @At("RETURN"))
-    public void drawTextFieldReturn(MatrixStack matrixStack, int p_drawTextField_1_, int p_drawTextField_2_, float p_drawTextField_3_, CallbackInfo ci) {
+    public void drawTextFieldReturn(MatrixStack matrixStack, int mouseX, int mouseY, float tickDelta, CallbackInfo ci) {
         if (overlay) {
             String currentText = getText();
             int currentWidth = ((IMixinGuiTextField) this).getFontRendererInstance().getWidth(currentText);

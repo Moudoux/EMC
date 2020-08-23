@@ -30,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("ConstantConditions")
 @Mixin(Screen.class)
 public class MixinGuiScreen implements IMixinGuiScreen {
 
@@ -81,14 +82,14 @@ public class MixinGuiScreen implements IMixinGuiScreen {
     }
 
     @Inject(method = "render", at = @At("HEAD"))
-    public void render(MatrixStack matrixStack, int x, int y, float p_render_3_, CallbackInfo ci) {
+    public void render(MatrixStack matrixStack, int x, int y, float tickDelta, CallbackInfo ci) {
         if (!(((Screen) (Object) this) instanceof GuiScreen)) {
             new EventGuiScreenDraw(screenInstance.get(), x, y).broadcast();
         }
     }
 
     @Inject(method = "render", at = @At("RETURN"))
-    public void render_return(MatrixStack matrixStack, int x, int y, float p_render_3_, CallbackInfo ci) {
+    public void render_return(MatrixStack matrixStack, int x, int y, float tickDelta, CallbackInfo ci) {
         if (shouldSendPostRenderEvent && !(((Screen) (Object) this) instanceof GuiScreen)) {
             new EventGuiScreenPostDraw(screenInstance.get(), x, y).broadcast();
         }

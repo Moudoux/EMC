@@ -42,8 +42,8 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
 	}
 
 	@ModifyVariable(method = "getSpeed", ordinal = 0, at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;getAttributeInstance(Lnet/minecraft/entity/attribute/EntityAttribute;)Lnet/minecraft/entity/attribute/EntityAttributeInstance;"))
-	private float onGetSpeed(float f) {
-		EventFovModifier event = new EventFovModifier(f);
+	private float onGetSpeed(float fov) {
+		EventFovModifier event = new EventFovModifier(fov);
 		event.broadcast();
 		return event.getFov();
 	}

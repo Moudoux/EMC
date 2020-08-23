@@ -31,7 +31,7 @@ public abstract class MixinBlockState {
     @Shadow public abstract VoxelShape getOutlineShape(BlockView view, BlockPos pos);
 
     @Inject(method = "getOutlineShape(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/ShapeContext;)Lnet/minecraft/util/shape/VoxelShape;", at = @At("HEAD"), cancellable = true)
-    public void getOutlineShape(BlockView blockView_1, BlockPos blockPos_1, ShapeContext entityContext_1, CallbackInfoReturnable<VoxelShape> ci) {
+    public void getOutlineShape(BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {
         EventCollideCheck event = new EventCollideCheck(me.deftware.client.framework.world.block.Block.newInstance(this.getBlock()));
         event.broadcast();
         if (event.updated) {
@@ -63,21 +63,21 @@ public abstract class MixinBlockState {
     }
 
     @Inject(method = "calcBlockBreakingDelta", at = @At("HEAD"), cancellable = true)
-    public void calcBlockBreakingDelta(PlayerEntity playerEntity_1, BlockView blockView_1, BlockPos blockPos_1, CallbackInfoReturnable<Float> ci) {
-        float float_1 = this.getHardness(blockView_1, blockPos_1);
+    public void calcBlockBreakingDelta(PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> ci) {
+        float float_1 = this.getHardness(world, pos);
         EventBlockhardness event = new EventBlockhardness();
         event.broadcast();
         if (float_1 < 0.0F) {
             ci.setReturnValue(0.0F);
         } else {
-            ci.setReturnValue(!playerEntity_1.isUsingEffectiveTool(this.getBlock().getDefaultState()) ? playerEntity_1.getBlockBreakingSpeed(this.getBlock().getDefaultState()) / float_1 / 100.0F
-                    : playerEntity_1.getBlockBreakingSpeed(this.getBlock().getDefaultState()) / float_1 / 30.0F * event.getMultiplier());
+            ci.setReturnValue(!player.isUsingEffectiveTool(this.getBlock().getDefaultState()) ? player.getBlockBreakingSpeed(this.getBlock().getDefaultState()) / float_1 / 100.0F
+                    : player.getBlockBreakingSpeed(this.getBlock().getDefaultState()) / float_1 / 30.0F * event.getMultiplier());
         }
     }
 
     @Inject(method = "getCollisionShape(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/ShapeContext;)Lnet/minecraft/util/shape/VoxelShape;", at = @At("HEAD"), cancellable = true)
-    public void getCollisionShape(BlockView blockView_1, BlockPos blockPos_1, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {
-        EventVoxelShape event = new EventVoxelShape(this.getOutlineShape(blockView_1, blockPos_1), me.deftware.client.framework.world.block.Block.newInstance(this.getBlock()));
+    public void getCollisionShape(BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {
+        EventVoxelShape event = new EventVoxelShape(this.getOutlineShape(world, pos), me.deftware.client.framework.world.block.Block.newInstance(this.getBlock()));
         event.broadcast();
         if (event.modified) {
             ci.setReturnValue(event.shape);

@@ -34,16 +34,16 @@ public abstract class MixinAbstractBlock implements IMixinAbstractBlock {
     @Shadow @Final protected float velocityMultiplier;
 
     @Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
-    public void getOutlineShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, ShapeContext entityContext_1, CallbackInfoReturnable<VoxelShape> ci) {
-        EventCollideCheck event = new EventCollideCheck(me.deftware.client.framework.world.block.Block.newInstance(blockState_1.getBlock()));
+    public void getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {
+        EventCollideCheck event = new EventCollideCheck(me.deftware.client.framework.world.block.Block.newInstance(state.getBlock()));
         event.broadcast();
         if (event.updated) {
             if (event.canCollide) {
                 ci.setReturnValue(VoxelShapes.empty());
             }
         } else {
-            if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "outline"))) {
-                boolean doOutline = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(blockState_1.getBlock()), "outline", true);
+            if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(Registry.BLOCK.getRawId(state.getBlock()), "outline"))) {
+                boolean doOutline = (boolean) SettingsMap.getValue(Registry.BLOCK.getRawId(state.getBlock()), "outline", true);
                 if (!doOutline) {
                     ci.setReturnValue(VoxelShapes.empty());
                 }
@@ -62,8 +62,8 @@ public abstract class MixinAbstractBlock implements IMixinAbstractBlock {
     }
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
-    public void getCollisionShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {
-        EventVoxelShape event = new EventVoxelShape(collidable ? blockState_1.getOutlineShape(blockView_1, blockPos_1) : VoxelShapes.empty(), me.deftware.client.framework.world.block.Block.newInstance((Block) (Object) this));
+    public void getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {
+        EventVoxelShape event = new EventVoxelShape(collidable ? state.getOutlineShape(world, pos) : VoxelShapes.empty(), me.deftware.client.framework.world.block.Block.newInstance((Block) (Object) this));
         event.broadcast();
         if (event.modified) {
             ci.setReturnValue(event.shape);
@@ -81,15 +81,15 @@ public abstract class MixinAbstractBlock implements IMixinAbstractBlock {
     }
 
     @Inject(method = "calcBlockBreakingDelta", at = @At("HEAD"), cancellable = true)
-    public void calcBlockBreakingDelta(BlockState blockState_1, PlayerEntity playerEntity_1, BlockView blockView_1, BlockPos blockPos_1, CallbackInfoReturnable<Float> ci) {
-        float float_1 = blockState_1.getHardness(blockView_1, blockPos_1);
+    public void calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> ci) {
+        float float_1 = state.getHardness(world, pos);
         EventBlockhardness event = new EventBlockhardness();
         event.broadcast();
         if (float_1 < 0.0F) {
             ci.setReturnValue(0.0F);
         } else {
-            ci.setReturnValue(!playerEntity_1.isUsingEffectiveTool(blockState_1) ? playerEntity_1.getBlockBreakingSpeed(blockState_1) / float_1 / 100.0F
-                    : playerEntity_1.getBlockBreakingSpeed(blockState_1) / float_1 / 30.0F * event.getMultiplier());
+            ci.setReturnValue(!player.isUsingEffectiveTool(state) ? player.getBlockBreakingSpeed(state) / float_1 / 100.0F
+                    : player.getBlockBreakingSpeed(state) / float_1 / 30.0F * event.getMultiplier());
         }
     }
 

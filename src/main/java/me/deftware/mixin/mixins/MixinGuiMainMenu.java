@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinGuiMainMenu implements IMixinTitleScreen {
 
     @Shadow
-    public abstract void switchToRealms();
+    protected abstract void switchToRealms();
 
     @Inject(method = "render", at = @At("RETURN"))
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {

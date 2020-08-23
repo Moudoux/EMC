@@ -44,6 +44,7 @@ public abstract class MixinWorld implements IMixinWorld {
 		return list.removeAll(entities);
 	}
 
+	@SuppressWarnings("RedundantCast")
 	@Redirect(method = "tickBlockEntities", at = @At(value = "INVOKE", target = "Ljava/util/List;remove(Ljava/lang/Object;)Z"))
 	private boolean onRemoveEntity(List<BlockEntity> list, Object entity) {
 		emcTileEntities.remove((BlockEntity) entity);

@@ -35,7 +35,7 @@ public abstract class MixinGuiNewChat implements IMixinGuiNewChat {
     private EventChatReceive event;
 
     @Shadow
-    protected abstract void addMessage(Text component_1, int int_1, int int_2, boolean boolean_1);
+    protected abstract void addMessage(Text chatComponent, int messageId, int timestamp, boolean displayOnly);
 
     @Override
     public void setTheChatLine(LiteralText chatComponent, int chatLineId, int updateCounter, boolean displayOnly) {
@@ -65,23 +65,23 @@ public abstract class MixinGuiNewChat implements IMixinGuiNewChat {
     @Override
     public List<ChatHudLine> getLines() {
         List<ChatHudLine> list = new ArrayList<>();
-        for (int i = 0; i < messages.size(); i++) {
-            net.minecraft.client.gui.hud.ChatHudLine<Text> line = messages.get(i);
+        for (int index = 0; index < messages.size(); index++) {
+            net.minecraft.client.gui.hud.ChatHudLine<Text> line = messages.get(index);
             if (line.getText() instanceof LiteralText) {
-                list.add(new ChatHudLine(new ChatMessage().fromText(line.getText()),  i));
+                list.add(new ChatHudLine(new ChatMessage().fromText(line.getText()),  index));
             }
         }
         return list;
     }
 
-    @ModifyVariable(method = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;I)V", at = @At("HEAD"))
+    @ModifyVariable(method = "addMessage(Lnet/minecraft/text/Text;I)V", at = @At("HEAD"))
     public Text addMessage(Text chatComponent) {
         event = new EventChatReceive(new ChatMessage().fromText(chatComponent)).broadcast();
         return event.getMessage().build();
     }
 
     @Inject(method = "addMessage(Lnet/minecraft/text/Text;IIZ)V", at = @At("HEAD"), cancellable = true)
-    public void addMessage(Text textComponent_1, int int_1, int int_2, boolean boolean_1, CallbackInfo ci) {
+    public void addMessage(Text chatComponent, int messageId, int timestamp, boolean displayOnly, CallbackInfo ci) {
         if (event != null && event.isCanceled()) {
             ci.cancel();
         }

@@ -36,7 +36,7 @@ public abstract class MixinChatSuggestion implements IMixinChatSuggestion {
     private CompletableFuture<Suggestions> pendingSuggestions;
 
     @Shadow
-    public abstract void show();
+    protected abstract void show();
 
     private boolean inject = false;
 
@@ -45,6 +45,7 @@ public abstract class MixinChatSuggestion implements IMixinChatSuggestion {
         inject = status;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Inject(method = "refresh", at = @At("RETURN"), cancellable = true)
     public void refresh(CallbackInfo ci) {
         if (inject) {

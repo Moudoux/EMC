@@ -11,12 +11,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,7 +27,7 @@ public abstract class MixinEntity implements IMixinEntity {
     public boolean noClip;
 
     @Shadow
-    public boolean onGround;
+    protected boolean onGround;
 
     @Shadow
     public float pitch;
@@ -44,31 +39,22 @@ public abstract class MixinEntity implements IMixinEntity {
     protected boolean inNetherPortal;
 
     @Shadow
-    @Final
-    protected static TrackedData<EntityPose> POSE;
-
-    @Shadow
     public abstract boolean isSneaking();
 
     @Shadow
     public abstract boolean isSprinting();
 
     @Shadow
-    public abstract boolean hasVehicle();
-
-    @Shadow
-    public abstract Box getBoundingBox();
-
-    @Shadow
-    protected abstract boolean getFlag(int int_1);
+    protected abstract boolean getFlag(int id);
 
     @Shadow
     protected Vec3d movementMultiplier;
 
+    @SuppressWarnings("ConstantConditions")
     @Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)
-    public void changeLookDirection(double dx, double dy, CallbackInfo ci) {
-        if (((Entity) (Object) this) == MinecraftClient.getInstance().player && GameCamera.isActive()) {
-            GameCamera.fakePlayer.changeLookDirection(dx, dy);
+    public void changeLookDirection(double cursorX, double cursorY, CallbackInfo ci) {
+        if ((Object) this == MinecraftClient.getInstance().player && GameCamera.isActive()) {
+            GameCamera.fakePlayer.changeLookDirection(cursorX, cursorY);
             GameCamera.fakePlayer.setHeadYaw(GameCamera.fakePlayer.yaw);
             ci.cancel();
         }
@@ -112,8 +98,8 @@ public abstract class MixinEntity implements IMixinEntity {
     }
 
     @Inject(method = "setVelocityClient", at = @At("HEAD"), cancellable = true)
-    private void onSetVelocityClient(double double_1, double double_2, double double_3, CallbackInfo ci) {
-        EventKnockback event = new EventKnockback(double_1, double_2, double_3);
+    private void onSetVelocityClient(double x, double y, double z, CallbackInfo ci) {
+        EventKnockback event = new EventKnockback(x, y, z);
         event.broadcast();
         if (event.isCanceled()) {
             ci.cancel();
@@ -121,8 +107,8 @@ public abstract class MixinEntity implements IMixinEntity {
     }
 
     @Override
-    public boolean getAFlag(int flag) {
-        return getFlag(flag);
+    public boolean getAFlag(int id) {
+        return getFlag(id);
     }
 
     @Override
