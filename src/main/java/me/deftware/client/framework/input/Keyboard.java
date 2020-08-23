@@ -1,12 +1,10 @@
 package me.deftware.client.framework.input;
 
-import me.deftware.client.framework.helper.WindowHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Util;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWCharCallback;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -15,15 +13,6 @@ import java.util.HashMap;
  * @author Deftware
  */
 public class Keyboard {
-
-	public static void registerKeyPolling() {
-		GLFW.glfwSetCharCallback(WindowHelper.getWindowHandle(), new GLFWCharCallback() {
-			@Override
-			public void invoke(long window, int codepoint) {
-				// TODO
-			}
-		});
-	}
 
 	public static HashMap<Integer, String> normalKeys = new HashMap<>(),
 								functionKeys = new HashMap<>(),

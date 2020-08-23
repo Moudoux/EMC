@@ -13,6 +13,7 @@ import net.minecraft.client.util.Session;
 
 import java.net.Proxy;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Allows modifying and creating sessions
@@ -24,9 +25,11 @@ public class AuthLibSession {
 	private Session session;
 	private final UserAuthentication userAuthentication;
 	private final YggdrasilAuthenticationService authenticationService;
+	private final Environment environment;
 
 	private AuthLibSession(Environment yggdrasil) {
 		// Custom yggdrasil as an argument below is only applicable for Minecraft 1.16 and above. Prior versions of Minecraft do not need it.
+		this.environment = yggdrasil;
 		authenticationService = new YggdrasilAuthenticationService(Proxy.NO_PROXY, UUID.randomUUID().toString(), yggdrasil);
 		userAuthentication = new YggdrasilUserAuthentication(authenticationService, Agent.MINECRAFT, yggdrasil);
 	}
@@ -48,14 +51,14 @@ public class AuthLibSession {
 		userAuthentication.logOut();
 	}
 
-	public boolean login() {
-		try {
-			userAuthentication.logIn();
-			return true;
-		} catch (AuthenticationException ex) {
-			ex.printStackTrace();
+	public CompletableFuture<Boolean> login() {
+		return CompletableFuture.supplyAsync(() -> {
+			try {
+				userAuthentication.logIn();
+				return true;
+			} catch (AuthenticationException ignored) { }
 			return false;
-		}
+		});
 	}
 
 	public boolean loggedIn() {
@@ -78,7 +81,7 @@ public class AuthLibSession {
 
 	public void setSession(Session session) {
 		((IMixinMinecraft) MinecraftClient.getInstance()).setSession(buildSession());
-		((IMixinMinecraft) MinecraftClient.getInstance()).setSessionService(authenticationService.createMinecraftSessionService());
+		((IMixinMinecraft) MinecraftClient.getInstance()).setSessionService(new CustomSessionService(authenticationService, environment));
 	}
 
 	public void setOfflineSession(String username) {

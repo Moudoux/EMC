@@ -28,7 +28,8 @@ public enum BlockRegistry implements IRegistry<Block, net.minecraft.block.Block>
 	@Override
 	public Optional<Block> find(String id) {
 		return stream().filter(block ->
-			block.getIdentifierKey().equalsIgnoreCase(id)
+			block.getTranslationKey().equalsIgnoreCase(id) ||
+					block.getTranslationKey().substring("block.minecraft:".length()).equalsIgnoreCase(id)
 		).findFirst();
 	}
 

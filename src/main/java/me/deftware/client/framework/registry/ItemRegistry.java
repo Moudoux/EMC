@@ -29,7 +29,8 @@ public enum ItemRegistry implements IRegistry<Item, net.minecraft.item.Item> {
 	public Optional<Item> find(String id) {
 		return stream().filter(item ->
 				item.getTranslationKey().equalsIgnoreCase(id) ||
-						item.getTranslationKey().substring("minecraft:".length()).equalsIgnoreCase(id)
+						item.getTranslationKey().substring("item.minecraft:".length()).equalsIgnoreCase(id) ||
+						item.getTranslationKey().substring("block.minecraft:".length()).equalsIgnoreCase(id)
 		).findFirst();
 	}
 

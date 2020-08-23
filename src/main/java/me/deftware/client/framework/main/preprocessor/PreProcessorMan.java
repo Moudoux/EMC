@@ -13,11 +13,12 @@ import java.util.HashMap;
  */
 public class PreProcessorMan implements Runnable {
 
-	private final File emcJar;
+	private final File runDir, emcJar;
 	private final ClasspathModDiscovery classpathModDiscovery;
 	private final HashMap<String, ModPreProcessor> preProcessorHashMap = new HashMap<>();
 
-	public PreProcessorMan(File emcJar) {
+	public PreProcessorMan(File runDir, File emcJar) {
+		this.runDir = runDir;
 		this.emcJar = emcJar;
 		this.classpathModDiscovery = new ClasspathModDiscovery();
 		for (JsonObject entry : this.classpathModDiscovery.getClasspathMods()) {
@@ -49,8 +50,7 @@ public class PreProcessorMan implements Runnable {
 	}
 
 	public File getEMCModsDir() {
-		// TODO: Remove OSUtils.getDefaultMinecraftPath()
-		return new File(OSUtils.getDefaultMinecraftPath() + "libraries" + File.separator + "EMC" + File.separator + getMinecraftVersion() + File.separator);
+		return new File(runDir, "libraries" + File.separator + "EMC" + File.separator + getMinecraftVersion() + File.separator);
 	}
 
 	public String getMinecraftVersion() {

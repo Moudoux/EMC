@@ -28,7 +28,8 @@ public enum StatusEffectRegistry implements IRegistry<StatusEffect, net.minecraf
 	@Override
 	public Optional<StatusEffect> find(String id) {
 		return stream().filter(effect ->
-				effect.getTranslationKey().equalsIgnoreCase(id)
+				effect.getTranslationKey().equalsIgnoreCase(id) ||
+						effect.getTranslationKey().substring("effect.minecraft:".length()).equalsIgnoreCase(id)
 		).findFirst();
 	}
 

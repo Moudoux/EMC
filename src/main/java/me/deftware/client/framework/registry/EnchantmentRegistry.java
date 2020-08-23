@@ -28,7 +28,8 @@ public enum EnchantmentRegistry implements IRegistry<Enchantment, net.minecraft.
 	@Override
 	public Optional<Enchantment> find(String id) {
 		return stream().filter(enchantment ->
-				enchantment.getTranslationKey().equalsIgnoreCase(id)
+				enchantment.getTranslationKey().equalsIgnoreCase(id) ||
+						enchantment.getTranslationKey().substring("enchantment.minecraft:".length()).equalsIgnoreCase(id)
 		).findFirst();
 	}
 

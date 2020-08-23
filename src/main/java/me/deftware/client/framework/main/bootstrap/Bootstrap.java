@@ -35,7 +35,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Bootstrap {
 
-    public static int CRASH_COUNT = 0;
     public static boolean initialized = false;
     public static Logger logger = LogManager.getLogger(String.format("EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
     public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
@@ -43,7 +42,7 @@ public class Bootstrap {
     public static Settings EMCSettings;
     public static File EMC_ROOT, EMC_CONFIGS;
 
-    private static ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, EMCMod> mods = new ConcurrentHashMap<>();
 
     /**
      * ClasspathModDiscovery should always be the first item
@@ -57,21 +56,15 @@ public class Bootstrap {
                 if (System.getProperty("logging" + i, "null").equalsIgnoreCase("null")) break;
                 logger.debug(System.getProperty("logging" + i));
             }
-            File emcJar = LocationUtil.getEMC().toFile(), mcDir = LocationUtil.getMinecraftDir().toFile();
-            if (System.getProperty("EMCDir", "null").equalsIgnoreCase("null")) {
-                System.setProperty("EMCDir", emcJar != null ? emcJar.getParentFile().getAbsolutePath() : "null");
-            }
-            if (System.getProperty("MCDir", "null").equalsIgnoreCase("null")) {
-                System.setProperty("MCDir", mcDir != null ? mcDir.getAbsolutePath() : "null");
-            }
             File capesCache = new File(Minecraft.getRunDir(), "libraries/EMC/capes/");
             if (!capesCache.exists()) {
                 if (!capesCache.mkdirs()) {
                     Bootstrap.logger.warn("Failed to create EMC capes dir");
                 }
             }
-            Bootstrap.logger.info(String.format("Loading EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
+            logger.info("Loading EMC v{}.{}", FrameworkConstants.VERSION, FrameworkConstants.PATCH);
             EMC_ROOT = new File(Minecraft.getRunDir(), "libraries" + File.separator + "EMC" + File.separator + Minecraft.getMinecraftVersion() + File.separator);
+            logger.info("EMC root dir is {}", EMC_ROOT.getAbsolutePath());
             EMC_CONFIGS = new File(EMC_ROOT.getAbsolutePath() + File.separator + "configs" + File.separator);
             if (!EMC_ROOT.exists()) {
                 if (!EMC_ROOT.mkdirs()) {
@@ -113,6 +106,10 @@ public class Bootstrap {
         } catch (Exception ex) {
             Bootstrap.logger.warn("Failed to load EMC", ex);
         }
+    }
+
+    public File getEMCJar() {
+        return LocationUtil.getEMC().toFile();
     }
 
     public static void reset() {

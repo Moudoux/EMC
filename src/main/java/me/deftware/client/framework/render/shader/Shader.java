@@ -14,6 +14,7 @@ import java.util.Objects;
  */
 public class Shader {
 
+	private @Getter boolean bound = false;
 	private @Getter int program, vs, fs;
 
 	public Shader(String path, String vertex, String fragment, EMCMod mod) {
@@ -52,10 +53,12 @@ public class Shader {
 
 	public void bind() {
 		GL20.glUseProgram(program);
+		bound = true;
 	}
 
 	public void unbind() {
 		GL20.glUseProgram(0);
+		bound = false;
 	}
 
 }

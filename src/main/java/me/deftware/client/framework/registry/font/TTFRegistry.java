@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class TTFRegistry {
 
-	public static HashMap<String, Font> fonts = new HashMap<>();
+	private static final HashMap<String, Font> fonts = new HashMap<>();
 
 	public static void registerCustomFont(Font font) {
 		fonts.putIfAbsent(font.getFontName(), font);

@@ -70,7 +70,7 @@ public class Item implements IItem {
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof Item) {
-			return ((Item) object).getMinecraftItem() == getMinecraftItem();
+			return ((Item) object).getMinecraftItem() == getMinecraftItem() || getIdentifierKey().equals(((Item) object).getIdentifierKey());
 		}
 		return false;
 	}

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Items.class)
 public class MixinItems {
 
-	@Inject(method = "register(Lnet/minecraft/util/Identifier;Lnet/minecraft/item/Item;)Lnet/minecraft/item/Item;", at = @At("HEAD"))
+	@Inject(method = "register(Lnet/minecraft/util/Identifier;Lnet/minecraft/item/Item;)Lnet/minecraft/item/Item;", at = @At("TAIL"))
 	private static void register(Identifier id, Item item, CallbackInfoReturnable<Item> ci) {
 		ItemRegistry.INSTANCE.register(id.toString(), item);
 	}

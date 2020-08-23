@@ -20,17 +20,25 @@ public class Main {
     public static List<String> logging = new ArrayList<>();
 
     public static void main(String[] args) {
-        File emcJar = LocationUtil.getEMC().toFile(), mcDir = new File(OSUtils.getDefaultMinecraftPath());
-        System.setProperty("EMCDir", emcJar != null ? emcJar.getParentFile().getAbsolutePath() : "null");
-        System.setProperty("MCDir", mcDir != null ? mcDir.getAbsolutePath() : "null");
-        System.setProperty("SUBSYSTEM", "true");
-        PreProcessorMan preProcessor = new PreProcessorMan(emcJar);
-        try {
-            preProcessor.run();
-        } catch (Throwable ignored) { }
-        for (int i = 0; i < logging.size(); i++) {
-            System.setProperty("logging" + i, logging.get(i));
+        File runDir = null, emcJar = LocationUtil.getEMC().toFile();
+        for (int i = 0; i < args.length; i++) {
+           if (args[i].equals("--gameDir")) {
+               runDir = new File(args[i + 1]);
+               break;
+           }
         }
+        if (runDir != null && emcJar != null) {
+            PreProcessorMan preProcessor = new PreProcessorMan(runDir, emcJar);
+            try {
+                preProcessor.run();
+            } catch (Throwable ignored) { }
+            for (int i = 0; i < logging.size(); i++) {
+                System.setProperty("logging" + i, logging.get(i));
+            }
+        } else {
+            System.setProperty("logging0", "Failed to locate Minecraft runDir or EMC jar");
+        }
+        System.setProperty("SUBSYSTEM", "true");
         KnotClient.main(args);
     }
 
