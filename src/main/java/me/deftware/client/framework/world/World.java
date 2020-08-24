@@ -10,6 +10,7 @@ import me.deftware.mixin.imp.IMixinWorld;
 import me.deftware.mixin.imp.IMixinWorldClient;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -21,8 +22,9 @@ import java.util.stream.Stream;
  */
 public class World {
 
-	private static long previousTotalWorldTime;
-	private static double previousMeasureTime, currentTPS = 0;
+	private static final float[] tickRates = new float[20];
+	private static long timeLastTimeUpdate;
+	private static int nextIndex = 0;
 
 	public static boolean isLoaded() {
 		return MinecraftClient.getInstance().world != null;
@@ -98,36 +100,28 @@ public class World {
 	}
 
 	public static double getTPS() {
-		if (World.isLoaded()) {
-			if (World.getWorldTime() == 0) return 0.0D;
-			if (getTimeInSeconds() - previousMeasureTime < 3.0) {
-				return currentTPS;
+		if (isLoaded()) {
+			float numTicks = 0.0F;
+			float sumTickRates = 0.0F;
+			for (float tickRate : tickRates) {
+				if (tickRate > 0.0F) {
+					sumTickRates += tickRate;
+					numTicks += 1.0F;
+				}
 			}
-			currentTPS = ((double) (World.getWorldTime() - previousTotalWorldTime)) / (getTimeInSeconds() - previousMeasureTime);
-
-			// Limits TPS to not go above 20, sometimes possible
-			if (currentTPS > 20.0d) {
-				currentTPS = 20.0d;
-			}
-			// Also prevent it going below 20, which is also sometimes possible
-			if (currentTPS < 0.0d) {
-				currentTPS = 0.0d;
-			}
-
-			updatePreviousTotalWorldTime();
+			return MathHelper.clamp(sumTickRates / numTicks, 0.0F, 20.0F);
 		} else {
-			currentTPS = 0.0d;
+			return 0.0d;
 		}
-		return currentTPS;
 	}
 
-	private static void updatePreviousTotalWorldTime() {
-		previousTotalWorldTime = World.getWorldTime();
-		previousMeasureTime = getTimeInSeconds();
-	}
-
-	public static double getTimeInSeconds() {
-		return (System.currentTimeMillis() / 1000d);
+	public static void updateTime() {
+		if (timeLastTimeUpdate != -1L) {
+			float timeElapsed = (float) (System.currentTimeMillis() - timeLastTimeUpdate) / 1000.0F;
+			tickRates[(nextIndex % tickRates.length)] = MathHelper.clamp(20.0F / timeElapsed, 0.0F, 20.0F);
+			nextIndex += 1;
+		}
+		timeLastTimeUpdate = System.currentTimeMillis();
 	}
 
 }
