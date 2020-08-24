@@ -21,7 +21,7 @@ public class Block implements IItem {
 	public static Block newInstance(net.minecraft.block.Block block) {
 		if (block instanceof net.minecraft.block.CropBlock) {
 			return new CropBlock(block);
-		} else if (block instanceof ChestBlock || block instanceof TrappedChestBlock || block instanceof BarrelBlock) {
+		} else if (block instanceof ChestBlock || block instanceof TrappedChestBlock || block instanceof BarrelBlock || block instanceof EnderChestBlock) {
 			return new StorageBlock(block);
 		}
 		return new Block(block);
