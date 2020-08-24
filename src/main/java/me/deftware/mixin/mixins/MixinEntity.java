@@ -1,9 +1,8 @@
 package me.deftware.mixin.mixins;
 
-import me.deftware.client.framework.event.events.EventKnockback;
-import me.deftware.client.framework.event.events.EventSlowdown;
-import me.deftware.client.framework.event.events.EventSneakingCheck;
+import me.deftware.client.framework.event.events.*;
 import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.math.vector.Vector3d;
 import me.deftware.client.framework.render.camera.GameCamera;
 import me.deftware.mixin.imp.IMixinEntity;
 import net.minecraft.block.BlockState;
@@ -60,6 +59,25 @@ public abstract class MixinEntity implements IMixinEntity {
         }
     }
 
+    @Redirect(method = "updateMovementInFluid(Lnet/minecraft/tag/Tag;D)Z", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/entity/Entity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V",
+            opcode = 182))
+    private void applyFluidVelocity(Entity entity, Vec3d velocity) {
+        EventFluidVelocity event = new EventFluidVelocity(new Vector3d(velocity));
+        if (!event.isCanceled()) {
+            entity.setVelocity(event.getVector3d().getMinecraftVector());
+        }
+    }
+
+    @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true)
+    public void pushAwayFrom(Entity entity, CallbackInfo info) {
+        if (((Object) this) == MinecraftClient.getInstance().player) {
+            if (new EventEntityPush(me.deftware.client.framework.entity.Entity.newInstance(entity)).broadcast().isCanceled()) {
+                info.cancel();
+            }
+        }
+    }
+
     @Inject(method = "getPose", at = @At(value = "TAIL"), cancellable = true)
     private void onGetPose(CallbackInfoReturnable<EntityPose> cir) {
         if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "SWIMMING_MODE_OVERRIDE", false)) {
@@ -72,7 +90,6 @@ public abstract class MixinEntity implements IMixinEntity {
         boolean noClipCheck = (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "NOCLIP", false);
         return noClip || noClipCheck && self instanceof ClientPlayerEntity;
     }
-
 
     @Inject(method = "slowMovement", at = @At(value = "TAIL"), cancellable = true)
     private void onSlowMovement(BlockState state, Vec3d multiplier, CallbackInfo ci) {
