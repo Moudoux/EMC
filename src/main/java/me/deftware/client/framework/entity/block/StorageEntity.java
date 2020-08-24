@@ -7,23 +7,22 @@ import net.minecraft.block.entity.*;
  */
 public class StorageEntity extends TileEntity {
 
-	protected final StorageType type;
-	
-	public StorageEntity(BlockEntity entity) {
-		super(entity);
-		type = entity instanceof ChestBlockEntity
-				? entity instanceof TrappedChestBlockEntity ? StorageType.TRAPPED_CHEST : StorageType.CHEST
-				: entity instanceof EnderChestBlockEntity ? StorageType.ENDER_CHEST
-				: entity instanceof ShulkerBoxBlockEntity ? StorageType.SHULKER_BOX
-				: entity instanceof BarrelBlockEntity ? StorageType.BARREL : StorageType.UNKNOWN;
+	public static StorageEntity newInstance(BlockEntity entity) {
+		if (entity instanceof ChestBlockEntity || entity instanceof EnderChestBlockEntity) {
+			return new ChestEntity(entity);
+		} else if (entity instanceof BarrelBlockEntity) {
+			return new BarrelEntity(entity);
+		} else if (entity instanceof ShulkerBoxBlockEntity) {
+			return new ShulkerEntity(entity);
+		} else if (entity instanceof HopperBlockEntity) {
+			return new HopperEntity(entity);
+		}
+		return new StorageEntity(entity);
 	}
 
-	public StorageType getType() {
-		return type;
-	}
-	
-	public enum StorageType {
-		TRAPPED_CHEST, CHEST, ENDER_CHEST, SHULKER_BOX, BARREL, UNKNOWN
+	protected StorageEntity(BlockEntity entity) {
+		super(entity);
+
 	}
 
 }
