@@ -12,10 +12,14 @@ import java.util.Objects;
 public class ContainerHelper {
 
 	private static GenericContainerScreenHandler getCurrent() {
-		if (Objects.requireNonNull(MinecraftClient.getInstance().player).currentScreenHandler != null) {
+		if (Objects.requireNonNull(MinecraftClient.getInstance().player).currentScreenHandler != null && MinecraftClient.getInstance().player.currentScreenHandler instanceof GenericContainerScreenHandler) {
 			return (GenericContainerScreenHandler) MinecraftClient.getInstance().player.currentScreenHandler;
 		}
 		return null;
+	}
+
+	public static boolean isOpen() {
+		return getCurrent() != null;
 	}
 
 	public static int getInventorySize() {
