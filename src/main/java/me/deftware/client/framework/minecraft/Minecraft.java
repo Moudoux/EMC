@@ -2,6 +2,7 @@ package me.deftware.client.framework.minecraft;
 
 import me.deftware.client.framework.conversion.ComparedConversion;
 import me.deftware.client.framework.entity.Entity;
+import me.deftware.client.framework.entity.types.EntityPlayer;
 import me.deftware.client.framework.entity.types.main.MainEntityPlayer;
 import me.deftware.client.framework.gui.GuiScreen;
 import me.deftware.client.framework.helper.ScreenHelper;
@@ -37,6 +38,9 @@ public class Minecraft {
 	private static final ComparedConversion<ClientPlayerEntity, MainEntityPlayer> mainPlayer =
 			new ComparedConversion<>(() -> MinecraftClient.getInstance().player, MainEntityPlayer::new);
 
+	private static final ComparedConversion<net.minecraft.entity.Entity, Entity> cameraEntity =
+			new ComparedConversion<>(() -> MinecraftClient.getInstance().cameraEntity, Entity::newInstance);
+
 	private static final ComparedConversion<net.minecraft.entity.Entity, Entity> hitEntity =
 			new ComparedConversion<>(() -> {
 				if (MinecraftClient.getInstance().crosshairTarget != null) {
@@ -68,6 +72,11 @@ public class Minecraft {
 	@Nullable
 	public static MainEntityPlayer getPlayer() {
 		return mainPlayer.get();
+	}
+
+	@Nullable
+	public static Entity getCameraEntity() {
+		return cameraEntity.get();
 	}
 
 	public static int getMinecraftChatScaledYOffset() {

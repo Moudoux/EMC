@@ -108,16 +108,6 @@ public class MainEntityPlayer extends RotationLogic {
 		}
 	}
 
-	@Override
-	public float getRotationYaw() {
-		return GameCamera.isActive() ? GameCamera.fakePlayer.yaw : entity.yaw;
-	}
-
-	@Override
-	public float getRotationPitch() {
-		return GameCamera.isActive() ? GameCamera.fakePlayer.pitch : entity.pitch;
-	}
-
 	public void closeHandledScreen() {
 		getMinecraftEntity().closeHandledScreen();
 	}

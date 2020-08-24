@@ -4,6 +4,7 @@ import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.block.TileEntity;
 import me.deftware.client.framework.helper.RenderHelper;
 import me.deftware.client.framework.math.position.BlockPosition;
+import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.client.framework.render.camera.GameCamera;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.Vec3d;
@@ -27,8 +28,8 @@ public class LineRenderStack extends RenderStack<LineRenderStack> {
 	public LineRenderStack setupMatrix() {
 		super.setupMatrix();
 		eyes = new Vec3d(0.0D, 0.0D, 1.0D)
-				.rotateX(-(float) Math.toRadians(Objects.requireNonNull(GameCamera.isActive() ? GameCamera.fakePlayer : MinecraftClient.getInstance().player).pitch))
-				.rotateY(-(float) Math.toRadians(Objects.requireNonNull(GameCamera.isActive() ? GameCamera.fakePlayer : MinecraftClient.getInstance().player).yaw));
+				.rotateX(-(float) Math.toRadians(Objects.requireNonNull(Minecraft.getCameraEntity()).getRotationPitch()))
+				.rotateY(-(float) Math.toRadians(Objects.requireNonNull(Minecraft.getCameraEntity()).getRotationYaw()));
 		return this;
 	}
 

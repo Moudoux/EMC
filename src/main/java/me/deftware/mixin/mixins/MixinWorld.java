@@ -42,15 +42,15 @@ public abstract class MixinWorld implements IMixinWorld {
 	@Redirect(method = "tickBlockEntities", at = @At(value = "INVOKE", target = "Ljava/util/List;removeAll(Ljava/util/Collection;)Z", ordinal = 1))
 	private boolean onRemoveEntityIf(List<BlockEntity> list, Collection<BlockEntity> entities) {
 		for (BlockEntity entity : entities) {
-			new EventTileBlockRemoved(emcTileEntities.remove(entity));
-		};
+			new EventTileBlockRemoved(emcTileEntities.remove(entity)).broadcast();
+		}
 		return list.removeAll(entities);
 	}
 
 	@SuppressWarnings("RedundantCast")
 	@Redirect(method = "tickBlockEntities", at = @At(value = "INVOKE", target = "Ljava/util/List;remove(Ljava/lang/Object;)Z"))
 	private boolean onRemoveEntity(List<BlockEntity> list, Object entity) {
-		emcTileEntities.remove((BlockEntity) entity);
+		new EventTileBlockRemoved(emcTileEntities.remove((BlockEntity) entity)).broadcast();
 		return list.remove((BlockEntity) entity);
 	}
 
@@ -58,7 +58,7 @@ public abstract class MixinWorld implements IMixinWorld {
 	public void removeBlockEntity(BlockPos pos, CallbackInfo info) {
 		BlockEntity blockEntity = this.getBlockEntity(pos);
 		if (blockEntity != null) {
-			emcTileEntities.remove(blockEntity);
+			new EventTileBlockRemoved(emcTileEntities.remove(blockEntity)).broadcast();
 		}
 	}
 

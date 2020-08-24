@@ -28,6 +28,8 @@ public class Main {
            }
         }
         if (runDir != null && emcJar != null) {
+            System.setProperty("MCDir", runDir.getAbsolutePath());
+            System.setProperty("EMCDir", emcJar.getParentFile().getAbsolutePath());
             PreProcessorMan preProcessor = new PreProcessorMan(runDir, emcJar);
             try {
                 preProcessor.run();
