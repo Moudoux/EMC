@@ -28,8 +28,8 @@ public class LineRenderStack extends RenderStack<LineRenderStack> {
 	public LineRenderStack setupMatrix() {
 		super.setupMatrix();
 		eyes = new Vec3d(0.0D, 0.0D, 1.0D)
-				.rotateX(-(float) Math.toRadians(Objects.requireNonNull(Minecraft.getCameraEntity()).getRotationPitch()))
-				.rotateY(-(float) Math.toRadians(Objects.requireNonNull(Minecraft.getCameraEntity()).getRotationYaw()));
+				.rotateX(-(float) Math.toRadians(RenderHelper.getRotationPitch()))
+				.rotateY(-(float) Math.toRadians(RenderHelper.getRotationYaw()));
 		return this;
 	}
 

@@ -59,6 +59,7 @@ public class Keyboard {
 	}
 
 	public static boolean isKeyDown(int key) {
+		if (key <= 2) return false;
 		return InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), key);
 	}
 

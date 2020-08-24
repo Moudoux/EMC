@@ -8,4 +8,8 @@ public interface IMixinRenderManager {
 
     double getRenderPosZ();
 
+    float getRotationYaw();
+
+    float getRotationPitch();
+
 }

@@ -44,4 +44,11 @@ public class RenderHelper {
 		return getRenderManager().getRenderPosZ();
 	}
 
+	public static float getRotationYaw() {
+		return getRenderManager().getRotationYaw();
+	}
+
+	public static float getRotationPitch() {
+		return getRenderManager().getRotationPitch();
+	}
 }
