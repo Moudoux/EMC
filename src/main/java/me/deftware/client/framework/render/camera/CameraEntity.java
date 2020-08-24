@@ -1,7 +1,6 @@
 package me.deftware.client.framework.render.camera;
 
 import com.mojang.authlib.GameProfile;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;

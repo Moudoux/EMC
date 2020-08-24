@@ -2,9 +2,9 @@ package me.deftware.mixin.mixins;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.types.EntityPlayer;
+import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.mixin.imp.IMixinWorldClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;

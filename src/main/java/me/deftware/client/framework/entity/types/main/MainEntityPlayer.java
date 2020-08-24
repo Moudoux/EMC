@@ -3,7 +3,6 @@ package me.deftware.client.framework.entity.types.main;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.math.vector.Vector3d;
-import me.deftware.client.framework.render.camera.GameCamera;
 import me.deftware.client.framework.world.EnumFacing;
 import me.deftware.mixin.imp.IMixinEntityPlayerSP;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
@@ -18,7 +17,8 @@ import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 import java.util.Objects;
 import java.util.Set;

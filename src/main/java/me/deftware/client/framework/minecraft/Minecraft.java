@@ -2,13 +2,9 @@ package me.deftware.client.framework.minecraft;
 
 import me.deftware.client.framework.conversion.ComparedConversion;
 import me.deftware.client.framework.entity.Entity;
-import me.deftware.client.framework.entity.types.EntityPlayer;
 import me.deftware.client.framework.entity.types.main.MainEntityPlayer;
 import me.deftware.client.framework.gui.GuiScreen;
 import me.deftware.client.framework.helper.ScreenHelper;
-import me.deftware.client.framework.math.position.BlockPosition;
-import me.deftware.client.framework.math.position.DoubleBlockPosition;
-import me.deftware.client.framework.util.hitresult.CrosshairResult;
 import me.deftware.client.framework.util.minecraft.BlockSwingResult;
 import me.deftware.client.framework.util.minecraft.ServerConnectionInfo;
 import net.minecraft.SharedConstants;
@@ -18,7 +14,6 @@ import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.options.Perspective;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 

@@ -7,10 +7,6 @@ import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.chat.style.ChatStyle;
 import net.minecraft.util.Language;
 
-import java.awt.*;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 /**
  * @author Deftware
  */

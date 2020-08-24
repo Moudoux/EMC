@@ -1,6 +1,5 @@
 package me.deftware.client.framework.gui.minecraft;
 
-import me.deftware.client.framework.event.events.EventGuiScreenDraw;
 import net.minecraft.client.gui.screen.DisconnectedScreen;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;

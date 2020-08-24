@@ -6,8 +6,6 @@ import me.deftware.client.framework.event.events.EventRender2D;
 import me.deftware.client.framework.event.events.EventUpdate;
 import me.deftware.client.framework.main.EMCMod;
 
-import java.awt.*;
-
 public class Main extends EMCMod {
 
   //  private EMCFont customFont;

@@ -3,7 +3,9 @@ package me.deftware.client.framework.entity.block;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.math.position.TileBlockPosition;
-import net.minecraft.block.entity.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.EnderChestBlockEntity;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
 
 /**
  * @author Deftware

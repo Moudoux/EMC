@@ -1,7 +1,7 @@
 package me.deftware.client.framework.event.events;
 
-import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.entity.Entity;
+import me.deftware.client.framework.event.Event;
 
 /**
  * Triggered by EMC framework when ray trace is being calculated.

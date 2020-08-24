@@ -4,9 +4,6 @@ import me.deftware.client.framework.event.Event;
 import me.deftware.client.framework.gui.minecraft.ScreenInstance;
 import me.deftware.client.framework.gui.widgets.Button;
 import me.deftware.mixin.imp.IMixinGuiScreen;
-import net.minecraft.client.gui.screen.DisconnectedScreen;
-import net.minecraft.client.gui.screen.GameMenuScreen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
 
 import java.util.List;
 

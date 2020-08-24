@@ -1,9 +1,9 @@
 package me.deftware.client.framework.main;
 
 import com.google.gson.JsonObject;
+import me.deftware.client.framework.config.Settings;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.util.path.LocationUtil;
-import me.deftware.client.framework.config.Settings;
 
 import java.io.File;
 import java.net.URLClassLoader;

@@ -5,7 +5,6 @@ import me.deftware.client.framework.event.events.EventSpectator;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.client.framework.util.HashUtils;
-import me.deftware.client.framework.util.path.OSUtils;
 import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;

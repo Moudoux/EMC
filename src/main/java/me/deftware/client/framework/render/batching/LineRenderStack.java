@@ -4,13 +4,8 @@ import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.block.TileEntity;
 import me.deftware.client.framework.helper.RenderHelper;
 import me.deftware.client.framework.math.position.BlockPosition;
-import me.deftware.client.framework.minecraft.Minecraft;
-import me.deftware.client.framework.render.camera.GameCamera;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
-
-import java.util.Objects;
 
 /**
  * @author Deftware

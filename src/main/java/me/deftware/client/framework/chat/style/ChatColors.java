@@ -1,13 +1,11 @@
 package me.deftware.client.framework.chat.style;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.text.Style;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 
 /**

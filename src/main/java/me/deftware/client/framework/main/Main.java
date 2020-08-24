@@ -2,7 +2,6 @@ package me.deftware.client.framework.main;
 
 import me.deftware.client.framework.main.preprocessor.PreProcessorMan;
 import me.deftware.client.framework.util.path.LocationUtil;
-import me.deftware.client.framework.util.path.OSUtils;
 import net.fabricmc.loader.launch.knot.KnotClient;
 
 import java.io.File;

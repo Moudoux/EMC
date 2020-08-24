@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.Getter;
 import lombok.Setter;
 import me.deftware.client.framework.maps.SettingsMap;
-import me.deftware.client.framework.render.shader.Shader;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.opengl.GL11;
 

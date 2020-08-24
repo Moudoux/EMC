@@ -3,7 +3,6 @@ package me.deftware.client.framework.main.preprocessor;
 import com.google.gson.JsonObject;
 import me.deftware.client.framework.main.Main;
 import me.deftware.client.framework.main.bootstrap.discovery.ClasspathModDiscovery;
-import me.deftware.client.framework.util.path.OSUtils;
 
 import java.io.File;
 import java.util.HashMap;

@@ -3,7 +3,6 @@ package me.deftware.client.framework.gui.minecraft;
 import me.deftware.client.framework.inventory.Slot;
 import me.deftware.mixin.imp.IMixinGuiContainer;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.inventory.EnderChestInventory;
 import net.minecraft.text.TranslatableText;
 
 /**

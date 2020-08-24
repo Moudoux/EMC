@@ -3,7 +3,6 @@ package me.deftware.client.framework.config;
 import com.google.gson.*;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.minecraft.Minecraft;
-import me.deftware.client.framework.util.path.OSUtils;
 
 import java.io.File;
 import java.io.IOException;

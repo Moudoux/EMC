@@ -1,9 +1,9 @@
 package me.deftware.client.framework.entity.types;
 
 import me.deftware.client.framework.conversion.ConvertedList;
+import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.types.objects.ClonedPlayerMP;
 import me.deftware.client.framework.inventory.Inventory;
-import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.item.effect.AppliedStatusEffect;
 import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.mixin.imp.IMixinEntityLivingBase;

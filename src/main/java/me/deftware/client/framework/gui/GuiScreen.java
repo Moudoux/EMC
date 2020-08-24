@@ -10,8 +10,8 @@ import me.deftware.client.framework.input.Mouse;
 import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.client.framework.render.texture.Texture;
-import me.deftware.client.framework.util.minecraft.MinecraftIdentifier;
 import me.deftware.client.framework.util.ResourceUtils;
+import me.deftware.client.framework.util.minecraft.MinecraftIdentifier;
 import me.deftware.client.framework.util.types.Tuple;
 import me.deftware.mixin.imp.IMixinGuiScreen;
 import net.minecraft.client.MinecraftClient;
@@ -20,7 +20,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
-import net.minecraft.util.Util;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
