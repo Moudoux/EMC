@@ -25,7 +25,7 @@ public abstract class MixinBlock {
         if (((IMixinAbstractBlock) this).getTheSlipperiness() != 0.6f) {
             Block block = Block.getBlockFromItem(this.asItem());
             EventSlowdown event = null;
-            if (block instanceof IceBlock) {
+            if (block instanceof IceBlock || block.getTranslationKey().contains("blue_ice") || block.getTranslationKey().contains("packed_ice")) {
                 event = new EventSlowdown(EventSlowdown.SlowdownType.Slipperiness, 0.6f);
             }
             if (event != null) {
