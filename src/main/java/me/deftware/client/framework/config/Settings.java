@@ -27,6 +27,13 @@ public class Settings {
 
 	public Settings(String modName) {
 		configFile = new File(String.format("%s/libraries/EMC/%s/configs/%s_config.json", Minecraft.getRunDir().getAbsolutePath(), Minecraft.getMinecraftVersion(), modName));
+		try {
+			if (configFile.exists() && getConfigFileContents().trim().equals("")) {
+				configFile.delete();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		JsonObject jsonObject;
 		try {
 			// Load config from file
