@@ -32,12 +32,12 @@ public class Main extends EMCMod {
         Events
      */
 
-    @EventHandler(eventType = EventUpdate.class)
+    @EventHandler
     public void onUpdate(EventUpdate event) {
         System.out.println("Event test");
     }
 
-    @EventHandler(eventType = EventRender2D.class)
+    @EventHandler
     public void onRender2D(EventRender2D event) {
        // customFont.drawString(2,2, "TestMod", true);
     }
