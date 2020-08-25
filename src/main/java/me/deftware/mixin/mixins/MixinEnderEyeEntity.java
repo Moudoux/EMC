@@ -61,7 +61,6 @@ public class MixinEnderEyeEntity {
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EyeOfEnderEntity;setPos(DDD)V"))
     public void setPos(CallbackInfo info) {
         Vec3d vel = ((EyeOfEnderEntity)(Object)this).getVelocity();
-        System.out.println(vel.toString());
 
         if (firstThrow != null && secondThrow != null && Math.abs(vel.x * vel.z) <= .0000001 && Math.abs(vel.y) != 0.0D) {
             EventStructureLocation event = new EventStructureLocation(DoubleBlockPosition.fromMinecraftBlockPos(firstThrow.calculateIntersection(secondThrow)), EventStructureLocation.StructureType.Stronghold);
