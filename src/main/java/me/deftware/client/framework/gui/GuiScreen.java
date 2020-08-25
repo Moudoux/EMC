@@ -35,7 +35,7 @@ import java.util.Objects;
  */
 public abstract class GuiScreen extends Screen {
 
-	protected GuiScreen parent;
+	public GuiScreen parent;
 	protected boolean escGoesBack = true;
 	protected ScreenInstance parentInstance;
 	protected HashMap<String, Texture> textureHashMap = new HashMap<>();

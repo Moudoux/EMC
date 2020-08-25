@@ -20,7 +20,7 @@ public class LegacyBitmapFont {
 	public final HashMap<Character, int[]> textureDimensionsStore = new HashMap<>();
 
 	protected Font stdFont;
-	protected String fontName;
+	public String fontName;
 	protected int fontSize;
 	public boolean scaled;
 

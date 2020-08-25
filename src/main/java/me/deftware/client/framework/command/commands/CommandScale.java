@@ -39,7 +39,7 @@ public class CommandScale extends EMCModCommand {
                                 .executes(c -> {
                                     RenderStack.setScale(1.0f);
                                     Bootstrap.EMCSettings.putPrimitive("RENDER_SCALE", 1.0f);
-                                    new ChatBuilder().withPrefix().withText("Scale has been reset to 1.0!").withColor(ChatColors.GRAY).build().print();
+                                    new ChatBuilder().withPrefix().withText("Scale has been reset to \"1.0\"!").withColor(ChatColors.GRAY).build().print();
                                     return 1;
                                 })
                 )
