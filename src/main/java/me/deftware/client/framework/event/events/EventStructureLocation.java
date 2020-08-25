@@ -38,7 +38,11 @@ public class EventStructureLocation extends Event {
     }
 
     public enum StructureType {
-        Stronghold, BuriedTreasure
+        Stronghold,
+        BuriedTreasure,
+        OceanMonument,
+        WoodlandMansion,
+        OtherMapIcon
     }
 
 }
