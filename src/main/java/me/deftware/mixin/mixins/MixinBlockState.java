@@ -5,6 +5,7 @@ import me.deftware.client.framework.event.events.EventCollideCheck;
 import me.deftware.client.framework.event.events.EventVoxelShape;
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.block.*;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
@@ -83,7 +84,14 @@ public abstract class MixinBlockState {
             ci.setReturnValue(event.shape);
         } else {
             if (this.getBlock() instanceof FluidBlock) {
-                ci.setReturnValue((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "LIQUID_VOXEL_FULL", false)
+                boolean fullCube = (boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "LIQUID_VOXEL_FULL", false);
+                if (fullCube) {
+                    if (!(pos.getX() == MinecraftClient.getInstance().player.getBlockPos().getX() &&
+                            pos.getZ() == MinecraftClient.getInstance().player.getBlockPos().getZ())) {
+                        fullCube = false;
+                    }
+                }
+                ci.setReturnValue(fullCube
                         ? VoxelShapes.fullCube()
                         : VoxelShapes.empty());
             } else if (this.getBlock() instanceof SweetBerryBushBlock) {
@@ -93,4 +101,5 @@ public abstract class MixinBlockState {
             }
         }
     }
+
 }

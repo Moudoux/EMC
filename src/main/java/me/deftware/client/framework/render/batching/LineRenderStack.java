@@ -4,6 +4,7 @@ import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.block.TileEntity;
 import me.deftware.client.framework.helper.RenderHelper;
 import me.deftware.client.framework.math.position.BlockPosition;
+import me.deftware.client.framework.minecraft.Minecraft;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
@@ -23,8 +24,8 @@ public class LineRenderStack extends RenderStack<LineRenderStack> {
 	public LineRenderStack setupMatrix() {
 		super.setupMatrix();
 		eyes = new Vec3d(0.0D, 0.0D, 1.0D)
-				.rotateX(-(float) Math.toRadians(RenderHelper.getRotationPitch()))
-				.rotateY(-(float) Math.toRadians(RenderHelper.getRotationYaw()));
+				.rotateX(-(float) Math.toRadians(Minecraft.getCamera().getRotationPitch()))
+				.rotateY(-(float) Math.toRadians(Minecraft.getCamera().getRotationYaw()));
 		return this;
 	}
 
@@ -44,9 +45,9 @@ public class LineRenderStack extends RenderStack<LineRenderStack> {
 
 	public LineRenderStack lineToBlockPosition(BlockPosition pos) {
 		return drawLine(
-				pos.getX() - RenderHelper.getRenderPosX(),
-				pos.getY() + 1f / 2.0F - RenderHelper.getRenderPosY(),
-				pos.getZ() - RenderHelper.getRenderPosZ()
+				pos.getX() - Minecraft.getCamera().getRenderPosX(),
+				pos.getY() + 1f / 2.0F - Minecraft.getCamera().getRenderPosY(),
+				pos.getZ() - Minecraft.getCamera().getRenderPosZ()
 		);
 	}
 
@@ -56,16 +57,19 @@ public class LineRenderStack extends RenderStack<LineRenderStack> {
 
 	public LineRenderStack lineToEntity(Entity entity) {
 		return drawLine(
-				entity.getBlockPosition().getX() - RenderHelper.getRenderPosX(),
-				entity.getBlockPosition().getY() + entity.getHeight() / 2.0F - RenderHelper.getRenderPosY(),
-				entity.getBlockPosition().getZ() - RenderHelper.getRenderPosZ()
+				entity.getBlockPosition().getX() - Minecraft.getCamera().getRenderPosX(),
+				entity.getBlockPosition().getY() + entity.getHeight() / 2.0F - Minecraft.getCamera().getRenderPosY(),
+				entity.getBlockPosition().getZ() - Minecraft.getCamera().getRenderPosZ()
 		);
 	}
 
-	public LineRenderStack drawLine(double x, double y, double z) {
-		GL11.glVertex3d(eyes.x, eyes.y, eyes.z);
+	public LineRenderStack drawPoint(double x, double y, double z) {
 		GL11.glVertex3d(x, y, z);
 		return this;
+	}
+
+	public LineRenderStack drawLine(double x, double y, double z) {
+		return drawPoint(eyes.x, eyes.y, eyes.z).drawPoint(x, y, z);
 	}
 
 }

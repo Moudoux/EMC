@@ -5,7 +5,7 @@ import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.event.events.*;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.render.camera.GameCamera;
+import me.deftware.client.framework.render.camera.entity.CameraEntityMan;
 import me.deftware.mixin.imp.IMixinEntityPlayerSP;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -16,6 +16,7 @@ import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -46,7 +47,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
     
     @Inject(at = @At("HEAD"), cancellable = true, method = "isCamera")
     public void isCamera(CallbackInfoReturnable<Boolean> info) {
-        if (GameCamera.isActive()) {
+        if (CameraEntityMan.isActive()) {
             info.setReturnValue(true);
             info.cancel();
         }
@@ -93,8 +94,14 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
     @Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
     public void sendChatMessage(String message, CallbackInfo ci) {
+        sendChatMessageWithSender(message, ClientPlayerEntity.class);
+        ci.cancel();
+    }
+
+    @Unique
+    public void sendChatMessageWithSender(String message, Class<?> sender) {
         String trigger = CommandRegister.getCommandTrigger();
-        EventChatSend event = new EventChatSend(message).broadcast();
+        EventChatSend event = new EventChatSend(message, sender).broadcast();
         if (!event.isCanceled()) {
             if (event.isDispatch() || !message.startsWith(trigger)) {
                 networkHandler.sendPacket(new ChatMessageC2SPacket(event.getMessage()));
@@ -107,7 +114,6 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
                 }
             }
         }
-        ci.cancel();
     }
 
     @Override

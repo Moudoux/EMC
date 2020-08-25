@@ -2,7 +2,7 @@ package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventWeather;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.render.camera.GameCamera;
+import me.deftware.client.framework.render.camera.entity.CameraEntityMan;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.WorldRenderer;
@@ -43,7 +43,7 @@ public class MixinWorldRenderer {
 
     @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;setupTerrain(Lnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/Frustum;ZIZ)V"), index = 4)
     public boolean isSpectator(boolean spectator) {
-        return spectator || GameCamera.isActive();
+        return spectator || CameraEntityMan.isActive();
     }
 
 }

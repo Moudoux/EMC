@@ -5,6 +5,10 @@ import me.deftware.client.framework.item.types.ArmourItem;
 import me.deftware.client.framework.item.types.BlockItem;
 import me.deftware.client.framework.item.types.SwordItem;
 import me.deftware.client.framework.item.types.ToolItem;
+import me.deftware.client.framework.item.types.PotionItem;
+import me.deftware.client.framework.item.types.FishingRodItem;
+import me.deftware.client.framework.item.types.TridentItem;
+import me.deftware.client.framework.item.types.RangedWeaponItem;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.*;
 
@@ -29,6 +33,14 @@ public class Item implements IItem {
 			return new ToolItem(item);
 		} else if (item instanceof net.minecraft.item.BlockItem) {
 			return new BlockItem(item);
+		} else if (item instanceof net.minecraft.item.PotionItem) {
+			return new PotionItem(item);
+		} else if (item instanceof net.minecraft.item.FishingRodItem) {
+			return new FishingRodItem(item);
+		} else if (item instanceof net.minecraft.item.TridentItem) {
+			return new TridentItem(item);
+		} else if (item instanceof net.minecraft.item.RangedWeaponItem) {
+			return new RangedWeaponItem(item);
 		}
 		return new Item(item);
 	}
@@ -78,7 +90,7 @@ public class Item implements IItem {
 	public boolean isThrowable() {
 		return item instanceof BowItem || item instanceof CrossbowItem || item instanceof SnowballItem || item instanceof EggItem
 				|| item instanceof EnderPearlItem || item instanceof SplashPotionItem
-				|| item instanceof LingeringPotionItem || item instanceof FishingRodItem || item instanceof TridentItem;
+				|| item instanceof LingeringPotionItem || item instanceof net.minecraft.item.FishingRodItem || item instanceof net.minecraft.item.TridentItem;
 	}
 
 	public boolean instanceOf(ItemType type) {

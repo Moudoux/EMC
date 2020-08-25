@@ -3,7 +3,7 @@ package me.deftware.mixin.mixins;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.event.events.EventRenderHotbar;
 import me.deftware.client.framework.maps.SettingsMap;
-import me.deftware.client.framework.render.camera.GameCamera;
+import me.deftware.client.framework.render.camera.entity.CameraEntityMan;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
@@ -32,7 +32,7 @@ public class MixinGuiIngame {
 
     @Inject(at = @At("HEAD"), method = "getCameraPlayer", cancellable = true)
     private void getCameraPlayer(CallbackInfoReturnable<PlayerEntity> info) {
-        if (GameCamera.isActive()) {
+        if (CameraEntityMan.isActive()) {
             info.setReturnValue(MinecraftClient.getInstance().player);
             info.cancel();
         }

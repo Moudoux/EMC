@@ -11,9 +11,11 @@ public class EventChatSend extends Event {
 
 	private @Getter @Setter String message;
 	private @Getter @Setter boolean dispatch = false;
+	private final @Getter Class<?> sender;
 
-	public EventChatSend(String message) {
+	public EventChatSend(String message, Class<?> sender) {
 		this.message = message;
+		this.sender = sender;
 	}
 
 }

@@ -1,4 +1,4 @@
-package me.deftware.client.framework.render.camera;
+package me.deftware.client.framework.render.camera.entity;
 
 import net.minecraft.client.input.Input;
 

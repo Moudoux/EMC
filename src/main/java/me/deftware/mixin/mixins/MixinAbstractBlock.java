@@ -61,25 +61,6 @@ public abstract class MixinAbstractBlock implements IMixinAbstractBlock {
         }
     }
 
-    @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
-    public void getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {
-        EventVoxelShape event = new EventVoxelShape(collidable ? state.getOutlineShape(world, pos) : VoxelShapes.empty(), me.deftware.client.framework.world.block.Block.newInstance((Block) (Object) this));
-        event.broadcast();
-        if (event.modified) {
-            ci.setReturnValue(event.shape);
-        } else {
-            if (Block.getBlockFromItem(this.asItem()) instanceof FluidBlock) {
-                ci.setReturnValue((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "LIQUID_VOXEL_FULL", false)
-                        ? VoxelShapes.fullCube()
-                        : VoxelShapes.empty());
-            } else if (Block.getBlockFromItem(this.asItem()) instanceof SweetBerryBushBlock) {
-                if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "custom_berry_voxel", false)) {
-                    ci.setReturnValue(VoxelShapes.fullCube());
-                }
-            }
-        }
-    }
-
     @Inject(method = "calcBlockBreakingDelta", at = @At("HEAD"), cancellable = true)
     public void calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> ci) {
         float float_1 = state.getHardness(world, pos);

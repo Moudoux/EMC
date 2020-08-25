@@ -21,6 +21,7 @@ import me.deftware.mixin.imp.IMixinEntity;
 import me.deftware.mixin.imp.IMixinNetworkPlayerInfo;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -227,6 +228,10 @@ public class Entity {
 
 	public double getEyeHeight() {
 		return entity.getEyeHeight(entity.getPose());
+	}
+
+	public double getStandingEyeHeight() {
+		return entity.getEyeHeight(EntityPose.STANDING);
 	}
 
 	public boolean canBeSeenBy(EntityPlayer entity) {

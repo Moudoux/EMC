@@ -18,7 +18,7 @@ public class TileEntity {
 	@SuppressWarnings("DuplicateCondition")
 	public static TileEntity newInstance(BlockEntity entity) {
 		if (entity instanceof LootableContainerBlockEntity || entity instanceof EnderChestBlockEntity) {
-			return new StorageEntity(entity);
+			return StorageEntity.newInstance(entity);
 		}
 		return new TileEntity(entity);
 	}

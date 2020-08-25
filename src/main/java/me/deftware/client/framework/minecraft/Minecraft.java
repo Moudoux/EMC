@@ -5,6 +5,7 @@ import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.types.main.MainEntityPlayer;
 import me.deftware.client.framework.gui.GuiScreen;
 import me.deftware.client.framework.helper.ScreenHelper;
+import me.deftware.client.framework.render.camera.GameCamera;
 import me.deftware.client.framework.util.minecraft.BlockSwingResult;
 import me.deftware.client.framework.util.minecraft.ServerConnectionInfo;
 import net.minecraft.SharedConstants;
@@ -60,6 +61,8 @@ public class Minecraft {
 			new ComparedConversion<>(() -> MinecraftClient.getInstance().getCurrentServerEntry(), ServerConnectionInfo::new);
 
 	public static ServerConnectionInfo lastConnectedServer = null;
+
+	private static final GameCamera camera = new GameCamera();
 
 	/**
 	 * The main player
@@ -125,6 +128,10 @@ public class Minecraft {
 
 	public static File getRunDir() {
 		return MinecraftClient.getInstance().runDirectory;
+	}
+
+	public static GameCamera getCamera() {
+		return camera;
 	}
 
 	@Nullable

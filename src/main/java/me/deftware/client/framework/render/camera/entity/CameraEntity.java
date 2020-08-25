@@ -1,4 +1,4 @@
-package me.deftware.client.framework.render.camera;
+package me.deftware.client.framework.render.camera.entity;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.MinecraftClient;
@@ -46,9 +46,9 @@ public class CameraEntity extends OtherClientPlayerEntity {
 
 		input.tick(false);
 
-		float upDown = (this.input.sneaking ? -GameCamera.speed : 0) + (this.input.jumping ? GameCamera.speed : 0);
+		float upDown = (this.input.sneaking ? -CameraEntityMan.speed : 0) + (this.input.jumping ? CameraEntityMan.speed : 0);
 
-		Vec3d forward = new Vec3d(0, 0, GameCamera.speed * 2.5).rotateY(-(float) Math.toRadians(this.headYaw));
+		Vec3d forward = new Vec3d(0, 0, CameraEntityMan.speed * 2.5).rotateY(-(float) Math.toRadians(this.headYaw));
 		Vec3d strafe = forward.rotateY((float) Math.toRadians(90));
 		Vec3d motion = this.getVelocity();
 

@@ -1,6 +1,6 @@
 package me.deftware.mixin.mixins;
 
-import me.deftware.client.framework.render.camera.GameCamera;
+import me.deftware.client.framework.render.camera.entity.CameraEntityMan;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
@@ -15,7 +15,7 @@ public class MixinCamera {
 	@Inject(at = @At("HEAD"), cancellable = true, method ="getFocusedEntity")
 	public void getFocusedEntity(CallbackInfoReturnable<Entity> info) {
 		MinecraftClient mc = MinecraftClient.getInstance();
-		if (GameCamera.isActive()) {
+		if (CameraEntityMan.isActive()) {
 			info.setReturnValue(mc.player);
 			info.cancel();
 		}
@@ -23,7 +23,7 @@ public class MixinCamera {
 
 	@Inject(at = @At("HEAD"), cancellable = true, method= "isThirdPerson")
 	public void isThirdPerson(CallbackInfoReturnable<Boolean> info) {
-		if (GameCamera.isActive()) {
+		if (CameraEntityMan.isActive()) {
 			info.setReturnValue(true);
 			info.cancel();
 		}

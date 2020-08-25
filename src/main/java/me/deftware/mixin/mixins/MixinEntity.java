@@ -3,7 +3,7 @@ package me.deftware.mixin.mixins;
 import me.deftware.client.framework.event.events.*;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.math.vector.Vector3d;
-import me.deftware.client.framework.render.camera.GameCamera;
+import me.deftware.client.framework.render.camera.entity.CameraEntityMan;
 import me.deftware.mixin.imp.IMixinEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -52,9 +52,9 @@ public abstract class MixinEntity implements IMixinEntity {
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)
     public void changeLookDirection(double cursorX, double cursorY, CallbackInfo ci) {
-        if ((Object) this == MinecraftClient.getInstance().player && GameCamera.isActive()) {
-            GameCamera.fakePlayer.changeLookDirection(cursorX, cursorY);
-            GameCamera.fakePlayer.setHeadYaw(GameCamera.fakePlayer.yaw);
+        if ((Object) this == MinecraftClient.getInstance().player && CameraEntityMan.isActive()) {
+            CameraEntityMan.fakePlayer.changeLookDirection(cursorX, cursorY);
+            CameraEntityMan.fakePlayer.setHeadYaw(CameraEntityMan.fakePlayer.yaw);
             ci.cancel();
         }
     }

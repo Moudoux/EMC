@@ -5,6 +5,7 @@ import me.deftware.client.framework.chat.hud.ChatHud;
 import me.deftware.client.framework.chat.style.ChatStyle;
 import me.deftware.client.framework.fonts.minecraft.FontRenderer;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -151,7 +152,7 @@ public class ChatMessage {
 	public void sendMessage() {
 		if (MinecraftClient.getInstance().player != null) {
 			ChatHud.getChatMessageQueue().add(() ->
-					MinecraftClient.getInstance().player.sendChatMessage(toString(false))
+					MinecraftClient.getInstance().player.networkHandler.sendPacket(new ChatMessageC2SPacket(toString(false)))
 			);
 		}
 	}

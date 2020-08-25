@@ -35,7 +35,7 @@ public abstract class RenderStack<T> {
 		scaleChangeCallback.forEach(Runnable::run);
 	}
 
-	protected @Setter boolean customMatrix = true, locked = false;
+	protected @Setter boolean customMatrix = true, locked = false, running = false;
 	protected float red = 1f, green = 1f, blue = 1f, alpha = 1f, lineWidth = 2f;
 
 	public T setupMatrix() {
@@ -78,12 +78,16 @@ public abstract class RenderStack<T> {
 
 	public T begin(int mode) {
 		GL11.glBegin(mode);
+		running = true;
 		GL11.glColor4f(this.red, this.green, this.blue, this.alpha);
 		return (T) this;
 	}
 
 	public void end() {
-		GL11.glEnd();
+		if (running) {
+			running = false;
+			GL11.glEnd();
+		}
 		if (!locked) {
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glDepthMask(true);

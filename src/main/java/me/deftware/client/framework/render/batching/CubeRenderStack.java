@@ -1,55 +1,33 @@
 package me.deftware.client.framework.render.batching;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import me.deftware.client.framework.helper.RenderHelper;
 import me.deftware.client.framework.math.box.BoundingBox;
+import me.deftware.client.framework.minecraft.Minecraft;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.math.Box;
-import org.lwjgl.opengl.GL11;
-
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 
 /**
  * @author Deftware
  */
 public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 
+	public CubeRenderStack() {
+		customMatrix = false;
+	}
+
 	@Override
 	public CubeRenderStack begin() {
 		return this; /* Not used in this stack */
 	}
 
-	@Override
-	public CubeRenderStack setupMatrix() {
-		RenderSystem.clearCurrentColor();
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glEnable(GL_BLEND);
-		GL11.glLineWidth(lineWidth);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL_DEPTH_TEST);
-		GL11.glDepthMask(false);
-		return this;
-	}
-
-	@Override
-	public void end() {
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL_DEPTH_TEST);
-		GL11.glDepthMask(true);
-		GL11.glDisable(GL_BLEND);
-		RenderSystem.clearCurrentColor();
-	}
-
 	public CubeRenderStack ESPBox(BoundingBox box) {
-		drawColorBox(box.getOffsetMinecraftBox(-RenderHelper.getRenderPosX(), -RenderHelper.getRenderPosY(), -RenderHelper.getRenderPosZ()));
+		drawColorBox(box.getOffsetMinecraftBox(-Minecraft.getCamera().getRenderPosX(), -Minecraft.getCamera().getRenderPosY(), -Minecraft.getCamera().getRenderPosZ()));
 		return this;
 	}
 
 	public CubeRenderStack emptyESPBox(BoundingBox box) {
-		drawSelectionBoundingBox(box.getOffsetMinecraftBox(-RenderHelper.getRenderPosX(), -RenderHelper.getRenderPosY(), -RenderHelper.getRenderPosZ()));
+		drawSelectionBoundingBox(box.getOffsetMinecraftBox(-Minecraft.getCamera().getRenderPosX(), -Minecraft.getCamera().getRenderPosY(), -Minecraft.getCamera().getRenderPosZ()));
 		return this;
 	}
 

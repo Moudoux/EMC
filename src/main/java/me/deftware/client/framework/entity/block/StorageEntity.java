@@ -22,7 +22,6 @@ public class StorageEntity extends TileEntity {
 
 	protected StorageEntity(BlockEntity entity) {
 		super(entity);
-
 	}
 
 }

@@ -58,7 +58,6 @@
     "MixinPlayerListEntry",
     "MixinRender",
     "MixinRenderLivingBase",
-    "MixinRenderManager",
     "MixinRenderPlayer",
     "MixinRenderSystem",
     "MixinServerListEntryNormal",
