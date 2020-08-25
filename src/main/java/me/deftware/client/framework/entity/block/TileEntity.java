@@ -28,7 +28,9 @@ public class TileEntity {
 		this.position = new TileBlockPosition(entity);
 	}
 	
-	
+	public String getClassName() {
+		return this.getClass().getSimpleName().substring(0, this.getClass().getSimpleName().length() - "Entity".length());
+	}
 
 	public BlockPosition getBlockPosition() {
 		return position;
