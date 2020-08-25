@@ -63,6 +63,7 @@ public class QuadRenderStack extends RenderStack<QuadRenderStack> {
 		GL20.glUniform4f(resolution, width, height, GuiScreen.getDisplayWidth(), GuiScreen.getDisplayHeight());
 		GL20.glUniform2f(coordinates, x, y);
 		GL11.glBegin(GL11.GL_QUADS);
+		running = true;
 	}
 
 }
