@@ -14,7 +14,7 @@ import java.util.HashMap;
  *
  * @author Deftware, Ananas
  */
-public class LegacyBitmapFont {
+public class  LegacyBitmapFont {
 
 	public final HashMap<Character, Integer> textureIDStore = new HashMap<>();
 	public final HashMap<Character, int[]> textureDimensionsStore = new HashMap<>();
@@ -40,7 +40,7 @@ public class LegacyBitmapFont {
 	}
 
 	public void setupFont() {
-		this.stdFont = TTFRegistry.getFont(this.fontName, new Font("Arial", Font.PLAIN, this.fontSize))
+		this.stdFont = TTFRegistry.getFont(this.fontName, new Font(this.fontName, Font.PLAIN, this.fontSize))
 				.deriveFont(Font.PLAIN, fontSize * (scaled ? RenderStack.getScale() : 1f));
 	}
 
