@@ -60,13 +60,15 @@ public class EventBus {
 
 	public static void sendEvent(Event event) {
 		try {
-            listeners.get(event.getClass()).stream().sorted(Comparator.comparingInt(Listener::getPriority)).forEach(listener -> {
-                try {
-                    listener.getMethod().invoke(listener.getClassInstance(), event);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            });
+			if (listeners.containsKey(event.getClass())) {
+				listeners.get(event.getClass()).stream().sorted(Comparator.comparingInt(Listener::getPriority)).forEach(listener -> {
+					try {
+						listener.getMethod().invoke(listener.getClassInstance(), event);
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				});
+			}
 		} catch (Exception e) {
 			Bootstrap.logger.error("Cannot invoke event listener " + e.getMessage());
 		}
