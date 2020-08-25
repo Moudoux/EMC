@@ -64,9 +64,11 @@ public abstract class MixinEntity implements IMixinEntity {
             target = "Lnet/minecraft/entity/Entity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V",
             opcode = 182))
     private void applyFluidVelocity(Entity entity, Vec3d velocity) {
-        EventFluidVelocity event = new EventFluidVelocity(new Vector3d(velocity));
-        if (!event.isCanceled()) {
-            entity.setVelocity(event.getVector3d().getMinecraftVector());
+        if (entity == MinecraftClient.getInstance().player) {
+            EventFluidVelocity event = new EventFluidVelocity(new Vector3d(velocity));
+            if (!event.isCanceled()) {
+                entity.setVelocity(event.getVector3d().getMinecraftVector());
+            }
         }
     }
 
@@ -81,8 +83,10 @@ public abstract class MixinEntity implements IMixinEntity {
 
     @Inject(method = "getPose", at = @At(value = "TAIL"), cancellable = true)
     private void onGetPose(CallbackInfoReturnable<EntityPose> cir) {
-        if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "SWIMMING_MODE_OVERRIDE", false)) {
-            cir.setReturnValue(EntityPose.SWIMMING);
+        if (((Object) this) == MinecraftClient.getInstance().player) {
+            if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "SWIMMING_MODE_OVERRIDE", false)) {
+                cir.setReturnValue(EntityPose.SWIMMING);
+            }
         }
     }
 
@@ -94,13 +98,15 @@ public abstract class MixinEntity implements IMixinEntity {
 
     @Inject(method = "slowMovement", at = @At(value = "TAIL"), cancellable = true)
     private void onSlowMovement(BlockState state, Vec3d multiplier, CallbackInfo ci) {
-        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Web);
-        event.broadcast();
-        if (event.isCanceled()) {
-            Vec3d cobSlowness = new Vec3d(0.25D, 0.05000000074505806D, 0.25D);
-            if (multiplier.x == cobSlowness.x && multiplier.y == cobSlowness.y && multiplier.z == cobSlowness.z) {
-                this.movementMultiplier = Vec3d.ZERO;
-                ci.cancel();
+        if (((Object) this) == MinecraftClient.getInstance().player) {
+            EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Web);
+            event.broadcast();
+            if (event.isCanceled()) {
+                Vec3d cobSlowness = new Vec3d(0.25D, 0.05000000074505806D, 0.25D);
+                if (multiplier.x == cobSlowness.x && multiplier.y == cobSlowness.y && multiplier.z == cobSlowness.z) {
+                    this.movementMultiplier = Vec3d.ZERO;
+                    ci.cancel();
+                }
             }
         }
     }
