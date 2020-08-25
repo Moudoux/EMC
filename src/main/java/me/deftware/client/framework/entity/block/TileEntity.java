@@ -27,6 +27,8 @@ public class TileEntity {
 		this.entity = entity;
 		this.position = new TileBlockPosition(entity);
 	}
+	
+	
 
 	public BlockPosition getBlockPosition() {
 		return position;

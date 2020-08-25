@@ -33,7 +33,7 @@ public abstract class Button extends AbstractButtonWidget implements GuiEventLis
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if (button == 0 && this.clicked(mouseX, mouseY)) {
+		if (active && button == 0 && this.clicked(mouseX, mouseY)) {
 			if (shouldPlaySound) this.playDownSound(MinecraftClient.getInstance().getSoundManager());
 			onButtonClick(x, y);
 			return true;
