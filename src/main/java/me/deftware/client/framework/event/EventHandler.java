@@ -9,7 +9,9 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EventHandler {
 
-	@Deprecated
-	Class<?> eventType() default Event.class;
+	/**
+	 * Default priority is 1, events are sent to the highest priority first
+	 */
+	int priority() default 1;
 
 }
