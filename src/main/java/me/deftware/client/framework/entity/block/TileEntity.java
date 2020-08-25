@@ -1,6 +1,7 @@
 package me.deftware.client.framework.entity.block;
 
 import me.deftware.client.framework.entity.Entity;
+import me.deftware.client.framework.math.box.BoundingBox;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.math.position.TileBlockPosition;
 import net.minecraft.block.entity.BlockEntity;
@@ -12,6 +13,7 @@ import net.minecraft.block.entity.LootableContainerBlockEntity;
  */
 public class TileEntity {
 
+	protected final BoundingBox SINGLE;
 	protected final BlockEntity entity;
 	protected final BlockPosition position;
 
@@ -23,9 +25,14 @@ public class TileEntity {
 		return new TileEntity(entity);
 	}
 
+	public BoundingBox getBoundingBox() {
+		return SINGLE;
+	}
+
 	protected TileEntity(BlockEntity entity) {
 		this.entity = entity;
 		this.position = new TileBlockPosition(entity);
+		SINGLE = getBlockPosition().getBoundingBox();
 	}
 	
 	public String getClassName() {

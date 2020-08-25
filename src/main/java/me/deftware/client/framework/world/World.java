@@ -62,6 +62,7 @@ public class World {
 		BlockState blockState = getStateFromBlockPos(position);
 		Block block = Block.newInstance(blockState.getMinecraftBlockState().getBlock());
 		block.setBlockPosition(position);
+		block.setLocationBlockState(blockState);
 		return block;
 	}
 

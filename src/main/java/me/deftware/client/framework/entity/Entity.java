@@ -21,6 +21,7 @@ import me.deftware.mixin.imp.IMixinEntity;
 import me.deftware.mixin.imp.IMixinNetworkPlayerInfo;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.passive.ChickenEntity;
@@ -147,8 +148,11 @@ public class Entity {
 	}
 
 	public int getResponseTime() {
-		return Objects.requireNonNull(Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler())
-				.getPlayerListEntry(entity.getUuid())).getLatency();
+		PlayerListEntry entry = Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).getPlayerListEntry(entity.getUuid());
+		if (entry != null) {
+			return entry.getLatency();
+		}
+		return -1;
 	}
 
 	public int getTicksExisted() {

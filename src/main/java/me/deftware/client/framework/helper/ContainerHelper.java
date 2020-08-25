@@ -2,6 +2,7 @@ package me.deftware.client.framework.helper;
 
 import me.deftware.client.framework.item.ItemStack;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.inventory.DoubleInventory;
 import net.minecraft.screen.GenericContainerScreenHandler;
 
 import java.util.Objects;
@@ -20,6 +21,10 @@ public class ContainerHelper {
 
 	public static boolean isOpen() {
 		return getCurrent() != null;
+	}
+
+	public static boolean isDouble() {
+		return Objects.requireNonNull(getCurrent()).getInventory() instanceof DoubleInventory;
 	}
 
 	public static int getInventorySize() {

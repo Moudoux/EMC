@@ -39,6 +39,11 @@ public class BoundingBox {
 		return this;
 	}
 
+	@Override
+	public String toString() {
+		return getMinX() + ", " + getMinY() + ", " + getMinZ() + ", " + getMaxX() + ", " + getMaxY() + ", " + getMaxZ();
+	}
+
 	public Vector3d getCenter() {
 		return new Vector3d(getMinecraftBox().getCenter());
 	}

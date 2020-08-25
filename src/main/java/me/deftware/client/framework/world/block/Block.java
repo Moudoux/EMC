@@ -1,5 +1,7 @@
 package me.deftware.client.framework.world.block;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.item.IItem;
 import me.deftware.client.framework.math.position.BlockPosition;
@@ -16,13 +18,14 @@ public class Block implements IItem {
 
 	protected final net.minecraft.block.Block block;
 	protected BlockPosition blockPosition;
+	private @Setter @Getter BlockState locationBlockState = null;
 
 	@SuppressWarnings("DuplicateCondition")
 	public static Block newInstance(net.minecraft.block.Block block) {
 		if (block instanceof net.minecraft.block.CropBlock) {
 			return new CropBlock(block);
 		} else if (block instanceof ChestBlock || block instanceof TrappedChestBlock || block instanceof BarrelBlock || block instanceof EnderChestBlock) {
-			return new StorageBlock(block);
+			return StorageBlock.newInstance(block);
 		}
 		return new Block(block);
 	}
