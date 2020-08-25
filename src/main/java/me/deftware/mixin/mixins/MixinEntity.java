@@ -65,7 +65,7 @@ public abstract class MixinEntity implements IMixinEntity {
             opcode = 182))
     private void applyFluidVelocity(Entity entity, Vec3d velocity) {
         if (entity == MinecraftClient.getInstance().player) {
-            EventFluidVelocity event = new EventFluidVelocity(new Vector3d(velocity));
+            EventFluidVelocity event = new EventFluidVelocity(new Vector3d(velocity)).broadcast();
             if (!event.isCanceled()) {
                 entity.setVelocity(event.getVector3d().getMinecraftVector());
             }
