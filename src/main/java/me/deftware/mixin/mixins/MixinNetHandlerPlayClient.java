@@ -3,7 +3,10 @@ package me.deftware.mixin.mixins;
 import me.deftware.client.framework.event.events.EventAnimation;
 import me.deftware.client.framework.event.events.EventChunkDataReceive;
 import me.deftware.client.framework.event.events.EventKnockback;
+import me.deftware.client.framework.minecraft.Minecraft;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityStatusS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
@@ -38,10 +41,12 @@ public class MixinNetHandlerPlayClient {
 
     @Inject(method = "onVelocityUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setVelocityClient(DDD)V"), cancellable = true)
     public void onVelocityUpdate(EntityVelocityUpdateS2CPacket packet, CallbackInfo ci) {
-        EventKnockback event = new EventKnockback(packet.getVelocityX(), packet.getVelocityY(), packet.getVelocityZ());
-        event.broadcast();
-        if (event.isCanceled()) {
-            ci.cancel();
+        if (MinecraftClient.getInstance().player != null && MinecraftClient.getInstance().player.getEntityId() == packet.getId()) {
+            EventKnockback event = new EventKnockback(packet.getVelocityX(), packet.getVelocityY(), packet.getVelocityZ());
+            event.broadcast();
+            if (event.isCanceled()) {
+                ci.cancel();
+            }
         }
     }
 

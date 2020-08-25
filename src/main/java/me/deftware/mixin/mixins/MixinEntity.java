@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@SuppressWarnings("ConstantConditions")
 @Mixin(Entity.class)
 public abstract class MixinEntity implements IMixinEntity {
 
@@ -116,10 +117,12 @@ public abstract class MixinEntity implements IMixinEntity {
 
     @Inject(method = "setVelocityClient", at = @At("HEAD"), cancellable = true)
     private void onSetVelocityClient(double x, double y, double z, CallbackInfo ci) {
-        EventKnockback event = new EventKnockback(x, y, z);
-        event.broadcast();
-        if (event.isCanceled()) {
-            ci.cancel();
+        if ((Object) this == MinecraftClient.getInstance().player) {
+            EventKnockback event = new EventKnockback(x, y, z);
+            event.broadcast();
+            if (event.isCanceled()) {
+                ci.cancel();
+            }
         }
     }
 
