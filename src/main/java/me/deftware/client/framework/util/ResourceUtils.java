@@ -19,7 +19,7 @@ public class ResourceUtils {
     /**
      * Returns a byte stream of a target resource
      * @param mod Native name of the mod the resource corresponds to (name from client.json
-     * @param resourcePath Path to the resource, no slash at the begining is required
+     * @param resourcePath Path to the resource, no slash at the beginning is required
      *
      * @return InputStream
      */

@@ -38,7 +38,7 @@ public class CommandRegister {
     /**
      * Registers a commandbuilder
      *
-     * @param command
+     * @param command The command to register
      */
     public static synchronized void registerCommand(CommandBuilder<?> command) {
         CommandNode<ServerCommandSource> node = dispatcher.register(command.build());
@@ -51,7 +51,7 @@ public class CommandRegister {
     /**
      * Registers a EMCModCommand
      *
-     * @param modCommand
+     * @param modCommand The command to register
      */
     public static void registerCommand(EMCModCommand modCommand) {
         registerCommand(modCommand.getCommandBuilder());
@@ -60,7 +60,7 @@ public class CommandRegister {
     /**
      * Returns an array of all registered commands, without any argument usage
      *
-     * @return
+     * @return an array of all registered commands, without any argument usage
      */
     public static ArrayList<String> listCommands() {
         ArrayList<String> commands = new ArrayList<>();
@@ -74,7 +74,7 @@ public class CommandRegister {
     /**
      * Returns an array of all registered commands, with argument usage
      *
-     * @return
+     * @return an array of all registered commands, with argument usage
      */
     public static ArrayList<String> getCommandsAndUsage() {
         Map<CommandNode<ServerCommandSource>, String> map = getSmartUsage();
@@ -84,7 +84,7 @@ public class CommandRegister {
     /**
      * Returns a map of all root commands with their correct usage
      *
-     * @return
+     * @return a map of all root commands with their correct usage
      */
     public static Map<CommandNode<ServerCommandSource>, String> getSmartUsage() {
         return dispatcher.getSmartUsage(dispatcher.getRoot(), MinecraftClient.getInstance().player.getCommandSource());
@@ -93,7 +93,7 @@ public class CommandRegister {
     /**
      * Returns the command trigger used to trigger commands, default is a .
      *
-     * @return
+     * @return the command trigger used to trigger commands, default is a .
      */
     public static String getCommandTrigger() {
         return (String) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".");

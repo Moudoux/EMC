@@ -15,9 +15,9 @@ public class OAuthNetHandlerPlayClient extends ClientPlayNetworkHandler {
 
     private final OAuth.OAuthCallback callback;
 
-    public OAuthNetHandlerPlayClient(MinecraftClient mcIn, Screen p_i46300_2_, ClientConnection networkManagerIn,
+    public OAuthNetHandlerPlayClient(MinecraftClient mcIn, Screen screenIn, ClientConnection networkManagerIn,
                                      GameProfile profileIn, OAuth.OAuthCallback callback) {
-        super(mcIn, p_i46300_2_, networkManagerIn, profileIn);
+        super(mcIn, screenIn, networkManagerIn, profileIn);
         this.callback = callback;
     }
 

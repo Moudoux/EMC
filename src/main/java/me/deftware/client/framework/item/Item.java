@@ -21,7 +21,6 @@ public class Item implements IItem {
 
 	protected final net.minecraft.item.Item item;
 
-	@SuppressWarnings("DuplicateCondition")
 	public static Item newInstance(net.minecraft.item.Item item) {
 		if (item instanceof ArmorItem) {
 			return new ArmourItem(item);

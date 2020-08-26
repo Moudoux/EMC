@@ -42,7 +42,6 @@ public class Entity {
 	protected final BlockPosition blockPosition;
 	protected final BoundingBox boundingBox;
 
-	@SuppressWarnings("DuplicateCondition")
 	public static Entity newInstance(net.minecraft.entity.Entity entity) {
 		if (entity instanceof PlayerEntity) {
 			return new EntityPlayer((PlayerEntity) entity);
@@ -117,7 +116,7 @@ public class Entity {
 		List<me.deftware.client.framework.item.ItemStack> stackList = heldItems.poll();
 		if (!stackList.isEmpty()) {
 			if (!offhand) return stackList.get(0);
-			if (offhand && stackList.size() > 1) return stackList.get(1);
+			else if (stackList.size() > 1) return stackList.get(1);
 		}
 		return me.deftware.client.framework.item.ItemStack.EMPTY;
 	}
@@ -260,7 +259,7 @@ public class Entity {
 		entity.noClip = state;
 	}
 
-	public void setFalldistance(float distance) {
+	public void setFallDistance(float distance) {
 		entity.fallDistance = distance;
 	}
 

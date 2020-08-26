@@ -26,8 +26,8 @@ public class VoxelShape {
 		return shape;
 	}
 
-	public static VoxelShape makeCuboidShape(double x1, double y1, double z1, double x2, double y2, double z2) {
-		return new VoxelShape(net.minecraft.block.Block.createCuboidShape(x1, y1, z1, x2, y2, z2));
+	public static VoxelShape makeCuboidShape(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+		return new VoxelShape(net.minecraft.block.Block.createCuboidShape(minX, minY, minZ, maxX, maxY, maxZ));
 	}
 
 }

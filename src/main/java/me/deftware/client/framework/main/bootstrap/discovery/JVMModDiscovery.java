@@ -37,7 +37,7 @@ public class JVMModDiscovery extends AbstractModDiscovery {
 
     public static class JVMModEntry extends AbstractModEntry {
 
-        private String[] data;
+        private final String[] data;
 
         JVMModEntry(File file, String... data) {
             super(file, null);

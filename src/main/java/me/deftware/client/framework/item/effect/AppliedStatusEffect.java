@@ -19,6 +19,10 @@ public class AppliedStatusEffect {
 		return instance;
 	}
 
+	public StatusEffect getEffect() {
+		return effect;
+	}
+
 	public int getDuration() {
 		return instance.getDuration();
 	}

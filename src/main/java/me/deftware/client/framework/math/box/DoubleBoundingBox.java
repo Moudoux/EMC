@@ -11,9 +11,9 @@ public class DoubleBoundingBox extends BoundingBox {
 	protected Box box;
 	public long asLong = 0L;
 
-	public DoubleBoundingBox(double x, double y, double z, double x1, double y1, double z1) {
+	public DoubleBoundingBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
 		super(null);
-		this.box = new Box(x, y, z, x1, y1, z1);
+		this.box = new Box(minX, minY, minZ, maxX, maxY, maxZ);
 	}
 
 	public DoubleBoundingBox(BlockPos pos) {

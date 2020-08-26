@@ -28,7 +28,7 @@ public abstract class AbstractModDiscovery {
     public abstract static class AbstractModEntry {
 
         JsonObject json;
-        private File file;
+        private final File file;
 
         AbstractModEntry(File file, JsonObject json) {
             this.file = file;

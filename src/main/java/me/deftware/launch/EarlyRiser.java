@@ -4,6 +4,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import org.spongepowered.asm.mixin.Mixins;
 
+@SuppressWarnings("ALL")
 public class EarlyRiser implements Runnable {
 
     @Override

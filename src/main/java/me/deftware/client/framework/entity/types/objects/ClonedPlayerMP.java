@@ -10,6 +10,7 @@ import java.util.Objects;
 /**
  * @author Deftware
  */
+@SuppressWarnings("EntityConstructor")
 public class ClonedPlayerMP extends OtherClientPlayerEntity {
 
 	public ClonedPlayerMP(PlayerEntity entity) {

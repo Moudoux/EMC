@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class EventBus {
 
 	private static final Object lock = new Object();
-	private static MultiMap<Class<?>, Listener> listeners = new MultiMap<>();
+	private static final MultiMap<Class<?>, Listener> listeners = new MultiMap<>();
 
 	public static synchronized void registerClass(Class<?> clazz, Object instance) {
 		synchronized (lock) {
@@ -46,7 +46,7 @@ public class EventBus {
 					}
 				}
 			}
-			removeList.forEach((key, value) -> listeners.remove(key, value));
+			removeList.forEach(listeners::remove);
 		}
 	}
 

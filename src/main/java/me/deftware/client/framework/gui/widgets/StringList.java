@@ -11,7 +11,7 @@ import net.minecraft.client.util.math.MatrixStack;
 /**
  * @author Deftware
  */
-public class StringList extends EntryListWidget {
+public class StringList extends EntryListWidget<StringList.StringEntry> {
 
 	private final MatrixStack stack = new MatrixStack();
 
@@ -45,10 +45,10 @@ public class StringList extends EntryListWidget {
 		return width - 6;
 	}
 
-	public static class StringEntry extends EntryListWidget.Entry {
+	public static class StringEntry extends EntryListWidget.Entry<StringList.StringEntry> {
 
 		private final ChatMessage string;
-		private Pair<Integer, ChatMessage> compiledText = new Pair<>(0, null);
+		private final Pair<Integer, ChatMessage> compiledText = new Pair<>(0, null);
 
 		public StringEntry(ChatMessage string) {
 			this.string = string;

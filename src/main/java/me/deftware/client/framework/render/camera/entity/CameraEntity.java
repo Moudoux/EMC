@@ -14,6 +14,7 @@ import java.util.Objects;
 /**
  * @author wagyourtail, Deftware
  */
+@SuppressWarnings("EntityConstructor")
 public class CameraEntity extends OtherClientPlayerEntity {
 
 	public Input input;

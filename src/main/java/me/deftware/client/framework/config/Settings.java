@@ -28,8 +28,8 @@ public class Settings {
 	public Settings(String modName) {
 		configFile = new File(String.format("%s/libraries/EMC/%s/configs/%s_config.json", Minecraft.getRunDir().getAbsolutePath(), Minecraft.getMinecraftVersion(), modName));
 		try {
-			if (configFile.exists() && getConfigFileContents().trim().equals("")) {
-				configFile.delete();
+			if (configFile.exists() && getConfigFileContents().trim().equals("") && !configFile.delete()) {
+				Bootstrap.logger.error("Failed to delete empty file {}", configFile.getName());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

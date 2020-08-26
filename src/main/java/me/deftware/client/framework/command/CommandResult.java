@@ -12,7 +12,7 @@ import net.minecraft.server.command.ServerCommandSource;
  */
 public class CommandResult {
 
-	private CommandContext<?> context;
+	private final CommandContext<?> context;
 
 	public CommandResult(CommandContext<?> context) {
 		this.context = context;

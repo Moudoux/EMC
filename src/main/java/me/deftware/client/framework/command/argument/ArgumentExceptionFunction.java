@@ -7,7 +7,7 @@ import com.mojang.brigadier.Message;
  */
 public class ArgumentExceptionFunction implements Message {
 
-	private String message;
+	private final String message;
 
 	public ArgumentExceptionFunction(String message) {
 		this.message = message;

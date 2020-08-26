@@ -17,7 +17,6 @@ public class TileEntity {
 	protected final BlockEntity entity;
 	protected final BlockPosition position;
 
-	@SuppressWarnings("DuplicateCondition")
 	public static TileEntity newInstance(BlockEntity entity) {
 		if (entity instanceof LootableContainerBlockEntity || entity instanceof EnderChestBlockEntity) {
 			return StorageEntity.newInstance(entity);

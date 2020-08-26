@@ -20,7 +20,6 @@ public class Block implements IItem {
 	protected BlockPosition blockPosition;
 	private @Setter @Getter BlockState locationBlockState = null;
 
-	@SuppressWarnings("DuplicateCondition")
 	public static Block newInstance(net.minecraft.block.Block block) {
 		if (block instanceof net.minecraft.block.CropBlock) {
 			return new CropBlock(block);

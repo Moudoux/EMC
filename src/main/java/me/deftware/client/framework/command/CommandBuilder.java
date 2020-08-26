@@ -18,14 +18,14 @@ import java.util.function.Consumer;
 public class CommandBuilder<T> {
 
     private LiteralArgumentBuilder<ServerCommandSource> builder;
-    private List<String> aliases = new ArrayList<>();
+    private final List<String> aliases = new ArrayList<>();
 
     /**
      * Adds a single command (.test for example) with no argument, recommended for simple
      * no argument commands
      *
-     * @param command
-     * @param execution
+     * @param command The command to add
+     * @param execution The execution data for the command
      * @return CommandBuilder
      */
     public CommandBuilder<?> addCommand(String command, Consumer<CommandResult> execution) {
@@ -38,8 +38,8 @@ public class CommandBuilder<T> {
     /**
      * Set's the LiteralArgumentBuilder of this commandbuilder, used for building your own command tree
      *
-     * @param argument
-     * @return
+     * @param argument the LiteralArgumentBuilder of this commandbuilder
+     * @return The adjusted command builder
      */
     public CommandBuilder<?> set(LiteralArgumentBuilder<?> argument) {
         builder = (LiteralArgumentBuilder<ServerCommandSource>) argument;
@@ -49,8 +49,8 @@ public class CommandBuilder<T> {
     /**
      * Appends a literal or an argument to the existing command tree
      *
-     * @param argument
-     * @return
+     * @param argument the argument to append
+     * @return the adjusted command builder
      */
     public CommandBuilder<?> append(LiteralArgumentBuilder<ServerCommandSource> argument) {
         if (builder == null) {
@@ -64,8 +64,8 @@ public class CommandBuilder<T> {
     /**
      * Registers an alternate alias for the command
      *
-     * @param alias
-     * @return
+     * @param alias The alias to register
+     * @return the adjusted command builder
      */
     public CommandBuilder<?> registerAlias(String alias) {
         aliases.add(alias);
@@ -75,7 +75,7 @@ public class CommandBuilder<T> {
     /**
      * Autocomplete list of all entities on the current server
      *
-     * @return
+     * @return a list of all entities on the current server
      */
     public ArgumentType<T> getEntityArgumentType() {
         return (ArgumentType<T>) EntityArgumentType.players();
@@ -84,7 +84,7 @@ public class CommandBuilder<T> {
     /**
      * Returns a list of all aliases for this command
      *
-     * @return
+     * @return a list of all aliases for this command
      */
     public List<String> getAliases() {
         return aliases;

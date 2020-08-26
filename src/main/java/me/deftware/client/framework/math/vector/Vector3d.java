@@ -24,12 +24,12 @@ public class Vector3d {
 		vec3d = new Vec3d(x, y, z);
 	}
 
-	public Vector3d(Vec3i vec3i) {
-		vec3d = new Vec3d(vec3i.getX(), vec3i.getY(), vec3i.getZ());
+	public Vector3d(Vec3i vec) {
+		vec3d = new Vec3d(vec.getX(), vec.getY(), vec.getZ());
 	}
 
-	public Vector3d(Vec3d vec3d) {
-		this.vec3d = vec3d;
+	public Vector3d(Vec3d vec) {
+		this.vec3d = vec;
 	}
 
 	public Vector3d(BlockPosition position) {
@@ -83,13 +83,13 @@ public class Vector3d {
 		return this;
 	}
 
-	public Vector3d subtract(Vector3d vector3d) {
-		vec3d = vec3d.subtract(vector3d.getMinecraftVector());
+	public Vector3d subtract(Vector3d vec) {
+		vec3d = vec3d.subtract(vec.getMinecraftVector());
 		return this;
 	}
 
-	public Vector3d add(Vector3d vector3d) {
-		vec3d = vec3d.add(vector3d.getMinecraftVector());
+	public Vector3d add(Vector3d vec) {
+		vec3d = vec3d.add(vec.getMinecraftVector());
 		return this;
 	}
 
@@ -97,9 +97,9 @@ public class Vector3d {
 		return vec3d.distanceTo(vec.getMinecraftVector());
 	}
 
-	public static boolean rayTraceBlocks(Vector3d vec1, Vector3d vec2) {
+	public static boolean rayTraceBlocks(Vector3d start, Vector3d end) {
 		return Objects.requireNonNull(MinecraftClient.getInstance().world).
-				rayTrace(new RayTraceContext(vec1.getMinecraftVector(), vec2.getMinecraftVector(), RayTraceContext.ShapeType.OUTLINE, RayTraceContext.FluidHandling.NONE,
+				rayTrace(new RayTraceContext(start.getMinecraftVector(), end.getMinecraftVector(), RayTraceContext.ShapeType.OUTLINE, RayTraceContext.FluidHandling.NONE,
 						Objects.requireNonNull(MinecraftClient.getInstance().getCameraEntity())))
 				.getType() != HitResult.Type.MISS;
 	}

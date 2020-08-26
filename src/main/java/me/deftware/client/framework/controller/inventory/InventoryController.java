@@ -59,10 +59,10 @@ public class InventoryController {
 	}
 
 	public static boolean placeStackInHotbar(ItemStack stack) {
-		for (int i = 0; i < 9; i++) {
-			if (Objects.requireNonNull(Minecraft.getPlayer()).getInventory().getStackInSlot(i).isEmpty()) {
+		for (int index = 0; index < 9; index++) {
+			if (Objects.requireNonNull(Minecraft.getPlayer()).getInventory().getStackInSlot(index).isEmpty()) {
 				Objects.requireNonNull(MinecraftClient.getInstance().player).networkHandler
-						.sendPacket(new CreativeInventoryActionC2SPacket(36 + i, stack.getMinecraftItemStack()));
+						.sendPacket(new CreativeInventoryActionC2SPacket(36 + index, stack.getMinecraftItemStack()));
 				return true;
 			}
 		}

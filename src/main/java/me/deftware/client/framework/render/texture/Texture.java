@@ -183,18 +183,15 @@ public class Texture {
         this.bind(GL_ONE);
     }
 
-
-    public void bind(int blendfunc) {
+    public void bind(int dFactor) {
         GL11.glEnable(GL_BLEND);
-        GL11.glBlendFunc(GL_SRC_ALPHA, blendfunc);
+        GL11.glBlendFunc(GL_SRC_ALPHA, dFactor);
         this.blindBind();
     }
-
 
     public void blindBind() {
         this.dynamicTexture.bindTexture();
     }
-
 
     public void unbind() {
         if (GL11.glIsEnabled(GL_BLEND))

@@ -219,8 +219,8 @@ public class ItemStack {
 
 	public static void loadAllItems(NbtCompound compound, INonNullList<ItemStack> list) {
 		ListTag itemTag = compound.getMinecraftCompound().getList("Items", 10);
-		for(int i = 0; i < itemTag.size(); i++) {
-			CompoundTag item = itemTag.getCompound(i);
+		for(int index = 0; index < itemTag.size(); index++) {
+			CompoundTag item = itemTag.getCompound(index);
 			int slotData = item.getByte("Slot") & 255;
 			if (slotData < list.size()) {
 				list.set(slotData, new ItemStack(net.minecraft.item.ItemStack.fromTag(new NbtCompound(item).getMinecraftCompound())));

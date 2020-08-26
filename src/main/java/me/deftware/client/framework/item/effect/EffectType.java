@@ -7,6 +7,6 @@ public enum EffectType {
 
 	BENEFICIAL,
 	HARMFUL,
-	NEUTRAL;
+	NEUTRAL
 
 }

@@ -38,8 +38,9 @@ public class HashUtils {
         }
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     public static String getSha1(File file) throws IOException {
-        String sha1 = null;
+        String sha1;
         MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("SHA-1");

@@ -8,7 +8,7 @@ import net.minecraft.client.util.math.MatrixStack;
 /**
  * @author Deftware
  */
-public abstract class GuiSlot extends AlwaysSelectedEntryListWidget implements GuiEventListener {
+public abstract class GuiSlot extends AlwaysSelectedEntryListWidget<GuiSlot.CustomItem> implements GuiEventListener {
 
 	private static final MatrixStack stack = new MatrixStack();
 
@@ -17,8 +17,8 @@ public abstract class GuiSlot extends AlwaysSelectedEntryListWidget implements G
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, int int_1, int int_2, float float_1) {
-		super.render(matrixStack, int_1, int_2, float_1);
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float tickDelta) {
+		super.render(matrixStack, mouseX, mouseY, tickDelta);
 		if (children().size() != getISize()) {
 			buildItems();
 		}
@@ -28,7 +28,7 @@ public abstract class GuiSlot extends AlwaysSelectedEntryListWidget implements G
 		if (getSelected() == null) {
 			return -1;
 		}
-		return ((CustomItem) getSelected()).id;
+		return getSelected().id;
 	}
 
 	public void doDraw(int mouseX, int mouseY, float partialTicks) {
@@ -37,15 +37,15 @@ public abstract class GuiSlot extends AlwaysSelectedEntryListWidget implements G
 
 	public void clickElement(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
 		if (children().size() + 1 > slotIndex && slotIndex >= 0) {
-			setSelected((AlwaysSelectedEntryListWidget.Entry) children().get(slotIndex));
+			setSelected(children().get(slotIndex));
 		}
 	}
 
 	public void buildItems() {
 		GuiSlot.this.setSelected(null);
 		children().clear();
-		for (int i = 0; i < getISize(); i++) {
-			addEntry(new CustomItem(i) {
+		for (int index = 0; index < getISize(); index++) {
+			addEntry(new CustomItem(index) {
 				@Override
 				public void render(MatrixStack matrixStack, int x, int y, int io, int i3, int i4, int i5, int i6, boolean b, float v) {
 					if (getISize() == 0) {
@@ -58,8 +58,8 @@ public abstract class GuiSlot extends AlwaysSelectedEntryListWidget implements G
 				}
 
 				@Override
-				public boolean mouseClicked(double double_1, double double_2, int int_1) {
-					if (int_1 == 0) {
+				public boolean mouseClicked(double mouseX, double mouseY, int button) {
+					if (button == 0) {
 						GuiSlot.this.setSelected(this);
 						return true;
 					} else {
@@ -70,7 +70,7 @@ public abstract class GuiSlot extends AlwaysSelectedEntryListWidget implements G
 		}
 	}
 
-	public abstract class CustomItem extends AlwaysSelectedEntryListWidget.Entry {
+	public abstract static class CustomItem extends AlwaysSelectedEntryListWidget.Entry<GuiSlot.CustomItem> {
 
 		protected int id;
 

@@ -67,8 +67,8 @@ public class ScreenHelper {
 				paramList.add(c.getLeft());
 				targetList.add(c.getRight());
 			});
-			return (Screen) screenClass.getConstructor(paramList.toArray(new Class<?>[paramList.size()]))
-					.newInstance(targetList.toArray(new Object[targetList.size()]));
+			return (Screen) screenClass.getConstructor(paramList.toArray(new Class<?>[0]))
+					.newInstance(targetList.toArray(new Object[0]));
 		} catch (Exception ignored) { }
 		return null;
 	}
