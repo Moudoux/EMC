@@ -19,7 +19,7 @@ public enum ItemType {
 		} else if (this.equals(SplashPotion)) {
 			return item == Items.SPLASH_POTION;
 		} else if (this.equals(ItemFood)) {
-			return item.getGroup() == ItemGroup.FOOD;
+			return item.isFood();
 		} else if (this.equals(ItemSword)) {
 			return item instanceof SwordItem;
 		} else if (this.equals(ItemTool)) {
