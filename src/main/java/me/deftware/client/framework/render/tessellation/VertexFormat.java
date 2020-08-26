@@ -7,7 +7,9 @@ import net.minecraft.client.render.VertexFormats;
  */
 public enum VertexFormat {
 
-	POSITION_COLOR(VertexFormats.POSITION_COLOR), POSITION_TEX_COLOR(VertexFormats.POSITION_TEXTURE_COLOR);
+	POSITION_COLOR(VertexFormats.POSITION_COLOR),
+	POSITION_TEX_COLOR(VertexFormats.POSITION_TEXTURE_COLOR),
+	POSITION(VertexFormats.POSITION);
 
 	private final net.minecraft.client.render.VertexFormat format;
 
