@@ -1,11 +1,8 @@
 package me.deftware.client.framework.world;
 
-import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.block.TileEntity;
 import me.deftware.client.framework.maps.SettingsMap;
-import me.deftware.client.framework.math.box.BoundingBox;
-import me.deftware.client.framework.math.box.DoubleBoundingBox;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.world.block.Block;
 import me.deftware.client.framework.world.block.BlockState;

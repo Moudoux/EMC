@@ -1,15 +1,17 @@
 package me.deftware.client.framework.item;
 
 import me.deftware.client.framework.chat.ChatMessage;
-import me.deftware.client.framework.item.types.ArmourItem;
 import me.deftware.client.framework.item.types.BlockItem;
+import me.deftware.client.framework.item.types.FishingRodItem;
+import me.deftware.client.framework.item.types.PotionItem;
+import me.deftware.client.framework.item.types.RangedWeaponItem;
 import me.deftware.client.framework.item.types.SwordItem;
 import me.deftware.client.framework.item.types.ToolItem;
-import me.deftware.client.framework.item.types.PotionItem;
-import me.deftware.client.framework.item.types.FishingRodItem;
 import me.deftware.client.framework.item.types.TridentItem;
-import me.deftware.client.framework.item.types.RangedWeaponItem;
+import me.deftware.client.framework.item.types.*;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.BowItem;
+import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.*;
 
 /**

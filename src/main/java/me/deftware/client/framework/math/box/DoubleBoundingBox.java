@@ -1,6 +1,5 @@
 package me.deftware.client.framework.math.box;
 
-import lombok.Getter;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 

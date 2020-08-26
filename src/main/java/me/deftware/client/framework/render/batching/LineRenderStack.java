@@ -2,7 +2,6 @@ package me.deftware.client.framework.render.batching;
 
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.block.TileEntity;
-import me.deftware.client.framework.helper.RenderHelper;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.minecraft.Minecraft;
 import net.minecraft.util.math.Vec3d;
