@@ -4,7 +4,6 @@
   "package": "me.deftware.mixin.mixins",
   "refmap": "mixins.emc.refmap.json",
   "mixins": [
-    "ClientChunkManagerAccessor",
     "MixinOptiFineBlockModelRenderer"
   ]
 }
