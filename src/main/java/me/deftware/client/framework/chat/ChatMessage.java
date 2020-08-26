@@ -146,14 +146,22 @@ public class ChatMessage {
 		);
 	}
 
+	public void sendMessage() {
+		sendMessage(true);
+	}
+
 	/**
 	 * Sends this message to the server, without any formatting
 	 */
-	public void sendMessage() {
+	public void sendMessage(boolean packet) {
 		if (MinecraftClient.getInstance().player != null) {
-			ChatHud.getChatMessageQueue().add(() ->
-					MinecraftClient.getInstance().player.networkHandler.sendPacket(new ChatMessageC2SPacket(toString(false)))
-			);
+			ChatHud.getChatMessageQueue().add(() -> {
+				if (packet) {
+					MinecraftClient.getInstance().player.networkHandler.sendPacket(new ChatMessageC2SPacket(toString(false)));
+				} else {
+					MinecraftClient.getInstance().player.sendChatMessage(toString(false));
+				}
+			});
 		}
 	}
 	
