@@ -1,12 +1,10 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventWeather;
-import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.render.camera.entity.CameraEntityMan;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -31,13 +29,6 @@ public class MixinWorldRenderer {
         event.broadcast();
         if (event.isCanceled()) {
             ci.cancel();
-        }
-    }
-
-    @Inject(method = "processGlobalEvent", at = @At("HEAD"))
-    private void onProcessGlobalEvent(int eventId, BlockPos pos, int i, CallbackInfo ci) {
-        if (eventId == 1023) {
-            Bootstrap.logger.info("A Wither has been spawned at -> " + pos.toString());
         }
     }
 

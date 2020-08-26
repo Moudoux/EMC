@@ -10,9 +10,9 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class MixinMovementInputFromOptions {
 
     @ModifyVariable(method = "tick", at = @At("HEAD"))
-    public boolean onTick(boolean bl) {
+    public boolean onTick(boolean slowDown) {
         EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Sneak);
         event.broadcast();
-        return !event.isCanceled() && bl;
+        return !event.isCanceled() && slowDown;
     }
 }

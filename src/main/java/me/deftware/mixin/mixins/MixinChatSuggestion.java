@@ -49,22 +49,22 @@ public abstract class MixinChatSuggestion implements IMixinChatSuggestion {
     @Inject(method = "refresh", at = @At("RETURN"), cancellable = true)
     public void refresh(CallbackInfo ci) {
         if (inject) {
-            String string_1 = this.textField.getText();
-            StringReader stringReader_1 = new StringReader(string_1);
-            if (stringReader_1.canRead() && string_1.startsWith(CommandRegister.getCommandTrigger())) {
-                for (int triggerLength = 0; triggerLength < Math.min(CommandRegister.getCommandTrigger().length(), string_1.length()); triggerLength++) {
-                    stringReader_1.skip();
+            String text = this.textField.getText();
+            StringReader reader = new StringReader(text);
+            if (reader.canRead() && text.startsWith(CommandRegister.getCommandTrigger())) {
+                for (int triggerLength = 0; triggerLength < Math.min(CommandRegister.getCommandTrigger().length(), text.length()); triggerLength++) {
+                    reader.skip();
                 }
-                CommandDispatcher<ServerCommandSource> commandDispatcher_1 = CommandRegister.getDispatcher();
-                this.parse = commandDispatcher_1.parse(stringReader_1, MinecraftClient.getInstance().player.getCommandSource());
+                CommandDispatcher<ServerCommandSource> dispatcher = CommandRegister.getDispatcher();
+                this.parse = dispatcher.parse(reader, MinecraftClient.getInstance().player.getCommandSource());
                 if (!this.completingSuggestions) {
-                    StringReader stringReader_2 = new StringReader(string_1.substring(0, Math.min(string_1.length(), this.textField.getCursor())));
-                    if (stringReader_2.canRead()) {
+                    StringReader subReader = new StringReader(text.substring(0, Math.min(text.length(), this.textField.getCursor())));
+                    if (subReader.canRead()) {
                         for (int triggerLength = 0; triggerLength < CommandRegister.getCommandTrigger().length(); triggerLength++) {
-                            stringReader_2.skip();
+                            subReader.skip();
                         }
-                        ParseResults<ServerCommandSource> parseResults_1 = commandDispatcher_1.parse(stringReader_2, MinecraftClient.getInstance().player.getCommandSource());
-                        this.pendingSuggestions = commandDispatcher_1.getCompletionSuggestions(parseResults_1);
+                        ParseResults<ServerCommandSource> parseResults = dispatcher.parse(subReader, MinecraftClient.getInstance().player.getCommandSource());
+                        this.pendingSuggestions = dispatcher.getCompletionSuggestions(parseResults);
                         this.pendingSuggestions.thenRun(() -> {
                             if (this.pendingSuggestions.isDone()) {
                                 this.show();

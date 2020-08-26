@@ -3,10 +3,8 @@ package me.deftware.mixin.mixins;
 import me.deftware.client.framework.event.events.EventAnimation;
 import me.deftware.client.framework.event.events.EventChunkDataReceive;
 import me.deftware.client.framework.event.events.EventKnockback;
-import me.deftware.client.framework.minecraft.Minecraft;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityStatusS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
@@ -20,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinNetHandlerPlayClient {
 
     @Inject(method = "onEntityStatus", at = @At("HEAD"), cancellable = true)
-    public void onEntityStatus(EntityStatusS2CPacket packetIn, CallbackInfo ci) {
-        if (packetIn.getStatus() == 35) {
+    public void onEntityStatus(EntityStatusS2CPacket packet, CallbackInfo ci) {
+        if (packet.getStatus() == 35) {
             EventAnimation event = new EventAnimation(EventAnimation.AnimationType.Totem);
             event.broadcast();
             if (event.isCanceled()) {

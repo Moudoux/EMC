@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinHeldItemRenderer {
 
     @Unique
-    private static ItemStack i = null;
+    private static ItemStack copiedStack = null;
 
     @Unique
     private static EventStructureLocation.StructureType getStructure(String name) {
@@ -38,8 +38,8 @@ public class MixinHeldItemRenderer {
     @Inject(method = "renderFirstPersonMap", at = @At("HEAD"))
     private void renderFirstPersonMap(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int swingProgress,
         ItemStack stack, CallbackInfo info) {
-        if (i != null && ItemStack.areTagsEqual(i, stack)) return;
-        i = stack.copy();
+        if (copiedStack != null && ItemStack.areTagsEqual(copiedStack, stack)) return;
+        copiedStack = stack.copy();
         CompoundTag compoundTag = stack.getTag();
         if (compoundTag != null && compoundTag.contains("Decorations", 9)) {
             // Try and Get Decoration X and Z

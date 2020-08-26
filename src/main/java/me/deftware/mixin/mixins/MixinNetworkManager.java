@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinNetworkManager implements IMixinNetworkManager {
 
     @Shadow
-    protected abstract void sendImmediately(Packet<?> packet_1, GenericFutureListener<? extends Future<? super Void>> genericFutureListener_1);
+    protected abstract void sendImmediately(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> listener);
 
     @SuppressWarnings("unchecked")
     @Redirect(method = "channelRead0", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;handlePacket(Lnet/minecraft/network/Packet;Lnet/minecraft/network/listener/PacketListener;)V"))

@@ -24,8 +24,8 @@ import java.util.function.BiFunction;
 @Mixin(TextFieldWidget.class)
 public abstract class MixinGuiTextField extends AbstractButtonWidget implements IMixinGuiTextField {
 
-    public MixinGuiTextField(int int_1, int int_2, Text string_1) {
-        super(int_1, int_2, 200, 20, string_1);
+    public MixinGuiTextField(int x, int y, Text message) {
+        super(x, y, 200, 20, message);
     }
 
     @Unique

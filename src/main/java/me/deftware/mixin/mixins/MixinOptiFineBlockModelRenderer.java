@@ -33,11 +33,11 @@ public abstract class MixinOptiFineBlockModelRenderer {
     public abstract boolean renderModelSmooth(BlockRenderView world, BakedModel model, BlockState state, BlockPos pos, MatrixStack buffer, VertexConsumer vertexConsumer, boolean cull, Random random, long seed, int overlay, IModelData data);
 
     @Shadow(remap = false)
-    public abstract boolean renderModelFlat(BlockRenderView view, BakedModel model, BlockState state, BlockPos pos, MatrixStack buffer, VertexConsumer vertexConsumer, boolean cull, Random random, long l, int i, IModelData data);
+    public abstract boolean renderModelFlat(BlockRenderView world, BakedModel model, BlockState state, BlockPos pos, MatrixStack buffer, VertexConsumer vertexConsumer, boolean cull, Random random, long seed, int overlay, IModelData data);
 
     @Inject(method = "renderModel", at = @At("HEAD"), cancellable = true)
-    public void renderModel(BlockRenderView blockRenderView_1, BakedModel bakedModel_1, BlockState blockState_1, BlockPos blockPos_1, MatrixStack matrixStack_1, VertexConsumer vertexConsumer_1, boolean boolean_1, Random random_1, long long_1, int int_1, IModelData data, CallbackInfoReturnable<Boolean> ci) {
-        World.determineRenderState(blockState_1, blockPos_1, ci);
+    public void renderModel(BlockRenderView world, BakedModel model, BlockState state, BlockPos pos, MatrixStack buffer, VertexConsumer vertexConsumer, boolean cull, Random random, long seed, int overlay, IModelData data, CallbackInfoReturnable<Boolean> ci) {
+        World.determineRenderState(state, pos, ci);
     }
 
     @Inject(method = "renderModelSmooth", at = @At("RETURN"), remap = false, cancellable = true)
@@ -52,11 +52,11 @@ public abstract class MixinOptiFineBlockModelRenderer {
     }
 
     @Inject(method = "renderModelFlat", at = @At("HEAD"), remap = false, cancellable = true)
-    public void renderModelFlatInject(BlockRenderView view, BakedModel model, BlockState state, BlockPos pos, MatrixStack buffer, VertexConsumer vertexConsumer, boolean cull, Random random, long l, int i, IModelData data, CallbackInfoReturnable<Boolean> ci) {
+    public void renderModelFlatInject(BlockRenderView world, BakedModel model, BlockState state, BlockPos pos, MatrixStack buffer, VertexConsumer vertexConsumer, boolean cull, Random random, long l, int i, IModelData data, CallbackInfoReturnable<Boolean> ci) {
         try {
             if (SettingsMap.isOverrideMode()) {
                 if (cull) {
-                    ci.setReturnValue(renderModelFlat(view, model, state, pos, buffer, vertexConsumer, false, random, l, i, data));
+                    ci.setReturnValue(renderModelFlat(world, model, state, pos, buffer, vertexConsumer, false, random, l, i, data));
                 }
             }
         } catch (Exception exception) {}

@@ -2,12 +2,13 @@ package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventBlockhardness;
 import me.deftware.client.framework.event.events.EventCollideCheck;
-import me.deftware.client.framework.event.events.EventVoxelShape;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.mixin.imp.IMixinAbstractBlock;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.shape.VoxelShape;
@@ -22,12 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractBlock.class)
 public abstract class MixinAbstractBlock implements IMixinAbstractBlock {
-
-    @Shadow
-    @Final
-    protected boolean collidable;
-
-    @Shadow public abstract Item asItem();
 
     @Shadow @Final protected float slipperiness;
 
@@ -63,14 +58,14 @@ public abstract class MixinAbstractBlock implements IMixinAbstractBlock {
 
     @Inject(method = "calcBlockBreakingDelta", at = @At("HEAD"), cancellable = true)
     public void calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> ci) {
-        float float_1 = state.getHardness(world, pos);
+        float hardness = state.getHardness(world, pos);
         EventBlockhardness event = new EventBlockhardness();
         event.broadcast();
-        if (float_1 < 0.0F) {
+        if (hardness < 0.0F) {
             ci.setReturnValue(0.0F);
         } else {
-            ci.setReturnValue(!player.isUsingEffectiveTool(state) ? player.getBlockBreakingSpeed(state) / float_1 / 100.0F
-                    : player.getBlockBreakingSpeed(state) / float_1 / 30.0F * event.getMultiplier());
+            ci.setReturnValue(!player.isUsingEffectiveTool(state) ? player.getBlockBreakingSpeed(state) / hardness / 100.0F
+                    : player.getBlockBreakingSpeed(state) / hardness / 30.0F * event.getMultiplier());
         }
     }
 
