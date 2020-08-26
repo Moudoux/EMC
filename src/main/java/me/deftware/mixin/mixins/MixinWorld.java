@@ -2,8 +2,11 @@ package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.entity.block.TileEntity;
 import me.deftware.client.framework.event.events.EventTileBlockRemoved;
+import me.deftware.client.framework.world.BlockClassifier;
 import me.deftware.mixin.imp.IMixinWorld;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +63,13 @@ public abstract class MixinWorld implements IMixinWorld {
 		BlockEntity blockEntity = this.getBlockEntity(pos);
 		if (blockEntity != null) {
 			new EventTileBlockRemoved(emcTileEntities.remove(blockEntity)).broadcast();
+		}
+	}
+
+	@Inject(method = "setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;II)Z", at = @At("TAIL"))
+	public void setBlockState(BlockPos pos, BlockState state, int flags, int maxUpdateDepth, CallbackInfoReturnable<Boolean> info) {
+		if (state.isAir() && BlockClassifier.getClassifiedBlocks().containsKey(pos.asLong())) {
+			BlockClassifier.getClassifiedBlocks().remove(pos.asLong());
 		}
 	}
 

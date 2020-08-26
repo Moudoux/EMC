@@ -2,7 +2,9 @@ package me.deftware.client.framework.math.box;
 
 import me.deftware.client.framework.math.vector.Vector3d;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 import javax.annotation.Nullable;
@@ -37,6 +39,17 @@ public class BoundingBox {
 		this.offsetY = offsetY;
 		this.offsetZ = offsetZ;
 		return this;
+	}
+
+	public long asLong() {
+		return BlockPos.asLong((int) getMinX(), (int) getMinY(), (int) getMinZ());
+	}
+	
+	public float squareDistanceTo(me.deftware.client.framework.entity.Entity entity) {
+		float f = (float)(this.getMinX() - entity.getPosX());
+		float g = (float)(this.getMinY() - entity.getPosY());
+		float h = (float)(this.getMinZ() - entity.getPosZ());
+		return MathHelper.sqrt(f * f + g * g + h * h);
 	}
 
 	@Override

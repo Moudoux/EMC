@@ -72,6 +72,7 @@
     "MixinWindow",
     "MixinWorld",
     "MixinWorldClient",
-    "MixinWorldRenderer"
+    "MixinWorldRenderer",
+    "MixinClientChunkManager"
   ]
 }

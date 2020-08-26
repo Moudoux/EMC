@@ -37,7 +37,7 @@ public abstract class MixinOptiFineBlockModelRenderer {
 
     @Inject(method = "renderModel", at = @At("HEAD"), cancellable = true)
     public void renderModel(BlockRenderView blockRenderView_1, BakedModel bakedModel_1, BlockState blockState_1, BlockPos blockPos_1, MatrixStack matrixStack_1, VertexConsumer vertexConsumer_1, boolean boolean_1, Random random_1, long long_1, int int_1, IModelData data, CallbackInfoReturnable<Boolean> ci) {
-        World.determineRenderState(blockState_1, ci);
+        World.determineRenderState(blockState_1, blockPos_1, ci);
     }
 
     @Inject(method = "renderModelSmooth", at = @At("RETURN"), remap = false, cancellable = true)

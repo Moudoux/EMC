@@ -22,6 +22,7 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 	}
 
 	public CubeRenderStack ESPBox(BoundingBox box) {
+		if (box == null) return this;
 		drawColorBox(box.getOffsetMinecraftBox(-Minecraft.getCamera().getRenderPosX(), -Minecraft.getCamera().getRenderPosY(), -Minecraft.getCamera().getRenderPosZ()));
 		return this;
 	}
