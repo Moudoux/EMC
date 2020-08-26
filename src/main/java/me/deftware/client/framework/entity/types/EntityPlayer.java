@@ -30,6 +30,10 @@ public class EntityPlayer extends LivingEntity {
 		this.statusEffects = new ConvertedList<>(() -> getMinecraftEntity().getStatusEffects(), null, AppliedStatusEffect::new);
 	}
 
+	public boolean isUsingItem() {
+		return getMinecraftEntity().isUsingItem();
+	}
+
 	public boolean isCreative() {
 		return getMinecraftEntity().isCreative();
 	}
