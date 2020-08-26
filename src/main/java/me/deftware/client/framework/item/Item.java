@@ -42,7 +42,7 @@ public class Item implements IItem {
 			return new TridentItem(item);
 		} else if (item instanceof net.minecraft.item.RangedWeaponItem) {
 			return new RangedWeaponItem(item);
-		} else if (item instanceof net.minecraft.item.FoodComponent) {
+		} else if (item.isFood()) {
 			return new FoodItem(item);
 		}
 		return new Item(item);
