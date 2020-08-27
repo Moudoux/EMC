@@ -1,4 +1,4 @@
-package me.deftware.client.framework.controller.inventory;
+package me.deftware.client.framework.entity.types.main;
 
 import net.minecraft.screen.slot.SlotActionType;
 
