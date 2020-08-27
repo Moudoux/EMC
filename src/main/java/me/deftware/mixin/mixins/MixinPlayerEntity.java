@@ -1,6 +1,7 @@
 package me.deftware.mixin.mixins;
 
 import me.deftware.client.framework.event.events.EventSneakingCheck;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,9 +12,12 @@ public class MixinPlayerEntity {
 
     @Redirect(method = "adjustMovementForSneaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;clipAtLedge()Z", opcode = 180))
     private boolean sneakingCheck(PlayerEntity self) {
-        EventSneakingCheck event = new EventSneakingCheck(((PlayerEntity) (Object) this).isSneaking());
-        event.broadcast();
-        return event.isSneaking();
+        if (self == MinecraftClient.getInstance().player) {
+            EventSneakingCheck event = new EventSneakingCheck(self.isSneaking());
+            event.broadcast();
+            return event.isSneaking();
+        }
+        return self.isSneaking();
     }
 
 }

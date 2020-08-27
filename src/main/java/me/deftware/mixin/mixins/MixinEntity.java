@@ -93,7 +93,7 @@ public abstract class MixinEntity implements IMixinEntity {
     @Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;noClip:Z", opcode = 180))
     private boolean noClipCheck(Entity self) {
         boolean noClipCheck = (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "NOCLIP", false);
-        return noClip || noClipCheck && self instanceof ClientPlayerEntity;
+        return (self instanceof ClientPlayerEntity && self == MinecraftClient.getInstance().player) && (noClip || noClipCheck);
     }
 
     @Inject(method = "slowMovement", at = @At(value = "TAIL"), cancellable = true)
@@ -113,10 +113,12 @@ public abstract class MixinEntity implements IMixinEntity {
 
     @Redirect(method = "move", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.isSneaking()Z", opcode = 180, ordinal = 0))
     private boolean sneakingCheck(Entity self) {
-        EventSneakingCheck event = new EventSneakingCheck(isSneaking());
-        event.broadcast();
-        if (event.isSneaking()) {
-            return true;
+        if (self == MinecraftClient.getInstance().player) {
+            EventSneakingCheck event = new EventSneakingCheck(isSneaking());
+            event.broadcast();
+            if (event.isSneaking()) {
+                return true;
+            }
         }
         return getFlag(1);
     }
