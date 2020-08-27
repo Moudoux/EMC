@@ -120,7 +120,9 @@ public class Minecraft {
 	}
 
 	public static void openChat(String originText) {
-		MinecraftClient.getInstance().openScreen(new ChatScreen(originText));
+		if (MinecraftClient.getInstance().currentScreen == null && MinecraftClient.getInstance().overlay == null) {
+			MinecraftClient.getInstance().openScreen(new ChatScreen(originText));
+		}
 	}
 
 	public static boolean isSingleplayer() {
