@@ -30,6 +30,8 @@ public class Item implements IItem {
 			return new me.deftware.client.framework.item.types.BowItem(item);
 		} else if (item instanceof net.minecraft.item.SwordItem) {
 			return new SwordItem(item);
+		} else if (item instanceof net.minecraft.item.MiningToolItem) {
+			return new WeaponItem(item);
 		} else if (item instanceof net.minecraft.item.ToolItem) {
 			return new ToolItem(item);
 		} else if (item instanceof net.minecraft.item.BlockItem) {

@@ -15,6 +15,7 @@ import me.deftware.client.framework.world.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -84,6 +85,10 @@ public class ItemStack {
 			}
 		}
 		return enchantments;
+	}
+
+	public float getStackAttackDamage() {
+		return EnchantmentHelper.getAttackDamage(itemStack, EntityGroup.DEFAULT);
 	}
 
 	public boolean isEnchantable() {
