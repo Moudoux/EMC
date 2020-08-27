@@ -26,4 +26,9 @@ public class MixinPlayerEntity {
         return self == MinecraftClient.getInstance().player ? 0.6f : self.stepHeight;
     }
 
+    @Redirect(method = "method_30263", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/PlayerEntity;stepHeight:F", opcode = 180))
+    private float modifyStepHeight(PlayerEntity self) {
+        return self == MinecraftClient.getInstance().player ? 0.6f : self.stepHeight;
+    }
+
 }
