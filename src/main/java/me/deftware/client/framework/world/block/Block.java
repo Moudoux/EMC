@@ -28,6 +28,8 @@ public class Block implements IItem {
 			return new ShulkerBlock(block);
 		} else if (block instanceof ChestBlock || block instanceof BarrelBlock || block instanceof EnderChestBlock) {
 			return StorageBlock.newInstance(block);
+		} else if (InteractableBlock.isInteractable(block)) {
+			return new InteractableBlock(block);
 		}
 		return new Block(block);
 	}
