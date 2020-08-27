@@ -6,6 +6,7 @@ import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.item.IItem;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.world.block.types.CropBlock;
+import me.deftware.client.framework.world.block.types.ShulkerBlock;
 import me.deftware.client.framework.world.block.types.StorageBlock;
 import net.minecraft.block.*;
 import net.minecraft.item.Item;
@@ -23,7 +24,9 @@ public class Block implements IItem {
 	public static Block newInstance(net.minecraft.block.Block block) {
 		if (block instanceof net.minecraft.block.CropBlock) {
 			return new CropBlock(block);
-		} else if (block instanceof ChestBlock || block instanceof BarrelBlock || block instanceof EnderChestBlock || block instanceof ShulkerBoxBlock) {
+		} else if (block instanceof ShulkerBoxBlock) {
+			return new ShulkerBlock(block);
+		} else if (block instanceof ChestBlock || block instanceof BarrelBlock || block instanceof EnderChestBlock) {
 			return StorageBlock.newInstance(block);
 		}
 		return new Block(block);

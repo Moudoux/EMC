@@ -9,7 +9,6 @@ import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.nbt.NbtCompound;
 import me.deftware.client.framework.nbt.NbtList;
 import me.deftware.client.framework.registry.EnchantmentRegistry;
-import me.deftware.client.framework.util.INonNullList;
 import me.deftware.client.framework.util.types.Pair;
 import me.deftware.client.framework.world.block.Block;
 import net.minecraft.client.MinecraftClient;
@@ -22,12 +21,11 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.MathHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Deftware
@@ -222,7 +220,8 @@ public class ItemStack {
 		itemStack.putSubTag(key, compound.getMinecraftListTag());
 	}
 
-	public static void loadAllItems(NbtCompound compound, INonNullList<ItemStack> list) {
+	public static ArrayList<ItemStack> loadAllItems(NbtCompound compound, int size) {
+		DefaultedList<ItemStack> list = DefaultedList.ofSize(size, ItemStack.EMPTY);
 		ListTag itemTag = compound.getMinecraftCompound().getList("Items", 10);
 		for(int index = 0; index < itemTag.size(); index++) {
 			CompoundTag item = itemTag.getCompound(index);
@@ -231,6 +230,7 @@ public class ItemStack {
 				list.set(slotData, new ItemStack(net.minecraft.item.ItemStack.fromTag(new NbtCompound(item).getMinecraftCompound())));
 			}
 		}
+		return new ArrayList<>(list);
 	}
 
 }
