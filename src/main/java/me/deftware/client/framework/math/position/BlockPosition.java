@@ -12,6 +12,14 @@ import net.minecraft.util.math.MathHelper;
  */
 public class BlockPosition {
 
+	private static final int
+			SIZE_BITS_X = 1 + MathHelper.log2(MathHelper.smallestEncompassingPowerOfTwo(30000000)),
+			SIZE_BITS_Z = SIZE_BITS_X,
+			SIZE_BITS_Y = 64 - SIZE_BITS_X - SIZE_BITS_Z;
+	private static final int
+			BIT_SHIFT_Z = SIZE_BITS_Y,
+			BIT_SHIFT_X = SIZE_BITS_Y + SIZE_BITS_Z;
+
 	protected final Entity entity;
 
 	public BlockPosition(Entity entity) {
@@ -51,6 +59,18 @@ public class BlockPosition {
 		float deltaY = (float) (getY() - position.getY());
 		float deltaZ = (float) (getZ() - position.getZ());
 		return MathHelper.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+	}
+
+	public static int unpackLongX(long x) {
+		return (int)(x << 64 - BIT_SHIFT_X - SIZE_BITS_X >> 64 - SIZE_BITS_X);
+	}
+
+	public static int unpackLongY(long y) {
+		return (int)(y << 64 - SIZE_BITS_Y >> 64 - SIZE_BITS_Y);
+	}
+
+	public static int unpackLongZ(long z) {
+		return (int)(z << 64 - BIT_SHIFT_Z - SIZE_BITS_Z >> 64 - SIZE_BITS_Z);
 	}
 
 	@Override
