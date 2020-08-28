@@ -6,6 +6,7 @@ import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.world.block.Block;
 import me.deftware.client.framework.world.block.BlockState;
+import me.deftware.client.framework.world.classifier.BlockClassifier;
 import me.deftware.mixin.imp.IMixinWorld;
 import me.deftware.mixin.imp.IMixinWorldClient;
 import net.minecraft.block.FluidBlock;
@@ -80,7 +81,6 @@ public class World {
 			ci.setReturnValue(((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "FLUIDS", true)));
 		} else {
 			int id = Registry.BLOCK.getRawId(state.getBlock());
-			BlockClassifier.classify(pos, id);
 			if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(id, "render"))) {
 				boolean doRender = (boolean) SettingsMap.getValue(id, "render", false);
 				if (!doRender) {

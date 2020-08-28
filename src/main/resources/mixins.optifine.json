@@ -4,6 +4,6 @@
   "package": "me.deftware.mixin.mixins",
   "refmap": "mixins.emc.refmap.json",
   "mixins": [
-    "MixinOptiFineBlockModelRenderer"
+    "integration.MixinOptiFineBlockModelRenderer"
   ]
 }
