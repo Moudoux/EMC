@@ -48,6 +48,10 @@ public class PreProcessorMan implements Runnable {
 		return emcJar;
 	}
 
+	public File getRunDir() {
+		return runDir;
+	}
+
 	public File getEMCModsDir() {
 		return new File(runDir, "libraries" + File.separator + "EMC" + File.separator + getMinecraftVersion() + File.separator);
 	}
