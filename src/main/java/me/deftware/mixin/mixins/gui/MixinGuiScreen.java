@@ -11,6 +11,7 @@ import me.deftware.client.framework.gui.minecraft.ScreenInstance;
 import me.deftware.client.framework.gui.widgets.Button;
 import me.deftware.client.framework.item.Item;
 import me.deftware.mixin.imp.IMixinGuiScreen;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
@@ -51,6 +52,9 @@ public class MixinGuiScreen implements IMixinGuiScreen {
     @Shadow
     @Final
     protected List<Element> children;
+
+    @Shadow
+    protected MinecraftClient client;
 
     @Unique
     protected CachedSupplier<ScreenInstance> screenInstance = new CachedSupplier<>(() -> {
@@ -101,7 +105,7 @@ public class MixinGuiScreen implements IMixinGuiScreen {
         for (Text text : cir.getReturnValue()) {
             list.add(new ChatMessage().fromText(text));
         }
-        EventGetItemToolTip event = new EventGetItemToolTip(list, Item.newInstance(stack.getItem()));
+        EventGetItemToolTip event = new EventGetItemToolTip(list, Item.newInstance(stack.getItem()), client.options.advancedItemTooltips);
         event.broadcast();
         List<Text> modifiedTextList = new ArrayList<>();
         for (ChatMessage text : event.getList()) {

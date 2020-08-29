@@ -12,9 +12,12 @@ public class EventGetItemToolTip extends Event {
     private final @Getter List<ChatMessage> list;
     private final @Getter Item item;
 
-    public EventGetItemToolTip(List<ChatMessage> list, Item item) {
+    private final @Getter boolean advanced;
+
+    public EventGetItemToolTip(List<ChatMessage> list, Item item, boolean advanced) {
         this.list = list;
         this.item = item;
+        this.advanced = advanced;
     }
 
 }
