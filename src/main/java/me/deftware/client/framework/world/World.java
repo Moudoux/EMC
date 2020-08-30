@@ -5,6 +5,7 @@ import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.block.TileEntity;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.math.position.BlockPosition;
+import me.deftware.client.framework.util.WebUtils;
 import me.deftware.client.framework.world.block.Block;
 import me.deftware.client.framework.world.block.BlockState;
 import me.deftware.mixin.imp.IMixinWorld;
@@ -141,37 +142,29 @@ public class World {
 	}
 
 	public static CompletableFuture<String> getUsernameFromUUID(UUID uuid) {
-		if (uuid == null) return null;
-		CompletableFuture<String> future = new CompletableFuture<>();
-		new Thread(() -> {
+		return CompletableFuture.supplyAsync(() -> {
+			if (uuid == null) return null;
 			ClientPlayNetworkHandler h = MinecraftClient.getInstance().getNetworkHandler();
 			if (h != null) {
 				PlayerListEntry result = h.getPlayerListEntry(uuid);
 				if (result != null) {
-					future.complete(result.getProfile().getName());
-					return;
-				} else {
-					// rate limit: You can request the same profile once per minute, however you can send as many unique requests as you like.
-					try {
-						URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString());
-						HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-						conn.setRequestMethod("GET");
-						InputStream is = conn.getInputStream();
-						String response = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)).lines().collect(Collectors.joining(""));
-						PlayerData d = new Gson().fromJson(response, PlayerData.class);
-						if (d != null && d.name != null) {
-							future.complete(d.name);
-						} else {
-							future.completeExceptionally(new NullPointerException("username not found from UUID"));
-						}
-					} catch (IOException e) {
-						e.printStackTrace();
-						future.completeExceptionally(new NullPointerException("something went wrong requesting the UUID"));
-					}
+					return result.getProfile().getName();
 				}
 			}
-		}).start();
-		return future;
+			// rate limit: You can request the same profile once per minute, however you can send as many unique requests as you like.
+			try {
+				String response = WebUtils.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString());
+				PlayerData d = new Gson().fromJson(response, PlayerData.class);
+				if (d != null && d.name != null) {
+					return d.name;
+				} else {
+					return null;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		});
 	}
 
 	private static class PlayerData {
