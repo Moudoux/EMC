@@ -2,6 +2,8 @@ package me.deftware.client.framework.nbt;
 
 import net.minecraft.nbt.CompoundTag;
 
+import java.util.UUID;
+
 /**
  * @author Deftware
  */
@@ -27,6 +29,12 @@ public class NbtCompound {
 
 	public boolean getBoolean(String key) {
 		return getMinecraftCompound().getBoolean(key);
+	}
+
+	public UUID getUUID(String key) {
+		if (getMinecraftCompound().containsUuid(key))
+			return getMinecraftCompound().getUuid(key);
+		return null;
 	}
 
 	public boolean contains(String key, int type) {

@@ -1,22 +1,34 @@
 package me.deftware.client.framework.world;
 
+import com.google.gson.Gson;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.block.TileEntity;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.world.block.Block;
 import me.deftware.client.framework.world.block.BlockState;
-import me.deftware.client.framework.world.classifier.BlockClassifier;
 import me.deftware.mixin.imp.IMixinWorld;
 import me.deftware.mixin.imp.IMixinWorldClient;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -128,4 +140,42 @@ public class World {
 		timeLastTimeUpdate = System.currentTimeMillis();
 	}
 
+	public static CompletableFuture<String> getUsernameFromUUID(UUID uuid) {
+		if (uuid == null) return null;
+		CompletableFuture<String> future = new CompletableFuture<>();
+		new Thread(() -> {
+			ClientPlayNetworkHandler h = MinecraftClient.getInstance().getNetworkHandler();
+			if (h != null) {
+				PlayerListEntry result = h.getPlayerListEntry(uuid);
+				if (result != null) {
+					future.complete(result.getProfile().getName());
+					return;
+				} else {
+					// rate limit: You can request the same profile once per minute, however you can send as many unique requests as you like.
+					try {
+						URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString());
+						HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+						conn.setRequestMethod("GET");
+						InputStream is = conn.getInputStream();
+						String response = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)).lines().collect(Collectors.joining(""));
+						PlayerData d = new Gson().fromJson(response, PlayerData.class);
+						if (d != null && d.name != null) {
+							future.complete(d.name);
+						} else {
+							future.completeExceptionally(new NullPointerException("username not found from UUID"));
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+						future.completeExceptionally(new NullPointerException("something went wrong requesting the UUID"));
+					}
+				}
+			}
+		}).start();
+		return future;
+	}
+
+	private static class PlayerData {
+		String id;
+		String name;
+	}
 }
