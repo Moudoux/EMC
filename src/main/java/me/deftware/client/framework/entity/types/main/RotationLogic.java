@@ -73,7 +73,6 @@ public class RotationLogic extends EntityPlayer {
 	}
 
 	public float getAngleToServerRotation(Entity entity) {
-		System.out.println("Getting angle");
 		float[] needed = getRotations(entity.getBoundingBox().getCenter());
 		float diffYaw = serverYaw - needed[0];
 		float diffPitch = serverPitch - needed[1];
