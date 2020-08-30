@@ -104,4 +104,8 @@ public class Vector3d {
 				.getType() != HitResult.Type.MISS;
 	}
 
+	public double getMagnitude() {
+		return Math.sqrt(vec3d.x*vec3d.x+vec3d.y*vec3d.y+vec3d.z*vec3d.z);
+	}
+
 }
