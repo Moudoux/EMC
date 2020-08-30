@@ -16,6 +16,7 @@ import me.deftware.client.framework.math.box.BoundingBox;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.math.position.ChunkBlockPosition;
 import me.deftware.client.framework.math.vector.Vector3d;
+import me.deftware.client.framework.nbt.NbtCompound;
 import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
 import me.deftware.mixin.imp.IMixinEntity;
 import me.deftware.mixin.imp.IMixinNetworkPlayerInfo;
@@ -26,6 +27,7 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundTag;
 
 import java.util.List;
 import java.util.Objects;
@@ -154,6 +156,14 @@ public class Entity {
 			}
 		}
 		return -1;
+	}
+
+	public boolean hasNbt() {
+		return entity.toTag(new CompoundTag()) != null && !entity.toTag(new CompoundTag()).isEmpty();
+	}
+
+	public NbtCompound getNbt() {
+		return new NbtCompound(entity.toTag(new CompoundTag()));
 	}
 
 	public int getTicksExisted() {
