@@ -3,7 +3,7 @@ package me.deftware.client.framework.command.commands;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import me.deftware.client.framework.chat.ChatBuilder;
+import me.deftware.client.framework.chat.builder.ChatBuilder;
 import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.CommandResult;

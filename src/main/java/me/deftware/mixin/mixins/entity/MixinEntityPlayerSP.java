@@ -1,6 +1,6 @@
 package me.deftware.mixin.mixins.entity;
 
-import me.deftware.client.framework.chat.ChatBuilder;
+import me.deftware.client.framework.chat.builder.ChatBuilder;
 import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.event.events.*;

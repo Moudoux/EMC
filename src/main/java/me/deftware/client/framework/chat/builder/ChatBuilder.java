@@ -1,6 +1,9 @@
-package me.deftware.client.framework.chat;
+package me.deftware.client.framework.chat.builder;
 
 import lombok.Getter;
+import me.deftware.client.framework.chat.ChatMessage;
+import me.deftware.client.framework.chat.ChatSection;
+import me.deftware.client.framework.chat.LiteralChatMessage;
 import me.deftware.client.framework.chat.event.ChatClickEvent;
 import me.deftware.client.framework.chat.event.ChatHoverEvent;
 import me.deftware.client.framework.chat.style.ChatColors;
@@ -14,7 +17,7 @@ public class ChatBuilder {
 
 	private @Getter static final char chevron = 187;
 
-	private final ChatMessage message = new ChatMessage();
+	protected ChatMessage message = new ChatMessage();
 	private @Getter ChatSection currentSection = new ChatSection("");
 
 	/*
