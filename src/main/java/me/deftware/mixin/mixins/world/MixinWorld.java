@@ -2,7 +2,6 @@ package me.deftware.mixin.mixins.world;
 
 import me.deftware.client.framework.entity.block.TileEntity;
 import me.deftware.client.framework.event.events.EventTileBlockRemoved;
-import me.deftware.client.framework.world.block.Block;
 import me.deftware.client.framework.world.classifier.BlockClassifier;
 import me.deftware.mixin.imp.IMixinWorld;
 import net.minecraft.block.BlockState;
