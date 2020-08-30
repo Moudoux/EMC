@@ -20,4 +20,12 @@ public class WolfEntity extends LivingEntity {
 		return getMinecraftEntity().isOwner(player.getMinecraftEntity());
 	}
 
+	public String getOwnerName(boolean displayName) {
+		return getMinecraftEntity().getOwner() != null ? (displayName ? getMinecraftEntity().getOwner().getDisplayName() : getMinecraftEntity().getOwner().getName()).getString() : "";
+	}
+	
+	public String getEntityName(boolean displayName) {
+		return (displayName ? getMinecraftEntity().getDisplayName() : getMinecraftEntity().getName()).getString();
+	}
+
 }
