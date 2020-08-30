@@ -16,41 +16,41 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Camera.class)
 public class MixinCamera {
 
-	@Inject(at = @At("HEAD"), cancellable = true, method ="getFocusedEntity")
-	public void getFocusedEntity(CallbackInfoReturnable<Entity> info) {
-		MinecraftClient mc = MinecraftClient.getInstance();
-		if (CameraEntityMan.isActive()) {
-			info.setReturnValue(mc.player);
-			info.cancel();
-		}
-	}
+    @Inject(at = @At("HEAD"), cancellable = true, method = "getFocusedEntity")
+    public void getFocusedEntity(CallbackInfoReturnable<Entity> info) {
+        MinecraftClient mc = MinecraftClient.getInstance();
+        if (CameraEntityMan.isActive()) {
+            info.setReturnValue(mc.player);
+            info.cancel();
+        }
+    }
 
-	@Inject(at = @At("HEAD"), cancellable = true, method= "isThirdPerson")
-	public void isThirdPerson(CallbackInfoReturnable<Boolean> info) {
-		if (CameraEntityMan.isActive()) {
-			info.setReturnValue(true);
-			info.cancel();
-		}
-	}
+    @Inject(at = @At("HEAD"), cancellable = true, method = "isThirdPerson")
+    public void isThirdPerson(CallbackInfoReturnable<Boolean> info) {
+        if (CameraEntityMan.isActive()) {
+            info.setReturnValue(true);
+            info.cancel();
+        }
+    }
 
-	@Inject(at = @At("HEAD"), cancellable = true, method = "clipToSpace")
-	public void clipToSpace(double camDistance, CallbackInfoReturnable<Double> info) {
-		EventCameraClip event = new EventCameraClip(camDistance);
-		event.broadcast();
-		if (event.isCanceled()) {
-			info.setReturnValue(event.getDistance());
-			info.cancel();
-		}
-	}
+    @Inject(at = @At("HEAD"), cancellable = true, method = "clipToSpace")
+    public void clipToSpace(double camDistance, CallbackInfoReturnable<Double> info) {
+        EventCameraClip event = new EventCameraClip(camDistance);
+        event.broadcast();
+        if (event.isCanceled()) {
+            info.setReturnValue(event.getDistance());
+            info.cancel();
+        }
+    }
 
-	@Inject(at = @At("HEAD"), cancellable = true, method = "getSubmergedFluidState")
-	public void getSubmergedFluidState(CallbackInfoReturnable<FluidState> info) {
-		EventSubmergedTransition event = new EventSubmergedTransition();
-		event.broadcast();
-		if (event.isCanceled()) {
-			// Assuming that cancel is in this case completely ignoring fog and not to keep old fog rendered
-			info.setReturnValue(Fluids.EMPTY.getDefaultState());
-			info.cancel();
-		}
-	}
+    @Inject(at = @At("HEAD"), cancellable = true, method = "getSubmergedFluidState")
+    public void getSubmergedFluidState(CallbackInfoReturnable<FluidState> info) {
+        EventSubmergedTransition event = new EventSubmergedTransition();
+        event.broadcast();
+        if (event.isCanceled()) {
+            // Assuming that cancel is in this case completely ignoring fog and not to keep old fog rendered
+            info.setReturnValue(Fluids.EMPTY.getDefaultState());
+            info.cancel();
+        }
+    }
 }
