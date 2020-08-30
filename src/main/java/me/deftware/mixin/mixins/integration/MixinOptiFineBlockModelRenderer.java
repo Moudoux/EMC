@@ -22,6 +22,7 @@ import java.util.Random;
  *  OptiFine overwrites hooks used by EMC for block render override, so we need to inject into OptiFine and re-add those hooks
  *
  *  NOTE! This only works for OptiFine F5 and above
+ *  TODO: This Mixin is defunct in 1.16.2, and needs repairs to restore functionality
  *
  * @author Deftware
  */
