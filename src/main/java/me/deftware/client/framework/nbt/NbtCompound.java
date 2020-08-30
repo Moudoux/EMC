@@ -25,6 +25,10 @@ public class NbtCompound {
 		return compound.contains(key);
 	}
 
+	public boolean getBoolean(String key) {
+		return getMinecraftCompound().getBoolean(key);
+	}
+
 	public boolean contains(String key, int type) {
 		return compound.contains(key, type);
 	}
