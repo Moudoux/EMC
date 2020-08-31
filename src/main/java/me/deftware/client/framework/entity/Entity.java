@@ -5,6 +5,7 @@ import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.conversion.ComparedConversion;
 import me.deftware.client.framework.conversion.ConvertedList;
 import me.deftware.client.framework.entity.types.EntityPlayer;
+import me.deftware.client.framework.entity.types.OwnedEntity;
 import me.deftware.client.framework.entity.types.animals.HorseEntity;
 import me.deftware.client.framework.entity.types.animals.MobEntity;
 import me.deftware.client.framework.entity.types.animals.WaterEntity;
@@ -61,6 +62,8 @@ public class Entity {
 			return new ItemEntity(entity);
 		} else if (entity instanceof net.minecraft.entity.LivingEntity) {
 			return new me.deftware.client.framework.entity.types.LivingEntity(entity);
+		} else if (entity.toTag(new CompoundTag()).containsUuid("Owner")) {
+			return new OwnedEntity(entity);
 		}
 		return new Entity(entity);
 	}

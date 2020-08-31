@@ -43,6 +43,10 @@ public class Inventory {
 		return -1;
 	}
 
+	public int getSize() {
+		return entity.inventory.main.size();
+	}
+
 	public List<ItemStack> getArmourInventory() {
 		return armourInventory.poll();
 	}

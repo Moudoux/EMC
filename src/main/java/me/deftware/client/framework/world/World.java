@@ -135,27 +135,23 @@ public class World {
 
 	public static CompletableFuture<String> getUsernameFromUUID(UUID uuid) {
 		return CompletableFuture.supplyAsync(() -> {
-			if (uuid == null) return null;
-			ClientPlayNetworkHandler h = MinecraftClient.getInstance().getNetworkHandler();
-			if (h != null) {
-				PlayerListEntry result = h.getPlayerListEntry(uuid);
+			// Check local cache first
+			ClientPlayNetworkHandler networkHandler = MinecraftClient.getInstance().getNetworkHandler();
+			if (networkHandler != null) {
+				PlayerListEntry result = networkHandler.getPlayerListEntry(uuid);
 				if (result != null) {
 					return result.getProfile().getName();
 				}
 			}
-			// rate limit: You can request the same profile once per minute, however you can send as many unique requests as you like.
+			// Rate limit: You can request the same profile once per minute, however you can send as many unique requests as you like.
 			try {
 				String response = WebUtils.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString());
-				PlayerData d = new Gson().fromJson(response, PlayerData.class);
-				if (d != null && d.name != null) {
-					return d.name;
-				} else {
-					return null;
-				}
+				PlayerData playerData = new Gson().fromJson(response, PlayerData.class);
+				return playerData != null && playerData.name != null ? playerData.name : null;
 			} catch (Exception e) {
 				e.printStackTrace();
-				return null;
 			}
+			return null;
 		});
 	}
 
@@ -163,4 +159,5 @@ public class World {
 		String id;
 		String name;
 	}
+
 }
