@@ -6,6 +6,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntityS2CPacket;
 
+import javax.annotation.Nullable;
+
 /**
  * @author Deftware
  */
@@ -19,8 +21,10 @@ public class SPacketEntity extends PacketWrapper {
 		return ((EntityS2CPacket) packet).isOnGround();
 	}
 
+	@Nullable
 	public Entity getEntity() {
-		return Entity.newInstance(((EntityS2CPacket) packet).getEntity(MinecraftClient.getInstance().world));
+		net.minecraft.entity.Entity entity = ((EntityS2CPacket) packet).getEntity(MinecraftClient.getInstance().world);
+		return entity == null ? null : Entity.newInstance(entity);
 	}
 
 }
