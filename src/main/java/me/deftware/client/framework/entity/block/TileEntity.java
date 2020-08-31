@@ -28,6 +28,10 @@ public class TileEntity {
 		return SINGLE;
 	}
 
+	public BlockEntity getMinecraftEntity() {
+		return entity;
+	}
+
 	protected TileEntity(BlockEntity entity) {
 		this.entity = entity;
 		this.position = new TileBlockPosition(entity);
