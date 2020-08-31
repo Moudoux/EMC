@@ -23,7 +23,7 @@ public class OwnedEntity extends LivingEntity {
 		UUID uuid = getOwnerUUID();
 		if (uuid != null) {
 			OwnerFetcher.Owner owner = ownerFetcher.getOwner(uuid);
-			if (owner.isAvailable()) return owner.getName();
+			if (owner != null && owner.isAvailable()) return owner.getName();
 		}
 		return null;
 	}

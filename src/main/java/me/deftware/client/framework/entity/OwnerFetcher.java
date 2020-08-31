@@ -1,11 +1,16 @@
 package me.deftware.client.framework.entity;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import lombok.Getter;
 import me.deftware.client.framework.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Deftware, wagyourtail
@@ -14,13 +19,22 @@ public class OwnerFetcher {
 
 	public static ThreadLocal<OwnerFetcher> INSTANCE = ThreadLocal.withInitial(OwnerFetcher::new);
 
-	private final ConcurrentHashMap<UUID, Owner> users = new ConcurrentHashMap<>();
+	private final LoadingCache<UUID, Owner> users = CacheBuilder.newBuilder()
+			.maximumSize(100)
+			.expireAfterWrite(5, TimeUnit.MINUTES)
+			.build(new CacheLoader<UUID, Owner>() {
+				public Owner load(@NotNull UUID uuid) {
+					return new Owner(uuid);
+				}
+			});
 
+	@Nullable
 	public Owner getOwner(@Nonnull UUID uuid) {
-		if (users.containsKey(uuid)) return users.get(uuid);
-		Owner owner = new Owner(uuid);
-		users.put(uuid, owner);
-		return owner;
+		try {
+			return users.get(uuid);
+		} catch (Exception ex) {
+			return null;
+		}
 	}
 
 	public static class Owner {
