@@ -5,7 +5,6 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import lombok.Getter;
 import me.deftware.client.framework.world.World;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -23,7 +22,7 @@ public class OwnerFetcher {
 			.maximumSize(100)
 			.expireAfterWrite(5, TimeUnit.MINUTES)
 			.build(new CacheLoader<UUID, Owner>() {
-				public Owner load(@NotNull UUID uuid) {
+				public Owner load(UUID uuid) {
 					return new Owner(uuid);
 				}
 			});
