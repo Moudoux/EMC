@@ -61,9 +61,10 @@ public class Entity {
 		} else if (entity instanceof net.minecraft.entity.ItemEntity) {
 			return new ItemEntity(entity);
 		} else if (entity instanceof net.minecraft.entity.LivingEntity) {
+			if (entity.toTag(new CompoundTag()).containsUuid("Owner")) {
+				return new OwnedEntity(entity);
+			}
 			return new me.deftware.client.framework.entity.types.LivingEntity(entity);
-		} else if (entity.toTag(new CompoundTag()).containsUuid("Owner")) {
-			return new OwnedEntity(entity);
 		}
 		return new Entity(entity);
 	}
