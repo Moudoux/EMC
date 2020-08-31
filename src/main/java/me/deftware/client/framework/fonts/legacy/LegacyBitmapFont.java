@@ -1,5 +1,7 @@
 package me.deftware.client.framework.fonts.legacy;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.deftware.client.framework.registry.font.TTFRegistry;
 import me.deftware.client.framework.render.batching.RenderStack;
 import me.deftware.client.framework.render.texture.GraphicsUtil;
@@ -23,6 +25,8 @@ public class  LegacyBitmapFont {
 	public String fontName;
 	protected int fontSize;
 	public boolean scaled;
+
+	public @Setter @Getter int shadow = 1;
 
 	public LegacyBitmapFont(String fontName, int fontSize, boolean scaled) {
 		this.fontName = fontName;

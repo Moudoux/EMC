@@ -17,7 +17,7 @@ import java.awt.*;
 public class FontRenderStack extends RenderStack<FontRenderStack> {
 
 	private int offset = 0;
-	private @Setter boolean shadow = true, scaled, matrix = true;
+	private @Setter boolean scaled, matrix = true;
 	private final LegacyBitmapFont font;
 
 	public FontRenderStack(IFontProvider font) {
@@ -81,11 +81,12 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 			if (!font.textureIDStore.containsKey(buffer[character])) buffer[character] = '?';
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.textureIDStore.get(buffer[character]));
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			int width = font.textureDimensionsStore.get(buffer[character])[0];
-			int height = font.textureDimensionsStore.get(buffer[character])[1];
-			if (shadow) {
+			int width = font.textureDimensionsStore.get(buffer[character])[0],
+					height = font.textureDimensionsStore.get(buffer[character])[1],
+					shadow = font.getShadow();
+			if (shadow > 0) {
 				GL11.glColor4f(0f, 0f, 0f, this.alpha);
-				drawQuads(x + offset + 1, y + 1, width, height);
+				drawQuads(x + offset + shadow, y + shadow, width, height);
 			}
 			GL11.glColor4f(this.red, this.green, this.blue, this.alpha);
 			drawQuads(x + offset, y, width, height);
