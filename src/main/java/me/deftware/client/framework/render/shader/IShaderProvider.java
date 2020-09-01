@@ -9,6 +9,8 @@ public interface IShaderProvider {
 
 	void compileFragmentShader(int fs) throws Exception;
 
+	void setupUniforms();
+	
 	String getName();
 	
 }

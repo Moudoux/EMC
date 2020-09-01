@@ -9,10 +9,12 @@ import org.lwjgl.opengl.GL20;
  */
 public class Shader {
 
+	private @Getter IShaderProvider provider;
 	private @Getter boolean bound = false;
 	private @Getter int program, vs, fs;
 
 	public Shader(IShaderProvider provider) {
+		this.provider = provider;
 		try {
 			program = GL20.glCreateProgram();
 			// Vertex shader
@@ -43,6 +45,10 @@ public class Shader {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	public int getUniform(String name) {
+		return GL20.glGetUniformLocation(program, name);
 	}
 
 	public void bind() {

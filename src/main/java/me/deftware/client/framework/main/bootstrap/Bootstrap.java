@@ -16,6 +16,7 @@ import me.deftware.client.framework.main.bootstrap.discovery.JVMModDiscovery;
 import me.deftware.client.framework.main.validation.Validator;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.minecraft.Minecraft;
+import me.deftware.client.framework.session.AuthLibSession;
 import me.deftware.client.framework.util.path.LocationUtil;
 import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
@@ -36,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Bootstrap {
 
-    public static final Logger logger = LogManager.getLogger(String.format("EMC v%s.%s", FrameworkConstants.VERSION, FrameworkConstants.PATCH));
+    public static final Logger logger = LogManager.getLogger("EMC Framework");
     public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
     public static boolean initialized = false, isRunning = true;
     public static File EMC_ROOT, EMC_CONFIGS;
