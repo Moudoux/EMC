@@ -5,6 +5,7 @@ import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.event.Event;
 
 public class EventEntityRender extends Event {
+
     private @Getter final Entity entity;
     private @Getter final double x;
     private @Getter final double y;
