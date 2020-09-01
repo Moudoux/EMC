@@ -17,4 +17,5 @@ public class EventEntityRender extends Event {
         this.y = y;
         this.z = z;
     }
+
 }
