@@ -67,6 +67,7 @@
     "render.MixinLayerDeadmau5Head",
     "render.MixinRender",
     "render.MixinRenderLivingBase",
+    "render.MixinEntityRenderDispatcher",
     "render.MixinRenderPlayer",
     "render.MixinRenderSystem",
     "render.MixinSplashScreen",
