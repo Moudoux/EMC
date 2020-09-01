@@ -25,6 +25,7 @@
     "game.MixinClientBrandRetriever",
     "game.MixinClientChunkManager",
     "game.MixinMinecraft",
+    "game.MixinSoundSystem",
     "game.MixinTimer",
     "gui.MixinChatSuggestion",
     "gui.MixinDebugHud",
