@@ -4,31 +4,25 @@ import me.deftware.client.framework.event.events.EventWeather;
 import me.deftware.client.framework.render.camera.entity.CameraEntityMan;
 import me.deftware.client.framework.render.shader.EntityShader;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.Framebuffer;
+import net.minecraft.block.entity.EnderChestBlockEntity;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import javax.annotation.Nullable;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(WorldRenderer.class)
 public abstract class MixinWorldRenderer {
 
     @Shadow @Final private BufferBuilderStorage bufferBuilders;
-
-    @Shadow @Nullable private ShaderEffect entityOutlineShader;
 
     @Inject(method = "tickRainSplashing", at = @At("HEAD"), cancellable = true)
     private void renderRain(Camera camera, CallbackInfo ci) {
@@ -58,7 +52,6 @@ public abstract class MixinWorldRenderer {
         Shader
      */
 
-
     @Inject(method = "drawEntityOutlinesFramebuffer", at = @At("HEAD"))
     public void drawEntityOutlinesFramebuffer(CallbackInfo ci) {
         if (EntityShader.shouldRun()) {
@@ -77,19 +70,10 @@ public abstract class MixinWorldRenderer {
         if (EntityShader.shouldRun()) EntityShader.getShader().unbind();
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/OutlineVertexConsumerProvider;setColor(IIII)V", opcode = 180))
-    public void outlineCheck(OutlineVertexConsumerProvider outlineVertexConsumerProvider, int red, int green, int blue, int alpha) {
-        if (EntityShader.shouldRun()) {
-            outlineVertexConsumerProvider.setColor(1, 0, 0, 60);
-        } else {
-            outlineVertexConsumerProvider.setColor(red, green, blue, alpha);
-        }
-    }
-
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/entity/BlockEntityRenderDispatcher;render(Lnet/minecraft/block/entity/BlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;)V", opcode = 180))
     private void renderBlocKEntity(BlockEntityRenderDispatcher blockEntityRenderDispatcher, BlockEntity blockEntity, float tickDelta, MatrixStack matrix, VertexConsumerProvider original) {
         BlockEntityRenderDispatcher.INSTANCE.render(blockEntity, tickDelta, matrix,
-                EntityShader.isStorage() && EntityShader.shouldRun() ? bufferBuilders.getOutlineVertexConsumers() : original
+                EntityShader.isStorage() && EntityShader.shouldRun() && (blockEntity instanceof LootableContainerBlockEntity || blockEntity instanceof EnderChestBlockEntity) ? bufferBuilders.getOutlineVertexConsumers() : original
         );
     }
 
@@ -98,9 +82,14 @@ public abstract class MixinWorldRenderer {
         return true;
     }
 
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;renderEntity(Lnet/minecraft/entity/Entity;DDDFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;)V"))
-    private VertexConsumerProvider getProvider(VertexConsumerProvider inProvider) {
-        return EntityShader.shouldRun() ? bufferBuilders.getOutlineVertexConsumers() : inProvider;
+    @ModifyArgs(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;renderEntity(Lnet/minecraft/entity/Entity;DDDFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;)V"))
+    private void modifyRenderEntity(Args arguments) {
+        Entity entity = arguments.get(0);
+        if (EntityShader.shouldRun()) {
+            if ((entity instanceof ItemEntity && EntityShader.isItems()) || EntityShader.getEntityPredicate().test(entity)) {
+                arguments.set(6, bufferBuilders.getOutlineVertexConsumers());
+            }
+        }
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gl/ShaderEffect;render(F)V", opcode = 180))

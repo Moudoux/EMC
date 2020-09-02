@@ -2,7 +2,9 @@ package me.deftware.mixin.mixins.game;
 
 import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.event.events.EventSound;
-import net.minecraft.client.sound.*;
+import net.minecraft.client.sound.SoundInstance;
+import net.minecraft.client.sound.SoundManager;
+import net.minecraft.client.sound.SoundSystem;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

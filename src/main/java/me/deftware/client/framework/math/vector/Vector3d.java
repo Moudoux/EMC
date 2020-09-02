@@ -7,7 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.RayTraceContext;
+import net.minecraft.world.RaycastContext;
 
 import java.util.Objects;
 
@@ -99,7 +99,7 @@ public class Vector3d {
 
 	public static boolean rayTraceBlocks(Vector3d start, Vector3d end) {
 		return Objects.requireNonNull(MinecraftClient.getInstance().world).
-				rayTrace(new RayTraceContext(start.getMinecraftVector(), end.getMinecraftVector(), RayTraceContext.ShapeType.OUTLINE, RayTraceContext.FluidHandling.NONE,
+				raycast(new RaycastContext(start.getMinecraftVector(), end.getMinecraftVector(), RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE,
 						Objects.requireNonNull(MinecraftClient.getInstance().getCameraEntity())))
 				.getType() != HitResult.Type.MISS;
 	}
