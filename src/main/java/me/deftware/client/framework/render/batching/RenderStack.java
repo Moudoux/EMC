@@ -89,7 +89,6 @@ public abstract class RenderStack<T> {
 			GL11.glEnd();
 		}
 		if (!locked) {
-			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glDepthMask(true);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
