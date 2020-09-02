@@ -22,18 +22,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractBlock.AbstractBlockState.class)
 public abstract class MixinBlockState {
+
     @Shadow
     public abstract Block getBlock();
 
     @Shadow @Final
     private int luminance;
 
-    @Shadow public abstract float getHardness(BlockView view, BlockPos pos);
+    @Shadow
+    public abstract float getHardness(BlockView view, BlockPos pos);
 
-    @Shadow public abstract VoxelShape getOutlineShape(BlockView view, BlockPos pos);
+    @Shadow
+    public abstract VoxelShape getOutlineShape(BlockView view, BlockPos pos);
 
-    @Shadow public abstract FluidState getFluidState();
-
+    @Shadow
+    public abstract FluidState getFluidState();
 
     @Inject(method = "getOutlineShape(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/ShapeContext;)Lnet/minecraft/util/shape/VoxelShape;", at = @At("HEAD"), cancellable = true)
     public void getOutlineShape(BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {

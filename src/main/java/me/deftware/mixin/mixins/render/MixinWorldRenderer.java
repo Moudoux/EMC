@@ -4,6 +4,8 @@ import me.deftware.client.framework.event.events.EventWeather;
 import me.deftware.client.framework.render.camera.entity.CameraEntityMan;
 import me.deftware.client.framework.render.shader.EntityShader;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.EnderChestBlockEntity;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.ShaderEffect;
@@ -77,7 +79,7 @@ public abstract class MixinWorldRenderer {
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/entity/BlockEntityRenderDispatcher;render(Lnet/minecraft/block/entity/BlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;)V", opcode = 180))
     private void renderBlocKEntity(BlockEntityRenderDispatcher blockEntityRenderDispatcher, BlockEntity blockEntity, float tickDelta, MatrixStack matrix, VertexConsumerProvider original) {
         BlockEntityRenderDispatcher.INSTANCE.render(blockEntity, tickDelta, matrix,
-                EntityShader.isStorage() && EntityShader.shouldRun() ? bufferBuilders.getOutlineVertexConsumers() : original
+                EntityShader.isStorage() && EntityShader.shouldRun() && (blockEntity instanceof LootableContainerBlockEntity || blockEntity instanceof EnderChestBlockEntity) ? bufferBuilders.getOutlineVertexConsumers() : original
         );
     }
 
