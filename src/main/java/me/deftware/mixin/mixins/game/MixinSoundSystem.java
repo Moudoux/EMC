@@ -25,7 +25,7 @@ public class MixinSoundSystem {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/SoundInstance;getVolume()F"), method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", cancellable = true)
     public void onPlay(SoundInstance instance, CallbackInfo info) {
         Text soundName = instance.getSoundSet(loader).getSubtitle();
-        EventSound event = new EventSound(instance, soundName == null ? null : soundName.getString());
+        EventSound event = new EventSound(instance, soundName == null ? null : new ChatMessage().fromText(soundName));
         event.broadcast();
         if (event.isCanceled()) {
             info.cancel();

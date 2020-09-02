@@ -6,9 +6,9 @@ import net.minecraft.client.sound.SoundInstance;
 
 public class EventSound extends Event {
     private SoundInstance instance;
-    private String translationVal;
+    private ChatMessage translationVal;
 
-    public EventSound(SoundInstance instance, String translationVal) {
+    public EventSound(SoundInstance instance, ChatMessage translationVal) {
         this.instance = instance;
     }
 
@@ -16,7 +16,7 @@ public class EventSound extends Event {
         return instance.getId().toString();
     }
 
-    public String getSoundName() {
+    public ChatMessage getSoundName() {
         return translationVal;
     }
 
