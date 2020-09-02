@@ -28,6 +28,7 @@
     "game.MixinSoundSystem",
     "game.MixinTimer",
     "gui.MixinChatSuggestion",
+    "gui.MixinCreativeInventoryScreen",
     "gui.MixinDebugHud",
     "gui.MixinGuiButton",
     "gui.MixinGuiChat",
