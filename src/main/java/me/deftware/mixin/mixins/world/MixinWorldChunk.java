@@ -27,10 +27,12 @@ public abstract class MixinWorldChunk {
 	 */
 	@Inject(method = "getBlockState", at = @At("HEAD"))
 	private void getBlockState(BlockPos pos, CallbackInfoReturnable<BlockState> state) {
-		BlockState blockState = blockStates[getIndex(pos)];
-		Block block = blockState.getBlock();
-		int id = Registry.BLOCK.getRawId(block);
-		BlockClassifier.getClassifiers().forEach(blockClassifier -> blockClassifier.classify(block, pos, id));
+		if (blockStates != null && pos != null) {
+			BlockState blockState = blockStates[getIndex(pos)];
+			Block block = blockState.getBlock();
+			int id = Registry.BLOCK.getRawId(block);
+			BlockClassifier.getClassifiers().forEach(blockClassifier -> blockClassifier.classify(block, pos, id));
+		}
 	}
 
 }
