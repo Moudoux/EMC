@@ -69,6 +69,8 @@ public abstract class MixinEntity implements IMixinEntity {
             if (!event.isCanceled()) {
                 entity.setVelocity(event.getVector3d().getMinecraftVector());
             }
+        } else {
+            entity.setVelocity(velocity);
         }
     }
 
