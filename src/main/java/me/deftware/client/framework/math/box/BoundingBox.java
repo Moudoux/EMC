@@ -87,7 +87,7 @@ public class BoundingBox {
 
 	@Nullable
 	public Vector3d rayTrace(Vector3d min, Vector3d max) {
-		Optional<Vec3d> vec3d = getMinecraftBox().rayTrace(min.getMinecraftVector(), max.getMinecraftVector());
+		Optional<Vec3d> vec3d = getMinecraftBox().raycast(min.getMinecraftVector(), max.getMinecraftVector());
 		return vec3d.map(Vector3d::new).orElse(null);
 	}
 

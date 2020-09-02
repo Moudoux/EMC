@@ -16,7 +16,6 @@ import me.deftware.client.framework.main.bootstrap.discovery.JVMModDiscovery;
 import me.deftware.client.framework.main.validation.Validator;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.minecraft.Minecraft;
-import me.deftware.client.framework.session.AuthLibSession;
 import me.deftware.client.framework.util.path.LocationUtil;
 import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
