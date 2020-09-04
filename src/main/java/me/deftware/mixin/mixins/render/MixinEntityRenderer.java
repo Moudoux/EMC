@@ -98,15 +98,6 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
         }
     }
 
-    @Inject(method = "renderFloatingItem", at = @At("HEAD"), cancellable = true)
-    private void renderFloatingItem(int scaledWidth, int scaledHeight, float tickDelta, CallbackInfo ci) {
-        EventFloatingItemRender event = new EventFloatingItemRender();
-        event.broadcast();
-        if (event.isCanceled()) {
-            ci.cancel();
-        }
-    }
-
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;render(Lnet/minecraft/client/util/math/MatrixStack;F)V"))
     private void onRender2D(CallbackInfo ci) {
         if (!WindowHelper.isMinimized()) {
