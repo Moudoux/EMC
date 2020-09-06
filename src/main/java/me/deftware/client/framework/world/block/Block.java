@@ -64,7 +64,7 @@ public class Block implements IItem {
 	}
 
 	public boolean isAir() {
-		return block == Blocks.AIR;
+		return block instanceof AirBlock;
 	}
 
 	public boolean isCaveAir() {
