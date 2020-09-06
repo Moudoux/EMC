@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BackgroundRenderer.class)
 public class MixinBackgroundRenderer {
+
     @Inject(method = "applyFog", at = @At("HEAD"), cancellable = true)
     private static void applyFog(Camera camera, BackgroundRenderer.FogType fogType, float viewDistance, boolean thickFog, CallbackInfo ci) {
         EventFogRender event = new EventFogRender(camera, fogType, viewDistance, thickFog);
@@ -18,4 +19,5 @@ public class MixinBackgroundRenderer {
             ci.cancel();
         }
     }
+
 }
