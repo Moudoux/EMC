@@ -1,12 +1,12 @@
 The EMC (Easy Minecraft Client) Framework
 ===================
 
-An advanced cross-version compatible Minecraft modding framework, supporting Minecraft versions 1.8.9 through 1.16.2.
+An advanced cross-version compatible Minecraft modding framework, supporting Minecraft versions 1.8.9 through 1.16.3.
 
 Features
 -------------------
 * Complete abstraction from Minecraft
-* Cross-version compatible (1.8.9 through 1.16.2)
+* Cross-version compatible (1.8.9 through 1.16.3)
 * Custom yggdrasil and session management
 * Batched rendering of shapes
 * Independent scaling system
