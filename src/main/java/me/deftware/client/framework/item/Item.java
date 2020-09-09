@@ -5,7 +5,6 @@ import me.deftware.client.framework.item.types.BlockItem;
 import me.deftware.client.framework.item.types.FishingRodItem;
 import me.deftware.client.framework.item.types.PotionItem;
 import me.deftware.client.framework.item.types.RangedWeaponItem;
-import me.deftware.client.framework.item.types.SwordItem;
 import me.deftware.client.framework.item.types.ToolItem;
 import me.deftware.client.framework.item.types.TridentItem;
 import me.deftware.client.framework.item.types.*;
@@ -29,7 +28,7 @@ public class Item implements IItem {
 		} else if (item instanceof BowItem) {
 			return new me.deftware.client.framework.item.types.BowItem(item);
 		} else if (item instanceof net.minecraft.item.SwordItem) {
-			return new SwordItem(item);
+			return new me.deftware.client.framework.item.types.SwordItem(item);
 		} else if (item instanceof net.minecraft.item.MiningToolItem) {
 			return new WeaponItem(item);
 		} else if (item instanceof net.minecraft.item.ToolItem) {

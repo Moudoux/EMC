@@ -2,7 +2,10 @@ package me.deftware.mixin.mixins.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.chat.hud.ChatHud;
-import me.deftware.client.framework.event.events.*;
+import me.deftware.client.framework.event.events.EventHurtcam;
+import me.deftware.client.framework.event.events.EventRender2D;
+import me.deftware.client.framework.event.events.EventRender3D;
+import me.deftware.client.framework.event.events.EventRender3DNoBobbing;
 import me.deftware.client.framework.helper.GlStateHelper;
 import me.deftware.client.framework.helper.WindowHelper;
 import me.deftware.client.framework.maps.SettingsMap;
