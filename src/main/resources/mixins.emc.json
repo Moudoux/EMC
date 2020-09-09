@@ -61,6 +61,7 @@
     "render.MixinBackgroundRenderer",
     "render.MixinBlockFluidRenderer",
     "render.MixinBlockModelRenderer",
+    "render.MixinOutlineVertexConsumerProvider",
     "render.MixinCamera",
     "render.MixinEntityRenderDispatcher",
     "render.MixinEntityRenderer",

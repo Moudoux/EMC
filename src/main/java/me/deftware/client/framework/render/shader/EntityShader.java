@@ -32,8 +32,7 @@ public class EntityShader {
 	public static void selectiveEntityTypePredicate(BiPredicate<String, Boolean> validator) {
 		entityPredicate = entity ->
 				entities && entity instanceof LivingEntity && validator.test(new ChatMessage().fromText(
-					entity.getType().getName()).toString(false
-			), entity instanceof PlayerEntity);
+					entity.getType().getName()).toString(false), entity instanceof PlayerEntity);
 	}
 
 }

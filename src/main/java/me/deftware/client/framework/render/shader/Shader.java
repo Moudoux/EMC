@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL20;
  */
 public class Shader {
 
-	private @Getter IShaderProvider provider;
+	private final @Getter IShaderProvider provider;
 	private @Getter boolean bound = false;
 	private @Getter int program, vs, fs;
 
@@ -46,6 +46,8 @@ public class Shader {
 			ex.printStackTrace();
 		}
 	}
+
+	public void setupUniforms() { }
 
 	public int getUniform(String name) {
 		return GL20.glGetUniformLocation(program, name);
