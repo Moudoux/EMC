@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.event.events.EventWeather;
+import me.deftware.client.framework.helper.GlStateHelper;
 import me.deftware.client.framework.render.camera.entity.CameraEntityMan;
 import me.deftware.client.framework.render.shader.EntityShader;
 import me.deftware.client.framework.render.shader.ShaderTarget;
@@ -40,10 +41,6 @@ public abstract class MixinWorldRenderer {
 	@Shadow
 	@Final
 	private BufferBuilderStorage bufferBuilders;
-
-	@Shadow
-	@Final
-	private MinecraftClient client;
 
 	@Shadow
 	protected abstract void renderEntity(Entity entity, double cameraX, double cameraY, double cameraZ, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers);
@@ -101,8 +98,7 @@ public abstract class MixinWorldRenderer {
 	@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;canDrawEntityOutlines()Z", opcode = 180, ordinal = 0))
 	private boolean onRenderHead(WorldRenderer worldRenderer) {
 		Arrays.stream(ShaderTarget.values()).forEach(ShaderTarget::clear);
-		client.getFramebuffer().beginWrite(false);
-		return false;
+		return true;
 	}
 
 	@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/entity/BlockEntityRenderDispatcher;render(Lnet/minecraft/block/entity/BlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;)V", opcode = 180, ordinal = 0))
