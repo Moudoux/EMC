@@ -80,7 +80,7 @@ public abstract class MixinWorldRenderer {
 		if (!FrameworkConstants.OPTIFINE) {
 			return true;
 		}
-		return !net.optifine.Config.isShaders();
+		return FrameworkConstants.CAN_RENDER_SHADER;
 	}
 
 	@Inject(method = "loadEntityOutlineShader", at = @At("HEAD"))

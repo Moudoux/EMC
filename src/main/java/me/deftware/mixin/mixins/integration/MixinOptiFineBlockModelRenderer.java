@@ -1,5 +1,6 @@
 package me.deftware.mixin.mixins.integration;
 
+import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.world.World;
 import net.minecraft.block.BlockState;
@@ -10,6 +11,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
 import net.minecraftforge.client.model.data.IModelData;
+import net.optifine.Config;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -43,6 +45,7 @@ public abstract class MixinOptiFineBlockModelRenderer {
 
     @Inject(method = "renderModelSmooth", at = @At("RETURN"), remap = false, cancellable = true)
     public void renderModelSmoothInject(BlockRenderView world, BakedModel model, BlockState state, BlockPos pos, MatrixStack buffer, VertexConsumer vertexConsumer, boolean cull, Random random, long seed, int overlay, IModelData data, CallbackInfoReturnable<Boolean> ci) {
+        FrameworkConstants.CAN_RENDER_SHADER = !Config.isShaders();
         try {
             if (SettingsMap.isOverrideMode()) {
                 if (cull) {
