@@ -110,7 +110,7 @@ public abstract class MixinWorldRenderer {
 	@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;canDrawEntityOutlines()Z", opcode = 180, ordinal = 0))
 	private boolean onRenderHead(WorldRenderer worldRenderer) {
 		if (canDrawCustomBuffers()) Arrays.stream(ShaderTarget.values()).forEach(ShaderTarget::clear);
-		if (!FrameworkConstants.OPTIFINE) return false;
+		if (!FrameworkConstants.OPTIFINE) return true;
 		return canDrawEntityOutlines();
 	}
 
