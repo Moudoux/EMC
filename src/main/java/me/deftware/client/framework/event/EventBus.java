@@ -17,7 +17,6 @@ public class EventBus {
 	private static final MultiMap<Class<?>, Listener> listeners = new MultiMap<>();
 
 	public static synchronized void registerClass(Class<?> clazz, Object instance) {
-		if (instance == null) throw new RuntimeException("Null instance of class " + clazz.getName());
 		synchronized (lock) {
 			Bootstrap.logger.debug(String.format("Loading event handlers in class %s", clazz.getName()));
 			for (Method method : clazz.getDeclaredMethods()) {
@@ -65,8 +64,7 @@ public class EventBus {
 					try {
 						listener.getMethod().invoke(listener.getClassInstance(), event);
 					} catch (Exception ex) {
-						System.out.println("null >> " + (listener.getClassInstance() == null));
-						System.out.println(">> " + event.getClass().getName() + " >> " + listener.getClassInstance().getClass().getName());
+						ex.printStackTrace();
 					}
 				});
 			}
