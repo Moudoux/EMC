@@ -17,9 +17,12 @@ import me.deftware.client.framework.main.validation.Validator;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.client.framework.util.path.LocationUtil;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.spongepowered.asm.mixin.Mixins;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -82,6 +85,15 @@ public class Bootstrap {
                 logger.warn("EMC instance is not up to date! This may cause instability or crashes.");
             }
             FrameworkConstants.SUBSYSTEM_IN_USE = System.getProperty("SUBSYSTEM", "false").equalsIgnoreCase("true");
+            for (ModContainer modContainer : FabricLoader.getInstance().getAllMods()) {
+                if (modContainer.getMetadata().getName().equalsIgnoreCase("OptiFabric")) {
+                    FrameworkConstants.OPTIFINE = true;
+                    break;
+                }
+            }
+            if (FrameworkConstants.OPTIFINE) {
+                logger.info("Running with OptiFine!");
+            }
             EMCSettings = new Settings("EMC");
             EMCSettings.setupShutdownHook();
             SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", EMCSettings.getPrimitive("RENDER_SCALE", 1.0f));

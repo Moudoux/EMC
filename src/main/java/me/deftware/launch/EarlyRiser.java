@@ -11,10 +11,10 @@ public class EarlyRiser implements Runnable {
     public void run() {
         Mixins.addConfiguration("mixins.emc.json");
         for (ModContainer modContainer : FabricLoader.getInstance().getAllMods()) {
-            if (modContainer.getMetadata().getName().equals("Optifabric")) {
+            if (modContainer.getMetadata().getName().equalsIgnoreCase("Optifabric")) {
                 Mixins.addConfiguration("mixins.optifine.json");
                 break;
-            } else if (modContainer.getMetadata().getName().equals("Sodium")) {
+            } else if (modContainer.getMetadata().getName().equalsIgnoreCase("Sodium")) {
                 Mixins.addConfiguration("mixins.sodium.json");
                 break;
             }

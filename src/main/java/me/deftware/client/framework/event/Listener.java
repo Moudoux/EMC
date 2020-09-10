@@ -12,6 +12,9 @@ public class Listener {
     private final int priority;
 
     public Listener(Method method, Object classInstance, int priority) {
+        if (method == null || classInstance == null) {
+            throw new RuntimeException("Null params");
+        }
         this.method = method;
         this.classInstance = classInstance;
         this.priority = priority;

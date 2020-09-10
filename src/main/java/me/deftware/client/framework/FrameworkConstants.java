@@ -10,7 +10,7 @@ public class FrameworkConstants {
     public static double VERSION = 16.0;
     public static int PATCH = 0, SCHEME = 4;
 
-    public static boolean VALID_EMC_INSTANCE = false, SUBSYSTEM_IN_USE = false;
+    public static boolean VALID_EMC_INSTANCE = false, SUBSYSTEM_IN_USE = false, OPTIFINE = false;
     public static String FRAMEWORK_MAVEN_URL = "https://gitlab.com/EMC-Framework/maven/raw/master/";
     public static MappingsLoader MAPPING_LOADER = MappingsLoader.Fabric;
     public static MappingSystem MAPPING_SYSTEM = MappingSystem.YarnV2;
