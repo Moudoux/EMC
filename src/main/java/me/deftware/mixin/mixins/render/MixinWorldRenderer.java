@@ -97,7 +97,8 @@ public abstract class MixinWorldRenderer {
 
 	@Redirect(method = "drawEntityOutlinesFramebuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;canDrawEntityOutlines()Z", opcode = 180))
 	public boolean drawEntityOutlinesFramebuffer(WorldRenderer worldRenderer) {
-		if (canDrawCustomBuffers()) {
+		boolean emc = Arrays.stream(ShaderTarget.values()).anyMatch(ShaderTarget::isEnabled);
+		if (emc && canDrawCustomBuffers()) {
 			RenderSystem.enableBlend();
 			RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SrcFactor.ZERO, GlStateManager.DstFactor.ONE);
 			Arrays.stream(ShaderTarget.values()).forEach(ShaderTarget::renderBuffer);
