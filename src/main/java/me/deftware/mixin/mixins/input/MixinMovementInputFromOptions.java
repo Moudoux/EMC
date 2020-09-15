@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Mixin(KeyboardInput.class)
+@Mixin(value = KeyboardInput.class, priority = 999)
 public class MixinMovementInputFromOptions {
 
     @ModifyVariable(method = "tick", at = @At("HEAD"))
