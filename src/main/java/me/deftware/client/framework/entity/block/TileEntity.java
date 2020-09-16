@@ -13,7 +13,7 @@ import net.minecraft.block.entity.LootableContainerBlockEntity;
  */
 public class TileEntity {
 
-	protected final BoundingBox SINGLE;
+	private BoundingBox SINGLE;
 	protected final BlockEntity entity;
 	protected final BlockPosition position;
 
@@ -25,6 +25,9 @@ public class TileEntity {
 	}
 
 	public BoundingBox getBoundingBox() {
+		if (SINGLE == null) {
+			SINGLE = getBlockPosition().getBoundingBox();
+		}
 		return SINGLE;
 	}
 
@@ -35,7 +38,6 @@ public class TileEntity {
 	protected TileEntity(BlockEntity entity) {
 		this.entity = entity;
 		this.position = new TileBlockPosition(entity);
-		SINGLE = getBlockPosition().getBoundingBox();
 	}
 	
 	public String getClassName() {

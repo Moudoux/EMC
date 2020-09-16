@@ -14,11 +14,6 @@ public class ShulkerEntity extends StorageEntity {
 
 	public ShulkerEntity(BlockEntity entity) {
 		super(entity);
-		if (getMinecraftEntity().getColor() == null) {
-			color = Color.pink;
-		} else {
-			color = new Color(getMinecraftEntity().getColor().getMaterialColor().getRenderColor(0));
-		}
 	}
 
 	@Override
@@ -27,6 +22,13 @@ public class ShulkerEntity extends StorageEntity {
 	}
 
 	public Color getColor() {
+		if (color == null) {
+			if (getMinecraftEntity().getColor() == null) {
+				color = Color.pink;
+			} else {
+				color = new Color(getMinecraftEntity().getColor().getMaterialColor().getRenderColor(0));
+			}
+		}
 		return color;
 	}
 
