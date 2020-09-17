@@ -103,7 +103,7 @@ public abstract class MixinBlockState {
                 }
                 ci.setReturnValue(fullCube
                         ? VoxelShapes.fullCube()
-                        : VoxelShapes.empty());
+                        : event.shape);
             } else if (this.getBlock() instanceof SweetBerryBushBlock) {
                 if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.BLOCKS, "custom_berry_voxel", false)) {
                     ci.setReturnValue(VoxelShapes.fullCube());
