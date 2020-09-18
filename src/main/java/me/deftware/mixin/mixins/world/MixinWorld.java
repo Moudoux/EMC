@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -27,6 +28,7 @@ public abstract class MixinWorld implements IMixinWorld {
 	@Shadow
 	public abstract BlockEntity getBlockEntity(BlockPos pos);
 
+	@Shadow @Final protected List<BlockEntity> unloadedBlockEntities;
 	@Unique
 	public final HashMap<BlockEntity, TileEntity> emcTileEntities = new HashMap<>();
 
@@ -41,12 +43,11 @@ public abstract class MixinWorld implements IMixinWorld {
 		emcTileEntities.put(blockEntity, TileEntity.newInstance(blockEntity));
 	}
 
-	@Redirect(method = "tickBlockEntities", at = @At(value = "INVOKE", target = "Ljava/util/List;removeAll(Ljava/util/Collection;)Z", ordinal = 1))
-	private boolean onRemoveEntityIf(List<BlockEntity> list, Collection<BlockEntity> entities) {
-		for (BlockEntity entity : entities) {
+	@Inject(method = "tickBlockEntities", at = @At(value = "INVOKE", target = "Ljava/util/List;removeAll(Ljava/util/Collection;)Z", ordinal = 1))
+	private void onRemoveEntityIf(CallbackInfo info) {
+		for (BlockEntity entity : this.unloadedBlockEntities) {
 			new EventTileBlockRemoved(emcTileEntities.remove(entity)).broadcast();
 		}
-		return list.removeAll(entities);
 	}
 
 	@SuppressWarnings("RedundantCast")

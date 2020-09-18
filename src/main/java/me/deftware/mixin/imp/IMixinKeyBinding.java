@@ -4,7 +4,7 @@ import net.minecraft.client.util.InputUtil;
 
 public interface IMixinKeyBinding {
 
-    void setPressed(boolean state);
+    void emcSetPressed(boolean state);
 
     InputUtil.Key getInput();
 

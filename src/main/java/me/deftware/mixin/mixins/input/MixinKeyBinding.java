@@ -16,7 +16,7 @@ public class MixinKeyBinding implements IMixinKeyBinding {
     private InputUtil.Key boundKey;
 
     @Override
-    public void setPressed(boolean state) {
+    public void emcSetPressed(boolean state) {
         pressed = state;
     }
 
