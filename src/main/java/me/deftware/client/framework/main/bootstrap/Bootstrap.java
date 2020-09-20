@@ -41,7 +41,7 @@ public class Bootstrap {
 
     public static final Logger logger = LogManager.getLogger("EMC Framework");
     public static ArrayList<JsonObject> modsInfo = new ArrayList<>();
-    public static boolean initialized = false, isRunning = true;
+    public static boolean bootstrapped = false, initialized = false, isRunning = true;
     public static File EMC_ROOT, EMC_CONFIGS;
     public static Settings EMCSettings;
 
@@ -53,6 +53,11 @@ public class Bootstrap {
     private static List<AbstractModDiscovery> modDiscoveries = new ArrayList<>(Arrays.asList(new ClasspathModDiscovery(), new JVMModDiscovery(), new DirectoryModDiscovery()));
 
     public static void init() {
+        if (bootstrapped) {
+            logger.warn("Tried to call bootstrap init twice! If running with OptiFine you can ignore this.");
+            return;
+        }
+        bootstrapped = true;
         try {
             Keyboard.populateCodePoints();
             for (int i = 0; i < 200; i++) {
