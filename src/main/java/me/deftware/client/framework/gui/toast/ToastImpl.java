@@ -38,7 +38,7 @@ public class ToastImpl implements Toast {
 	@Override
 	public Visibility draw(MatrixStack matrices, ToastManager manager, long startTime) {
 		// Texture
-		manager.getGame().getTextureManager().bindTexture(TOASTS_TEX);
+		manager.getGame().getTextureManager().bindTexture(TEXTURE);
 		GL11.glColor3f(1.0F, 1.0F, 1.0F);
 		manager.drawTexture(matrices, 0, 0, 0, 0, width, height);
 
