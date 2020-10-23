@@ -32,7 +32,7 @@ public class CameraEntityMan {
 			fakePlayer.setHeadYaw(Objects.requireNonNull(MinecraftClient.getInstance().player).headYaw);
 			fakePlayer.spawn();
 			savedPerspective = Objects.requireNonNull(MinecraftClient.getInstance().options).getPerspective();
-			Objects.requireNonNull(MinecraftClient.getInstance().options).method_31043(Perspective.FIRST_PERSON);
+			Objects.requireNonNull(MinecraftClient.getInstance().options).setPerspective(Perspective.FIRST_PERSON);
 			MinecraftClient.getInstance().setCameraEntity(fakePlayer);
 			if (MinecraftClient.getInstance().player.input instanceof KeyboardInput) MinecraftClient.getInstance().player.input = new DummyInput();
 		}
@@ -44,7 +44,7 @@ public class CameraEntityMan {
 
 	public static void disable() {
 		if (World.isLoaded()) {
-			MinecraftClient.getInstance().options.method_31043(savedPerspective);
+			MinecraftClient.getInstance().options.setPerspective(savedPerspective);
 			MinecraftClient.getInstance().setCameraEntity(Objects.requireNonNull(MinecraftClient.getInstance().player));
 			if (fakePlayer != null) fakePlayer.despawn();
 			fakePlayer = null;

@@ -48,7 +48,7 @@ public class CustomYggdrasil {
 	}
 
 	public Environment build() {
-		return Environment.create(getAuthHost(), getAccountsHost(), getSessionHost(), getName());
+		return Environment.create(getAuthHost(), getAccountsHost(), getSessionHost(), "", getName()); // TODO: Fix services
 	}
 
 }

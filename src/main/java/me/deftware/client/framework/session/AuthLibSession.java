@@ -7,6 +7,7 @@ import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilEnvironment;
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
+import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.mixin.imp.IMixinMinecraft;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.Session;
@@ -31,7 +32,7 @@ public class AuthLibSession {
 		// Custom yggdrasil as an argument below is only applicable for Minecraft 1.16 and above. Prior versions of Minecraft do not need it.
 		this.environment = yggdrasil;
 		authenticationService = new YggdrasilAuthenticationService(Proxy.NO_PROXY, UUID.randomUUID().toString(), yggdrasil);
-		userAuthentication = new YggdrasilUserAuthentication(authenticationService, Agent.MINECRAFT, yggdrasil);
+		userAuthentication = new YggdrasilUserAuthentication(authenticationService, "", Agent.MINECRAFT, yggdrasil); // TODO: Fix this (clientToken)
 	}
 
 	public AuthLibSession(CustomYggdrasil yggdrasil) {
