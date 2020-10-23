@@ -8,6 +8,7 @@ import me.deftware.client.framework.item.types.RangedWeaponItem;
 import me.deftware.client.framework.item.types.ToolItem;
 import me.deftware.client.framework.item.types.TridentItem;
 import me.deftware.client.framework.item.types.*;
+import me.deftware.client.framework.world.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.CrossbowItem;
@@ -104,6 +105,13 @@ public class Item implements IItem {
 	@Override
 	public net.minecraft.item.Item getAsItem() {
 		return item;
+	}
+
+	public Block getAsBlock() {
+		if (instanceOf(ItemType.ItemBlock)) {
+			return Block.newInstance(((net.minecraft.item.BlockItem) item).getBlock());
+		}
+		return null;
 	}
 
 }
