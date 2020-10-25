@@ -45,6 +45,10 @@ public class World {
 		return Objects.requireNonNull(((IMixinWorldClient) MinecraftClient.getInstance().world)).getLoadedEntitiesAccessor().values().stream();
 	}
 
+	public static int getDifficulty() {
+		return Objects.requireNonNull(MinecraftClient.getInstance().world).getDifficulty().getId();
+	}
+
 	public static long getWorldTime() {
 		return Objects.requireNonNull(MinecraftClient.getInstance().world).getTime();
 	}
