@@ -7,7 +7,6 @@ import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilEnvironment;
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
-import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.mixin.imp.IMixinMinecraft;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.Session;
@@ -28,11 +27,18 @@ public class AuthLibSession {
 	private final YggdrasilAuthenticationService authenticationService;
 	private final Environment environment;
 
+	/**
+	 * Only applicable in >= 1.16.4. A unique identifier must be created and used for each request
+	 * with Mojangs new authentication system introduced in 1.16.4.
+	 */
+	private final UUID uuid = UUID.randomUUID();
+
 	private AuthLibSession(Environment yggdrasil) {
 		// Custom yggdrasil as an argument below is only applicable for Minecraft 1.16 and above. Prior versions of Minecraft do not need it.
 		this.environment = yggdrasil;
-		authenticationService = new YggdrasilAuthenticationService(Proxy.NO_PROXY, UUID.randomUUID().toString(), yggdrasil);
-		userAuthentication = new YggdrasilUserAuthentication(authenticationService, "", Agent.MINECRAFT, yggdrasil); // TODO: Fix this (clientToken)
+		String clientToken = uuid.toString();
+		authenticationService = new YggdrasilAuthenticationService(Proxy.NO_PROXY, clientToken, yggdrasil);
+		userAuthentication = new YggdrasilUserAuthentication(authenticationService, clientToken, Agent.MINECRAFT, yggdrasil);
 	}
 
 	public AuthLibSession(CustomYggdrasil yggdrasil) {
@@ -46,6 +52,10 @@ public class AuthLibSession {
 	public void setCredentials(String username, String password) {
 		userAuthentication.setUsername(username);
 		userAuthentication.setPassword(password);
+	}
+
+	public UUID getClientToken() {
+		return uuid;
 	}
 
 	public void logout() {

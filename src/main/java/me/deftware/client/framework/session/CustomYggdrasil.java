@@ -22,6 +22,13 @@ public class CustomYggdrasil {
 		this.sessionHost = sessionHost;
 	}
 
+	/**
+	 * Only applicable in >= 1.16.4
+	 */
+	public String getServicesHost() {
+		return "https://api.minecraftservices.com";
+	}
+
 	public String getAuthHost() {
 		return authHost;
 	}
@@ -43,12 +50,13 @@ public class CustomYggdrasil {
 				.add("authHost='" + authHost + "'")
 				.add("accountsHost='" + accountsHost + "'")
 				.add("sessionHost='" + sessionHost + "'")
+				.add("servicesHost='" + getServicesHost() + "'")
 				.add("name='" + getName() + "'")
 				.toString();
 	}
 
 	public Environment build() {
-		return Environment.create(getAuthHost(), getAccountsHost(), getSessionHost(), "", getName()); // TODO: Fix services
+		return Environment.create(getAuthHost(), getAccountsHost(), getSessionHost(), getServicesHost(), getName());
 	}
 
 }
