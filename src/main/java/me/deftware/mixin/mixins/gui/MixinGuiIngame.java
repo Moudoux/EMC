@@ -10,7 +10,10 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,6 +21,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(InGameHud.class)
 public class MixinGuiIngame {
+
+    @Shadow
+    @Final
+    private static Identifier PUMPKIN_BLUR;
 
     @Inject(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;blendFuncSeparate(Lcom/mojang/blaze3d/platform/GlStateManager$SrcFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DstFactor;Lcom/mojang/blaze3d/platform/GlStateManager$SrcFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DstFactor;)V"), cancellable = true)
     private void crosshairEvent(CallbackInfo ci) {
@@ -32,12 +39,14 @@ public class MixinGuiIngame {
         new EventRenderHotbar().broadcast();
     }
 
-    @Inject(method = "renderPumpkinOverlay", at = @At("HEAD"), cancellable = true)
-    private void renderPumpkinOverlay(CallbackInfo ci) {
-        EventAnimation event = new EventAnimation(EventAnimation.AnimationType.Pumpkin);
-        event.broadcast();
-        if (event.isCanceled()) {
-            ci.cancel();
+    @Inject(method = "method_31976", at = @At("HEAD"), cancellable = true)
+    private void renderOverlay(Identifier identifier, CallbackInfo ci) {
+        if (identifier == PUMPKIN_BLUR) { // TODO: Verify this
+            EventAnimation event = new EventAnimation(EventAnimation.AnimationType.Pumpkin);
+            event.broadcast();
+            if (event.isCanceled()) {
+                ci.cancel();
+            }
         }
     }
 

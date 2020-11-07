@@ -6,4 +6,6 @@ public interface IMixinEntity {
 
 	void setInPortal(boolean inPortal);
 
+	void removeRemovedReason();
+
 }

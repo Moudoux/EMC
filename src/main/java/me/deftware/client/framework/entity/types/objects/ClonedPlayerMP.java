@@ -10,7 +10,6 @@ import java.util.Objects;
 /**
  * @author Deftware
  */
-@SuppressWarnings("EntityConstructor")
 public class ClonedPlayerMP extends OtherClientPlayerEntity {
 
 	public ClonedPlayerMP(PlayerEntity entity) {
@@ -22,7 +21,7 @@ public class ClonedPlayerMP extends OtherClientPlayerEntity {
 
 	public void clonePlayer(PlayerEntity oldPlayer, boolean respawnFromEnd) {
 		if (respawnFromEnd) {
-			inventory.clone(oldPlayer.inventory);
+			getInventory().clone(oldPlayer.getInventory());
 			setHealth(oldPlayer.getHealth());
 			hungerManager = oldPlayer.getHungerManager();
 			experienceLevel = oldPlayer.experienceLevel;
@@ -31,7 +30,7 @@ public class ClonedPlayerMP extends OtherClientPlayerEntity {
 			setScore(oldPlayer.getScore());
 			copyFrom(oldPlayer);
 		} else if (world.getGameRules().getBoolean(GameRules.KEEP_INVENTORY) || oldPlayer.isSpectator()) {
-			inventory.clone(oldPlayer.inventory);
+			getInventory().clone(oldPlayer.getInventory());
 			experienceLevel = oldPlayer.experienceLevel;
 			experienceProgress = oldPlayer.experienceProgress;
 			totalExperience = oldPlayer.totalExperience;

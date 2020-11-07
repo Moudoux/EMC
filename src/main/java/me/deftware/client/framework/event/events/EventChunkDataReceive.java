@@ -30,12 +30,12 @@ public class EventChunkDataReceive extends Event {
         this.rootPacket = rootPacket;
         this.rawPos = new ChunkPos(rootPacket.getX(), rootPacket.getZ());
         this.pos = new ChunkBlockPosition(rawPos);
-        isInitialFullChunk = rootPacket.isFullChunk();
+        isInitialFullChunk = rootPacket.isWritingErrorSkippable(); // TODO: Verify isWritingErrorSkippable
         updateFullChunk(rootPacket);
     }
 
     private void updateFullChunk(ChunkDataS2CPacket rootPacket) {
-        updatedIsFullChunk = rootPacket.isFullChunk();
+        updatedIsFullChunk = rootPacket.isWritingErrorSkippable();
     }
 
 }

@@ -13,8 +13,12 @@ public class VertexBuilder {
 		this.builder = builder;
 	}
 
+	public static net.minecraft.client.render.VertexFormat.DrawMode intToDrawMode(int glMode) {
+		return net.minecraft.client.render.VertexFormat.DrawMode.QUADS; // TODO: Fix this
+	}
+
 	public void begin(int glMode, VertexFormat format) {
-		builder.begin(glMode, format.getMinecraftFormat());
+		builder.begin(intToDrawMode(glMode), format.getMinecraftFormat());
 	}
 
 	public VertexBuilder pos(double x, double y, double z) {

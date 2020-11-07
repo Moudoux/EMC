@@ -26,7 +26,7 @@ public class ShulkerEntity extends StorageEntity {
 			if (getMinecraftEntity().getColor() == null) {
 				color = Color.pink;
 			} else {
-				color = new Color(getMinecraftEntity().getColor().getMaterialColor().getRenderColor(0));
+				color = new Color(getMinecraftEntity().getColor().getMapColor().getRenderColor(0)); // TODO: Verify getMapColor
 			}
 		}
 		return color;

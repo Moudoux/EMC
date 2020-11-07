@@ -43,11 +43,11 @@ public class EntityPlayer extends LivingEntity {
 	}
 
 	public boolean isFlying() {
-		return getMinecraftEntity().abilities.flying;
+		return getMinecraftEntity().getAbilities().flying;
 	}
 
 	public void setFlying(boolean flag) {
-		getMinecraftEntity().abilities.flying = flag;
+		getMinecraftEntity().getAbilities().flying = flag;
 	}
 
 	public Inventory getInventory() {
@@ -120,19 +120,19 @@ public class EntityPlayer extends LivingEntity {
 	}
 
 	public float getFlySpeed() {
-		return getMinecraftEntity().abilities.getFlySpeed();
+		return getMinecraftEntity().getAbilities().getFlySpeed();
 	}
 
 	public void setFlySpeed(float speed) {
-		getMinecraftEntity().abilities.setFlySpeed(speed);
+		getMinecraftEntity().getAbilities().setFlySpeed(speed);
 	}
 
 	public float getWalkSpeed() {
-		return getMinecraftEntity().abilities.getWalkSpeed();
+		return getMinecraftEntity().getAbilities().getWalkSpeed();
 	}
 
 	public void setWalkSpeed(float speed) {
-		getMinecraftEntity().abilities.setWalkSpeed(speed);
+		getMinecraftEntity().getAbilities().setWalkSpeed(speed);
 	}
 
 }

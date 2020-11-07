@@ -28,7 +28,8 @@ public abstract class MixinWorld implements IMixinWorld {
 	@Shadow
 	public abstract BlockEntity getBlockEntity(BlockPos pos);
 
-	@Shadow @Final protected List<BlockEntity> unloadedBlockEntities;
+	@Shadow @Final protected List<BlockEntity> field_27082; // TODO: Verify this
+
 	@Unique
 	public final HashMap<BlockEntity, TileEntity> emcTileEntities = new HashMap<>();
 
@@ -39,13 +40,13 @@ public abstract class MixinWorld implements IMixinWorld {
 	}
 
 	@Inject(method = "addBlockEntity", at = @At("HEAD"))
-	public void addBlockEntity(BlockEntity blockEntity, CallbackInfoReturnable<Boolean> ci) {
+	public void addBlockEntity(BlockEntity blockEntity, CallbackInfo ci) {
 		emcTileEntities.put(blockEntity, TileEntity.newInstance(blockEntity));
 	}
 
 	@Inject(method = "tickBlockEntities", at = @At(value = "INVOKE", target = "Ljava/util/List;removeAll(Ljava/util/Collection;)Z", ordinal = 1))
 	private void onRemoveEntityIf(CallbackInfo info) {
-		for (BlockEntity entity : this.unloadedBlockEntities) {
+		for (BlockEntity entity : this.field_27082) {
 			new EventTileBlockRemoved(emcTileEntities.remove(entity)).broadcast();
 		}
 	}

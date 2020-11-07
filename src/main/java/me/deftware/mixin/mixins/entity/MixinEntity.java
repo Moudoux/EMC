@@ -50,6 +50,8 @@ public abstract class MixinEntity implements IMixinEntity {
     @Shadow
     protected Vec3d movementMultiplier;
 
+    @Shadow protected abstract void unsetRemoved();
+
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)
     public void changeLookDirection(double cursorX, double cursorY, CallbackInfo ci) {
@@ -144,6 +146,11 @@ public abstract class MixinEntity implements IMixinEntity {
     @Override
     public void setInPortal(boolean inPortal) {
         this.inNetherPortal = inPortal;
+    }
+
+    @Override
+    public void removeRemovedReason() {
+        unsetRemoved();
     }
 
 }

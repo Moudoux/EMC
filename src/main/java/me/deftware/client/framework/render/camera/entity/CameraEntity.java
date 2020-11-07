@@ -14,7 +14,6 @@ import java.util.Objects;
 /**
  * @author wagyourtail, Deftware
  */
-@SuppressWarnings("EntityConstructor")
 public class CameraEntity extends OtherClientPlayerEntity {
 
 	public Input input;
@@ -67,7 +66,7 @@ public class CameraEntity extends OtherClientPlayerEntity {
 
 	public void despawn() {
 		MinecraftClient mc = MinecraftClient.getInstance();
-		Objects.requireNonNull(mc.world).removeEntity(this.getEntityId());
+		Objects.requireNonNull(mc.world).removeEntity(this.getEntityId(), RemovalReason.DISCARDED); // TODO: Verify this
 	}
 
 }

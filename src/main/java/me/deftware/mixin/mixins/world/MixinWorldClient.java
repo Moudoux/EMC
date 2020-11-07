@@ -52,7 +52,7 @@ public class MixinWorldClient implements IMixinWorldClient {
     }
 
     @Inject(method = "removeEntity", at = @At("TAIL"))
-    public void removeEntity(int entityId, CallbackInfo ci) {
+    public void removeEntity(int entityId, net.minecraft.entity.Entity.RemovalReason reason, CallbackInfo ci) {
         entities.remove(entityId);
     }
 

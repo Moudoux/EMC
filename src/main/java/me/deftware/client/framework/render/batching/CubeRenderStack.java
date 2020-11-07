@@ -4,6 +4,7 @@ import me.deftware.client.framework.math.box.BoundingBox;
 import me.deftware.client.framework.minecraft.Minecraft;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.math.Box;
 
@@ -36,7 +37,8 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 		float T1 = 0, T2 = 0;
 		Tessellator ts = Tessellator.getInstance();
 		BufferBuilder vb = ts.getBuffer();
-		vb.begin(7, VertexFormats.POSITION_TEXTURE);
+		VertexFormat.DrawMode mode = VertexFormat.DrawMode.QUADS; // TODO: Verify this
+		vb.begin(mode, VertexFormats.POSITION_TEXTURE);
 		vb.vertex(box.minX, box.minY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.minX, box.maxY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.maxX, box.minY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
@@ -46,7 +48,7 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 		vb.vertex(box.minX, box.minY, box.maxZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.minX, box.maxY, box.maxZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		ts.draw();
-		vb.begin(7, VertexFormats.POSITION_TEXTURE);
+		vb.begin(mode, VertexFormats.POSITION_TEXTURE);
 		vb.vertex(box.maxX, box.maxY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.maxX, box.minY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.minX, box.maxY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
@@ -56,7 +58,7 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 		vb.vertex(box.maxX, box.maxY, box.maxZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.maxX, box.minY, box.maxZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		ts.draw();
-		vb.begin(7, VertexFormats.POSITION_TEXTURE);
+		vb.begin(mode, VertexFormats.POSITION_TEXTURE);
 		vb.vertex(box.minX, box.maxY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.maxX, box.maxY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.maxX, box.maxY, box.maxZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
@@ -66,7 +68,7 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 		vb.vertex(box.maxX, box.maxY, box.maxZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.maxX, box.maxY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		ts.draw();
-		vb.begin(7, VertexFormats.POSITION_TEXTURE);
+		vb.begin(mode, VertexFormats.POSITION_TEXTURE);
 		vb.vertex(box.minX, box.minY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.maxX, box.minY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.maxX, box.minY, box.maxZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
@@ -76,7 +78,7 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 		vb.vertex(box.maxX, box.minY, box.maxZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.maxX, box.minY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		ts.draw();
-		vb.begin(7, VertexFormats.POSITION_TEXTURE);
+		vb.begin(mode, VertexFormats.POSITION_TEXTURE);
 		vb.vertex(box.minX, box.minY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.minX, box.maxY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.minX, box.minY, box.maxZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
@@ -86,7 +88,7 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 		vb.vertex(box.maxX, box.minY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.maxX, box.maxY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		ts.draw();
-		vb.begin(7, VertexFormats.POSITION_TEXTURE);
+		vb.begin(mode, VertexFormats.POSITION_TEXTURE);
 		vb.vertex(box.minX, box.maxY, box.maxZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.minX, box.minY, box.maxZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
 		vb.vertex(box.minX, box.maxY, box.minZ).texture(T1, T2).color(0F, 0F, 0F, 0F).next();
@@ -101,21 +103,23 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 	private void drawSelectionBoundingBox(Box box) {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder vertexbuffer = tessellator.getBuffer();
-		vertexbuffer.begin(3, VertexFormats.POSITION);
+		VertexFormat.DrawMode mode = VertexFormat.DrawMode.LINE_STRIP;
+		vertexbuffer.begin(mode, VertexFormats.POSITION);
 		vertexbuffer.vertex(box.minX, box.minY, box.minZ).next();
 		vertexbuffer.vertex(box.maxX, box.minY, box.minZ).next();
 		vertexbuffer.vertex(box.maxX, box.minY, box.maxZ).next();
 		vertexbuffer.vertex(box.minX, box.minY, box.maxZ).next();
 		vertexbuffer.vertex(box.minX, box.minY, box.minZ).next();
 		tessellator.draw();
-		vertexbuffer.begin(3, VertexFormats.POSITION);
+		vertexbuffer.begin(mode, VertexFormats.POSITION);
 		vertexbuffer.vertex(box.minX, box.maxY, box.minZ).next();
 		vertexbuffer.vertex(box.maxX, box.maxY, box.minZ).next();
 		vertexbuffer.vertex(box.maxX, box.maxY, box.maxZ).next();
 		vertexbuffer.vertex(box.minX, box.maxY, box.maxZ).next();
 		vertexbuffer.vertex(box.minX, box.maxY, box.minZ).next();
 		tessellator.draw();
-		vertexbuffer.begin(1, VertexFormats.POSITION);
+		mode = VertexFormat.DrawMode.LINES;
+		vertexbuffer.begin(mode, VertexFormats.POSITION);
 		vertexbuffer.vertex(box.minX, box.minY, box.minZ).next();
 		vertexbuffer.vertex(box.minX, box.maxY, box.minZ).next();
 		vertexbuffer.vertex(box.maxX, box.minY, box.minZ).next();

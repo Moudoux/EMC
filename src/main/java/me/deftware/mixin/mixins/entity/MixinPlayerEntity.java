@@ -2,14 +2,19 @@ package me.deftware.mixin.mixins.entity;
 
 import me.deftware.client.framework.event.events.EventSneakingCheck;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PlayerEntity.class)
 public class MixinPlayerEntity {
+
+    @Shadow @Final private PlayerAbilities abilities;
 
     @Redirect(method = "adjustMovementForSneaking", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;clipAtLedge()Z", opcode = 180))
     private boolean sneakingCheck(PlayerEntity self) {

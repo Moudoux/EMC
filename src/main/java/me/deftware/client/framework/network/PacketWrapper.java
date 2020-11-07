@@ -5,9 +5,9 @@ import me.deftware.mixin.imp.IMixinNetworkManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket;
-import net.minecraft.network.packet.c2s.play.GuiCloseC2SPacket;
 import net.minecraft.network.packet.c2s.play.KeepAliveC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.network.packet.s2c.play.CloseScreenS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityAnimationS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityS2CPacket;
 
@@ -67,7 +67,7 @@ public class PacketWrapper {
             return new CPacketRotation(packet);
         } else if (packet instanceof PlayerMoveC2SPacket.PositionOnly) {
             return new CPacketPosition(packet);
-        } else if (packet instanceof GuiCloseC2SPacket) {
+        } else if (packet instanceof CloseScreenS2CPacket) { // TODO: Verify this
             return new CPacketCloseWindow(packet);
         } else if (packet instanceof KeepAliveC2SPacket) {
             return new CPacketKeepAlive(packet);

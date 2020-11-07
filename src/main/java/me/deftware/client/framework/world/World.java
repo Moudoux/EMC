@@ -82,7 +82,7 @@ public class World {
 	}
 
 	public static void removeEntityFromWorld(int id) {
-		Objects.requireNonNull(MinecraftClient.getInstance().world).removeEntity(id);
+		Objects.requireNonNull(MinecraftClient.getInstance().world).removeEntity(id, net.minecraft.entity.Entity.RemovalReason.DISCARDED); // TODO: Verify this
 	}
 
 	public static void determineRenderState(net.minecraft.block.BlockState state, BlockPos pos, CallbackInfoReturnable<Boolean> ci) {

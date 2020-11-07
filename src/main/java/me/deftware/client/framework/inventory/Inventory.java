@@ -24,18 +24,18 @@ public class Inventory {
 		this.mainHand = new ComparedConversion<>(entity::getMainHandStack, ItemStack::new);
 		this.offHand = new ComparedConversion<>(entity::getOffHandStack, ItemStack::new);
 
-		this.armourInventory = new ConvertedList<>(() -> entity.inventory.armor, pair ->
-			pair.getLeft().getMinecraftItemStack() == entity.inventory.armor.get(pair.getRight())
+		this.armourInventory = new ConvertedList<>(() -> entity.getInventory().armor, pair ->
+			pair.getLeft().getMinecraftItemStack() == entity.getInventory().armor.get(pair.getRight())
 		, ItemStack::new);
 
-		this.mainInventory = new ConvertedList<>(() -> entity.inventory.main, pair ->
-				net.minecraft.item.ItemStack.areEqual(pair.getLeft().getMinecraftItemStack(), entity.inventory.main.get(pair.getRight()))
+		this.mainInventory = new ConvertedList<>(() -> entity.getInventory().main, pair ->
+				net.minecraft.item.ItemStack.areEqual(pair.getLeft().getMinecraftItemStack(), entity.getInventory().main.get(pair.getRight()))
 				, ItemStack::new);
 	}
 
 	public int findItem(Item item) {
-		for (int i = 0; i < entity.inventory.main.size(); i++) {
-			net.minecraft.item.ItemStack it = entity.inventory.main.get(i);
+		for (int i = 0; i < entity.getInventory().main.size(); i++) {
+			net.minecraft.item.ItemStack it = entity.getInventory().main.get(i);
 			if (it.getItem().getTranslationKey().equals(item.getTranslationKey())) {
 				return i;
 			}
@@ -44,7 +44,7 @@ public class Inventory {
 	}
 
 	public int getSize() {
-		return entity.inventory.main.size();
+		return entity.getInventory().main.size();
 	}
 
 	public List<ItemStack> getArmourInventory() {
@@ -56,19 +56,19 @@ public class Inventory {
 	}
 	
 	public int getFirstEmptyStack() {
-		return entity.inventory.getEmptySlot();
+		return entity.getInventory().getEmptySlot();
 	}
 
 	public int getCurrentItem() {
-		return entity.inventory.selectedSlot;
+		return entity.getInventory().selectedSlot;
 	}
 
 	public int getFirstEmptySlot() {
-		return entity.inventory.getEmptySlot();
+		return entity.getInventory().getEmptySlot();
 	}
 
 	public void setCurrentItem(int id) {
-		entity.inventory.selectedSlot = id;
+		entity.getInventory().selectedSlot = id;
 	}
 
 	public ItemStack getHeldItem(boolean offhand) {
@@ -76,11 +76,11 @@ public class Inventory {
 	}
 
 	public ItemStack getStackInSlot(int slotId) {
-		return new ItemStack(entity.inventory.getStack(slotId));
+		return new ItemStack(entity.getInventory().getStack(slotId));
 	}
 
 	public ItemStack getStackInArmourSlot(int slotId) {
-		return new ItemStack(entity.inventory.getArmorStack(slotId));
+		return new ItemStack(entity.getInventory().getArmorStack(slotId));
 	}
 
 	public boolean hasElytra() {

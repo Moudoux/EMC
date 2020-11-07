@@ -1,6 +1,7 @@
 package me.deftware.client.framework.entity.types;
 
 import me.deftware.client.framework.entity.Entity;
+import me.deftware.mixin.imp.IMixinEntity;
 
 /**
  * @author Deftware
@@ -53,7 +54,7 @@ public class LivingEntity extends Entity {
 	}
 
 	public void setAlive(boolean flag) {
-		getMinecraftEntity().removed = false;
+		((IMixinEntity) getMinecraftEntity()).removeRemovedReason(); // TODO: Verify this
 		getMinecraftEntity().setHealth(20f);
 		getMinecraftEntity().updatePosition(getPosX(), getPosY(), getPosZ());
 	}

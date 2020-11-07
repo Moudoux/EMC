@@ -44,6 +44,8 @@ public abstract class MixinWorldRenderer {
 	@Shadow
 	protected abstract boolean canDrawEntityOutlines();
 
+	@Shadow @Final private BlockEntityRenderDispatcher field_27741;
+
 	@Inject(method = "tickRainSplashing", at = @At("HEAD"), cancellable = true)
 	private void renderRain(Camera camera, CallbackInfo ci) {
 		EventWeather event = new EventWeather(EventWeather.WeatherType.Rain);
@@ -121,7 +123,8 @@ public abstract class MixinWorldRenderer {
 		if (flag = canDrawCustomBuffers() && ShaderTarget.STORAGE.isEnabled() && (blockEntity instanceof LootableContainerBlockEntity || blockEntity instanceof EnderChestBlockEntity)) {
 			shaderTarget = ShaderTarget.STORAGE;
 		}
-		BlockEntityRenderDispatcher.INSTANCE.render(blockEntity, tickDelta, matrix,
+		// field_27741
+		field_27741.render(blockEntity, tickDelta, matrix,
 				flag ? shaderTarget.getOutlineVertexConsumerProvider() : original
 		);
 	}

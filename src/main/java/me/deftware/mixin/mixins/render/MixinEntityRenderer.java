@@ -50,11 +50,12 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     protected abstract void loadShader(Identifier identifier);
 
     @Shadow
-    public abstract Matrix4f getBasicProjectionMatrix(Camera camera, float f, boolean bl);
-
-    @Shadow
     @Final
     private Camera camera;
+
+    @Shadow protected abstract double getFov(Camera camera, float tickDelta, boolean changingFov);
+
+    @Shadow public abstract Matrix4f getBasicProjectionMatrix(double d);
 
     @Unique
     private final Consumer<Float> renderEvent = partialTicks -> new EventRender3D(partialTicks).broadcast();
@@ -70,7 +71,9 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
            // Camera model stack without bobbing applied
            MatrixStack matrix = new MatrixStack();
            matrix.push();
-           matrix.peek().getModel().multiply(this.getBasicProjectionMatrix(this.camera, partialTicks, true));
+           // TODO: Verify this
+           double d = this.getFov(camera, partialTicks, true);
+           matrix.peek().getModel().multiply(this.getBasicProjectionMatrix(d));
            MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrix.peek().getModel());
            // Camera transformation stack
            matrix.pop();
