@@ -1,6 +1,7 @@
 package me.deftware.client.framework.render.tessellation;
 
 import net.minecraft.client.render.BufferBuilder;
+import org.lwjgl.opengl.GL11;
 
 /**
  * @author Deftware
@@ -14,7 +15,10 @@ public class VertexBuilder {
 	}
 
 	public static net.minecraft.client.render.VertexFormat.DrawMode intToDrawMode(int glMode) {
-		return net.minecraft.client.render.VertexFormat.DrawMode.QUADS; // TODO: Fix this
+		if (glMode == GL11.GL_QUADS) { // quads is apparently 4 in Minecraft's DrawMode
+			return net.minecraft.client.render.VertexFormat.DrawMode.QUADS;
+		}
+		return net.minecraft.client.render.VertexFormat.DrawMode.values()[glMode];
 	}
 
 	public void begin(int glMode, VertexFormat format) {

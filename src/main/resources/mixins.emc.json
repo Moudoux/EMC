@@ -78,7 +78,8 @@
     "render.MixinWindow",
     "render.MixinWorldRenderer",
     "world.MixinWorld",
-    "world.MixinWorldChunk",
-    "world.MixinWorldClient"
+    "world.MixinChunkRenderRegion",
+    "world.MixinWorldClient",
+    "world.MixinWorldChunk"
   ]
 }

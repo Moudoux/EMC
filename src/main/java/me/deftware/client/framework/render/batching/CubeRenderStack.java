@@ -7,6 +7,7 @@ import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.math.Box;
+import org.lwjgl.opengl.GL11;
 
 /**
  * @author Deftware

@@ -1,37 +1,33 @@
 package me.deftware.mixin.mixins.world;
 
-import me.deftware.client.framework.world.classifier.BlockClassifier;
-import net.minecraft.block.Block;
+import me.deftware.mixin.imp.IMixinWorld;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.render.chunk.ChunkRendererRegion;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.WorldChunk;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ChunkRendererRegion.class)
-public abstract class MixinWorldChunk {
+import java.util.HashMap;
 
-	@Shadow @Final
-	protected BlockState[] blockStates;
+@Mixin(WorldChunk.class)
+public class MixinWorldChunk {
 
-	@Shadow
-	protected abstract int getIndex(BlockPos pos);
+	@Shadow @Final private World world;
 
-	/*
-		This function is called every time a chunk is built
-	 */
-	@Inject(method = "getBlockState", at = @At("HEAD"))
-	private void getBlockState(BlockPos pos, CallbackInfoReturnable<BlockState> state) {
-		if (blockStates != null && pos != null) {
-			BlockState blockState = blockStates[getIndex(pos)];
-			Block block = blockState.getBlock();
-			int id = Registry.BLOCK.getRawId(block);
-			BlockClassifier.getClassifiers().forEach(blockClassifier -> blockClassifier.classify(block, pos, id));
+	@Inject(method = "updateTicker", at = @At("HEAD"))
+	private <T extends BlockEntity> void test(T blockEntity, CallbackInfo ci) {
+		BlockState blockState = blockEntity.getCachedState();
+		if (blockState.getBlockEntityTicker(this.world, blockEntity.getType()) != null) {
+			long pos = blockEntity.getPos().asLong();
+			HashMap<Long, BlockEntity> entities = ((IMixinWorld) world).getInternalLongToBlockEntity();
+			if (!entities.containsKey(pos)) {
+				entities.put(pos, blockEntity);
+			}
 		}
 	}
 

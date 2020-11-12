@@ -6,8 +6,12 @@ import me.deftware.client.framework.world.classifier.BlockClassifier;
 import me.deftware.mixin.imp.IMixinWorld;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.ChestBlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.BlockEntityTickInvoker;
+import net.minecraft.world.chunk.WorldChunk;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,18 +24,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 @Mixin(World.class)
 public abstract class MixinWorld implements IMixinWorld {
 
-	@Shadow
-	public abstract BlockEntity getBlockEntity(BlockPos pos);
-
-	@Shadow @Final protected List<BlockEntity> field_27082; // TODO: Verify this
+	@Unique
+	public final HashMap<BlockEntityTickInvoker, TileEntity> emcTileEntities = new HashMap<>();
 
 	@Unique
-	public final HashMap<BlockEntity, TileEntity> emcTileEntities = new HashMap<>();
+	public final HashMap<Long, BlockEntity> longTileEntities = new HashMap<>();
 
 	@Override
 	@Unique
@@ -39,31 +42,27 @@ public abstract class MixinWorld implements IMixinWorld {
 		return emcTileEntities.values();
 	}
 
-	@Inject(method = "addBlockEntity", at = @At("HEAD"))
-	public void addBlockEntity(BlockEntity blockEntity, CallbackInfo ci) {
-		emcTileEntities.put(blockEntity, TileEntity.newInstance(blockEntity));
+	@Override
+	@Unique
+	public HashMap<Long, BlockEntity> getInternalLongToBlockEntity() {
+		return longTileEntities;
 	}
 
-	@Inject(method = "tickBlockEntities", at = @At(value = "INVOKE", target = "Ljava/util/List;removeAll(Ljava/util/Collection;)Z", ordinal = 1))
-	private void onRemoveEntityIf(CallbackInfo info) {
-		for (BlockEntity entity : this.field_27082) {
-			new EventTileBlockRemoved(emcTileEntities.remove(entity)).broadcast();
+	@Inject(method = "addBlockEntityTicker", at = @At("HEAD"))
+	public void addBlockEntityTicker(BlockEntityTickInvoker blockEntityTickInvoker, CallbackInfo ci) {
+		if (longTileEntities.containsKey(blockEntityTickInvoker.getPos().asLong())) {
+			emcTileEntities.put(blockEntityTickInvoker,
+					TileEntity.newInstance(longTileEntities.remove(blockEntityTickInvoker.getPos().asLong())));
 		}
 	}
 
-	@SuppressWarnings("RedundantCast")
-	@Redirect(method = "tickBlockEntities", at = @At(value = "INVOKE", target = "Ljava/util/List;remove(Ljava/lang/Object;)Z"))
-	private boolean onRemoveEntity(List<BlockEntity> list, Object entity) {
-		new EventTileBlockRemoved(emcTileEntities.remove((BlockEntity) entity)).broadcast();
-		return list.remove((BlockEntity) entity);
-	}
-
-	@Inject(method = "removeBlockEntity", at = @At("HEAD"))
-	public void removeBlockEntity(BlockPos pos, CallbackInfo info) {
-		BlockEntity blockEntity = this.getBlockEntity(pos);
-		if (blockEntity != null) {
-			new EventTileBlockRemoved(emcTileEntities.remove(blockEntity)).broadcast();
+	@Redirect(method = "tickBlockEntities", at = @At(value = "INVOKE", target = "Ljava/util/Iterator;next()Ljava/lang/Object;", opcode = 180))
+	protected Object tickBlockEntities(Iterator<BlockEntityTickInvoker> iterator) {
+		BlockEntityTickInvoker ticker = iterator.next();
+		if (ticker.isRemoved()) {
+			emcTileEntities.remove(ticker);
 		}
+		return ticker;
 	}
 
 	@Inject(method = "setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;II)Z", at = @At("TAIL"))

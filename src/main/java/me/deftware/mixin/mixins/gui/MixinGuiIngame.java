@@ -39,8 +39,8 @@ public class MixinGuiIngame {
         new EventRenderHotbar().broadcast();
     }
 
-    @Inject(method = "method_31976", at = @At("HEAD"), cancellable = true)
-    private void renderOverlay(Identifier identifier, CallbackInfo ci) {
+    @Inject(method = "renderOverlay", at = @At("HEAD"), cancellable = true)
+    private void renderOverlay(Identifier identifier, float scale, CallbackInfo ci) {
         if (identifier == PUMPKIN_BLUR) { // TODO: Verify this
             EventAnimation event = new EventAnimation(EventAnimation.AnimationType.Pumpkin);
             event.broadcast();
