@@ -43,7 +43,7 @@ public class MixinCamera {
         }
     }
 
-    @Inject(at = @At("HEAD"), cancellable = true, method = "getSubmergedFluidState")
+    @Inject(at = @At("HEAD"), cancellable = true, method = "getSubmersionType")
     public void getSubmergedFluidState(CallbackInfoReturnable<FluidState> info) {
         EventAnimation event = new EventAnimation(EventAnimation.AnimationType.Underwater);
         event.broadcast();
