@@ -166,7 +166,7 @@ public class Entity {
 	}
 
 	public boolean hasNbt() {
-		return entity.toTag(new CompoundTag()) != null && !entity.toTag(new CompoundTag()).isEmpty();
+		return entity.toTag(new CompoundTag()) != null && entity.toTag(new CompoundTag()).getSize() != 0;
 	}
 
 	public NbtCompound getNbt() {

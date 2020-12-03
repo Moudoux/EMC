@@ -4,9 +4,9 @@ import me.deftware.client.framework.event.events.EventRenderPlayerModel;
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.Vec3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -46,7 +46,7 @@ public abstract class MixinRenderLivingBase<T extends LivingEntity> {
             }
             if (flip) {
                 matrices.translate(0.0D, entity.getHeight() + 0.1F, 0.0D);
-                matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180.0F));
+                matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180.0F));
             }
         }
     }

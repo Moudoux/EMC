@@ -62,7 +62,7 @@ public class World {
 	}
 
 	public static int getWorldHeight() {
-		return Objects.requireNonNull(MinecraftClient.getInstance().world).getHeight();
+		return Objects.requireNonNull(MinecraftClient.getInstance().world).getTopHeightLimit();
 	}
 
 	public static BlockState getStateFromBlockPos(BlockPosition position) {

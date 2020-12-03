@@ -17,7 +17,6 @@ import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.util.Identifier;
@@ -25,6 +24,7 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -77,8 +77,8 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
            MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrix.peek().getModel());
            // Camera transformation stack
            matrix.pop();
-           matrix.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(this.camera.getPitch()));
-           matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(this.camera.getYaw() + 180f));
+           matrix.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(this.camera.getPitch()));
+           matrix.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(this.camera.getYaw() + 180f));
            loadPushPop(renderEventNoBobbing, matrix, partialTicks);
            // Reset projection
            MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrixStack.peek().getModel());
