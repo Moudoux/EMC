@@ -46,6 +46,8 @@ public class Keyboard {
 			return normalKeys.get(glfwCodePoint);
 		} else if (functionKeys.containsKey(glfwCodePoint)) {
 			return functionKeys.get(glfwCodePoint);
+		} else if (mouseButtons.containsKey(glfwCodePoint)) {
+			return mouseButtons.get(glfwCodePoint);
 		}
 		return "Unknown";
 	}
