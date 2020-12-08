@@ -21,7 +21,7 @@ import java.util.function.Consumer;
  */
 public class Settings {
 
-	private final JsonObject config;
+	private JsonObject config;
 	private final File configFile;
 	private final Queue<Consumer<Void>> shutdownQueue = new ConcurrentLinkedQueue<>();
 
@@ -69,6 +69,10 @@ public class Settings {
 		return jsonObject;
 	}
 
+	public JsonObject getConfig() {
+		return config;
+	}
+
 	public void setupShutdownHook() {
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			Thread.currentThread().setName(configFile.getName() + " config shutdown thread");
@@ -82,6 +86,10 @@ public class Settings {
 
 	public File getConfigFile() {
 		return configFile;
+	}
+
+	public synchronized void setConfig(JsonObject json) {
+		this.config = json;
 	}
 
 	public Queue<Consumer<Void>> getShutdownQueue() {
