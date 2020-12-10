@@ -12,6 +12,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.Session;
 
 import java.net.Proxy;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -23,9 +25,9 @@ import java.util.concurrent.CompletableFuture;
 public class AuthLibSession {
 
 	private Session session;
-	private final UserAuthentication userAuthentication;
-	private final YggdrasilAuthenticationService authenticationService;
-	private final Environment environment;
+	public final UserAuthentication userAuthentication;
+	public final YggdrasilAuthenticationService authenticationService;
+	public final Environment environment;
 
 	/**
 	 * Only applicable in >= 1.16.4. A unique identifier must be created and used for each request
@@ -97,6 +99,17 @@ public class AuthLibSession {
 
 	public void setOfflineSession(String username) {
 		((IMixinMinecraft) MinecraftClient.getInstance()).setSession(new Session(username, "", "0", "legacy"));
+	}
+
+	public void setManualSession(String username, String uuid, String accessToken) {
+		Session session = new Session(username, uuid, accessToken, "mojang");
+		Map<String, Object> map = new HashMap<>();
+		map.put("accessToken", accessToken);
+		map.put("displayName", username);
+		map.put("uuid", uuid);
+		userAuthentication.loadFromStorage(map);
+		((IMixinMinecraft) MinecraftClient.getInstance()).setSession(session);
+		((IMixinMinecraft) MinecraftClient.getInstance()).setSessionService(new CustomSessionService(authenticationService, environment));
 	}
 
 }

@@ -24,6 +24,24 @@ public abstract class GuiSlot extends AlwaysSelectedEntryListWidget<GuiSlot.Cust
 		}
 	}
 
+	@Override
+	public int getRowWidth() {
+		return getCustomRowWidth();
+	}
+
+	@Override
+	protected int getScrollbarPositionX() {
+		return getCustomScrollbarPositionX();
+	}
+
+	protected int getCustomRowWidth() {
+		return 220;
+	}
+
+	protected int getCustomScrollbarPositionX() {
+		return this.width / 2 + 124;
+	}
+
 	public int getSelectedSlot() {
 		if (getSelected() == null) {
 			return -1;
