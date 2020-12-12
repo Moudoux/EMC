@@ -10,6 +10,7 @@ import me.deftware.client.framework.item.types.TridentItem;
 import me.deftware.client.framework.item.types.*;
 import me.deftware.client.framework.world.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.SweetBerryBushBlock;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.*;
@@ -34,6 +35,8 @@ public class Item implements IItem {
 			return new WeaponItem(item);
 		} else if (item instanceof net.minecraft.item.ToolItem) {
 			return new ToolItem(item);
+		} else if (item.isFood()) {
+			return new FoodItem(item);
 		} else if (item instanceof net.minecraft.item.BlockItem) {
 			return new BlockItem(item);
 		} else if (item instanceof net.minecraft.item.PotionItem) {
@@ -44,8 +47,6 @@ public class Item implements IItem {
 			return new TridentItem(item);
 		} else if (item instanceof net.minecraft.item.RangedWeaponItem) {
 			return new RangedWeaponItem(item);
-		} else if (item.isFood()) {
-			return new FoodItem(item);
 		}
 		return new Item(item);
 	}

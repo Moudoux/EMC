@@ -27,6 +27,8 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.Monster;
+import net.minecraft.entity.mob.PhantomEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -233,7 +235,7 @@ public class Entity {
 		if (entity instanceof ChickenEntity) {
 			return ((ChickenEntity) entity).jockey;
 		}
-		return entity instanceof HostileEntity;
+		return entity instanceof Monster;
 	}
 
 	public boolean isAlive() {
