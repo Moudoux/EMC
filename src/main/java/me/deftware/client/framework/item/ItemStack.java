@@ -15,7 +15,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityGroup;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.potion.PotionUtil;
@@ -24,10 +26,7 @@ import net.minecraft.util.Rarity;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.MathHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author Deftware
@@ -85,6 +84,14 @@ public class ItemStack {
 			}
 		}
 		return enchantments;
+	}
+
+	public int getStackProtectionAmount() {
+		int protection = EnchantmentHelper.getProtectionAmount(Collections.singletonList(itemStack), DamageSource.GENERIC);
+		if (item.getMinecraftItem() instanceof ArmorItem) {
+			protection += ((ArmorItem) item.getMinecraftItem()).getProtection();
+		}
+		return protection;
 	}
 
 	public float getStackAttackDamage() {
