@@ -5,6 +5,8 @@ import me.deftware.client.framework.conversion.ConvertedList;
 import me.deftware.client.framework.item.effect.AppliedStatusEffect;
 import me.deftware.client.framework.item.effect.StatusEffect;
 import me.deftware.client.framework.item.enchantment.Enchantment;
+import me.deftware.client.framework.item.types.SwordItem;
+import me.deftware.client.framework.item.types.WeaponItem;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.nbt.NbtCompound;
 import me.deftware.client.framework.nbt.NbtList;
@@ -95,7 +97,13 @@ public class ItemStack {
 	}
 
 	public float getStackAttackDamage() {
-		return EnchantmentHelper.getAttackDamage(itemStack, EntityGroup.DEFAULT);
+		float damage = EnchantmentHelper.getAttackDamage(itemStack, EntityGroup.DEFAULT);
+		if (item instanceof SwordItem) {
+			damage += ((SwordItem) item).getAttackDamage();
+		} else if (item instanceof WeaponItem) {
+			damage += ((WeaponItem) item).getAttackDamage();
+		}
+		return damage;
 	}
 
 	public boolean isEnchantable() {
