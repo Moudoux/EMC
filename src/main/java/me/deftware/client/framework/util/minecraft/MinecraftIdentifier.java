@@ -7,6 +7,10 @@ import net.minecraft.util.Identifier;
  */
 public class MinecraftIdentifier extends Identifier {
 
+	public MinecraftIdentifier(Identifier identifier) {
+		super(identifier.getNamespace(), identifier.getPath());
+	}
+
 	public MinecraftIdentifier(String id) {
 		super(id);
 	}

@@ -22,6 +22,7 @@
     "entity.MixinPlayerEntity",
     "entity.MixinStatusEffects",
     "entity.MixinStrider",
+    "entity.MixinEntityType",
     "game.MixinClientBrandRetriever",
     "game.MixinClientChunkManager",
     "game.MixinMinecraft",
