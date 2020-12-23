@@ -1,25 +1,26 @@
 package me.deftware.client.framework.command.commands;
 
-import me.deftware.client.framework.chat.builder.ChatBuilder;
+import me.deftware.client.framework.chat.ChatMessage;
+import me.deftware.client.framework.chat.LiteralChatMessage;
 import me.deftware.client.framework.chat.style.ChatColors;
-import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.CommandRegister;
-import me.deftware.client.framework.command.EMCModCommand;
-import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.command.types.AbstractPagedOutputCommand;
 
-/**
- * @author Deftware
- */
-public class CommandHelp extends EMCModCommand {
+import java.util.List;
+import java.util.stream.Collectors;
 
-	@Override
-	public CommandBuilder<?> getCommandBuilder() {
-		return new CommandBuilder<>().addCommand("help", result -> {
-			String trigger = (String) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".");
-			for (String cmd : CommandRegister.getCommandsAndUsage()) {
-				new ChatBuilder().withPrefix().withText(trigger).withText(cmd).withColor(ChatColors.GRAY).build().print();
-			}
-		});
-	}
+public class CommandHelp extends AbstractPagedOutputCommand {
+
+    public CommandHelp() {
+        super("help", new LiteralChatMessage("Client Commands", ChatColors.GREEN));
+    }
+
+    @Override
+    public List<ChatMessage> list() {
+        return CommandRegister.getCommandsAndUsage()
+                .stream()
+                .map(s -> new LiteralChatMessage(CommandRegister.getCommandTrigger() + s, ChatColors.GRAY))
+                .collect(Collectors.toList());
+    }
 
 }

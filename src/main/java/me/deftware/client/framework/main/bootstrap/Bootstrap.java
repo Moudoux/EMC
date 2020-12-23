@@ -22,7 +22,6 @@ import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.spongepowered.asm.mixin.Mixins;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -151,11 +150,11 @@ public class Bootstrap {
         CommandRegister.registerCommand(new CommandMods());
         CommandRegister.registerCommand(new CommandUnload());
         CommandRegister.registerCommand(new CommandVersion());
-        CommandRegister.registerCommand(new CommandHelp());
         CommandRegister.registerCommand(new CommandOAuth());
         CommandRegister.registerCommand(new CommandTrigger());
         CommandRegister.registerCommand(new CommandReload());
         CommandRegister.registerCommand(new CommandScale());
+        CommandRegister.registerCommand(new CommandHelp());
     }
 
     public static synchronized void loadMod(AbstractModDiscovery.AbstractModEntry entry) throws Exception {
