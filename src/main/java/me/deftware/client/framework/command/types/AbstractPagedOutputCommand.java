@@ -43,9 +43,9 @@ public abstract class AbstractPagedOutputCommand extends EMCModCommand {
     public CommandBuilder<?> getCommandBuilder() {
         return new CommandBuilder<>().set(LiteralArgumentBuilder.literal(command)
                 .then(
-                        RequiredArgumentBuilder.argument("page", IntegerArgumentType.integer(-1))
+                        RequiredArgumentBuilder.argument("page", IntegerArgumentType.integer(1))
                                 .executes(c ->
-                                        onExecute(new CommandResult(c).getInteger("page"))
+                                        onExecute(new CommandResult(c).getInteger("page") - 1)
                                 )
                 )
                 .executes(c -> onExecute(0))
@@ -87,7 +87,7 @@ public abstract class AbstractPagedOutputCommand extends EMCModCommand {
            // Get chunk
            List<List<ChatMessage>> chunks = getChunks();
            if (page < 0) page = 0;
-           if (page == chunks.size()) page = chunks.size() - 1;
+           if (page >= chunks.size()) page = chunks.size() - 1;
            List<ChatMessage> chunk = chunks.get(page);
 
            // Send title
@@ -101,11 +101,11 @@ public abstract class AbstractPagedOutputCommand extends EMCModCommand {
            if (chunks.size() > 1) {
                // Send navigation buttons
                ChatBuilder navigationButtons = new ChatBuilder();
-               navigationButtons.withText("<<").withColor(ChatColors.AQUA).withClickEvent(
-                       new ChatClickEvent(ChatClickEvent.EventType.RUN_COMMAND, String.format("%s%s %s", prefix, command, page - 1))
+               if (page > 0) navigationButtons.withText("<<").withColor(ChatColors.AQUA).withClickEvent(
+                       new ChatClickEvent(ChatClickEvent.EventType.RUN_COMMAND, String.format("%s%s %s", prefix, command, page))
                ).withHover("Previous page").append().withSpace();
-               navigationButtons.withText(">>").withColor(ChatColors.AQUA).withClickEvent(
-                       new ChatClickEvent(ChatClickEvent.EventType.RUN_COMMAND, String.format("%s%s %s", prefix, command, page + 1))
+               if (page + 1 < chunks.size()) navigationButtons.withText(">>").withColor(ChatColors.AQUA).withClickEvent(
+                       new ChatClickEvent(ChatClickEvent.EventType.RUN_COMMAND, String.format("%s%s %s", prefix, command, page + 2))
                ).withHover("Next page").append();
                print(navigationButtons.build());
            }
