@@ -35,10 +35,11 @@ import java.util.Objects;
  */
 public abstract class GuiScreen extends Screen {
 
+	public static final HashMap<String, Texture> textureHashMap = new HashMap<>();
+
 	public GuiScreen parent;
 	protected boolean escGoesBack = true;
 	protected ScreenInstance parentInstance;
-	protected HashMap<String, Texture> textureHashMap = new HashMap<>();
 	protected @Getter List<Tuple<Integer, Integer, LiteralText>> compiledText = new ArrayList<>();
 	private final MatrixStack stack = new MatrixStack();
 
@@ -192,7 +193,11 @@ public abstract class GuiScreen extends Screen {
 		compiledText.clear();
 	}
 
-	protected void drawTexture(EMCMod mod, String texture, int x, int y, int width, int height) {
+	public static void drawTexture(EMCMod mod, String texture, int x, int y, int width, int height) {
+		drawTexture(mod, texture, x, y, 0, 0, width, height, width, height);
+	}
+
+	public static void drawTexture(EMCMod mod, String texture, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
 		// TODO: Redo this function
 		GL11.glPushMatrix();
 		if (!textureHashMap.containsKey(texture)) {
@@ -210,14 +215,17 @@ public abstract class GuiScreen extends Screen {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			textureHashMap.get(texture).updateTexture();
 		}
-		Screen.drawTexture(stack, x, y, 0, 0, width, height, width, height);
+		Screen.drawTexture(new MatrixStack(), x, y, u, v, width, height, textureWidth, textureHeight);
 		GL11.glPopMatrix();
 	}
 
-	protected void drawTexture(MinecraftIdentifier texture, int x, int y, int width, int height) {
+	public static void drawTexture(MinecraftIdentifier texture, int x, int y, int width, int height) {
+		drawTexture(texture, x, y, 0, 0, width, height, width, height);
+	}
+	public static void drawTexture(MinecraftIdentifier texture, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
 		MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Screen.drawTexture(stack, x, y, 0, 0, width, height, width, height);
+		Screen.drawTexture(new MatrixStack(), x, y, u, v, width, height, textureWidth, textureHeight);
 	}
 
 	protected void goBack() {
