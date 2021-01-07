@@ -50,10 +50,18 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 		return this;
 	}
 
+	public FontRenderStack drawString(double x, double y, String message) {
+		return drawString((int) x, (int) y, message);
+	}
+
 	public FontRenderStack drawString(int x, int y, String message) {
 		renderCharBuffer(message.toCharArray(), x, y);
 		offset = 0;
 		return this;
+	}
+
+	public FontRenderStack drawString(double x, double y, ChatMessage message) {
+		return drawString((int) x, (int) y, message);
 	}
 
 	public FontRenderStack drawString(int x, int y, ChatMessage message) {

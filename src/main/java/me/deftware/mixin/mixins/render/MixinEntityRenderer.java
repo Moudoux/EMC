@@ -13,6 +13,7 @@ import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.client.framework.util.minecraft.MinecraftIdentifier;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
@@ -104,8 +105,8 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
         }
     }
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;render(Lnet/minecraft/client/util/math/MatrixStack;F)V"))
-    private void onRender2D(CallbackInfo ci) {
+    @Redirect(method = "render", at = @At(value = "INVOKE", opcode = 180, target = "Lnet/minecraft/client/gui/hud/InGameHud;render(Lnet/minecraft/client/util/math/MatrixStack;F)V"))
+    private void onRender2D(InGameHud inGameHud, MatrixStack matrices, float tickDelta) {
         if (!WindowHelper.isMinimized()) {
             // Chat queue
             Runnable operation = ChatHud.getChatMessageQueue().poll();
@@ -117,8 +118,9 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
             if (operation != null) {
                 operation.run();
             }
-            new EventRender2D(0f).broadcast();
+            new EventRender2D(tickDelta).broadcast();
         }
+        inGameHud.render(matrices, tickDelta);
     }
 
     @Override
