@@ -38,7 +38,7 @@ public class BlockPosition {
 		return new DoubleBoundingBox(getX(), getY(), getZ(), getX() + 1.0, getY() + 1.0, getZ() + 1.0);
 	}
 
-	public BlockPosition offset(int x, int y, int z) {
+	public BlockPosition offset(double x, double y, double z) {
 		return new DoubleBlockPosition(getX() + x, getY() + y, getZ() + z);
 	}
 
