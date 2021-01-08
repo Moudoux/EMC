@@ -34,8 +34,8 @@ public class Inventory {
 	}
 
 	public int findItem(Item item) {
-		for (int i = 0; i < entity.getInventory().main.size(); i++) {
-			net.minecraft.item.ItemStack it = entity.getInventory().main.get(i);
+		for (int i = 0; i < entity.getInventory().size(); i++) {
+			net.minecraft.item.ItemStack it = entity.getInventory().getStack(i);
 			if (it.getItem().getTranslationKey().equals(item.getTranslationKey())) {
 				return i;
 			}
@@ -44,7 +44,7 @@ public class Inventory {
 	}
 
 	public int getSize() {
-		return entity.getInventory().main.size();
+		return entity.getInventory().size();
 	}
 
 	public List<ItemStack> getArmourInventory() {
