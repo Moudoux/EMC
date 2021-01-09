@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.types.EntityPlayer;
+import me.deftware.client.framework.event.events.EventEntityUpdated;
 import me.deftware.client.framework.event.events.EventWorldLoad;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.world.classifier.BlockClassifier;
@@ -47,13 +48,15 @@ public class MixinWorldClient implements IMixinWorldClient {
 
     @Inject(method = "addEntityPrivate", at = @At("TAIL"))
     private void addEntityPrivate(int id, net.minecraft.entity.Entity entity, CallbackInfo ci) {
-        entities.put(id, entity instanceof PlayerEntity ?
-                new EntityPlayer((PlayerEntity) entity) : Entity.newInstance(entity));
+        Entity e = entity instanceof PlayerEntity ?
+                new EntityPlayer((PlayerEntity) entity) : Entity.newInstance(entity);
+        entities.put(id, e);
+        new EventEntityUpdated(EventEntityUpdated.Change.Added, e).broadcast();
     }
 
     @Inject(method = "removeEntity", at = @At("TAIL"))
     public void removeEntity(int entityId, net.minecraft.entity.Entity.RemovalReason reason, CallbackInfo ci) {
-        entities.remove(entityId);
+        new EventEntityUpdated(EventEntityUpdated.Change.Removed, entities.remove(entityId)).broadcast();
     }
 
     @Override

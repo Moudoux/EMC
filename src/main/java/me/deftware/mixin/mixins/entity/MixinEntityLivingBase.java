@@ -7,11 +7,13 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
@@ -46,6 +48,19 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
     @Override
     public int getActiveItemStackUseCount() {
         return itemUseTimeLeft;
+    }
+
+    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
+    private boolean travelHasStatusEffectProxy(LivingEntity self, StatusEffect statusEffect) {
+        if (statusEffect == StatusEffects.LEVITATION && (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "DISABLE_LEVITATION", false)) return false;
+        return self.hasStatusEffect(statusEffect);
+    }
+
+    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasNoGravity()Z"))
+    private boolean travelHasNoGravityProxy(LivingEntity self) {
+        if (self.hasStatusEffect(StatusEffects.LEVITATION) && (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "DISABLE_LEVITATION", false))
+            return false;
+        return self.hasNoGravity();
     }
 
 }
