@@ -6,6 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket;
 import net.minecraft.network.packet.c2s.play.KeepAliveC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.CloseScreenS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityAnimationS2CPacket;
@@ -59,7 +60,9 @@ public class PacketWrapper {
     @Nullable
     public static PacketWrapper translatePacket(Packet<?> packet) {
         // Client to server packets
-        if (packet instanceof PlayerMoveC2SPacket) {
+        if (packet instanceof PlayerInteractEntityC2SPacket) {
+            return new CPacketUseEntity(packet);
+        } else if (packet instanceof PlayerMoveC2SPacket) {
             return new CPacketPlayer(packet);
         } else if (packet instanceof PlayerMoveC2SPacket.Both) {
             return new CPacketPositionRotation(packet);
