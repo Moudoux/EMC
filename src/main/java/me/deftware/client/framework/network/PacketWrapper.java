@@ -12,7 +12,6 @@ import net.minecraft.network.packet.s2c.play.CloseScreenS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityAnimationS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityS2CPacket;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -20,7 +19,6 @@ import java.io.IOException;
  *
  * @author Deftware
  */
-@SuppressWarnings("ConstantConditions")
 public class PacketWrapper {
 
     protected Packet<?> packet;
@@ -57,19 +55,12 @@ public class PacketWrapper {
     /**
      * Converts a packet into the EMC Packet wrapper
      */
-    @Nullable
     public static PacketWrapper translatePacket(Packet<?> packet) {
         // Client to server packets
         if (packet instanceof PlayerInteractEntityC2SPacket) {
             return new CPacketUseEntity(packet);
         } else if (packet instanceof PlayerMoveC2SPacket) {
             return new CPacketPlayer(packet);
-        } else if (packet instanceof PlayerMoveC2SPacket.Both) {
-            return new CPacketPositionRotation(packet);
-        } else if (packet instanceof PlayerMoveC2SPacket.LookOnly) {
-            return new CPacketRotation(packet);
-        } else if (packet instanceof PlayerMoveC2SPacket.PositionOnly) {
-            return new CPacketPosition(packet);
         } else if (packet instanceof CloseScreenS2CPacket) { // TODO: Verify this
             return new CPacketCloseWindow(packet);
         } else if (packet instanceof KeepAliveC2SPacket) {
@@ -85,6 +76,5 @@ public class PacketWrapper {
         }
         return new PacketWrapper(packet);
     }
-
 
 }

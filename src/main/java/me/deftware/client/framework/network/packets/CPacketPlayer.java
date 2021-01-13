@@ -26,8 +26,8 @@ public class CPacketPlayer extends PacketWrapper {
         ((IMixinCPacketPlayer) getPacket()).setY(y);
     }
 
-    public double getY() {
-        return ((IMixinCPacketPlayer) getPacket()).getY();
+    public double getY(double currentPosY) {
+        return ((PlayerMoveC2SPacket) getPacket()).getY(currentPosY);
     }
 
     public void setMoving(boolean state) {
