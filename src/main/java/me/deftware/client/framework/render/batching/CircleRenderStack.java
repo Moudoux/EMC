@@ -15,7 +15,8 @@ public class CircleRenderStack extends RenderStack<CircleRenderStack> {
 	@Override
 	public CircleRenderStack setupMatrix() {
 		GL11.glPushMatrix();
-		if (customMatrix) reloadCustomMatrix();
+		if (customMatrix)
+			reloadCustomMatrix();
 		// Setup gl
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);

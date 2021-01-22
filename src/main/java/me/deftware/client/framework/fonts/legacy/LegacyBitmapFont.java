@@ -5,10 +5,15 @@ import lombok.Setter;
 import me.deftware.client.framework.registry.font.TTFRegistry;
 import me.deftware.client.framework.render.batching.RenderStack;
 import me.deftware.client.framework.render.texture.GraphicsUtil;
+import me.deftware.client.framework.util.path.OSUtils;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 /**
@@ -28,6 +33,8 @@ public class  LegacyBitmapFont {
 
 	public @Setter @Getter int shadow = 1;
 
+	private FontMetrics metrics;
+
 	public LegacyBitmapFont(String fontName, int fontSize, boolean scaled) {
 		this.fontName = fontName;
 		this.fontSize = fontSize;
@@ -44,8 +51,20 @@ public class  LegacyBitmapFont {
 	}
 
 	public void setupFont() {
-		this.stdFont = TTFRegistry.getFont(this.fontName, new Font(this.fontName, Font.PLAIN, this.fontSize))
+		Font fallback = new Font(this.fontName, Font.PLAIN, this.fontSize);
+		if (OSUtils.isWindows()) {
+			File font = Paths.get(System.getenv("LOCALAPPDATA"), "Microsoft", "Windows", "Fonts", fontName + ".ttf").toFile();
+			if (font.exists()) {
+				try {
+					fallback = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(font.getAbsolutePath()));
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+		this.stdFont = TTFRegistry.getFont(this.fontName, fallback)
 				.deriveFont(Font.PLAIN, fontSize * (scaled ? RenderStack.getScale() : 1f));
+		this.metrics = new Canvas().getFontMetrics(this.stdFont);
 	}
 
 	public void initialize() {
@@ -70,11 +89,11 @@ public class  LegacyBitmapFont {
 	}
 
 	public int getStringWidth(String text) {
-		return new Canvas().getFontMetrics(stdFont).charsWidth(text.toCharArray(), 0, text.length());
+		return metrics.charsWidth(text.toCharArray(), 0, text.length());
 	}
 
 	public int getStringHeight() {
-		return new Canvas().getFontMetrics(stdFont).getHeight();
+		return metrics.getHeight();
 	}
 
 	protected void characterGenerate(char character) {
