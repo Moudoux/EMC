@@ -53,13 +53,13 @@ public class  LegacyBitmapFont {
 	public void setupFont() {
 		Font fallback = new Font(this.fontName, Font.PLAIN, this.fontSize);
 		if (OSUtils.isWindows()) {
-			File font = Paths.get(System.getenv("LOCALAPPDATA"), "Microsoft", "Windows", "Fonts", fontName + ".ttf").toFile();
-			if (font.exists()) {
-				try {
-					fallback = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(font.getAbsolutePath()));
-				} catch (Exception ex) {
-					ex.printStackTrace();
+			try {
+				File font = Paths.get(System.getenv("LOCALAPPDATA"), "Microsoft", "Windows", "Fonts", fontName + ".ttf").toFile();
+				if (font.exists()) {
+						fallback = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(font.getAbsolutePath()));
 				}
+			} catch (Throwable ex) {
+				ex.printStackTrace();
 			}
 		}
 		this.stdFont = TTFRegistry.getFont(this.fontName, fallback)
