@@ -4,7 +4,7 @@ import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.world.World;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.KeyboardInput;
-import net.minecraft.client.options.Perspective;
+import net.minecraft.client.option.Perspective;
 
 import java.util.Objects;
 

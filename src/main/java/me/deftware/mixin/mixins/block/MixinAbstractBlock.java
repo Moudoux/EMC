@@ -64,7 +64,7 @@ public abstract class MixinAbstractBlock implements IMixinAbstractBlock {
         if (hardness < 0.0F) {
             ci.setReturnValue(0.0F);
         } else {
-            ci.setReturnValue(!player.isUsingEffectiveTool(state) ? player.getBlockBreakingSpeed(state) / hardness / 100.0F
+            ci.setReturnValue(!player.canHarvest(state) ? player.getBlockBreakingSpeed(state) / hardness / 100.0F
                     : player.getBlockBreakingSpeed(state) / hardness / 30.0F * event.getMultiplier());
         }
     }

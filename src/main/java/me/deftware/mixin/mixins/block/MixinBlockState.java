@@ -81,7 +81,7 @@ public abstract class MixinBlockState {
 		if (float_1 < 0.0F) {
 			ci.setReturnValue(0.0F);
 		} else {
-			ci.setReturnValue(!player.isUsingEffectiveTool(this.getBlock().getDefaultState()) ? player.getBlockBreakingSpeed(this.getBlock().getDefaultState()) / float_1 / 100.0F
+			ci.setReturnValue(!player.canHarvest(this.getBlock().getDefaultState()) ? player.getBlockBreakingSpeed(this.getBlock().getDefaultState()) / float_1 / 100.0F
 					: player.getBlockBreakingSpeed(this.getBlock().getDefaultState()) / float_1 / 30.0F * event.getMultiplier());
 		}
 	}

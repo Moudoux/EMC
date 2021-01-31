@@ -2,7 +2,7 @@ package me.deftware.client.framework.input;
 
 import me.deftware.mixin.imp.IMixinKeyBinding;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 
 /**

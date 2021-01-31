@@ -2,7 +2,7 @@ package me.deftware.client.framework.helper;
 
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.AoMode;
+import net.minecraft.client.option.AoMode;
 
 /**
  * @author Deftware

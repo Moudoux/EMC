@@ -16,7 +16,7 @@ public class EventNametagRender extends Event {
 
     public EventNametagRender(Entity entity) {
         me.deftware.client.framework.entity.Entity emcEntity
-                = Objects.requireNonNull(((IMixinWorldClient) MinecraftClient.getInstance().world)).getLoadedEntitiesAccessor().getOrDefault(entity.getEntityId(), null);
+                = Objects.requireNonNull(((IMixinWorldClient) MinecraftClient.getInstance().world)).getLoadedEntitiesAccessor().getOrDefault(entity.getId(), null);
         if (emcEntity != null) {
             this.entity = emcEntity;
         }

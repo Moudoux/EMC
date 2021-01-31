@@ -1,6 +1,6 @@
 package me.deftware.client.framework.minecraft;
 
-import net.minecraft.client.options.Perspective;
+import net.minecraft.client.option.Perspective;
 
 /**
  * @author Deftware

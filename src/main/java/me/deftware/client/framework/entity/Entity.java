@@ -192,7 +192,7 @@ public class Entity {
 	}
 
 	public int getEntityId() {
-		return entity.getEntityId();
+		return entity.getId();
 	}
 
 	public float getHeight() {

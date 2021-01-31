@@ -35,7 +35,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
     public ClientPlayNetworkHandler networkHandler;
 
     @Shadow
-    private float field_3922;
+    private float mountJumpStrength;
 
     @Shadow
     public abstract boolean isUsingItem();
@@ -118,7 +118,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
     @Override
     public void setHorseJumpPower(float height) {
-        field_3922 = height;
+        mountJumpStrength = height; // TODO: Verify
     }
 
     @Inject(method = "sendMovementPackets", at = @At(value = "HEAD"), cancellable = true)

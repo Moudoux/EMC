@@ -39,7 +39,7 @@ public class MixinNetHandlerPlayClient {
 
     @Inject(method = "onVelocityUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setVelocityClient(DDD)V"), cancellable = true)
     public void onVelocityUpdate(EntityVelocityUpdateS2CPacket packet, CallbackInfo ci) {
-        if (MinecraftClient.getInstance().player != null && MinecraftClient.getInstance().player.getEntityId() == packet.getId()) {
+        if (MinecraftClient.getInstance().player != null && MinecraftClient.getInstance().player.getId() == packet.getId()) {
             EventKnockback event = new EventKnockback(packet.getVelocityX(), packet.getVelocityY(), packet.getVelocityZ());
             event.broadcast();
             if (event.isCanceled()) {
