@@ -128,7 +128,7 @@ public class MainEntityPlayer extends RotationLogic {
 
 	public void toggleSkinLayers() {
 		for (PlayerModelPart part : PlayerModelPart.values()) {
-			MinecraftClient.getInstance().options.setPlayerModelPart(part, !MinecraftClient.getInstance().options.isPlayerModelPartEnabled(part));
+			MinecraftClient.getInstance().options.togglePlayerModelPart(part, !MinecraftClient.getInstance().options.isPlayerModelPartEnabled(part));
 		}
 	}
 
