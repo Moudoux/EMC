@@ -1,6 +1,5 @@
 package me.deftware.mixin.mixins.block;
 
-import me.deftware.client.framework.event.events.EventBlockhardness;
 import me.deftware.client.framework.event.events.EventCollideCheck;
 import me.deftware.client.framework.maps.SettingsMap;
 import net.minecraft.block.AbstractBlock;
@@ -8,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.SweetBerryBushBlock;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
@@ -72,20 +70,6 @@ public abstract class MixinBlockState {
 		callback.setReturnValue(
 				(int) SettingsMap.getValue(Registry.BLOCK.getRawId(this.getBlock()), "lightValue", luminance));
 	}
-
-	@Inject(method = "calcBlockBreakingDelta", at = @At("HEAD"), cancellable = true)
-	public void calcBlockBreakingDelta(PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> ci) {
-		float float_1 = this.getHardness(world, pos);
-		EventBlockhardness event = new EventBlockhardness();
-		event.broadcast();
-		if (float_1 < 0.0F) {
-			ci.setReturnValue(0.0F);
-		} else {
-			ci.setReturnValue(!player.canHarvest(this.getBlock().getDefaultState()) ? player.getBlockBreakingSpeed(this.getBlock().getDefaultState()) / float_1 / 100.0F
-					: player.getBlockBreakingSpeed(this.getBlock().getDefaultState()) / float_1 / 30.0F * event.getMultiplier());
-		}
-	}
-
 
 	@Inject(method = "getCollisionShape(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/ShapeContext;)Lnet/minecraft/util/shape/VoxelShape;", at = @At("HEAD"), cancellable = true)
 	public void getCollisionShape(BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> ci) {

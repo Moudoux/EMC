@@ -1,6 +1,5 @@
 package me.deftware.mixin.mixins.block;
 
-import me.deftware.client.framework.event.events.EventBlockhardness;
 import me.deftware.client.framework.event.events.EventCollideCheck;
 import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.mixin.imp.IMixinAbstractBlock;
@@ -8,7 +7,6 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.shape.VoxelShape;
@@ -53,19 +51,6 @@ public abstract class MixinAbstractBlock implements IMixinAbstractBlock {
             if (!doRender) {
                 cir.setReturnValue(BlockRenderType.INVISIBLE);
             }
-        }
-    }
-
-    @Inject(method = "calcBlockBreakingDelta", at = @At("HEAD"), cancellable = true)
-    public void calcBlockBreakingDelta(BlockState state, PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> ci) {
-        float hardness = state.getHardness(world, pos);
-        EventBlockhardness event = new EventBlockhardness();
-        event.broadcast();
-        if (hardness < 0.0F) {
-            ci.setReturnValue(0.0F);
-        } else {
-            ci.setReturnValue(!player.canHarvest(state) ? player.getBlockBreakingSpeed(state) / hardness / 100.0F
-                    : player.getBlockBreakingSpeed(state) / hardness / 30.0F * event.getMultiplier());
         }
     }
 
