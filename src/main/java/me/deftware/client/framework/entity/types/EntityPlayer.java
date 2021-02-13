@@ -5,6 +5,7 @@ import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.types.objects.ClonedPlayerMP;
 import me.deftware.client.framework.inventory.Inventory;
 import me.deftware.client.framework.item.effect.AppliedStatusEffect;
+import me.deftware.client.framework.item.effect.StatusEffect;
 import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.mixin.imp.IMixinEntityLivingBase;
 import net.minecraft.client.MinecraftClient;
@@ -52,6 +53,24 @@ public class EntityPlayer extends LivingEntity {
 
 	public Inventory getInventory() {
 		return inventory;
+	}
+
+	public AppliedStatusEffect getStatusEffect(StatusEffect effect) {
+		return new AppliedStatusEffect(Objects.requireNonNull(
+				getMinecraftEntity().getStatusEffect(effect.getMinecraftStatusEffect())
+		));
+	}
+
+	public void removeStatusEffect(StatusEffect effect) {
+		getMinecraftEntity().removeStatusEffect(effect.getMinecraftStatusEffect());
+	}
+
+	public boolean hasStatusEffect(StatusEffect effect) {
+		return getMinecraftEntity().hasStatusEffect(effect.getMinecraftStatusEffect());
+	}
+
+	public void addStatusEffect(AppliedStatusEffect effect) {
+		getMinecraftEntity().addStatusEffect(effect.getMinecraftStatusEffectInstance());
 	}
 
 	public List<AppliedStatusEffect> getStatusEffects() {

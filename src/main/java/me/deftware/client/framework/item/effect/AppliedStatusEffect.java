@@ -15,6 +15,13 @@ public class AppliedStatusEffect {
 		this.instance = instance;
 	}
 
+	public AppliedStatusEffect(StatusEffect effect, int duration, int amplifier, boolean ambient, boolean showParticles, boolean showIcon) {
+		this.effect = effect;
+		this.instance = new StatusEffectInstance(
+				effect.getMinecraftStatusEffect(), duration, amplifier, ambient, showParticles, showIcon
+		);
+	}
+
 	public StatusEffectInstance getMinecraftStatusEffectInstance() {
 		return instance;
 	}
