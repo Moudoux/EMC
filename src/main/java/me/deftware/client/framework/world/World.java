@@ -3,7 +3,11 @@ package me.deftware.client.framework.world;
 import com.google.gson.Gson;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.block.TileEntity;
-import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.global.GameKeys;
+import me.deftware.client.framework.global.GameMap;
+import me.deftware.client.framework.global.types.BlockProperty;
+import me.deftware.client.framework.global.types.PropertyManager;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.util.WebUtils;
 import me.deftware.client.framework.world.block.Block;
@@ -50,7 +54,7 @@ public class World {
 	}
 
 	public static long getWorldTime() {
-		return Objects.requireNonNull(MinecraftClient.getInstance().world).getTime();
+		return Objects.requireNonNull(MinecraftClient.getInstance().world).getTimeOfDay();
 	}
 
 	public static void sendQuittingPacket() {
@@ -87,14 +91,15 @@ public class World {
 
 	public static void determineRenderState(net.minecraft.block.BlockState state, BlockPos pos, CallbackInfoReturnable<Boolean> ci) {
 		if (state.getBlock() instanceof FluidBlock) {
-			ci.setReturnValue(((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "FLUIDS", true)));
+			ci.setReturnValue(
+					GameMap.INSTANCE.get(GameKeys.RENDER_FLUIDS, true)
+			);
 		} else {
-			int id = Registry.BLOCK.getRawId(state.getBlock());
-			if (SettingsMap.isOverrideMode() || (SettingsMap.isOverwriteMode() && SettingsMap.hasValue(id, "render"))) {
-				boolean doRender = (boolean) SettingsMap.getValue(id, "render", false);
-				if (!doRender) {
+			PropertyManager<BlockProperty> blockProperties = Bootstrap.blockProperties;
+			if (blockProperties.isActive()) {
+				int id = Registry.BLOCK.getRawId(state.getBlock());
+				if (blockProperties.contains(id) && blockProperties.get(id).isRender())
 					ci.setReturnValue(false);
-				}
 			}
 		}
 	}
@@ -110,6 +115,11 @@ public class World {
 				dimension.getRegistryKey() == net.minecraft.world.World.END ? 1 :
 						dimension.getRegistryKey() == net.minecraft.world.World.NETHER ? -1
 								: dimension.getDimension().hashCode();
+	}
+
+	public static String getBiomeCategoryName() {
+		net.minecraft.entity.Entity player = Objects.requireNonNull(MinecraftClient.getInstance().player);
+		return player.world.getBiome(player.getBlockPos()).getCategory().getName();
 	}
 
 	public static double getTPS() {

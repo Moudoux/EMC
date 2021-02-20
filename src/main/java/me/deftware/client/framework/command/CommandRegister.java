@@ -4,7 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
-import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.server.command.ServerCommandSource;
 
@@ -96,7 +96,7 @@ public class CommandRegister {
      * @return the command trigger used to trigger commands, default is a .
      */
     public static String getCommandTrigger() {
-        return (String) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".");
+        return Bootstrap.EMCSettings.getPrimitive("commandtrigger", ".");
     }
 
 }

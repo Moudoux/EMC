@@ -1,7 +1,8 @@
 package me.deftware.mixin.mixins.entity;
 
 import me.deftware.client.framework.event.events.EventAttackEntity;
-import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.global.GameKeys;
+import me.deftware.client.framework.global.GameMap;
 import me.deftware.client.framework.render.camera.entity.CameraEntityMan;
 import me.deftware.mixin.imp.IMixinPlayerControllerMP;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
@@ -25,13 +26,13 @@ public class MixinPlayerControllerMP implements IMixinPlayerControllerMP {
 
     @Inject(method = "getReachDistance", at = @At(value = "RETURN"), cancellable = true)
     private void onGetReachDistance(CallbackInfoReturnable<Float> cir) {
-        cir.setReturnValue((float) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "BLOCK_REACH_DISTANCE", cir.getReturnValue()));
+        cir.setReturnValue(GameMap.INSTANCE.get(GameKeys.BLOCK_REACH_DISTANCE, cir.getReturnValue()));
     }
 
 
     @Inject(method = "hasExtendedReach", at = @At(value = "TAIL"), cancellable = true)
     private void onHasExtendedReach(CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue((boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "EXTENDED_REACH", cir.getReturnValue()));
+        cir.setReturnValue(GameMap.INSTANCE.get(GameKeys.EXTENDED_REACH, cir.getReturnValue()));
     }
 
     @Inject(method = "attackEntity", at = @At("HEAD"), cancellable = true)

@@ -1,7 +1,8 @@
 package me.deftware.mixin.mixins.entity;
 
 import me.deftware.client.framework.event.events.*;
-import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.global.GameKeys;
+import me.deftware.client.framework.global.GameMap;
 import me.deftware.client.framework.math.vector.Vector3d;
 import me.deftware.client.framework.render.camera.entity.CameraEntityMan;
 import me.deftware.mixin.imp.IMixinEntity;
@@ -85,18 +86,9 @@ public abstract class MixinEntity implements IMixinEntity {
         }
     }
 
-    @Inject(method = "getPose", at = @At(value = "TAIL"), cancellable = true)
-    private void onGetPose(CallbackInfoReturnable<EntityPose> cir) {
-        if (((Object) this) == MinecraftClient.getInstance().player) {
-            if ((boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "SWIMMING_MODE_OVERRIDE", false)) {
-                cir.setReturnValue(EntityPose.SWIMMING);
-            }
-        }
-    }
-
     @Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;noClip:Z", opcode = 180))
     private boolean noClipCheck(Entity self) {
-        boolean noClipCheck = (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "NOCLIP", false);
+        boolean noClipCheck = GameMap.INSTANCE.get(GameKeys.NOCLIP, false);
         return (self instanceof ClientPlayerEntity && self == MinecraftClient.getInstance().player) && (noClip || noClipCheck);
     }
 

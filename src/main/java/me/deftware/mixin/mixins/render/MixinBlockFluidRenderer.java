@@ -1,6 +1,7 @@
 package me.deftware.mixin.mixins.render;
 
-import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.global.GameKeys;
+import me.deftware.client.framework.global.GameMap;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.block.FluidRenderer;
 import net.minecraft.fluid.FluidState;
@@ -16,9 +17,8 @@ public class MixinBlockFluidRenderer {
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void render(BlockRenderView world, BlockPos pos, VertexConsumer vertexConsumer, FluidState state, CallbackInfoReturnable<Boolean> ci) {
-        if (!((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "FLUIDS", true))) {
+        if (!GameMap.INSTANCE.get(GameKeys.RENDER_FLUIDS, true))
             ci.cancel();
-        }
     }
 
 }

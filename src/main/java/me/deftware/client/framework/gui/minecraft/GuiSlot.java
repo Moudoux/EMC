@@ -34,6 +34,10 @@ public abstract class GuiSlot extends AlwaysSelectedEntryListWidget<GuiSlot.Cust
 		return getCustomScrollbarPositionX();
 	}
 
+	public void resetScrollPosition() {
+		this.setScrollAmount(0);
+	}
+
 	protected int getCustomRowWidth() {
 		return 220;
 	}

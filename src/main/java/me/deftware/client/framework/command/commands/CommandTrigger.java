@@ -9,7 +9,6 @@ import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.CommandResult;
 import me.deftware.client.framework.command.EMCModCommand;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.maps.SettingsMap;
 
 /**
  * @author Deftware
@@ -29,7 +28,6 @@ public class CommandTrigger extends EMCModCommand {
                                                         new ChatBuilder().withPrefix().withText("Please enter a valid trigger prefix").withColor(ChatColors.RED).build().print();
                                                         return 1;
                                                     }
-                                                    SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", r.getString("prefix"));
                                                     Bootstrap.EMCSettings.putPrimitive("commandtrigger", r.getString("prefix"));
                                                     new ChatBuilder().withPrefix().withText(
                                                             String.format("Set command trigger to \"%s\"", r.getString("prefix"))
@@ -41,7 +39,6 @@ public class CommandTrigger extends EMCModCommand {
                 .then(
                         LiteralArgumentBuilder.literal("restore")
                                 .executes(c -> {
-                                    SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", ".");
                                     Bootstrap.EMCSettings.putPrimitive("commandtrigger", ".");
                                     new ChatBuilder().withPrefix().withText("Command trigger has been reset to \".\" (single dot)").withColor(ChatColors.RED).build().print();
                                     return 1;

@@ -19,6 +19,7 @@ import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.math.position.ChunkBlockPosition;
 import me.deftware.client.framework.math.vector.Vector3d;
 import me.deftware.client.framework.nbt.NbtCompound;
+import me.deftware.client.framework.world.EnumFacing;
 import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
 import me.deftware.mixin.imp.IMixinEntity;
 import me.deftware.mixin.imp.IMixinNetworkPlayerInfo;
@@ -85,6 +86,10 @@ public class Entity {
 		this.armourItems = new ConvertedList<>(entity::getArmorItems, pair ->
 				pair.getLeft().getMinecraftItemStack() == Iterables.get(entity.getArmorItems(), pair.getRight())
 				, ItemStack::new);
+	}
+
+	public EnumFacing getHorizontalFacing() {
+		return EnumFacing.fromMinecraft(getMinecraftEntity().getHorizontalFacing());
 	}
 
 	public BlockPosition getBlockPosition() {

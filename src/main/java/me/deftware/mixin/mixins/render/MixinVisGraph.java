@@ -1,6 +1,6 @@
 package me.deftware.mixin.mixins.render;
 
-import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import net.minecraft.client.render.chunk.ChunkOcclusionDataBuilder;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,9 +13,8 @@ public class MixinVisGraph {
 
     @Inject(method = "markClosed", at = @At("HEAD"), cancellable = true)
     public void setOpaqueCube(BlockPos pos, CallbackInfo ci) {
-        if (SettingsMap.isOverrideMode()) {
+        if (Bootstrap.blockProperties.isActive())
             ci.cancel();
-        }
     }
 
 }

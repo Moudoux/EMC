@@ -1,7 +1,8 @@
 package me.deftware.mixin.mixins.entity;
 
 import me.deftware.client.framework.event.events.EventIsPotionActive;
-import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.global.GameKeys;
+import me.deftware.client.framework.global.GameMap;
 import me.deftware.mixin.imp.IMixinEntityLivingBase;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
@@ -42,7 +43,7 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
 
     @Inject(method = "getJumpVelocity", at = @At(value = "TAIL"), cancellable = true)
     private void onGetJumpVelocity(CallbackInfoReturnable<Float> cir) {
-        cir.setReturnValue((float) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "JUMP_HEIGHT", cir.getReturnValue()));
+        cir.setReturnValue(GameMap.INSTANCE.get(GameKeys.JUMP_HEIGHT, cir.getReturnValue()));
     }
 
     @Override
@@ -52,13 +53,14 @@ public class MixinEntityLivingBase implements IMixinEntityLivingBase {
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
     private boolean travelHasStatusEffectProxy(LivingEntity self, StatusEffect statusEffect) {
-        if (statusEffect == StatusEffects.LEVITATION && (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "DISABLE_LEVITATION", false)) return false;
+        if (statusEffect == StatusEffects.LEVITATION && !GameMap.INSTANCE.get(GameKeys.LEVITATION, true))
+            return false;
         return self.hasStatusEffect(statusEffect);
     }
 
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasNoGravity()Z"))
     private boolean travelHasNoGravityProxy(LivingEntity self) {
-        if (self.hasStatusEffect(StatusEffects.LEVITATION) && (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "DISABLE_LEVITATION", false))
+        if (self.hasStatusEffect(StatusEffects.LEVITATION) && !GameMap.INSTANCE.get(GameKeys.LEVITATION, true))
             return false;
         return self.hasNoGravity();
     }

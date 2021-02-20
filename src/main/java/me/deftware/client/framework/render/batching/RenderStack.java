@@ -3,7 +3,7 @@ package me.deftware.client.framework.render.batching;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.Getter;
 import lombok.Setter;
-import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.opengl.GL11;
 
@@ -25,13 +25,18 @@ public abstract class RenderStack<T> {
 
 	public static @Getter boolean inCustomMatrix = false;
 	public static final CopyOnWriteArrayList<Runnable> scaleChangeCallback = new CopyOnWriteArrayList<>();
+	public static float scale = 1;
 
 	public static float getScale() {
-		return (float) SettingsMap.getValue(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", 1.0f);
+		return scale;
 	}
 
 	public static void setScale(float scale) {
-		SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", scale);
+		if (scale < 0.5f)
+			scale = 0.5f;
+		if (scale > 4)
+			scale = 4;
+		Bootstrap.EMCSettings.putPrimitive("RENDER_SCALE", RenderStack.scale = scale);
 		scaleChangeCallback.forEach(Runnable::run);
 	}
 

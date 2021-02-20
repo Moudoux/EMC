@@ -3,6 +3,7 @@ package me.deftware.client.framework.math.position;
 import me.deftware.client.framework.math.box.BoundingBox;
 import me.deftware.client.framework.math.box.DoubleBoundingBox;
 import me.deftware.client.framework.math.vector.Vector3d;
+import me.deftware.client.framework.world.EnumFacing;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -67,6 +68,19 @@ public class BlockPosition {
 
 	public long asLong() {
 		return getMinecraftBlockPos().asLong();
+	}
+
+	public BlockPosition offset(EnumFacing facing) {
+		return DoubleBlockPosition.fromMinecraftBlockPos(getMinecraftBlockPos().offset(facing.getFacing()));
+	}
+
+	@Override
+	public boolean equals(Object position) {
+		if (position instanceof BlockPosition) {
+			BlockPosition pos = (BlockPosition) position;
+			return pos.getX() == getX() && pos.getY() == getY() && pos.getZ() == getZ();
+		}
+		return false;
 	}
 
 	@Override

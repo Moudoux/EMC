@@ -7,6 +7,10 @@ import me.deftware.client.framework.command.CommandRegister;
 import me.deftware.client.framework.command.commands.*;
 import me.deftware.client.framework.config.Settings;
 import me.deftware.client.framework.event.EventBus;
+import me.deftware.client.framework.global.GameMap;
+import me.deftware.client.framework.global.types.BlockProperty;
+import me.deftware.client.framework.global.types.BlockPropertyManager;
+import me.deftware.client.framework.global.types.PropertyManager;
 import me.deftware.client.framework.input.Keyboard;
 import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.main.bootstrap.discovery.AbstractModDiscovery;
@@ -14,8 +18,8 @@ import me.deftware.client.framework.main.bootstrap.discovery.ClasspathModDiscove
 import me.deftware.client.framework.main.bootstrap.discovery.DirectoryModDiscovery;
 import me.deftware.client.framework.main.bootstrap.discovery.JVMModDiscovery;
 import me.deftware.client.framework.main.validation.Validator;
-import me.deftware.client.framework.maps.SettingsMap;
 import me.deftware.client.framework.minecraft.Minecraft;
+import me.deftware.client.framework.render.batching.RenderStack;
 import me.deftware.client.framework.util.path.LocationUtil;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -50,6 +54,11 @@ public class Bootstrap {
      * ClasspathModDiscovery should always be the first item
      */
     private static List<AbstractModDiscovery> modDiscoveries = new ArrayList<>(Arrays.asList(new ClasspathModDiscovery(), new JVMModDiscovery(), new DirectoryModDiscovery()));
+
+    /**
+     * If active, blocks not registered will be ignored when rendering
+     */
+    public static final BlockPropertyManager blockProperties = new BlockPropertyManager();
 
     public static void init() {
         if (bootstrapped) {
@@ -100,8 +109,7 @@ public class Bootstrap {
             }
             EMCSettings = new Settings("EMC");
             EMCSettings.setupShutdownHook();
-            SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "RENDER_SCALE", EMCSettings.getPrimitive("RENDER_SCALE", 1.0f));
-            SettingsMap.update(SettingsMap.MapKeys.EMC_SETTINGS, "COMMAND_TRIGGER", EMCSettings.getPrimitive("commandtrigger", "."));
+            RenderStack.setScale(EMCSettings.getPrimitive("RENDER_SCALE", 1.0f));
             modDiscoveries.forEach(discovery -> {
                 discovery.discover();
                 if (discovery.getSize() != 0) {
@@ -133,7 +141,7 @@ public class Bootstrap {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        SettingsMap.reset();
+        GameMap.INSTANCE.reset();
         modsInfo.clear();
         mods.clear();
         modDiscoveries.clear();

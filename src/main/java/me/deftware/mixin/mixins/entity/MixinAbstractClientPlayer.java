@@ -2,7 +2,8 @@ package me.deftware.mixin.mixins.entity;
 
 import me.deftware.client.framework.event.events.EventFovModifier;
 import me.deftware.client.framework.event.events.EventSpectator;
-import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.global.GameCategory;
+import me.deftware.client.framework.global.GameMap;
 import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.client.framework.util.HashUtils;
 import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
@@ -52,16 +53,16 @@ public abstract class MixinAbstractClientPlayer implements IMixinAbstractClientP
 		try {
 			String uuid = ((AbstractClientPlayerEntity) (Object) this).getUuidAsString();
 			String uidHash = HashUtils.getSHA(uuid.replace("-", "")).toLowerCase();
-            String id = SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, ((AbstractClientPlayerEntity) (Object) this).getGameProfile().getName())
-		            ? ((AbstractClientPlayerEntity) (Object) this).getGameProfile().getName() : SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, uuid.replace("-", ""))
-                            ? uuid.replace("-", "") : SettingsMap.hasValue(SettingsMap.MapKeys.CAPES_TEXTURE, uidHash) ? uidHash : null;
+            String id = GameMap.INSTANCE.contains(GameCategory.CapeTexture, ((AbstractClientPlayerEntity) (Object) this).getGameProfile().getName())
+		            ? ((AbstractClientPlayerEntity) (Object) this).getGameProfile().getName() : GameMap.INSTANCE.contains(GameCategory.CapeTexture, uuid.replace("-", ""))
+                            ? uuid.replace("-", "") : GameMap.INSTANCE.contains(GameCategory.CapeTexture, uidHash) ? uidHash : null;
             if (id != null) {
             	if (capeLoaded) {
             		ci.setReturnValue(capeIdentifier);
 	            } else {
 		            capeIdentifier = new Identifier(String.format("capes/%s.png", uidHash));
 		            PlayerSkinTexture playerSkinTexture = new PlayerSkinTexture(new File(String.format("%s/libraries/EMC/capes/%s.png", Minecraft.getRunDir().getAbsolutePath(), uidHash)),
-				            (String) SettingsMap.getValue(SettingsMap.MapKeys.CAPES_TEXTURE, id, ""), DefaultSkinHelper.getTexture(), false, () -> {
+				            GameMap.INSTANCE.get(GameCategory.CapeTexture, id, ""), DefaultSkinHelper.getTexture(), false, () -> {
 		            	capeLoaded = true;
 		            });
 		            MinecraftClient.getInstance().getTextureManager().registerTexture(capeIdentifier, playerSkinTexture);

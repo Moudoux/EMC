@@ -3,7 +3,8 @@ package me.deftware.mixin.mixins.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.event.events.EventAnimation;
 import me.deftware.client.framework.event.events.EventRenderHotbar;
-import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.client.framework.global.GameKeys;
+import me.deftware.client.framework.global.GameMap;
 import me.deftware.client.framework.render.camera.entity.CameraEntityMan;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -28,10 +29,16 @@ public class MixinGuiIngame {
 
     @Inject(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;blendFuncSeparate(Lcom/mojang/blaze3d/platform/GlStateManager$SrcFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DstFactor;Lcom/mojang/blaze3d/platform/GlStateManager$SrcFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DstFactor;)V"), cancellable = true)
     private void crosshairEvent(CallbackInfo ci) {
-        if (!((boolean) SettingsMap.getValue(SettingsMap.MapKeys.RENDER, "CROSSHAIR", true))) {
+        if (!GameMap.INSTANCE.get(GameKeys.CROSSHAIR, true)) {
             RenderSystem.enableAlphaTest();
             ci.cancel();
         }
+    }
+
+    @Inject(method = "renderStatusEffectOverlay", at = @At("HEAD"), cancellable = true)
+    private void renderStatusEffectOverlay(MatrixStack matrices, CallbackInfo ci) {
+        if (!GameMap.INSTANCE.get(GameKeys.EFFECT_OVERLAY, true))
+            ci.cancel();
     }
 
     @Inject(method = "renderHotbar", at = @At("HEAD"))
