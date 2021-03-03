@@ -15,18 +15,18 @@ public class CPacketUseEntity extends PacketWrapper {
     }
 
     public CPacketUseEntity(Entity entity) {
-        super(new PlayerInteractEntityC2SPacket(entity.getMinecraftEntity(), entity.getMinecraftEntity().isSneaking()));
+        super(PlayerInteractEntityC2SPacket.method_34206(entity.getMinecraftEntity(), entity.getMinecraftEntity().isSneaking()));
     }
 
     public Type getType() {
-        switch (((PlayerInteractEntityC2SPacket) packet).getType()) {
+        /*switch (((PlayerInteractEntityC2SPacket) packet).getClass()) {
             case ATTACK:
                 return Type.ATTACK;
             case INTERACT:
                 return Type.INTERACT;
             case INTERACT_AT:
                 return Type.INTERACT_AT;
-        }
+        }*/ // FIXME
         return Type.UNKNOWN;
     }
 

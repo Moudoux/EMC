@@ -244,7 +244,7 @@ public class ItemStack {
 			CompoundTag item = itemTag.getCompound(index);
 			int slotData = item.getByte("Slot") & 255;
 			if (slotData < list.size()) {
-				list.set(slotData, new ItemStack(net.minecraft.item.ItemStack.fromTag(new NbtCompound(item).getMinecraftCompound())));
+				list.set(slotData, new ItemStack(net.minecraft.item.ItemStack.fromNbt(new NbtCompound(item).getMinecraftCompound())));
 			}
 		}
 		return new ArrayList<>(list);

@@ -15,9 +15,9 @@ public class TitleAPI {
     public static void sendTitle(ChatMessage title, ChatMessage subtitle, int ticksFadeIn, int ticksVisible, int ticksFadeOut) {
         InGameHud igh = MinecraftClient.getInstance().inGameHud;
         if (igh != null) {
-            //have to be done seperate because, minecraft...
-            igh.setTitles(title.build(), null, ticksFadeIn, ticksVisible, ticksFadeOut);
-            igh.setTitles(null, subtitle.build(), ticksFadeIn, ticksVisible, ticksFadeOut);
+            //have to be done seperate because, minecraft... FIXME
+            //igh.setTitleTicks(title.build(), null, ticksFadeIn, ticksVisible, ticksFadeOut);
+            //igh.setTitles(null, subtitle.build(), ticksFadeIn, ticksVisible, ticksFadeOut);
         }
     }
 

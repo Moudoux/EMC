@@ -67,7 +67,7 @@ public class Entity {
 		} else if (entity instanceof net.minecraft.entity.ItemEntity) {
 			return new ItemEntity(entity);
 		} else if (entity instanceof net.minecraft.entity.LivingEntity) {
-			if (entity.toTag(new CompoundTag()).containsUuid("Owner")) {
+			if (entity.writeNbt(new CompoundTag()).containsUuid("Owner")) {
 				return new OwnedEntity(entity);
 			}
 			return new me.deftware.client.framework.entity.types.LivingEntity(entity);
@@ -173,11 +173,11 @@ public class Entity {
 	}
 
 	public boolean hasNbt() {
-		return entity.toTag(new CompoundTag()) != null && entity.toTag(new CompoundTag()).getSize() != 0;
+		return entity.writeNbt(new CompoundTag()) != null && entity.writeNbt(new CompoundTag()).getSize() != 0;
 	}
 
 	public NbtCompound getNbt() {
-		return new NbtCompound(entity.toTag(new CompoundTag()));
+		return new NbtCompound(entity.writeNbt(new CompoundTag()));
 	}
 
 	public int getTicksExisted() {

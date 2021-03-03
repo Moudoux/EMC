@@ -15,7 +15,7 @@ public class CPacketPlayer extends PacketWrapper {
     }
 
     public CPacketPlayer() {
-        super(new PlayerMoveC2SPacket());
+        super(new PlayerMoveC2SPacket.Both(0, 0, 0, 0, 0, false)); // FIXME
     }
 
     public void setOnGround(boolean state) {
