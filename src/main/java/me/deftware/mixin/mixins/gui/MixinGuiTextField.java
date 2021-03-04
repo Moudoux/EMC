@@ -44,7 +44,7 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
     private String suggestion;
 
     @Shadow
-    private boolean focused;
+    private boolean focusUnlocked;
 
     @Shadow
     private int selectionEnd;
@@ -166,7 +166,7 @@ public abstract class MixinGuiTextField extends AbstractButtonWidget implements 
 
     @Override
     public boolean getHasBorder() {
-        return focused;
+        return focusUnlocked;
     }
 
     @Override
