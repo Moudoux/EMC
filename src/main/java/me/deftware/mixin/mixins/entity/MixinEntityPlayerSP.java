@@ -131,4 +131,14 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         }
     }
 
+    @Inject(method = "sendMovementPackets", at = @At(value = "TAIL"), cancellable = true)
+    private void onSendMovementPacketsTail(CallbackInfo ci) {
+        ClientPlayerEntity entity = (ClientPlayerEntity) (Object) this;
+        EventPlayerWalking event = new EventPlayerWalking.PostEvent(entity.getX(), entity.getY(), entity.getZ(), yaw, pitch, onGround);
+        event.broadcast();
+        if (event.isCanceled()) {
+            ci.cancel();
+        }
+    }
+
 }

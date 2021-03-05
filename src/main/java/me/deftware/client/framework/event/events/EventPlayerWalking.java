@@ -45,4 +45,12 @@ public class EventPlayerWalking extends Event {
 		return onGround;
 	}
 
+	public static class PostEvent extends EventPlayerWalking {
+
+		public PostEvent(double posX, double posY, double posZ, float rotationYaw, float rotationPitch, boolean onGround) {
+			super(posX, posY, posZ, rotationYaw, rotationPitch, onGround);
+		}
+
+	}
+
 }
