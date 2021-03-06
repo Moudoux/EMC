@@ -33,6 +33,7 @@ import net.minecraft.entity.mob.PhantomEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 import java.util.Objects;
@@ -301,6 +302,14 @@ public class Entity {
 
 	public double getLastTickPosZ() {
 		return entity.lastRenderZ;
+	}
+
+	public Vector3d getRotationVector() {
+		return new Vector3d(getMinecraftEntity().getRotationVector());
+	}
+
+	public Vector3d getPosition() {
+		return new Vector3d(getPosX(), getPosY(), getPosZ());
 	}
 
 	public double getPosX() {

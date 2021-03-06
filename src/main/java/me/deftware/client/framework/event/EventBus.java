@@ -3,10 +3,13 @@ package me.deftware.client.framework.event;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.maps.MultiMap;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 /**
  * @author Deftware, Ananas
@@ -19,18 +22,24 @@ public class EventBus {
 	public static synchronized void registerClass(Class<?> clazz, Object instance) {
 		synchronized (lock) {
 			Bootstrap.logger.debug(String.format("Loading event handlers in class %s", clazz.getName()));
+			walkMethods(clazz, method -> {
+				Class<? extends Event> eventType = method.getParameterTypes()[0].asSubclass(Event.class);
+				int priority = method.getAnnotation(EventHandler.class).priority();
+				listeners.putIfAbsent(eventType, new Listener(method, instance, priority));
+				Bootstrap.logger.debug(String.format("Loaded event handler for method %s", method.getName()));
+			});
+		}
+	}
+
+	public static synchronized void walkMethods(Class<?> clazz, Consumer<Method> consumer) {
+		while (clazz != null) {
 			for (Method method : clazz.getDeclaredMethods()) {
 				if (method.isAnnotationPresent(EventHandler.class)) {
-					if (!method.isAccessible()) {
-						Bootstrap.logger.debug(String.format("Making method %s accessible", method.getName()));
-						method.setAccessible(true);
-					}
-					Class<? extends Event> eventType = method.getParameterTypes()[0].asSubclass(Event.class);
-					int priority = method.getAnnotation(EventHandler.class).priority();
-					listeners.putIfAbsent(eventType, new Listener(method, instance, priority));
-					Bootstrap.logger.debug(String.format("Loaded event handler for method %s", method.getName()));
+					method.setAccessible(true);
+					consumer.accept(method);
 				}
 			}
+			clazz = clazz.getSuperclass();
 		}
 	}
 
