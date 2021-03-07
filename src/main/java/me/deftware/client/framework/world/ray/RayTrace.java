@@ -1,5 +1,6 @@
 package me.deftware.client.framework.world.ray;
 
+import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.math.vector.Vector3d;
 import me.deftware.client.framework.util.hitresult.CrosshairResult;
 import net.minecraft.client.MinecraftClient;
@@ -21,12 +22,12 @@ public abstract class RayTrace<T extends CrosshairResult> {
         this.profile = profile;
     }
 
-    protected RaycastContext getContext() {
+    protected RaycastContext getContext(Entity entity) {
         return new RaycastContext(
-            start.getMinecraftVector(), end.getMinecraftVector(), profile.getShape(), profile.getFluidHandling(), Objects.requireNonNull(MinecraftClient.getInstance().player)
+            start.getMinecraftVector(), end.getMinecraftVector(), profile.getShape(), profile.getFluidHandling(), entity.getMinecraftEntity()
         );
     }
 
-    public abstract T run();
+    public abstract T run(Entity entity);
 
 }

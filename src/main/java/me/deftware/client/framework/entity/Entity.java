@@ -13,6 +13,7 @@ import me.deftware.client.framework.entity.types.animals.WolfEntity;
 import me.deftware.client.framework.entity.types.objects.BoatEntity;
 import me.deftware.client.framework.entity.types.objects.EndCrystalEntity;
 import me.deftware.client.framework.entity.types.objects.ItemEntity;
+import me.deftware.client.framework.entity.types.objects.ProjectileEntity;
 import me.deftware.client.framework.item.ItemStack;
 import me.deftware.client.framework.math.box.BoundingBox;
 import me.deftware.client.framework.math.position.BlockPosition;
@@ -53,6 +54,8 @@ public class Entity {
 	public static Entity newInstance(net.minecraft.entity.Entity entity) {
 		if (entity instanceof PlayerEntity) {
 			return new EntityPlayer((PlayerEntity) entity);
+		} else if (entity instanceof net.minecraft.entity.projectile.ProjectileEntity) {
+			return new ProjectileEntity(entity);
 		} else if (entity instanceof net.minecraft.entity.decoration.EndCrystalEntity) {
 			return new EndCrystalEntity(entity);
 		} else if (entity instanceof net.minecraft.entity.passive.HorseEntity) {

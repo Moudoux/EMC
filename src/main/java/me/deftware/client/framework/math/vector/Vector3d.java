@@ -61,36 +61,36 @@ public class Vector3d {
 	}
 
 	public Vector3d multiply(double factor) {
-		vec3d = vec3d.multiply(factor);
-		return this;
+		return new Vector3d(vec3d.multiply(factor));
 	}
 
 	public Vector3d subtract(double x, double y, double z) {
-		vec3d = vec3d.subtract(x, y, z);
-		return this;
+		return new Vector3d(vec3d.subtract(x, y, z));
 	}
 
 	public Vector3d add(double x, double y, double z) {
-		vec3d = vec3d.add(x, y, z);
-		return this;
+		return new Vector3d(vec3d.add(x, y, z));
 	}
 
 	public Vector3d set(double x, double y, double z) {
 		if (x == 0) x = getX();
 		if (y == 0) y = getY();
 		if (z == 0) z = getZ();
-		vec3d = new Vec3d(x, y, z);
-		return this;
+		return new Vector3d(x, y, z);
 	}
 
 	public Vector3d subtract(Vector3d vec) {
-		vec3d = vec3d.subtract(vec.getMinecraftVector());
-		return this;
+		return new Vector3d(vec3d.subtract(vec.getMinecraftVector()));
 	}
 
 	public Vector3d add(Vector3d vec) {
-		vec3d = vec3d.add(vec.getMinecraftVector());
-		return this;
+		return new Vector3d(vec3d.add(vec.getMinecraftVector()));
+	}
+
+	public Vector3d floor() {
+		return new Vector3d(
+			Math.floor(getX()), Math.floor(getY()), Math.floor(getZ())
+		);
 	}
 
 	public double squareDistanceTo(Vector3d vec) {
@@ -106,6 +106,15 @@ public class Vector3d {
 
 	public double getMagnitude() {
 		return Math.sqrt(vec3d.x*vec3d.x+vec3d.y*vec3d.y+vec3d.z*vec3d.z);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Vector3d) {
+			Vector3d vec = (Vector3d) o;
+			return vec.getX() == getX() && vec.getY() == vec.getY() && vec.getZ() == getZ();
+		}
+		return false;
 	}
 
 }
