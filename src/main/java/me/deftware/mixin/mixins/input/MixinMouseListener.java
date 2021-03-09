@@ -27,10 +27,12 @@ public class MixinMouseListener {
         }
     }
     
-    @Inject(method = "onMouseButton", at = @At("HEAD"))
+    @Inject(method = "onMouseButton", at = @At("HEAD"), cancellable = true)
     private void mouseButtonCallback(long windowPointer, int button, int action, int modifiers, CallbackInfo ci) {
         if (windowPointer == MinecraftClient.getInstance().getWindow().getHandle() || MinecraftClient.getInstance().currentScreen != null) {
-            new EventMouseClick(button, action, modifiers).broadcast();
+            EventMouseClick event = new EventMouseClick(button, action, modifiers).broadcast();
+            if (event.isCanceled())
+                ci.cancel();
         }
     }
     
