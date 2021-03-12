@@ -7,7 +7,7 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 /**
  * @author Deftware
  */
-public class CPacketPosition extends PacketWrapper {
+public class CPacketPosition extends CPacketPlayer {
 
     public CPacketPosition(Packet<?> packet) {
         super(packet);

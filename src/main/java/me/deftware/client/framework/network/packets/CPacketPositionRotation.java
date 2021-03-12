@@ -1,14 +1,12 @@
 package me.deftware.client.framework.network.packets;
 
-
-import me.deftware.client.framework.network.PacketWrapper;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 
 /**
  * @author Deftware
  */
-public class CPacketPositionRotation extends PacketWrapper {
+public class CPacketPositionRotation extends CPacketPlayer {
 
 	public CPacketPositionRotation(Packet<?> packet) {
 		super(packet);

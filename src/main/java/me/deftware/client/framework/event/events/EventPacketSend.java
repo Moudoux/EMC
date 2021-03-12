@@ -1,6 +1,7 @@
 package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
+import me.deftware.client.framework.network.PacketRegistry;
 import me.deftware.client.framework.network.PacketWrapper;
 import net.minecraft.network.Packet;
 
@@ -10,9 +11,11 @@ import net.minecraft.network.Packet;
 public class EventPacketSend extends Event {
 
     private Packet<?> packet;
+    private final PacketWrapper wrapper;
 
     public EventPacketSend(Packet<?> packet) {
         this.packet = packet;
+        this.wrapper = PacketRegistry.INSTANCE.translate(packet);
     }
 
     public Packet<?> getPacket() {
@@ -28,7 +31,7 @@ public class EventPacketSend extends Event {
     }
 
     public PacketWrapper getIPacket() {
-        return PacketWrapper.translatePacket(packet);
+        return wrapper;
     }
 
 }
