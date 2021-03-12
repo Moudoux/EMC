@@ -14,7 +14,7 @@ public class CPacketRotation extends CPacketPlayer {
     }
 
     public CPacketRotation(float yaw, float pitch, boolean onGround) {
-        super(new PlayerMoveC2SPacket.LookOnly(yaw, pitch, onGround));
+        super(new PlayerMoveC2SPacket.LookAndOnGround(yaw, pitch, onGround));
     }
 
 }

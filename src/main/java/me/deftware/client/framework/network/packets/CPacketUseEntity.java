@@ -15,7 +15,7 @@ public class CPacketUseEntity extends PacketWrapper {
     }
 
     public CPacketUseEntity(Entity entity) {
-        super(PlayerInteractEntityC2SPacket.method_34206(entity.getMinecraftEntity(), entity.getMinecraftEntity().isSneaking()));
+        super(PlayerInteractEntityC2SPacket.attack(entity.getMinecraftEntity(), entity.getMinecraftEntity().isSneaking()));
     }
 
     public Type getType() {

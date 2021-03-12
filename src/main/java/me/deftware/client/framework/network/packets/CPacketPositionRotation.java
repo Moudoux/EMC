@@ -13,7 +13,7 @@ public class CPacketPositionRotation extends CPacketPlayer {
 	}
 
 	public CPacketPositionRotation(double x, double y, double z, float yaw, float pitch, boolean isOnGround) {
-		super(new PlayerMoveC2SPacket.Both(x,y,z,yaw,pitch,isOnGround));
+		super(new PlayerMoveC2SPacket.Full(x,y,z,yaw,pitch,isOnGround));
 	}
 
 }

@@ -30,9 +30,10 @@ public class PacketRegistry {
         register(ClientStatusC2SPacket.class, CPacketClientStatus.class);
         // Move packets
         register(PlayerMoveC2SPacket.class, CPacketPlayer.class);
-        register(PlayerMoveC2SPacket.Both.class, CPacketPositionRotation.class);
-        register(PlayerMoveC2SPacket.LookOnly.class, CPacketRotation.class);
-        register(PlayerMoveC2SPacket.PositionOnly.class, CPacketPosition.class);
+        register(PlayerMoveC2SPacket.OnGroundOnly.class, CPacketPlayer.class);
+        register(PlayerMoveC2SPacket.Full.class, CPacketPositionRotation.class);
+        register(PlayerMoveC2SPacket.LookAndOnGround.class, CPacketRotation.class);
+        register(PlayerMoveC2SPacket.PositionAndOnGround.class, CPacketPosition.class);
         // Server bound
         register(EntityS2CPacket.class, SPacketEntity.class);
         register(EntityAnimationS2CPacket.class, SPacketAnimation.class);

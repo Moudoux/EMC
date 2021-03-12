@@ -14,7 +14,7 @@ public class CPacketPosition extends CPacketPlayer {
     }
 
     public CPacketPosition(double xIn, double yIn, double zIn, boolean onGroundIn) {
-        super(new PlayerMoveC2SPacket.PositionOnly(xIn, yIn, zIn, onGroundIn));
+        super(new PlayerMoveC2SPacket.PositionAndOnGround(xIn, yIn, zIn, onGroundIn));
     }
 
 }
