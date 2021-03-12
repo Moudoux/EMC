@@ -12,8 +12,8 @@ public class MixinSignBlockEntity implements IMixinSignBlockEntity {
 
     @Shadow
     @Final
-    private Text[] text;
+    private Text[] texts;
 
     @Override
-    public Text[] getTextRows() { return text; }
+    public Text[] getTextRows() { return texts; }
 }
