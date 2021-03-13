@@ -12,8 +12,11 @@ import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.util.WebUtils;
 import me.deftware.client.framework.world.block.Block;
 import me.deftware.client.framework.world.block.BlockState;
+import me.deftware.client.framework.world.player.PlayerEntry;
+import me.deftware.mixin.imp.IMixinNetworkHandler;
 import me.deftware.mixin.imp.IMixinWorld;
 import me.deftware.mixin.imp.IMixinWorldClient;
+import net.fabricmc.loader.util.sat4j.minisat.constraints.cnf.Lits;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -23,8 +26,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
@@ -47,6 +49,10 @@ public class World {
 
 	public static Stream<Entity> getLoadedEntities() {
 		return Objects.requireNonNull(((IMixinWorldClient) MinecraftClient.getInstance().world)).getLoadedEntitiesAccessor().values().stream();
+	}
+
+	public static Entity getEntityById(int id) {
+		return Objects.requireNonNull(((IMixinWorldClient) MinecraftClient.getInstance().world)).getLoadedEntitiesAccessor().getOrDefault(id, null);
 	}
 
 	public static int getDifficulty() {
@@ -167,6 +173,13 @@ public class World {
 			}
 			return null;
 		});
+	}
+
+	public static Map<UUID, PlayerEntry> getPlayerList() {
+		if (MinecraftClient.getInstance().getNetworkHandler() != null) {
+			return ((IMixinNetworkHandler) MinecraftClient.getInstance().getNetworkHandler()).getPlayerEntryMap();
+		}
+		return null;
 	}
 
 	private static class PlayerData {
