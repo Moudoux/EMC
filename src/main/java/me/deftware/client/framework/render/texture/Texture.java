@@ -17,7 +17,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Texture {
     int width;
     int height;
-    NativeImageBackedTexture dynamicTexture;
+    public NativeImageBackedTexture dynamicTexture;
     NativeImage nativeImage;
 
     public Texture(int width, int height, boolean clear) {

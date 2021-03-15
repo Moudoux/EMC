@@ -1,7 +1,9 @@
 package me.deftware.client.framework.render.gl;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Vec3f;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -16,7 +18,7 @@ public class GLX {
 
     public static final GLX INSTANCE = new GLX();
 
-    private GLXProvider provider = () -> "Legacy OpenGL";
+    private GLXProvider provider = new GLXMatrixProvider();
     private MatrixStack stack = new MatrixStack();
 
     /*
@@ -86,7 +88,7 @@ public class GLX {
     }
 
     public void rotate(float angle, float x, float y, float z) {
-        GL11.glRotatef(angle, x, y, z);
+        provider.rotate(angle, x, y, z);
     }
 
     public void rotate(double angle, double x, double y, double z) {
@@ -109,6 +111,21 @@ public class GLX {
         @Override
         public void scale(float x, float y, float z) {
             stack.scale(x, y, z);
+        }
+
+        @Override
+        public void color(float red, float green, float blue, float alpha) {
+            RenderSystem.setShaderColor(red, green, blue, alpha);
+        }
+
+        @Override
+        public void rotate(float angle, float x, float y, float z) {
+            if (x > 0)
+                stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(angle));
+            if (y > 0)
+                stack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(angle));
+            if (z > 0)
+                stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angle));
         }
 
         @Override

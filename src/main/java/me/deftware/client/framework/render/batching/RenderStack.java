@@ -7,6 +7,9 @@ import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.render.gl.GLX;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
+import net.minecraft.client.util.Window;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -60,11 +63,12 @@ public abstract class RenderStack<T> {
 			throw new IllegalStateException("Cannot call setupMatrix twice!");
 		if (!locked) {
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GL11.glEnable(GL11.GL_BLEND);
+			RenderSystem.enableBlend();
 			RenderSystem.lineWidth(lineWidth);
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			RenderSystem.disableTexture();
+			RenderSystem.disableDepthTest();
 			RenderSystem.depthMask(false);
+			RenderSystem.setShader(GameRenderer::method_34540);
 		}
 		setupMatrix = true;
 		return (T) this;
@@ -137,8 +141,8 @@ public abstract class RenderStack<T> {
 				throw new IllegalStateException("Cannot call end() on empty matrix!");
 		if (!locked && setupMatrix) {
 			RenderSystem.depthMask(true);
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			RenderSystem.enableTexture();
+			RenderSystem.enableDepthTest();
 			if (customMatrix)
 				reloadMinecraftMatrix();
 		}
@@ -151,7 +155,7 @@ public abstract class RenderStack<T> {
 	public static void reloadCustomMatrix() {
 		inCustomMatrix = true;
 		// Change matrix
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		/*GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -161,21 +165,40 @@ public abstract class RenderStack<T> {
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
 		GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
-		GL11.glColor4f(1f, 1f, 1f, 1f);
+		GL11.glColor4f(1f, 1f, 1f, 1f);*/
+
 		RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
+
+		Window window = MinecraftClient.getInstance().getWindow();
+		Matrix4f matrix4f = Matrix4f.method_34239(0.0F, (float) window.getWidth(), 0.0F, (float) window.getHeight(), 1000.0F, 3000.0F);
+		RenderSystem.setProjectionMatrix(matrix4f);
+		MatrixStack matrixStack = RenderSystem.getModelViewStack();
+		matrixStack.method_34426();
+		matrixStack.translate(0.0D, 0.0D, -2000.0D);
+		RenderSystem.applyModelViewMatrix();
+
 	}
 
 	public static void reloadMinecraftMatrix() {
 		inCustomMatrix = false;
 		// Revert back to Minecraft
-		RenderSystem.matrixMode(5889);
+		/*RenderSystem.matrixMode(5889);
 		RenderSystem.loadIdentity();
 		RenderSystem.ortho(0.0D, MinecraftClient.getInstance().getWindow().getFramebufferWidth() / MinecraftClient.getInstance().getWindow().getScaleFactor(),
 				MinecraftClient.getInstance().getWindow().getFramebufferHeight() / MinecraftClient.getInstance().getWindow().getScaleFactor(), 0.0D, 1000.0D, 3000.0D);
 		RenderSystem.matrixMode(5888);
 		RenderSystem.loadIdentity();
-		RenderSystem.translatef(0.0F, 0.0F, -2000.0F);
+		RenderSystem.translatef(0.0F, 0.0F, -2000.0F);*/
+
+		Window window = MinecraftClient.getInstance().getWindow();
 		RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
+		Matrix4f matrix4f = Matrix4f.method_34239(0.0F, (float) (window.getFramebufferWidth() / window.getScaleFactor()), 0.0F, (float) (window.getFramebufferHeight() / window.getScaleFactor()), 1000.0F, 3000.0F);
+		RenderSystem.setProjectionMatrix(matrix4f);
+		MatrixStack matrixStack = RenderSystem.getModelViewStack();
+		matrixStack.method_34426();
+		matrixStack.translate(0.0D, 0.0D, -2000.0D);
+		RenderSystem.applyModelViewMatrix();
+
 	}
 
 }

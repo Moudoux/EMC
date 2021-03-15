@@ -92,11 +92,11 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     @Unique
     private void loadPushPop(Consumer<Float> action, MatrixStack stack, float partialTicks) {
         GLX.INSTANCE.refresh(stack);
-        RenderSystem.pushMatrix();
-        RenderSystem.loadIdentity();
-        RenderSystem.multMatrix(GLX.INSTANCE.getModel());
+        //RenderSystem.pushMatrix();
+        //RenderSystem.loadIdentity();
+        //RenderSystem.multMatrix(GLX.INSTANCE.getModel());
         action.accept(partialTicks);
-        RenderSystem.popMatrix();
+        //RenderSystem.popMatrix();
     }
 
     @Inject(method = "bobViewWhenHurt", at = @At("HEAD"), cancellable = true)

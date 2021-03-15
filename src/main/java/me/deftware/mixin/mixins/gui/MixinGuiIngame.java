@@ -31,7 +31,7 @@ public class MixinGuiIngame {
     @Inject(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;blendFuncSeparate(Lcom/mojang/blaze3d/platform/GlStateManager$SrcFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DstFactor;Lcom/mojang/blaze3d/platform/GlStateManager$SrcFactor;Lcom/mojang/blaze3d/platform/GlStateManager$DstFactor;)V"), cancellable = true)
     private void crosshairEvent(CallbackInfo ci) {
         if (!GameMap.INSTANCE.get(GameKeys.CROSSHAIR, true)) {
-            RenderSystem.enableAlphaTest();
+            // RenderSystem.enableAlphaTest();
             ci.cancel();
         }
     }

@@ -10,11 +10,11 @@ import net.minecraft.util.math.Matrix4f;
 public class GlStateHelper {
 
 	public static void disableAlpha() {
-		RenderSystem.disableAlphaTest();
+		//RenderSystem.disableAlphaTest();
 	}
 
 	public static void enableAlpha() {
-		RenderSystem.enableAlphaTest();
+		//RenderSystem.enableAlphaTest();
 	}
 
 	public static void enablePolygonOffset() {
@@ -30,11 +30,11 @@ public class GlStateHelper {
 	}
 
 	public static void disableLighting() {
-		RenderSystem.disableLighting();
+		//RenderSystem.disableLighting();
 	}
 
 	public static void enableLighting() {
-		RenderSystem.enableLighting();
+		//RenderSystem.enableLighting();
 	}
 
 	public static void enableBlend() {
@@ -58,11 +58,11 @@ public class GlStateHelper {
 	}
 
 	public static void disableStandardItemLighting() {
-		DiffuseLighting.disable();
+		//DiffuseLighting.disable();
 	}
 
 	public static void enableStandardItemLighting() {
-		DiffuseLighting.enable();
+		//DiffuseLighting.enable();
 	}
 
 	public static void enableGUIStandardItemLighting() {

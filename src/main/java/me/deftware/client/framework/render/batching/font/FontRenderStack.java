@@ -1,5 +1,6 @@
 package me.deftware.client.framework.render.batching.font;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.Setter;
 import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.chat.ChatSection;
@@ -7,6 +8,7 @@ import me.deftware.client.framework.chat.style.ChatStyle;
 import me.deftware.client.framework.fonts.legacy.LegacyBitmapFont;
 import me.deftware.client.framework.registry.font.IFontProvider;
 import me.deftware.client.framework.render.batching.RenderStack;
+import net.minecraft.client.render.GameRenderer;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -33,16 +35,16 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 
 	@Override
 	public FontRenderStack setupMatrix() {
-		GL11.glPushMatrix();
-		if (matrix) reloadCustomMatrix();
+		if (matrix)
+			reloadCustomMatrix();
+		RenderSystem.setShader(GameRenderer::method_34540);
 		return this;
 	}
 
 	@Override
 	public void end() {
-		GL11.glPopMatrix();
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		if (matrix) reloadMinecraftMatrix();
+		if (matrix)
+			reloadMinecraftMatrix();
 	}
 
 	public FontRenderStack glMatrix(boolean flag) {
@@ -87,17 +89,17 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 				continue;
 			}
 			if (!font.textureIDStore.containsKey(buffer[character])) buffer[character] = '?';
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.textureIDStore.get(buffer[character]));
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			//GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.textureIDStore.get(buffer[character]));
+			//GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			int width = font.textureDimensionsStore.get(buffer[character])[0],
 					height = font.textureDimensionsStore.get(buffer[character])[1],
 					shadow = font.getShadow();
 			if (shadow > 0) {
-				GL11.glColor4f(0f, 0f, 0f, this.alpha);
-				drawQuads(x + offset + shadow, y + shadow, width, height);
+				//GL11.glColor4f(0f, 0f, 0f, this.alpha);
+				//drawQuads(x + offset + shadow, y + shadow, width, height);
 			}
-			GL11.glColor4f(this.red, this.green, this.blue, this.alpha);
-			drawQuads(x + offset, y, width, height);
+			//GL11.glColor4f(this.red, this.green, this.blue, this.alpha);
+			//drawQuads(x + offset, y, width, height);
 			offset += width;
 		}
 	}

@@ -1,7 +1,9 @@
 package me.deftware.client.framework.render.batching;
 
 import me.deftware.client.framework.gui.GuiScreen;
+import me.deftware.client.framework.render.gl.GLX;
 import me.deftware.client.framework.render.shader.Shader;
+import net.minecraft.util.math.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
@@ -20,21 +22,7 @@ public class QuadRenderStack extends RenderStack<QuadRenderStack> {
 	}
 
 	public QuadRenderStack drawRect(double x, double y, double xx, double yy, boolean scaling, Shader shader) {
-		// Apply scaling
-		if (scaling) {
-			x *= getScale();
-			y *= getScale();
-			xx *= getScale();
-			yy *= getScale();
-		}
-		if (shader != null)
-			setupUniforms((float) x, (float) y, (float) (xx - x), (float) (yy - y), shader);
-		// Draw
-		builder.vertex(xx, y, 0).color(red, green, blue, alpha).next();
-		builder.vertex(x, y, 0).color(red, green, blue, alpha).next();
-		builder.vertex(x, yy, 0).color(red, green, blue, alpha).next();
-		builder.vertex(xx, yy, 0).color(red, green, blue, alpha).next();
-		return this;
+		return drawRect((float) x, (float) y, (float) xx, (float) yy, scaling, shader);
 	}
 
 	public QuadRenderStack drawRect(float x, float y, float xx, float yy, boolean scaling) {
@@ -52,10 +40,11 @@ public class QuadRenderStack extends RenderStack<QuadRenderStack> {
 		if (shader != null)
 			setupUniforms(x, y, xx - x, yy - y, shader);
 		// Draw
-		builder.vertex(xx, y, 0).color(red, green, blue, alpha).next();
-		builder.vertex(x, y, 0).color(red, green, blue, alpha).next();
-		builder.vertex(x, yy, 0).color(red, green, blue, alpha).next();
-		builder.vertex(xx, yy, 0).color(red, green, blue, alpha).next();
+		Matrix4f model = GLX.INSTANCE.getModel();
+		builder.vertex(model, xx, y, 0).color(red, green, blue, alpha).next();
+		builder.vertex(model, x, y, 0).color(red, green, blue, alpha).next();
+		builder.vertex(model, x, yy, 0).color(red, green, blue, alpha).next();
+		builder.vertex(model, xx, yy, 0).color(red, green, blue, alpha).next();
 		return this;
 	}
 	

@@ -9,6 +9,7 @@ import me.deftware.client.framework.gui.widgets.Button;
 import me.deftware.client.framework.input.Mouse;
 import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.minecraft.Minecraft;
+import me.deftware.client.framework.render.gl.GLX;
 import me.deftware.client.framework.render.texture.Texture;
 import me.deftware.client.framework.util.ResourceUtils;
 import me.deftware.client.framework.util.minecraft.MinecraftIdentifier;
@@ -20,6 +21,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
+import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -90,6 +92,7 @@ public abstract class GuiScreen extends Screen {
 	@Override
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		Mouse.updateMousePosition();
+		GLX.INSTANCE.refresh();
 		onDraw(mouseX, mouseY, partialTicks);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		for (Tuple<Integer, Integer, LiteralText> text : compiledText) {
@@ -199,7 +202,6 @@ public abstract class GuiScreen extends Screen {
 
 	public static void drawTexture(EMCMod mod, String texture, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
 		// TODO: Redo this function
-		GL11.glPushMatrix();
 		if (!textureHashMap.containsKey(texture)) {
 			try {
 				BufferedImage img = ImageIO.read(Objects.requireNonNull(ResourceUtils.getStreamFromModResources(mod, texture)));
@@ -212,19 +214,21 @@ public abstract class GuiScreen extends Screen {
 				ex.printStackTrace();
 			}
 		} else {
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			textureHashMap.get(texture).updateTexture();
 		}
+		RenderSystem.setShaderColor(1, 1, 1, 1);
+		RenderSystem.setShaderTexture(0, textureHashMap.get(texture).dynamicTexture.getGlId());
 		Screen.drawTexture(new MatrixStack(), x, y, u, v, width, height, textureWidth, textureHeight);
-		GL11.glPopMatrix();
 	}
 
 	public static void drawTexture(MinecraftIdentifier texture, int x, int y, int width, int height) {
 		drawTexture(texture, x, y, 0, 0, width, height, width, height);
 	}
+
 	public static void drawTexture(MinecraftIdentifier texture, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
-		MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		//MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
+		RenderSystem.setShaderTexture(0, texture);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		Screen.drawTexture(new MatrixStack(), x, y, u, v, width, height, textureWidth, textureHeight);
 	}
 

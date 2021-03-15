@@ -1,6 +1,5 @@
 package me.deftware.mixin.mixins.render;
 
-import com.mojang.blaze3d.platform.FramebufferInfo;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.gl.Framebuffer;
 import org.lwjgl.opengl.ARBFramebufferObject;
@@ -36,7 +35,7 @@ public abstract class MixinFrameBuffer {
 	@Redirect(method = "initFbo", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;framebufferTexture2D(IIIII)V", ordinal = 1))
 	private void framebufferTexture2D(int target, int attachment, int textureTarget, int texture, int level) {
 		GlStateManager.framebufferTexture2D(
-				FramebufferInfo.FRAME_BUFFER,
+				target,
 				GL30.GL_DEPTH_STENCIL_ATTACHMENT,
 				GL11.GL_TEXTURE_2D,
 				this.depthAttachment,
