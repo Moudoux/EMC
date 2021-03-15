@@ -61,36 +61,4 @@ public class GraphicsUtil {
         return textureID;
     }
 
-    public static void prepareMatrix(int matrixWidth, int matrixHeight) {
-        matrixWidth = matrixWidth > 0 ? matrixWidth : 10;
-        matrixHeight = matrixHeight > 0 ? matrixHeight : 10;
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        GL11.glOrtho(0.0D, matrixWidth, matrixHeight, 0.0D, 1000.0D, 3000.0D);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glLoadIdentity();
-        GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
-        GL11.glColor4f(1f, 1f, 1f, 1f);
-    }
-
-    public static void drawQuads(int x, int y, int width, int height) {
-        //Draw quad counterclockwise
-        GL11.glBegin(GL11.GL_QUADS);
-        {
-            GL11.glTexCoord2f(0, 0);
-            GL11.glVertex2d(x, y);
-            GL11.glTexCoord2f(0, 1);
-            GL11.glVertex2d(x, y + height);
-            GL11.glTexCoord2f(1, 1);
-            GL11.glVertex2d(x + width, y + height);
-            GL11.glTexCoord2f(1, 0);
-            GL11.glVertex2d(x + width, y);
-        }
-        GL11.glEnd();
-    }
-
 }

@@ -37,9 +37,13 @@ public class LineRenderStack extends RenderStack<LineRenderStack> {
 			y2 *= getScale();
 		}
 		// Draw
-		GL11.glVertex2f(x1, y1);
-		GL11.glVertex2f(x2, y2);
+		builder.vertex(x1, y1, 0).color(red, green, blue, alpha).next();
+		builder.vertex(x2, y2, 0).color(red, green, blue, alpha).next();
 		return this;
+	}
+
+	public void vertex(double x, double y) {
+		builder.vertex(x, y, 0).color(red, green, blue, alpha).next();
 	}
 
 	public LineRenderStack lineToBlockPosition(BlockPosition pos) {
@@ -63,7 +67,7 @@ public class LineRenderStack extends RenderStack<LineRenderStack> {
 	}
 
 	public LineRenderStack drawPoint(double x, double y, double z) {
-		GL11.glVertex3d(x, y, z);
+		builder.vertex(x, y, z).color(red, green, blue, alpha).next();
 		return this;
 	}
 

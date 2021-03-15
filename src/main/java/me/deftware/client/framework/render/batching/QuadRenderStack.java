@@ -27,12 +27,13 @@ public class QuadRenderStack extends RenderStack<QuadRenderStack> {
 			xx *= getScale();
 			yy *= getScale();
 		}
-		if (shader != null) setupUniforms((float) x, (float) y, (float) (xx - x), (float) (yy - y), shader);
+		if (shader != null)
+			setupUniforms((float) x, (float) y, (float) (xx - x), (float) (yy - y), shader);
 		// Draw
-		GL11.glVertex2d(xx, y);
-		GL11.glVertex2d(x, y);
-		GL11.glVertex2d(x, yy);
-		GL11.glVertex2d(xx, yy);
+		builder.vertex(xx, y, 0).color(red, green, blue, alpha).next();
+		builder.vertex(x, y, 0).color(red, green, blue, alpha).next();
+		builder.vertex(x, yy, 0).color(red, green, blue, alpha).next();
+		builder.vertex(xx, yy, 0).color(red, green, blue, alpha).next();
 		return this;
 	}
 
@@ -48,12 +49,13 @@ public class QuadRenderStack extends RenderStack<QuadRenderStack> {
 			xx *= getScale();
 			yy *= getScale();
 		}
-		if (shader != null) setupUniforms(x, y, xx - x, yy - y, shader);
+		if (shader != null)
+			setupUniforms(x, y, xx - x, yy - y, shader);
 		// Draw
-		GL11.glVertex2f(xx, y);
-		GL11.glVertex2f(x, y);
-		GL11.glVertex2f(x, yy);
-		GL11.glVertex2f(xx, yy);
+		builder.vertex(xx, y, 0).color(red, green, blue, alpha).next();
+		builder.vertex(x, y, 0).color(red, green, blue, alpha).next();
+		builder.vertex(x, yy, 0).color(red, green, blue, alpha).next();
+		builder.vertex(xx, yy, 0).color(red, green, blue, alpha).next();
 		return this;
 	}
 	
@@ -62,7 +64,6 @@ public class QuadRenderStack extends RenderStack<QuadRenderStack> {
 			coordinates = GL20.glGetUniformLocation(shader.getProgram(), "coordinates");
 		GL20.glUniform4f(resolution, width, height, GuiScreen.getDisplayWidth(), GuiScreen.getDisplayHeight());
 		GL20.glUniform2f(coordinates, x, y);
-		GL11.glBegin(GL11.GL_QUADS);
 		running = true;
 	}
 

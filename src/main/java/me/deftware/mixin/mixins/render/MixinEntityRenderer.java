@@ -11,6 +11,7 @@ import me.deftware.client.framework.global.GameMap;
 import me.deftware.client.framework.helper.GlStateHelper;
 import me.deftware.client.framework.helper.WindowHelper;
 import me.deftware.client.framework.minecraft.Minecraft;
+import me.deftware.client.framework.render.gl.GLX;
 import me.deftware.client.framework.util.minecraft.MinecraftIdentifier;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
 import net.minecraft.client.MinecraftClient;
@@ -90,9 +91,10 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Unique
     private void loadPushPop(Consumer<Float> action, MatrixStack stack, float partialTicks) {
+        GLX.INSTANCE.refresh(stack);
         RenderSystem.pushMatrix();
         RenderSystem.loadIdentity();
-        RenderSystem.multMatrix(stack.peek().getModel());
+        RenderSystem.multMatrix(GLX.INSTANCE.getModel());
         action.accept(partialTicks);
         RenderSystem.popMatrix();
     }
@@ -119,6 +121,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
             if (operation != null) {
                 operation.run();
             }
+            GLX.INSTANCE.refresh(matrices);
             new EventRender2D(tickDelta).broadcast();
         }
         inGameHud.render(matrices, tickDelta);

@@ -12,20 +12,6 @@ public class CircleRenderStack extends RenderStack<CircleRenderStack> {
 		return begin(GL11.GL_TRIANGLE_FAN);
 	}
 
-	@Override
-	public CircleRenderStack setupMatrix() {
-		GL11.glPushMatrix();
-		if (customMatrix)
-			reloadCustomMatrix();
-		// Setup gl
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glEnable(GL11.GL_LINE_SMOOTH);
-		GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
-		return this;
-	}
-
 	public CircleRenderStack drawFilledCircle(float xx, float yy, float radius, boolean scaling) {
 		if (scaling) {
 			xx *= getScale();
@@ -35,7 +21,7 @@ public class CircleRenderStack extends RenderStack<CircleRenderStack> {
 		for (int i = 0; i < 50; i++) {
 			float x = (float) (radius * Math.sin(i * 0.12566370614359174D));
 			float y = (float) (radius * Math.cos(i * 0.12566370614359174D));
-			GL11.glVertex2f(xx + x, yy + y);
+			builder.vertex(xx + x, yy + y, 0).color(red, green, blue, alpha).next();
 		}
 		return this;
 	}
