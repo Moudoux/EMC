@@ -64,7 +64,7 @@ public abstract class RenderStack<T> {
 		return (T) this;
 	}
 
-	public T color(Color color) {
+	public T glColor(Color color) {
 		return glColor(color, color.getAlpha());
 	}
 
@@ -80,6 +80,7 @@ public abstract class RenderStack<T> {
 	public abstract T begin();
 
 	public T begin(int mode) {
+		blend();
 		setShader();
 		RenderSystem.lineWidth(lineWidth);
 		builder.begin(translate(mode), getFormat());
@@ -101,9 +102,12 @@ public abstract class RenderStack<T> {
 		}
 	}
 
-	public static void setupGl() {
+	public static void blend() {
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		RenderSystem.enableBlend();
+	}
+
+	public static void setupGl() {
 		RenderSystem.disableTexture();
 		RenderSystem.disableDepthTest();
 		RenderSystem.depthMask(false);

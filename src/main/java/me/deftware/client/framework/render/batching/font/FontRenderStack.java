@@ -30,14 +30,18 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 
 	@Override
 	public FontRenderStack begin() {
-		glColor(Color.white, 255f); // Default text color
 		// Bind texture
 		int glId = font.getGlId();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, glId);
-		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		RenderSystem.setShaderTexture(0, glId);
 		// Set up buffer
 		return super.begin(GL11.GL_QUADS);
+	}
+
+	@Override
+	public void end() {
+		super.end();
+		RenderSystem.disableTexture();
 	}
 
 	@Override
@@ -110,7 +114,7 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 			// Draw shadow
 			if (shadow > 0) {
 				// RenderSystem.setShaderColor(0f, 0f, 0f, this.alpha);
-				color(Color.black);
+				glColor(Color.black);
 				drawCharacter(x + offset + shadow, y + shadow, data);
 			}
 
