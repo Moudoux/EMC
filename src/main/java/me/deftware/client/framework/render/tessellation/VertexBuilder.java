@@ -1,7 +1,9 @@
 package me.deftware.client.framework.render.tessellation;
 
+import me.deftware.client.framework.render.batching.RenderStack;
+import me.deftware.client.framework.render.gl.GLX;
 import net.minecraft.client.render.BufferBuilder;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.util.math.Matrix4f;
 
 /**
  * @author Deftware
@@ -14,19 +16,13 @@ public class VertexBuilder {
 		this.builder = builder;
 	}
 
-	public static net.minecraft.client.render.VertexFormat.DrawMode intToDrawMode(int glMode) {
-		if (glMode == GL11.GL_QUADS) { // quads is apparently 4 in Minecraft's DrawMode
-			return net.minecraft.client.render.VertexFormat.DrawMode.QUADS;
-		}
-		return net.minecraft.client.render.VertexFormat.DrawMode.values()[glMode];
-	}
-
 	public void begin(int glMode, VertexFormat format) {
-		builder.begin(intToDrawMode(glMode), format.getMinecraftFormat());
+		builder.begin(RenderStack.translate(glMode), format.getMinecraftFormat());
 	}
 
 	public VertexBuilder pos(double x, double y, double z) {
-		builder.vertex(x, y, z);
+		Matrix4f model = GLX.INSTANCE.getModel();
+		builder.vertex(model, (float) x, (float) y, (float) z);
 		return this;
 	}
 

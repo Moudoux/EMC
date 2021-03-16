@@ -1,5 +1,6 @@
 package me.deftware.client.framework.item;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.conversion.ConvertedList;
 import me.deftware.client.framework.item.effect.AppliedStatusEffect;
@@ -11,10 +12,12 @@ import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.nbt.NbtCompound;
 import me.deftware.client.framework.nbt.NbtList;
 import me.deftware.client.framework.registry.EnchantmentRegistry;
+import me.deftware.client.framework.render.gl.GLX;
 import me.deftware.client.framework.util.types.Pair;
 import me.deftware.client.framework.world.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.damage.DamageSource;
@@ -210,19 +213,19 @@ public class ItemStack {
 	}
 
 	public void renderItemIntoGUI(int x, int y) {
-		getRenderItem().renderGuiItemIcon(getMinecraftItemStack(), x, y);
+		GLX.INSTANCE.modelViewStack(() -> getRenderItem().renderGuiItemIcon(getMinecraftItemStack(), x, y));
 	}
 
 	public void renderItemOverlays(int x, int y) {
-		getRenderItem().renderGuiItemOverlay(MinecraftClient.getInstance().textRenderer, getMinecraftItemStack(), x, y);
+		GLX.INSTANCE.modelViewStack(() -> getRenderItem().renderGuiItemOverlay(MinecraftClient.getInstance().textRenderer, getMinecraftItemStack(), x, y));
 	}
 
 	public void renderItemAndEffectIntoGUI(int x, int y) {
-		getRenderItem().renderInGui(getMinecraftItemStack(), x, y);
+		GLX.INSTANCE.modelViewStack(() -> getRenderItem().renderInGui(getMinecraftItemStack(), x, y));
 	}
 
 	public void renderItemOverlayIntoGUI(int x, int y, String text) {
-		getRenderItem().renderGuiItemOverlay(MinecraftClient.getInstance().textRenderer, getMinecraftItemStack(), x, y, text);
+		GLX.INSTANCE.modelViewStack(() -> getRenderItem().renderGuiItemOverlay(MinecraftClient.getInstance().textRenderer, getMinecraftItemStack(), x, y, text));
 	}
 
 	public boolean hasNbt() {

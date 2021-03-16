@@ -1,9 +1,7 @@
 package me.deftware.client.framework.render.batching;
 
 import me.deftware.client.framework.gui.GuiScreen;
-import me.deftware.client.framework.render.gl.GLX;
 import me.deftware.client.framework.render.shader.Shader;
-import net.minecraft.util.math.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
@@ -40,11 +38,10 @@ public class QuadRenderStack extends RenderStack<QuadRenderStack> {
 		if (shader != null)
 			setupUniforms(x, y, xx - x, yy - y, shader);
 		// Draw
-		Matrix4f model = GLX.INSTANCE.getModel();
-		builder.vertex(model, xx, y, 0).color(red, green, blue, alpha).next();
-		builder.vertex(model, x, y, 0).color(red, green, blue, alpha).next();
-		builder.vertex(model, x, yy, 0).color(red, green, blue, alpha).next();
-		builder.vertex(model, xx, yy, 0).color(red, green, blue, alpha).next();
+		vertex(xx, y, 0).color(red, green, blue, alpha).next();
+		vertex(x, y, 0).color(red, green, blue, alpha).next();
+		vertex(x, yy, 0).color(red, green, blue, alpha).next();
+		vertex(xx, yy, 0).color(red, green, blue, alpha).next();
 		return this;
 	}
 	

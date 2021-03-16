@@ -8,7 +8,8 @@ import me.deftware.client.framework.chat.style.ChatStyle;
 import me.deftware.client.framework.fonts.legacy.LegacyBitmapFont;
 import me.deftware.client.framework.registry.font.IFontProvider;
 import me.deftware.client.framework.render.batching.RenderStack;
-import net.minecraft.client.render.GameRenderer;
+import me.deftware.client.framework.render.gl.GLX;
+import net.minecraft.client.gui.screen.Screen;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -34,17 +35,8 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 	}
 
 	@Override
-	public FontRenderStack setupMatrix() {
-		if (matrix)
-			reloadCustomMatrix();
-		RenderSystem.setShader(GameRenderer::method_34540);
-		return this;
-	}
-
-	@Override
-	public void end() {
-		if (matrix)
-			reloadMinecraftMatrix();
+	protected void drawBuffer() {
+		/* Not used in this stack */
 	}
 
 	public FontRenderStack glMatrix(boolean flag) {
@@ -88,33 +80,27 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 				offset += font.getStringWidth(" ");
 				continue;
 			}
-			if (!font.textureIDStore.containsKey(buffer[character])) buffer[character] = '?';
-			//GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.textureIDStore.get(buffer[character]));
-			//GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			if (!font.textureIDStore.containsKey(buffer[character]))
+				buffer[character] = '?';
+			int glId = font.textureIDStore.get(buffer[character]);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, glId);
+			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			RenderSystem.setShaderTexture(0, glId);
 			int width = font.textureDimensionsStore.get(buffer[character])[0],
 					height = font.textureDimensionsStore.get(buffer[character])[1],
 					shadow = font.getShadow();
 			if (shadow > 0) {
-				//GL11.glColor4f(0f, 0f, 0f, this.alpha);
-				//drawQuads(x + offset + shadow, y + shadow, width, height);
+				RenderSystem.setShaderColor(0f, 0f, 0f, this.alpha);
+				drawQuads(x + offset + shadow, y + shadow, width, height);
 			}
-			//GL11.glColor4f(this.red, this.green, this.blue, this.alpha);
-			//drawQuads(x + offset, y, width, height);
+			RenderSystem.setShaderColor(this.red, this.green, this.blue, this.alpha);
+			drawQuads(x + offset, y, width, height);
 			offset += width;
 		}
 	}
 
 	private void drawQuads(int x, int y, int width, int height) {
-		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glTexCoord2f(0, 0);
-		GL11.glVertex2d(x, y);
-		GL11.glTexCoord2f(0, 1);
-		GL11.glVertex2d(x, y + height);
-		GL11.glTexCoord2f(1, 1);
-		GL11.glVertex2d(x + width, y + height);
-		GL11.glTexCoord2f(1, 0);
-		GL11.glVertex2d(x + width, y);
-		GL11.glEnd();
+		Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, 0, 0, width, height, width, height);
 	}
 
 	public int getFontHeight() {

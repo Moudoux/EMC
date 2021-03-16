@@ -2,11 +2,7 @@ package me.deftware.client.framework.render.batching;
 
 import me.deftware.client.framework.math.box.BoundingBox;
 import me.deftware.client.framework.minecraft.Minecraft;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.util.math.Box;
 import org.lwjgl.opengl.GL11;
 
@@ -44,86 +40,86 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 	}
 
 	private void drawColorBox(Box box) {
-		builder.vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
 
-		builder.vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
 
-		builder.vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
 
-		builder.vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
 
-		builder.vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
 
-		builder.vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
 	}
 
 	private void drawSelectionBoundingBox(Box box) {
-		builder.vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
 
-		builder.vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
 
 		builder.end();
 		BufferRenderer.draw(builder);
 		builder.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION_COLOR);
 
-		builder.vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
-		builder.vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).next();
+		vertex(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).next();
 	}
 
 }

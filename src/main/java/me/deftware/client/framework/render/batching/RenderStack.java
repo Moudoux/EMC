@@ -99,10 +99,8 @@ public abstract class RenderStack<T> {
 	public abstract T begin();
 
 	public T begin(int mode) {
-		if (!builder.isBuilding()) {
-			running = true;
-			builder.begin(translate(mode), VertexFormats.POSITION_COLOR);
-		}
+		running = true;
+		builder.begin(translate(mode), getFormat());
 		return (T) this;
 	}
 
@@ -124,16 +122,17 @@ public abstract class RenderStack<T> {
 		return VertexFormat.DrawMode.QUADS;
 	}
 
+	protected VertexFormat getFormat() {
+		return VertexFormats.POSITION_COLOR;
+	}
+
 	public void end() {
 		end(true);
 	}
 
 	public void end(boolean pop) {
-		if (builder.isBuilding()) {
-			running = false;
-			builder.end();
-			BufferRenderer.draw(builder);
-		}
+		running = false;
+		drawBuffer();
 		if (pop)
 			if (setupMatrix)
 				GLX.INSTANCE.pop();
@@ -147,6 +146,19 @@ public abstract class RenderStack<T> {
 				reloadMinecraftMatrix();
 		}
 		setupMatrix = false;
+	}
+
+	protected void drawBuffer() {
+		builder.end();
+		BufferRenderer.draw(builder);
+	}
+
+	public Matrix4f getModel() {
+		return GLX.INSTANCE.getModel();
+	}
+
+	protected VertexConsumer vertex(double x, double y, double z) {
+		return builder.vertex(getModel(), (float) x, (float) y, (float) z);
 	}
 
 	/**
