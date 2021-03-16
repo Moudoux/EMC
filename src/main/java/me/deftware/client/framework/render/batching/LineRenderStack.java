@@ -21,16 +21,10 @@ public class LineRenderStack extends RenderStack<LineRenderStack> {
 
 	@Override
 	public LineRenderStack begin() {
-		return begin(GL11.GL_LINES);
-	}
-
-	@Override
-	public LineRenderStack setupMatrix() {
-		super.setupMatrix();
 		eyes = new Vec3d(0.0D, 0.0D, 1.0D)
 				.rotateX(-(float) Math.toRadians(Minecraft.getCamera().getRotationPitch()))
 				.rotateY(-(float) Math.toRadians(Minecraft.getCamera().getRotationYaw()));
-		return this;
+		return begin(GL11.GL_LINES);
 	}
 
 	@Override

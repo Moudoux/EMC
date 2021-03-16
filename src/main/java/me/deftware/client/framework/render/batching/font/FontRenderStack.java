@@ -8,11 +8,11 @@ import me.deftware.client.framework.chat.style.ChatStyle;
 import me.deftware.client.framework.fonts.legacy.LegacyBitmapFont;
 import me.deftware.client.framework.registry.font.IFontProvider;
 import me.deftware.client.framework.render.batching.RenderStack;
-import me.deftware.client.framework.render.gl.GLX;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.render.*;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.Map;
 
 /**
  * @author Deftware
@@ -20,7 +20,7 @@ import java.awt.*;
 public class FontRenderStack extends RenderStack<FontRenderStack> {
 
 	private int offset = 0;
-	private @Setter boolean scaled, matrix = true;
+	private @Setter boolean scaled;
 	private final LegacyBitmapFont font;
 
 	public FontRenderStack(IFontProvider font) {
@@ -31,17 +31,29 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 	@Override
 	public FontRenderStack begin() {
 		glColor(Color.white, 255f); // Default text color
-		return this; /* Not used in this stack */
+		// Bind texture
+		int glId = font.getGlId();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, glId);
+		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		RenderSystem.setShaderTexture(0, glId);
+		// Set up buffer
+		return super.begin(GL11.GL_QUADS);
 	}
 
 	@Override
-	protected void drawBuffer() {
-		/* Not used in this stack */
+	protected VertexFormat getFormat() {
+		return VertexFormats.POSITION_TEXTURE_COLOR;
 	}
 
-	public FontRenderStack glMatrix(boolean flag) {
-		this.matrix = flag;
-		return this;
+	@Override
+	protected void setShader() {
+		// POSITION_TEXTURE_COLOR
+		RenderSystem.setShader(GameRenderer::method_34543);
+	}
+
+	@Override
+	protected VertexConsumer vertex(double x, double y, double z) {
+		return builder.vertex(getModel(), (float) x,  (float) y,  (float) z);
 	}
 
 	public FontRenderStack drawString(double x, double y, String message) {
@@ -49,7 +61,7 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 	}
 
 	public FontRenderStack drawString(int x, int y, String message) {
-		renderCharBuffer(message.toCharArray(), x, y);
+		renderCharBuffer(message.toCharArray(), x, y, lastColor);
 		offset = 0;
 		return this;
 	}
@@ -62,46 +74,64 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 		for (ChatSection section : message.getSectionList()) {
 			ChatStyle style = section.getStyle();
 			Color color = Color.white;
-			if (style.getColor() != null) color = style.getColor().getColor();
-			glColor(color, 255f);
-			renderCharBuffer(section.getText().toCharArray(), x, y);
+			if (style.getColor() != null)
+				color = style.getColor().getColor();
+			renderCharBuffer(section.getText().toCharArray(), x, y, color);
 		}
 		offset = 0;
 		return this;
 	}
 
-	private void renderCharBuffer(char[] buffer, int x, int y) {
+	private void renderCharBuffer(char[] buffer, int x, int y, Color color) {
+		// Scale position
 		if (scaled) {
 			x *= RenderStack.getScale();
 			y *= RenderStack.getScale();
 		}
+
+		// Get font data
+		int shadow = font.getShadow();
+		Map<Character, LegacyBitmapFont.CharData> characterMap = font.getCharacterMap();
+
 		for (int character = 0; character < buffer.length; character++) {
+			// Skip spaces
 			if (buffer[character] == ' ') {
 				offset += font.getStringWidth(" ");
 				continue;
 			}
-			if (!font.textureIDStore.containsKey(buffer[character]))
+
+			// Replace unknown characters with a question mark
+			if (!font.characterMap.containsKey(buffer[character]))
 				buffer[character] = '?';
-			int glId = font.textureIDStore.get(buffer[character]);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, glId);
-			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			RenderSystem.setShaderTexture(0, glId);
-			int width = font.textureDimensionsStore.get(buffer[character])[0],
-					height = font.textureDimensionsStore.get(buffer[character])[1],
-					shadow = font.getShadow();
+
+			// Get character data
+			LegacyBitmapFont.CharData data = characterMap.get(buffer[character]);
+
+			// Draw shadow
 			if (shadow > 0) {
-				RenderSystem.setShaderColor(0f, 0f, 0f, this.alpha);
-				drawQuads(x + offset + shadow, y + shadow, width, height);
+				// RenderSystem.setShaderColor(0f, 0f, 0f, this.alpha);
+				color(Color.black);
+				drawCharacter(x + offset + shadow, y + shadow, data);
 			}
-			RenderSystem.setShaderColor(this.red, this.green, this.blue, this.alpha);
-			drawQuads(x + offset, y, width, height);
-			offset += width;
+
+			// Draw text
+			// RenderSystem.setShaderColor(this.red, this.green, this.blue, this.alpha);
+			glColor(color, 255f);
+			drawCharacter(x + offset, y, data);
+			offset += data.getWidth();
 		}
-		RenderSystem.setShaderColor(1, 1, 1,1);
+
+		// Reset shader color
+		// RenderSystem.setShaderColor(1, 1, 1,1);
 	}
 
-	private void drawQuads(int x, int y, int width, int height) {
-		Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, 0, 0, width, height, width, height);
+	private void drawCharacter(int x, int y, LegacyBitmapFont.CharData data) {
+		// Size
+		int width = data.getWidth(), height = data.getHeight();
+		// Offsets
+		int u = data.getU(), v = data.getV();
+		// Draw
+		drawTexture(x, x + width, y, y + height, 0, width, height, u, v, font.getTextureWidth(), font.getTextureHeight());
 	}
 
 	public int getFontHeight() {
@@ -114,6 +144,21 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 
 	public int getStringWidth(ChatMessage text) {
 		return getStringWidth(text.toString(false));
+	}
+	
+	/*
+		Draw
+	 */
+
+	private void drawTexture(int x0, int y0, int x1, int y1, int z, int regionWidth, int regionHeight, float u, float v, int textureWidth, int textureHeight) {
+		drawTexturedQuad(x0, y0, x1, y1, z, (u + 0.0F) / textureWidth, (u + regionWidth) / textureWidth, (v + 0.0F) / textureHeight, (v + regionHeight) / textureHeight);
+	}
+
+	private void drawTexturedQuad(int x0, int x1, int y0, int y1, int z, float u0, float u1, float v0, float v1) {
+		vertex(x0, y1, z).texture(u0, v1).color(red, green, blue, alpha).next();
+		vertex(x1, y1, z).texture(u1, v1).color(red, green, blue, alpha).next();
+		vertex(x1, y0, z).texture(u1, v0).color(red, green, blue, alpha).next();
+		vertex(x0, y0, z).texture(u0, v0).color(red, green, blue, alpha).next();
 	}
 
 }

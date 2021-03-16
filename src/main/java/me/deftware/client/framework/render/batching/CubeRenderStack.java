@@ -14,10 +14,6 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 
 	private boolean lines = false;
 
-	public CubeRenderStack() {
-		customMatrix = false;
-	}
-
 	@Override
 	public CubeRenderStack begin() {
 		return begin(GL11.GL_QUADS);

@@ -1,5 +1,7 @@
 package me.deftware.client.framework.fonts.legacy;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import me.deftware.client.framework.registry.font.TTFRegistry;
@@ -14,7 +16,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Legacy bitmap font used for now
@@ -23,15 +29,22 @@ import java.util.HashMap;
  */
 public class  LegacyBitmapFont {
 
-	public final HashMap<Character, Integer> textureIDStore = new HashMap<>();
-	public final HashMap<Character, int[]> textureDimensionsStore = new HashMap<>();
+	@Getter
+	public final Map<Character, CharData> characterMap = new HashMap<>();
 
 	protected Font stdFont;
 	public String fontName;
 	protected int fontSize;
 	public boolean scaled;
 
-	public @Setter @Getter int shadow = 1;
+	@Setter @Getter
+	public int shadow = 1;
+
+	@Getter
+	public int glId = -1;
+
+	@Getter
+	public int textureWidth, textureHeight;
 
 	private FontMetrics metrics;
 
@@ -68,56 +81,107 @@ public class  LegacyBitmapFont {
 	}
 
 	public void initialize() {
+		destroy();
+		List<Character> characters = new ArrayList<>();
 		// Lowercase alphabet
 		for (char lowercaseAlphabet = 'a'; lowercaseAlphabet <= 'z'; lowercaseAlphabet++) {
-			characterGenerate(lowercaseAlphabet);
+			characters.add(lowercaseAlphabet);
 		}
 		// Uppercase alphabet
 		for (char uppercaseAlphabet = 'A'; uppercaseAlphabet <= 'Z'; uppercaseAlphabet++) {
-			characterGenerate(uppercaseAlphabet);
+			characters.add(uppercaseAlphabet);
 		}
 		// Numbers
 		for (char numeric = 48; numeric <= 57; numeric++) { // 0 - 9 in ASCII
-			characterGenerate(numeric);
+			characters.add(numeric);
 		}
 		// Additional and special characters
 		char[] specialCharacters = {'!', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
 				':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', '"'};
 		for (char specialCharacter : specialCharacters) {
-			characterGenerate(specialCharacter);
+			characters.add(specialCharacter);
 		}
+
+		glId = characterGenerate(characters);
+	}
+
+	protected int characterGenerate(List<Character> characters) {
+		// Calculate size of texture
+		// fixedWidth must be more than the width of the widest character
+		int width = 0, height = 0, fixedWidth = getStringWidth('A') + 5;
+		List<Consumer<Graphics2D>> generation = new ArrayList<>();
+		for (char character : characters) {
+			String letterBuffer = String.valueOf(character);
+			int textWidth = getStringWidth(character), textHeight = getStringHeight();
+			if (height < textHeight)
+				height = textHeight;
+			width += fixedWidth;
+			int xOffset = width;
+			generation.add(graphics -> {
+				// Draw character
+				graphics.drawString(letterBuffer, xOffset, textHeight - textHeight / 4);
+				// Generate data
+				CharData data = new CharData(textWidth, textHeight, xOffset, 0);
+				characterMap.put(character, data);
+			});
+		}
+
+		// Setup texture
+		BufferedImage characterTexture = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = characterTexture.createGraphics();
+		graphics.setFont(stdFont);
+		graphics.setColor(Color.white);
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+
+		// Draw characters
+		generation.forEach(c -> c.accept(graphics));
+
+		// Dispose graphics
+		graphics.dispose();
+
+		this.textureWidth = characterTexture.getWidth();
+		this.textureHeight = characterTexture.getHeight();
+
+		// Upload to gpu
+		return GraphicsUtil.loadTextureFromBufferedImage(characterTexture);
+	}
+
+	public int getStringWidth(char... chars) {
+		return metrics.charsWidth(chars, 0, chars.length);
 	}
 
 	public int getStringWidth(String text) {
-		return metrics.charsWidth(text.toCharArray(), 0, text.length());
+		return getStringWidth(text.toCharArray());
 	}
 
 	public int getStringHeight() {
 		return metrics.getHeight();
 	}
 
-	protected void characterGenerate(char character) {
-		String letterBuffer = String.valueOf(character);
-		int textWidth = getStringWidth(letterBuffer), textHeight = getStringHeight();
-		if (textHeight > 0 && textWidth > 0 && !letterBuffer.isEmpty()) {
-			BufferedImage characterTexture = new BufferedImage(textWidth, textHeight, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D graphics = characterTexture.createGraphics();
-			graphics.setFont(stdFont);
-			graphics.setColor(Color.white);
-			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-			graphics.drawString(letterBuffer, 0, textHeight - textHeight / 4);
-			graphics.dispose();
-			textureIDStore.put(character, GraphicsUtil.loadTextureFromBufferedImage(characterTexture));
-			textureDimensionsStore.put(character, new int[]{characterTexture.getWidth(), characterTexture.getHeight()});
+	public void destroy() {
+		if (glId != -1) {
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+			GL11.glDeleteTextures(glId);
+			characterMap.clear();
+			glId = -1;
 		}
 	}
 
-	public void destroy() {
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-		textureIDStore.values().forEach(GL11::glDeleteTextures);
-		textureIDStore.clear();
-		textureDimensionsStore.clear();
+	@Data
+	@AllArgsConstructor
+	public static class CharData {
+
+		/**
+		 * The size of the character
+		 */
+		private int width, height;
+
+		/**
+		 * Texture offsets
+		 */
+		private int u, v;
+
 	}
 
 }

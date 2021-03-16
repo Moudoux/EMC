@@ -50,7 +50,6 @@ public class QuadRenderStack extends RenderStack<QuadRenderStack> {
 			coordinates = GL20.glGetUniformLocation(shader.getProgram(), "coordinates");
 		GL20.glUniform4f(resolution, width, height, GuiScreen.getDisplayWidth(), GuiScreen.getDisplayHeight());
 		GL20.glUniform2f(coordinates, x, y);
-		running = true;
 	}
 
 }
