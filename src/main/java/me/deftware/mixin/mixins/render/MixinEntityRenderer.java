@@ -86,6 +86,7 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
            // Reset projection
            MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrixStack.peek().getModel());
            GlStateHelper.enableLighting();
+           GLX.INSTANCE.refresh(matrixStack);
        }
     }
 

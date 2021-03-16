@@ -97,6 +97,7 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 			drawQuads(x + offset, y, width, height);
 			offset += width;
 		}
+		RenderSystem.setShaderColor(1, 1, 1,1);
 	}
 
 	private void drawQuads(int x, int y, int width, int height) {

@@ -38,10 +38,10 @@ public class QuadRenderStack extends RenderStack<QuadRenderStack> {
 		if (shader != null)
 			setupUniforms(x, y, xx - x, yy - y, shader);
 		// Draw
-		vertex(xx, y, 0).color(red, green, blue, alpha).next();
-		vertex(x, y, 0).color(red, green, blue, alpha).next();
-		vertex(x, yy, 0).color(red, green, blue, alpha).next();
-		vertex(xx, yy, 0).color(red, green, blue, alpha).next();
+		vertex(xx, y, 0).next();
+		vertex(x, y, 0).next();
+		vertex(x, yy, 0).next();
+		vertex(xx, yy, 0).next();
 		return this;
 	}
 	

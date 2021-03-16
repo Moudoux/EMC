@@ -54,21 +54,25 @@ public abstract class RenderStack<T> {
 	protected boolean setupMatrix = false;
 
 	public T setupMatrix() {
-		if (customMatrix)
+		return setupMatrix(true);
+	}
+
+	public T setupMatrix(boolean push) {
+		 if (customMatrix && !inCustomMatrix)
 			reloadCustomMatrix();
 		// Setup gl
-		if (!setupMatrix)
-			GLX.INSTANCE.push();
-		else
-			throw new IllegalStateException("Cannot call setupMatrix twice!");
+		if (push)
+			if (!setupMatrix)
+				GLX.INSTANCE.push();
+			else
+				throw new IllegalStateException("Cannot call setupMatrix twice!");
 		if (!locked) {
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			RenderSystem.enableBlend();
-			RenderSystem.lineWidth(lineWidth);
 			RenderSystem.disableTexture();
 			RenderSystem.disableDepthTest();
 			RenderSystem.depthMask(false);
-			RenderSystem.setShader(GameRenderer::method_34540);
+			setShader();
 		}
 		setupMatrix = true;
 		return (T) this;
@@ -76,6 +80,7 @@ public abstract class RenderStack<T> {
 
 	public T glLineWidth(float width) {
 		this.lineWidth = width;
+		RenderSystem.lineWidth(lineWidth);
 		return (T) this;
 	}
 
@@ -100,6 +105,7 @@ public abstract class RenderStack<T> {
 
 	public T begin(int mode) {
 		running = true;
+		RenderSystem.lineWidth(lineWidth);
 		builder.begin(translate(mode), getFormat());
 		return (T) this;
 	}
@@ -122,10 +128,6 @@ public abstract class RenderStack<T> {
 		return VertexFormat.DrawMode.QUADS;
 	}
 
-	protected VertexFormat getFormat() {
-		return VertexFormats.POSITION_COLOR;
-	}
-
 	public void end() {
 		end(true);
 	}
@@ -142,23 +144,34 @@ public abstract class RenderStack<T> {
 			RenderSystem.depthMask(true);
 			RenderSystem.enableTexture();
 			RenderSystem.enableDepthTest();
-			if (customMatrix)
+			if (customMatrix && inCustomMatrix)
 				reloadMinecraftMatrix();
 		}
 		setupMatrix = false;
 	}
 
 	protected void drawBuffer() {
-		builder.end();
-		BufferRenderer.draw(builder);
+		if (builder.isBuilding()) {
+			builder.end();
+			BufferRenderer.draw(builder);
+		}
 	}
 
-	public Matrix4f getModel() {
+	protected Matrix4f getModel() {
 		return GLX.INSTANCE.getModel();
 	}
 
 	protected VertexConsumer vertex(double x, double y, double z) {
-		return builder.vertex(getModel(), (float) x, (float) y, (float) z);
+		return builder.vertex(getModel(), (float) x, (float) y, (float) z).color(red, green, blue, alpha);
+	}
+
+	protected VertexFormat getFormat() {
+		return VertexFormats.POSITION_COLOR;
+	}
+
+	protected void setShader() {
+		// POSITION_COLOR
+		RenderSystem.setShader(GameRenderer::method_34540);
 	}
 
 	/**
@@ -167,20 +180,7 @@ public abstract class RenderStack<T> {
 	public static void reloadCustomMatrix() {
 		inCustomMatrix = true;
 		// Change matrix
-		/*GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		GL11.glOrtho(0.0D, MinecraftClient.getInstance().getWindow().getWidth(), MinecraftClient.getInstance().getWindow().getHeight(), 0.0D, 1000.0D, 3000.0D);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glLoadIdentity();
-		GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
-		GL11.glColor4f(1f, 1f, 1f, 1f);*/
-
 		RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
-
 		Window window = MinecraftClient.getInstance().getWindow();
 		Matrix4f matrix4f = Matrix4f.method_34239(0.0F, (float) window.getWidth(), 0.0F, (float) window.getHeight(), 1000.0F, 3000.0F);
 		RenderSystem.setProjectionMatrix(matrix4f);
@@ -193,15 +193,6 @@ public abstract class RenderStack<T> {
 
 	public static void reloadMinecraftMatrix() {
 		inCustomMatrix = false;
-		// Revert back to Minecraft
-		/*RenderSystem.matrixMode(5889);
-		RenderSystem.loadIdentity();
-		RenderSystem.ortho(0.0D, MinecraftClient.getInstance().getWindow().getFramebufferWidth() / MinecraftClient.getInstance().getWindow().getScaleFactor(),
-				MinecraftClient.getInstance().getWindow().getFramebufferHeight() / MinecraftClient.getInstance().getWindow().getScaleFactor(), 0.0D, 1000.0D, 3000.0D);
-		RenderSystem.matrixMode(5888);
-		RenderSystem.loadIdentity();
-		RenderSystem.translatef(0.0F, 0.0F, -2000.0F);*/
-
 		Window window = MinecraftClient.getInstance().getWindow();
 		RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
 		Matrix4f matrix4f = Matrix4f.method_34239(0.0F, (float) (window.getFramebufferWidth() / window.getScaleFactor()), 0.0F, (float) (window.getFramebufferHeight() / window.getScaleFactor()), 1000.0F, 3000.0F);
@@ -210,7 +201,6 @@ public abstract class RenderStack<T> {
 		matrixStack.method_34426();
 		matrixStack.translate(0.0D, 0.0D, -2000.0D);
 		RenderSystem.applyModelViewMatrix();
-
 	}
 
 }

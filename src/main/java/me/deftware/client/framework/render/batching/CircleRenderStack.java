@@ -21,7 +21,7 @@ public class CircleRenderStack extends RenderStack<CircleRenderStack> {
 		for (int i = 0; i < 50; i++) {
 			float x = (float) (radius * Math.sin(i * 0.12566370614359174D));
 			float y = (float) (radius * Math.cos(i * 0.12566370614359174D));
-			vertex(xx + x, yy + y, 0).color(red, green, blue, alpha).next();
+			vertex(xx + x, yy + y, 0).next();
 		}
 		return this;
 	}
