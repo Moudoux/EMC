@@ -2,6 +2,9 @@ package me.deftware.client.framework.render.texture;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import com.mojang.blaze3d.systems.RenderSystem;
+import me.deftware.client.framework.render.batching.RenderStack;
+import me.deftware.client.framework.render.gl.GLX;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
@@ -27,11 +30,14 @@ public class SkinRenderer {
     public static void bindSkinTexture(String name, String uuid) {
         GameProfile profile = new GameProfile(UUID.fromString(uuid), name);
         if(loadedSkins.containsKey(name)) {
+            Identifier identifier;
             if (loadedSkins.get(name).getLeft()) {
-                MinecraftClient.getInstance().getTextureManager().bindTexture(loadedSkins.get(name).getRight());
+                identifier = loadedSkins.get(name).getRight();
             } else {
-                MinecraftClient.getInstance().getTextureManager().bindTexture(DefaultSkinHelper.getTexture(profile.getId()));
+                identifier = DefaultSkinHelper.getTexture(profile.getId());
             }
+            MinecraftClient.getInstance().getTextureManager().bindTexture(identifier);
+            RenderSystem.setShaderTexture(0, identifier);
         } else {
             loadedSkins.put(name, new Pair<>(false, null));
             try {
@@ -49,11 +55,11 @@ public class SkinRenderer {
     public static void drawAltFace(String name, String uuid, int x, int y, int w, int h) {
         try {
             bindSkinTexture(name, uuid);
-            glEnable(GL_BLEND);
-            glColor4f(0.9F, 0.9F, 0.9F, 1.0F);
+            RenderStack.blend();
+            GLX.INSTANCE.color(0.9F, 0.9F, 0.9F, 1.0F);
             DrawableHelper.drawTexture(stack, x, y, 24, 24, w, h, 192, 192);
             DrawableHelper.drawTexture(stack, x, y, 120, 24, w, h, 192, 192);
-            glDisable(GL_BLEND);
+            RenderStack.noBlend();
         } catch (Exception ignored) { }
     }
 
@@ -62,8 +68,8 @@ public class SkinRenderer {
             bindSkinTexture(name, uuid);
             boolean slim = DefaultSkinHelper.getModel(UUID.fromString(uuid)).equals("slim");
 
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glColor4f(1, 1, 1, 1);
+            RenderStack.blend();
+            GLX.INSTANCE.color(1, 1, 1, 1);
 
             // Face
             x = x + width / 4;
@@ -159,7 +165,7 @@ public class SkinRenderer {
             v = height / 4f * 4.5F;
             Screen.drawTexture(stack, x, y, u, v, w, h, fw, fh);
 
-            GL11.glDisable(GL11.GL_BLEND);
+            RenderStack.noBlend();
 
         } catch (Exception e) {
             e.printStackTrace();
