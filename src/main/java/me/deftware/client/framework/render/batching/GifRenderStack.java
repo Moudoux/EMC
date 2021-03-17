@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import me.deftware.client.framework.render.texture.GraphicsUtil;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
@@ -117,6 +118,7 @@ public class GifRenderStack extends RenderStack<GifRenderStack> {
             throw new RuntimeException("Cannot render unavailable gif!");
         RenderSystem.enableTexture();
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, glId);
+        RenderSystem.setShaderTexture(0, glId);
         return begin(GL11.GL_QUADS);
     }
 
@@ -129,6 +131,12 @@ public class GifRenderStack extends RenderStack<GifRenderStack> {
     @Override
     protected VertexFormat getFormat() {
         return VertexFormats.POSITION_TEXTURE;
+    }
+
+    @Override
+    protected void setShader() {
+        // POSITION_TEXTURE
+        RenderSystem.setShader(GameRenderer::method_34542);
     }
 
     @Override
