@@ -129,15 +129,6 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 		// RenderSystem.setShaderColor(1, 1, 1,1);
 	}
 
-	private void drawCharacter(int x, int y, LegacyBitmapFont.CharData data) {
-		// Size
-		int width = data.getWidth(), height = data.getHeight();
-		// Offsets
-		int u = data.getU(), v = data.getV();
-		// Draw
-		drawTexture(x, x + width, y, y + height, 0, width, height, u, v, font.getTextureWidth(), font.getTextureHeight());
-	}
-
 	public int getFontHeight() {
 		return (int) (font.getStringHeight() / (scaled ? RenderStack.getScale() : 1f));
 	}
@@ -149,13 +140,22 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 	public int getStringWidth(ChatMessage text) {
 		return getStringWidth(text.toString(false));
 	}
-	
+
+	private void drawCharacter(int x, int y, LegacyBitmapFont.CharData data) {
+		// Size
+		int width = data.getWidth(), height = data.getHeight();
+		// Offsets
+		int u = data.getU(), v = data.getV();
+		// Draw
+		drawTexture(x, x + width, y, y + height, 0, width, height, u, v, font.getTextureWidth(), font.getTextureHeight());
+	}
+
 	/*
 		Draw
 	 */
 
-	private void drawTexture(int x0, int y0, int x1, int y1, int z, int regionWidth, int regionHeight, float u, float v, int textureWidth, int textureHeight) {
-		drawTexturedQuad(x0, y0, x1, y1, z, (u + 0.0F) / textureWidth, (u + regionWidth) / textureWidth, (v + 0.0F) / textureHeight, (v + regionHeight) / textureHeight);
+	private void drawTexture(int x0, int x1, int y0, int y1, int z, int regionWidth, int regionHeight, float u, float v, int textureWidth, int textureHeight) {
+		drawTexturedQuad(x0, x1, y0, y1, z, u / textureWidth, (u + regionWidth) / textureWidth, v / textureHeight, (v + regionHeight) / textureHeight);
 	}
 
 	private void drawTexturedQuad(int x0, int x1, int y0, int y1, int z, float u0, float u1, float v0, float v1) {
