@@ -1,8 +1,8 @@
 package me.deftware.client.framework.gui.toast;
 
 import me.deftware.client.framework.chat.ChatMessage;
-import me.deftware.client.framework.render.texture.Texture;
-import net.minecraft.client.gui.screen.Screen;
+import me.deftware.client.framework.render.gl.GLX;
+import me.deftware.client.framework.render.texture.GlTexture;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
 import net.minecraft.client.util.math.MatrixStack;
@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class ToastImpl implements Toast {
 
-	public Texture icon;
+	public GlTexture icon;
 	public ChatMessage title;
 	public ChatMessage[] text;
 	public long transitionTime = 2000L, visibilityTime = transitionTime;
@@ -26,7 +26,7 @@ public class ToastImpl implements Toast {
 		this(null, title, text);
 	}
 
-	public ToastImpl(Texture icon, ChatMessage title, ChatMessage... text) {
+	public ToastImpl(GlTexture icon, ChatMessage title, ChatMessage... text) {
 		this.text = text;
 		this.title = title;
 		this.icon = icon;
@@ -39,7 +39,7 @@ public class ToastImpl implements Toast {
 	public Visibility draw(MatrixStack matrices, ToastManager manager, long startTime) {
 		// Texture
 		manager.getGame().getTextureManager().bindTexture(TEXTURE);
-		GL11.glColor3f(1.0F, 1.0F, 1.0F);
+		GLX.INSTANCE.color(1, 1, 1, 1);
 		manager.drawTexture(matrices, 0, 0, 0, 0, width, height);
 
 		// Title
@@ -57,11 +57,8 @@ public class ToastImpl implements Toast {
 
 		// Icon
 		if (icon != null) {
-			GL11.glPushMatrix();
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			icon.updateTexture();
-			Screen.drawTexture(matrices, 4, 4, 0, 0, iconWidth, iconHeight, iconWidth, iconHeight);
-			GL11.glPopMatrix();
+			GLX.INSTANCE.color(1, 1, 1, 1);
+			icon.bind().draw(4, 4, iconWidth, iconHeight);
 		}
 		return startTime >= visibilityTime ? Visibility.HIDE : Visibility.SHOW;
 	}

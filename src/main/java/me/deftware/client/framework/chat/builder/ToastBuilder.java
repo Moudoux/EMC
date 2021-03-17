@@ -3,7 +3,7 @@ package me.deftware.client.framework.chat.builder;
 import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.gui.toast.ToastAPI;
 import me.deftware.client.framework.gui.toast.ToastImpl;
-import me.deftware.client.framework.render.texture.Texture;
+import me.deftware.client.framework.render.texture.GlTexture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class ToastBuilder extends ChatBuilder {
 
 	private final List<ChatMessage> text =  new ArrayList<>();
 	private ChatMessage title;
-	private Texture texture;
+	private GlTexture texture;
 
 	public ToastBuilder appendTitle() {
 		title = build();
@@ -29,7 +29,7 @@ public class ToastBuilder extends ChatBuilder {
 		return this;
 	}
 
-	public ToastBuilder withIcon(Texture texture) {
+	public ToastBuilder withIcon(GlTexture texture) {
 		this.texture = texture;
 		return this;
 	}

@@ -7,11 +7,8 @@ import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.gui.minecraft.ScreenInstance;
 import me.deftware.client.framework.gui.widgets.Button;
 import me.deftware.client.framework.input.Mouse;
-import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.client.framework.render.gl.GLX;
-import me.deftware.client.framework.render.texture.Texture;
-import me.deftware.client.framework.util.ResourceUtils;
 import me.deftware.client.framework.util.minecraft.MinecraftIdentifier;
 import me.deftware.client.framework.util.types.Tuple;
 import me.deftware.mixin.imp.IMixinGuiScreen;
@@ -21,23 +18,16 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
-import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author Deftware
  */
 public abstract class GuiScreen extends Screen {
-
-	public static final HashMap<String, Texture> textureHashMap = new HashMap<>();
 
 	public GuiScreen parent;
 	protected boolean escGoesBack = true;
@@ -194,31 +184,6 @@ public abstract class GuiScreen extends Screen {
 
 	protected void clearTexts() {
 		compiledText.clear();
-	}
-
-	public static void drawTexture(EMCMod mod, String texture, int x, int y, int width, int height) {
-		drawTexture(mod, texture, x, y, 0, 0, width, height, width, height);
-	}
-
-	public static void drawTexture(EMCMod mod, String texture, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
-		// TODO: Redo this function
-		if (!textureHashMap.containsKey(texture)) {
-			try {
-				BufferedImage img = ImageIO.read(Objects.requireNonNull(ResourceUtils.getStreamFromModResources(mod, texture)));
-				Texture tex = new Texture(img.getWidth(), img.getHeight(), true);
-				tex.fillFromBufferedImageFlip(img);
-				tex.update();
-				tex.bind();
-				textureHashMap.put(texture, tex);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		} else {
-			textureHashMap.get(texture).updateTexture();
-		}
-		RenderSystem.setShaderColor(1, 1, 1, 1);
-		RenderSystem.setShaderTexture(0, textureHashMap.get(texture).dynamicTexture.getGlId());
-		Screen.drawTexture(new MatrixStack(), x, y, u, v, width, height, textureWidth, textureHeight);
 	}
 
 	public static void drawTexture(MinecraftIdentifier texture, int x, int y, int width, int height) {
