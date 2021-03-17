@@ -16,7 +16,7 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 
 	@Override
 	public CubeRenderStack begin() {
-		return begin(GL11.GL_QUADS);
+		return begin(false);
 	}
 
 	@Override

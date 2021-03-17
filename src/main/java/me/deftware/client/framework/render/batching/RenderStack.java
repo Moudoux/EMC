@@ -47,6 +47,7 @@ public abstract class RenderStack<T> {
 	protected Color lastColor = Color.white;
 
 	protected BufferBuilder builder = Tessellator.getInstance().getBuffer();
+	private int mode = -1;
 
 	public T push() {
 		GLX.INSTANCE.push();
@@ -80,7 +81,7 @@ public abstract class RenderStack<T> {
 	public abstract T begin();
 
 	public T begin(int mode) {
-		blend();
+		this.mode = mode;
 		setShader();
 		RenderSystem.lineWidth(lineWidth);
 		builder.begin(translate(mode), getFormat());
@@ -102,18 +103,24 @@ public abstract class RenderStack<T> {
 		}
 	}
 
+	public static void noBlend() {
+		RenderSystem.disableBlend();
+	}
+
 	public static void blend() {
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		RenderSystem.enableBlend();
 	}
 
 	public static void setupGl() {
+		blend();
 		RenderSystem.disableTexture();
 		RenderSystem.disableDepthTest();
 		RenderSystem.depthMask(false);
 	}
 
 	public static void restoreGl() {
+		noBlend();
 		RenderSystem.depthMask(true);
 		RenderSystem.enableTexture();
 		RenderSystem.enableDepthTest();
