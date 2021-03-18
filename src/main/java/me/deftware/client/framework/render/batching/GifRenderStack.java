@@ -14,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -54,22 +53,16 @@ public class GifRenderStack extends RenderStack<GifRenderStack> {
             this.width = gif.getWidth();
             this.height = gif.getHeight();
 
-            // Create texture and append frames
-            BufferedImage atlas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D graphics = atlas.createGraphics();
-
-            // Fill first frame
-            graphics.drawImage(gif.getFrame(0), 0, 0, null);
+            // Allocate image
+            glId = GraphicsUtil.loadTextureFromBufferedImage(
+                gif.getFrame(0)
+            );
 
             // Loop all frames after the first frame
             for (int i = 0; i < gif.getFrameCount(); i++) {
                 BufferedImage image = gif.getFrame(i);
                 frames.put(i, new Frame(image.getWidth(), image.getHeight(), gif.getDelay(i), getImageBuffer(image)));
             }
-
-            // Upload to gpu
-            graphics.dispose();
-            glId = GraphicsUtil.loadTextureFromBufferedImage(atlas);
 
             logger.debug("Successfully loaded gif");
 
@@ -144,17 +137,22 @@ public class GifRenderStack extends RenderStack<GifRenderStack> {
         return builder.vertex((float) x,  (float) y,  (float) z);
     }
 
-    public GifRenderStack draw(int width, int height) {
+    public GifRenderStack draw(int x0, int y0, int x1, int y1) {
         // Draw frame
-        int x0 = 0, x1 = width, y0 = 0, y1 = height, z = 0;
         int u0 = 0, u1 = 1, v0 = 0, v1 = 1;
-        vertex(x0, y1, z).texture(u0, v1).next();
-        vertex(x1, y1, z).texture(u1, v1).next();
-        vertex(x1, y0, z).texture(u1, v0).next();
-        vertex(x0, y0, z).texture(u0, v0).next();
-        // Update frame
+        vertex(x0, y1, 0).texture(u0, v1).next();
+        vertex(x1, y1, 0).texture(u1, v1).next();
+        vertex(x1, y0, 0).texture(u1, v0).next();
+        vertex(x0, y0, 0).texture(u0, v0).next();
+        // Update
         next();
         return this;
+    }
+
+    public void destroy() {
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, glId);
+        GL11.glDeleteTextures(glId);
+        glId = -1;
     }
 
     @Data

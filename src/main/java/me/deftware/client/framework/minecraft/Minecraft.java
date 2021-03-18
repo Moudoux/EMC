@@ -120,7 +120,7 @@ public class Minecraft {
 	}
 
 	public static void openChat(String originText) {
-		if (MinecraftClient.getInstance().currentScreen == null && MinecraftClient.getInstance().overlay == null) {
+		if (MinecraftClient.getInstance().currentScreen == null && MinecraftClient.getInstance().getOverlay() == null) {
 			MinecraftClient.getInstance().openScreen(new ChatScreen(originText));
 		}
 	}

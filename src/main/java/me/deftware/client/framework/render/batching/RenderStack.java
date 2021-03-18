@@ -195,7 +195,7 @@ public abstract class RenderStack<T> {
 		Matrix4f matrix4f = Matrix4f.method_34239(0.0F, width, 0.0F, height, 1000.0F, 3000.0F);
 		RenderSystem.setProjectionMatrix(matrix4f);
 		MatrixStack matrixStack = RenderSystem.getModelViewStack();
-		matrixStack.method_34426();
+		matrixStack.loadIdentity();
 		matrixStack.translate(0.0D, 0.0D, -2000.0D);
 		RenderSystem.applyModelViewMatrix();
 	}
