@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 /**
  * @author Deftware
@@ -57,6 +58,16 @@ public class GlTexture {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, glId);
         RenderSystem.setShaderTexture(0, glId);
         return this;
+    }
+
+    public void upload(BufferedImage image) {
+        upload(
+                GraphicsUtil.getImageBuffer(image)
+        );
+    }
+
+    public void upload(ByteBuffer buffer) {
+        GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, textureWidth, textureHeight, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
     }
 
     public void destroy() {

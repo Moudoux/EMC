@@ -97,10 +97,8 @@ public abstract class RenderStack<T> {
 	}
 
 	protected void drawBuffer() {
-		if (isBuilding()) {
-			builder.end();
-			BufferRenderer.draw(builder);
-		}
+		builder.end();
+		BufferRenderer.draw(builder);
 	}
 
 	public static void noBlend() {
