@@ -28,7 +28,7 @@ public class LineRenderStack extends RenderStack<LineRenderStack> {
 	public LineRenderStack begin(int mode) {
 		eyes = new Vec3d(0.0D, 0.0D, 1.0D);
 		if (Minecraft.getCamera().getMinecraftCamera() != null)
-			eyes.rotateX(-(float) Math.toRadians(Minecraft.getCamera().getRotationPitch()))
+			eyes = eyes.rotateX(-(float) Math.toRadians(Minecraft.getCamera().getRotationPitch()))
 				.rotateY(-(float) Math.toRadians(Minecraft.getCamera().getRotationYaw()));
 		return super.begin(mode);
 	}
