@@ -55,7 +55,7 @@ public class GlTexture {
     }
 
     public GlTexture bind() {
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, glId);
+        RenderSystem.bindTexture(glId);
         RenderSystem.setShaderTexture(0, glId);
         return this;
     }

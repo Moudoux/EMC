@@ -25,7 +25,6 @@ import static org.lwjgl.opengl.GL11.*;
 public class SkinRenderer {
 
     private static final HashMap<String, Pair<Boolean, Identifier>> loadedSkins = new HashMap<>();
-    private static final MatrixStack stack = new MatrixStack();
 
     public static void bindSkinTexture(String name, String uuid) {
         GameProfile profile = new GameProfile(UUID.fromString(uuid), name);
@@ -57,8 +56,8 @@ public class SkinRenderer {
             bindSkinTexture(name, uuid);
             RenderStack.blend();
             GLX.INSTANCE.color(0.9F, 0.9F, 0.9F, 1.0F);
-            DrawableHelper.drawTexture(stack, x, y, 24, 24, w, h, 192, 192);
-            DrawableHelper.drawTexture(stack, x, y, 120, 24, w, h, 192, 192);
+            DrawableHelper.drawTexture(GLX.INSTANCE.getStack(), x, y, 24, 24, w, h, 192, 192);
+            DrawableHelper.drawTexture(GLX.INSTANCE.getStack(), x, y, 120, 24, w, h, 192, 192);
             RenderStack.noBlend();
         } catch (Exception ignored) { }
     }
@@ -79,14 +78,14 @@ public class SkinRenderer {
             int fh = height * 2;
             float u = height / 4f;
             float v = height / 4f;
-            Screen.drawTexture(stack, x, y, u, v, w, h, fw, fh);
+            Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, w, h, fw, fh);
 
             // Hat
             w = width / 2;
             h = height / 4;
             u = height / 4f * 5;
             v = height / 4f;
-            Screen.drawTexture(stack, x, y, u, v, w, h, fw, fh);
+            Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, w, h, fw, fh);
 
             // Chest
             y = y + height / 4;
@@ -94,14 +93,14 @@ public class SkinRenderer {
             h = height / 8 * 3;
             u = height / 4f * 2.5F;
             v = height / 4f * 2.5F;
-            Screen.drawTexture(stack, x, y, u, v, w, h, fw, fh);
+            Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, w, h, fw, fh);
 
             // Jacket
             w = width / 2;
             h = height / 8 * 3;
             u = height / 4f * 2.5F;
             v = height / 4f * 4.5F;
-            Screen.drawTexture(stack, x, y, u, v, w, h, fw, fh);
+            Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, w, h, fw, fh);
 
             // Left Arm
             x = x - width / 16 * (slim ? 3 : 4);
@@ -110,14 +109,14 @@ public class SkinRenderer {
             h = height / 8 * 3;
             u = height / 4f * 5.5F;
             v = height / 4f * 2.5F;
-            Screen.drawTexture(stack, x, y, u, v, w, h, fw, fh);
+            Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, w, h, fw, fh);
 
             // Left Sleeve
             w = width / 16 * (slim ? 3 : 4);
             h = height / 8 * 3;
             u = height / 4f * 5.5F;
             v = height / 4f * 4.5F;
-            Screen.drawTexture(stack, x, y, u, v, w, h, fw, fh);
+            Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, w, h, fw, fh);
 
             // Right Arm
             x = x + width / 16 * (slim ? 11 : 12);
@@ -125,14 +124,14 @@ public class SkinRenderer {
             h = height / 8 * 3;
             u = height / 4f * 5.5F;
             v = height / 4f * 2.5F;
-            Screen.drawTexture(stack, x, y, u, v, w, h, fw, fh);
+            Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, w, h, fw, fh);
 
             // Right Sleeve
             w = width / 16 * (slim ? 3 : 4);
             h = height / 8 * 3;
             u = height / 4f * 5.5F;
             v = height / 4f * 4.5F;
-            Screen.drawTexture(stack, x, y, u, v, w, h, fw, fh);
+            Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, w, h, fw, fh);
 
             // Left Leg
             x = x - width / 2;
@@ -141,14 +140,14 @@ public class SkinRenderer {
             h = height / 8 * 3;
             u = height / 4f * 0.5F;
             v = height / 4f * 2.5F;
-            Screen.drawTexture(stack, x, y, u, v, w, h, fw, fh);
+            Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, w, h, fw, fh);
 
             // Left Pants
             w = width / 4;
             h = height / 8 * 3;
             u = height / 4f * 0.5F;
             v = height / 4f * 4.5F;
-            Screen.drawTexture(stack, x, y, u, v, w, h, fw, fh);
+            Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, w, h, fw, fh);
 
             // Right Leg
             x = x + width / 4;
@@ -156,14 +155,14 @@ public class SkinRenderer {
             h = height / 8 * 3;
             u = height / 4f * 0.5F;
             v = height / 4f * 2.5F;
-            Screen.drawTexture(stack, x, y, u, v, w, h, fw, fh);
+            Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, w, h, fw, fh);
 
             // Right Pants
             w = width / 4;
             h = height / 8 * 3;
             u = height / 4f * 0.5F;
             v = height / 4f * 4.5F;
-            Screen.drawTexture(stack, x, y, u, v, w, h, fw, fh);
+            Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, w, h, fw, fh);
 
             RenderStack.noBlend();
 

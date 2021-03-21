@@ -1,6 +1,7 @@
 package me.deftware.client.framework.gui.minecraft;
 
 import me.deftware.client.framework.gui.GuiEventListener;
+import me.deftware.client.framework.render.gl.GLX;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.util.math.MatrixStack;
@@ -9,8 +10,6 @@ import net.minecraft.client.util.math.MatrixStack;
  * @author Deftware
  */
 public abstract class GuiSlot extends AlwaysSelectedEntryListWidget<GuiSlot.CustomItem> implements GuiEventListener {
-
-	private static final MatrixStack stack = new MatrixStack();
 
 	public GuiSlot(int width, int height, int topIn, int bottomIn, int slotHeightIn) {
 		super(MinecraftClient.getInstance(), width, height, topIn, bottomIn, slotHeightIn);
@@ -54,7 +53,7 @@ public abstract class GuiSlot extends AlwaysSelectedEntryListWidget<GuiSlot.Cust
 	}
 
 	public void doDraw(int mouseX, int mouseY, float partialTicks) {
-		render(stack, mouseX, mouseY, partialTicks);
+		render(GLX.INSTANCE.getStack(), mouseX, mouseY, partialTicks);
 	}
 
 	public void clickElement(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {

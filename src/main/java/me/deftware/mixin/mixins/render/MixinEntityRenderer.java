@@ -13,6 +13,7 @@ import me.deftware.client.framework.util.minecraft.MinecraftIdentifier;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
@@ -125,6 +126,12 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
             RenderStack.reloadMinecraftMatrix();
         }
         inGameHud.render(matrices, tickDelta);
+    }
+
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;render(Lnet/minecraft/client/util/math/MatrixStack;IIF)V"))
+    private void onRenderScreen(Screen screen, MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        GLX.INSTANCE.refresh(matrices);
+        screen.render(matrices, mouseX, mouseY, delta);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package me.deftware.client.framework.gui.minecraft;
 
+import me.deftware.client.framework.render.gl.GLX;
 import net.minecraft.client.gui.screen.DisconnectedScreen;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -12,7 +13,6 @@ import net.minecraft.client.util.math.MatrixStack;
 public class ScreenInstance {
 
 	private final Screen screen;
-	private final MatrixStack stack = new MatrixStack();
 	private final CommonScreenTypes type;
 
 	public static ScreenInstance newInstance(Screen screen) {
@@ -44,7 +44,7 @@ public class ScreenInstance {
 	}
 
 	public void doDrawTexturedModalRect(int x, int y, int u, int v, int width, int height) {
-		screen.drawTexture(stack, x, y, u, v, width, height);
+		screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, width, height);
 	}
 
 	public enum CommonScreenTypes {

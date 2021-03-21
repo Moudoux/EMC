@@ -1,6 +1,7 @@
 package me.deftware.client.framework.gui.widgets;
 
 import me.deftware.client.framework.gui.GuiEventListener;
+import me.deftware.client.framework.render.gl.GLX;
 import me.deftware.mixin.imp.IMixinGuiTextField;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -13,8 +14,6 @@ import java.util.function.Predicate;
  * @author Deftware
  */
 public class TextField extends TextFieldWidget implements GuiEventListener {
-
-	private final MatrixStack stack = new MatrixStack();
 
 	public TextField(int id, int x, int y, int width, int height) {
 		super(MinecraftClient.getInstance().textRenderer, x, y, width, height, new LiteralText(""));
@@ -57,7 +56,7 @@ public class TextField extends TextFieldWidget implements GuiEventListener {
 	}
 
 	public void onDraw(int mouseX, int mouseY, float partialTicks) {
-		renderButton(stack, mouseX, mouseY, partialTicks);
+		renderButton(GLX.INSTANCE.getStack(), mouseX, mouseY, partialTicks);
 	}
 
 	public void doCursorTick() {

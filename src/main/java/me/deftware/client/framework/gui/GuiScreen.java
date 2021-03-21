@@ -21,7 +21,6 @@ import net.minecraft.text.LiteralText;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,7 +32,6 @@ public abstract class GuiScreen extends Screen {
 	protected boolean escGoesBack = true;
 	protected ScreenInstance parentInstance;
 	protected @Getter List<Tuple<Integer, Integer, LiteralText>> compiledText = new ArrayList<>();
-	private final MatrixStack stack = new MatrixStack();
 
 	public GuiScreen() {
 		super(new LiteralText(""));
@@ -86,7 +84,7 @@ public abstract class GuiScreen extends Screen {
 		onDraw(mouseX, mouseY, partialTicks);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		for (Tuple<Integer, Integer, LiteralText> text : compiledText) {
-			textRenderer.drawWithShadow(stack, text.getRight(), text.getLeft(), text.getMiddle(), 0xFFFFFF);
+			textRenderer.drawWithShadow(GLX.INSTANCE.getStack(), text.getRight(), text.getLeft(), text.getMiddle(), 0xFFFFFF);
 		}
 		onPostDraw(mouseX, mouseY, partialTicks);
 	}
@@ -150,7 +148,7 @@ public abstract class GuiScreen extends Screen {
 	}
 
 	protected void renderBackgroundWrap(int offset) {
-		renderBackground(stack, offset);
+		renderBackground(GLX.INSTANCE.getStack(), offset);
 	}
 
 	protected void renderBackgroundTextureWrap(int offset) {
@@ -191,10 +189,10 @@ public abstract class GuiScreen extends Screen {
 	}
 
 	public static void drawTexture(MinecraftIdentifier texture, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
-		//MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
+		MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
 		RenderSystem.setShaderTexture(0, texture);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		Screen.drawTexture(new MatrixStack(), x, y, u, v, width, height, textureWidth, textureHeight);
+		Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, width, height, textureWidth, textureHeight);
 	}
 
 	protected void goBack() {
