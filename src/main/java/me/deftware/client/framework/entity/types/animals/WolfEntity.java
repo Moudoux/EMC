@@ -2,6 +2,7 @@ package me.deftware.client.framework.entity.types.animals;
 
 import me.deftware.client.framework.entity.types.EntityPlayer;
 import me.deftware.client.framework.entity.types.OwnedEntity;
+import net.minecraft.entity.LivingEntity;
 
 /**
  * @author Deftware
@@ -21,7 +22,11 @@ public class WolfEntity extends OwnedEntity {
 	}
 
 	public String getOwnerName(boolean displayName) {
-		return getMinecraftEntity().getOwner() != null ? (displayName ? getMinecraftEntity().getOwner().getDisplayName() : getMinecraftEntity().getOwner().getName()).getString() : "";
+		LivingEntity entity = getMinecraftEntity().method_35057();
+		if  (entity != null) {
+			return (displayName ? entity.getDisplayName() : entity.getName()).getString();
+		}
+		return "";
 	}
 
 	public String getEntityName(boolean displayName) {

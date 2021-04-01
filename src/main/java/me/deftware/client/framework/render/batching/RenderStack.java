@@ -156,7 +156,7 @@ public abstract class RenderStack<T> {
 
 	protected void setShader() {
 		// POSITION_COLOR
-		RenderSystem.setShader(GameRenderer::method_34540);
+		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 	}
 
 	@Getter

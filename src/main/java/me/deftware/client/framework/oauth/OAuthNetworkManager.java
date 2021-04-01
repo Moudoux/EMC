@@ -29,7 +29,7 @@ public class OAuthNetworkManager extends ClientConnection {
         Lazy<?> lazyGroup;
         if (Epoll.isAvailable() && useNativeTransport) {
             socketClass = EpollSocketChannel.class;
-            lazyGroup = CLIENT_IO_GROUP_EPOLL;
+            lazyGroup = EPOLL_CLIENT_IO_GROUP;
         } else {
             socketClass = NioSocketChannel.class;
             lazyGroup = CLIENT_IO_GROUP;

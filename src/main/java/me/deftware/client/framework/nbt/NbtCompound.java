@@ -1,7 +1,5 @@
 package me.deftware.client.framework.nbt;
 
-import net.minecraft.nbt.CompoundTag;
-
 import java.util.UUID;
 
 /**
@@ -9,14 +7,14 @@ import java.util.UUID;
  */
 public class NbtCompound {
 
-	private final CompoundTag compound;
+	private final net.minecraft.nbt.NbtCompound compound;
 
-	public NbtCompound(CompoundTag compound) {
+	public NbtCompound(net.minecraft.nbt.NbtCompound compound) {
 		this.compound = compound;
 	}
 
 	public NbtCompound() {
-		this.compound = new CompoundTag();
+		this.compound = new net.minecraft.nbt.NbtCompound();
 	}
 
 	public boolean isValid() {
@@ -45,7 +43,7 @@ public class NbtCompound {
 		return new NbtCompound(compound.getCompound(key));
 	}
 
-	public CompoundTag getMinecraftCompound() {
+	public net.minecraft.nbt.NbtCompound getMinecraftCompound() {
 		return compound;
 	}
 

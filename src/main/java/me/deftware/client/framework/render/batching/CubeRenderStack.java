@@ -23,7 +23,7 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 	protected VertexFormat getFormat() {
 		if (lines)
 			// POSITION_COLOR_NORMAL_PADDING
-			return VertexFormats.field_29337;
+			return VertexFormats.LINES;
 		return super.getFormat();
 	}
 
@@ -31,7 +31,7 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 	protected void setShader() {
 		if (lines) {
 			// POSITION_COLOR_NORMAL_PADDING (rendertype_lines)
-			RenderSystem.setShader(GameRenderer::method_34535);
+			RenderSystem.setShader(GameRenderer::getRenderTypeLinesShader);
 			return;
 		}
 		super.setShader();

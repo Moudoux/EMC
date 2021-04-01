@@ -23,8 +23,6 @@ import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ArmorItem;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Rarity;
@@ -183,7 +181,7 @@ public class ItemStack {
 	}
 
 	public void setStackDisplayName(ChatMessage name) {
-		CompoundTag nbt = itemStack.getOrCreateSubTag("display");
+		net.minecraft.nbt.NbtCompound nbt = itemStack.getOrCreateSubTag("display");
 		nbt.putString("Name", LiteralText.Serializer.toJson(name.build()));
 	}
 	
@@ -242,9 +240,9 @@ public class ItemStack {
 
 	public static ArrayList<ItemStack> loadAllItems(NbtCompound compound, int size) {
 		DefaultedList<ItemStack> list = DefaultedList.ofSize(size, ItemStack.EMPTY);
-		ListTag itemTag = compound.getMinecraftCompound().getList("Items", 10);
+		net.minecraft.nbt.NbtList itemTag = compound.getMinecraftCompound().getList("Items", 10);
 		for(int index = 0; index < itemTag.size(); index++) {
-			CompoundTag item = itemTag.getCompound(index);
+			net.minecraft.nbt.NbtCompound item = itemTag.getCompound(index);
 			int slotData = item.getByte("Slot") & 255;
 			if (slotData < list.size()) {
 				list.set(slotData, new ItemStack(net.minecraft.item.ItemStack.fromNbt(new NbtCompound(item).getMinecraftCompound())));

@@ -36,13 +36,13 @@ public class LineRenderStack extends RenderStack<LineRenderStack> {
 	@Override
 	protected VertexFormat getFormat() {
 		// POSITION_COLOR_NORMAL_PADDING
-		return VertexFormats.field_29337;
+		return VertexFormats.LINES;
 	}
 
 	@Override
 	protected void setShader() {
 		// POSITION_COLOR_NORMAL_PADDING (rendertype_lines)
-		RenderSystem.setShader(GameRenderer::method_34535);
+		RenderSystem.setShader(GameRenderer::getRenderTypeLinesShader);
 	}
 
 	@Override

@@ -71,7 +71,7 @@ public class BlockPosition {
 	}
 
 	public BlockPosition offset(EnumFacing facing) {
-		return DoubleBlockPosition.fromMinecraftBlockPos(getMinecraftBlockPos().offset(facing.getFacing()));
+		return DoubleBlockPosition.fromMinecraftBlockPos(getMinecraftBlockPos().offset(facing.getFacing(), 1));
 	}
 
 	@Override

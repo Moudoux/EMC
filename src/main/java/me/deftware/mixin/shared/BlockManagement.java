@@ -35,7 +35,7 @@ public class BlockManagement {
     public static boolean isAnySideTouchingBlock(BlockPos pos, BlockView world, Block... blocks) {
         for (Direction direction : Direction.values()) {
             BlockState blockState = world.getBlockState(
-                    pos.offset(direction)
+                    pos.offset(direction, 1)
             );
             for (Block block : blocks)
                 if (blockState.getBlock() == block)

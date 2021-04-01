@@ -33,12 +33,12 @@ public class MixinWorldClient implements IMixinWorldClient {
     @Unique
     private final Int2ObjectMap<Entity> entities = new Int2ObjectOpenHashMap<>();
 
-    @ModifyVariable(method = "randomBlockDisplayTick(IIIILjava/util/Random;ZLnet/minecraft/util/math/BlockPos$Mutable;)V", at = @At("HEAD"))
+    /*@ModifyVariable(method = "randomBlockDisplayTick(IIIILjava/util/Random;ZLnet/minecraft/util/math/BlockPos$Mutable;)V", at = @At("HEAD"))
     public boolean randomBlockDisplayTick(boolean spawnBarrierBlocks) {
         if (GameMap.INSTANCE.get(GameKeys.FULL_BARRIER_TEXTURE, false))
             return true;
         return spawnBarrierBlocks;
-    }
+    }*/
 
     @Inject(method = "<init>(Lnet/minecraft/client/network/ClientPlayNetworkHandler;Lnet/minecraft/client/world/ClientWorld$Properties;Lnet/minecraft/util/registry/RegistryKey;Lnet/minecraft/world/dimension/DimensionType;ILjava/util/function/Supplier;Lnet/minecraft/client/render/WorldRenderer;ZJ)V", at = @At("TAIL"))
     private void onConstructed(ClientPlayNetworkHandler clientPlayNetworkHandler, ClientWorld.Properties properties, RegistryKey<World> registryKey, DimensionType dimensionType, int i, Supplier<Profiler> supplier, WorldRenderer worldRenderer, boolean debugWorld, long seed, CallbackInfo ci) {

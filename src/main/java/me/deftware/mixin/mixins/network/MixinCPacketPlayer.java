@@ -12,19 +12,19 @@ public class MixinCPacketPlayer implements IMixinCPacketPlayer {
     protected double y;
 
     @Shadow
-    protected boolean field_29179;
+    protected boolean onGround;
 
     @Shadow
     protected boolean changePosition;
 
     @Override
     public boolean isOnGround() {
-        return field_29179;
+        return onGround;
     }
 
     @Override
     public void setOnGround(boolean state) {
-        field_29179 = state;
+        onGround = state;
     }
 
     @Override

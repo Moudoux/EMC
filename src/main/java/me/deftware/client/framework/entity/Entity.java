@@ -33,7 +33,6 @@ import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.mob.PhantomEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
@@ -71,7 +70,7 @@ public class Entity {
 		} else if (entity instanceof net.minecraft.entity.ItemEntity) {
 			return new ItemEntity(entity);
 		} else if (entity instanceof net.minecraft.entity.LivingEntity) {
-			if (entity.writeNbt(new CompoundTag()).containsUuid("Owner")) {
+			if (entity.writeNbt(new net.minecraft.nbt.NbtCompound()).containsUuid("Owner")) {
 				return new OwnedEntity(entity);
 			}
 			return new me.deftware.client.framework.entity.types.LivingEntity(entity);
@@ -177,11 +176,11 @@ public class Entity {
 	}
 
 	public boolean hasNbt() {
-		return entity.writeNbt(new CompoundTag()) != null && entity.writeNbt(new CompoundTag()).getSize() != 0;
+		return entity.writeNbt(new net.minecraft.nbt.NbtCompound()) != null && entity.writeNbt(new net.minecraft.nbt.NbtCompound()).getSize() != 0;
 	}
 
 	public NbtCompound getNbt() {
-		return new NbtCompound(entity.writeNbt(new CompoundTag()));
+		return new NbtCompound(entity.writeNbt(new net.minecraft.nbt.NbtCompound()));
 	}
 
 	public int getTicksExisted() {

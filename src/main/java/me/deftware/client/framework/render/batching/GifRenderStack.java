@@ -119,7 +119,7 @@ public class GifRenderStack extends RenderStack<GifRenderStack> {
     @Override
     protected void setShader() {
         // POSITION_COLOR_TEXTURE
-        RenderSystem.setShader(GameRenderer::method_34541);
+        RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
     }
 
     public GifRenderStack draw(int x0, int y0, int x1, int y1) {
