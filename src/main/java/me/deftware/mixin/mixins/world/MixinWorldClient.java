@@ -10,20 +10,24 @@ import me.deftware.client.framework.global.GameKeys;
 import me.deftware.client.framework.global.GameMap;
 import me.deftware.client.framework.world.classifier.BlockClassifier;
 import me.deftware.mixin.imp.IMixinWorldClient;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -31,23 +35,30 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.function.Supplier;
 
 @Mixin(ClientWorld.class)
-public class MixinWorldClient implements IMixinWorldClient {
+public abstract class MixinWorldClient implements IMixinWorldClient {
+
+    @Shadow public abstract void addParticle(ParticleEffect parameters, double x, double y, double z, double velocityX, double velocityY, double velocityZ);
 
     @Unique
     private final Int2ObjectMap<Entity> entities = new Int2ObjectOpenHashMap<>();
 
-    @Redirect(method = "getBlockParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;getCurrentGameMode()Lnet/minecraft/world/GameMode;", opcode = 180))
-    private GameMode getBlockParticle$getGameMode(ClientPlayerInteractionManager clientPlayerInteractionManager) {
-        if (GameMap.INSTANCE.get(GameKeys.FULL_BARRIER_TEXTURE, false))
-            return GameMode.CREATIVE;
-        return clientPlayerInteractionManager.getCurrentGameMode();
-    }
-
-    @Redirect(method = "getBlockParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;", opcode = 180, ordinal = 0))
-    private Item getBlockParticle$getItem(ItemStack itemStack) {
-        if (GameMap.INSTANCE.get(GameKeys.FULL_BARRIER_TEXTURE, false))
-            return Items.BARRIER;
-        return itemStack.getItem();
+    @SuppressWarnings("ConstantConditions")
+    @ModifyVariable(method = "randomBlockDisplayTick", at = @At("TAIL"))
+    private BlockPos.Mutable onGetBlockParticle(BlockPos.Mutable pos) {
+        boolean barrier = GameMap.INSTANCE.get(GameKeys.FULL_BARRIER_TEXTURE, false),
+                light = GameMap.INSTANCE.get(GameKeys.FULL_LIGHT_TEXTURE, false);
+        if (
+                MinecraftClient.getInstance().interactionManager.getCurrentGameMode() == GameMode.SURVIVAL &&
+                        (barrier || light)
+        ) {
+            BlockState blockState = ((World) (Object) this).getBlockState(pos);
+            Block block = blockState.getBlock();
+            if (barrier && block == Blocks.BARRIER)
+                this.addParticle(ParticleTypes.BARRIER, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+            if (light && block == Blocks.LIGHT)
+                this.addParticle(ParticleTypes.LIGHT, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+        }
+        return pos;
     }
 
     @Inject(method = "<init>(Lnet/minecraft/client/network/ClientPlayNetworkHandler;Lnet/minecraft/client/world/ClientWorld$Properties;Lnet/minecraft/util/registry/RegistryKey;Lnet/minecraft/world/dimension/DimensionType;ILjava/util/function/Supplier;Lnet/minecraft/client/render/WorldRenderer;ZJ)V", at = @At("TAIL"))

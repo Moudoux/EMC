@@ -26,6 +26,7 @@ public enum GameKeys implements IGameKey {
     FULL_CACTUS_VOXEL,
 
     FULL_BARRIER_TEXTURE,
+    FULL_LIGHT_TEXTURE,
 
     RENDER_FLUIDS,
 
