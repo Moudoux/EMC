@@ -1,6 +1,5 @@
 package me.deftware.client.framework.render.batching;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -100,7 +99,7 @@ public class GifRenderStack extends RenderStack<GifRenderStack> {
         if (!isAvailable)
             throw new RuntimeException("Cannot render unavailable gif!");
         RenderSystem.enableTexture();
-        GlStateManager.bindTexture(glId);
+        RenderSystem.bindTexture(glId);
         RenderSystem.setShaderTexture(0, glId);
         return begin(GL11.GL_QUADS);
     }
