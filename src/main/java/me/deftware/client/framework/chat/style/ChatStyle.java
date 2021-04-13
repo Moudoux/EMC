@@ -36,7 +36,7 @@ public class ChatStyle {
 				else if (formatting == Formatting.OBFUSCATED) obfuscated = true;
 				else if (formatting == Formatting.STRIKETHROUGH) strikethrough = true;
 				// Color
-				else color = new ChatColors.ChatColor(null, formatting);
+				else color = new ChatColors.MinecraftColor(null, formatting);
 				break;
 			}
 		}
@@ -44,7 +44,7 @@ public class ChatStyle {
 
 	public void fromStyle(Style style) {
 		// Color
-		if(style.getColor() != null) color = new ChatColors.ChatColor(style.getColor(), null);
+		if(style.getColor() != null) color = new ChatColors.MinecraftColor(style.getColor(), null);
 		// Formatting
 		bold = style.isBold();
 		underline = style.isUnderlined();
@@ -65,7 +65,7 @@ public class ChatStyle {
 		if (obfuscated) style = style.withFormatting(Formatting.OBFUSCATED);
 		if (strikethrough) style = style.withFormatting(Formatting.STRIKETHROUGH);
 		// Color
-		if (color != null) style = color.applyToStyle(style);
+		if (color != null && color instanceof ChatColors.MinecraftColor) style = ((ChatColors.MinecraftColor) color).applyToStyle(style);
 		// Other
 		if (clickEvent != null) style = style.withClickEvent(clickEvent.toEvent());
 		if (hoverEvent != null) style = style.withHoverEvent(hoverEvent.toEvent());

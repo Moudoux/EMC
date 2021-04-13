@@ -40,7 +40,7 @@ public enum ChatColors {
 		this.code = code;
 		this.index = index;
 		this.rgb = rgb;
-		this.chatColor = new ChatColor(null, Formatting.byCode(code));
+		this.chatColor = new MinecraftColor(null, Formatting.byCode(code));
 	}
 
 	@Override
@@ -49,7 +49,20 @@ public enum ChatColors {
 		return Formatting.byCode(code).toString();
 	}
 
-	public static class ChatColor {
+	/**
+	 * Warning: If you create your own class implementing this, it will
+	 * not be applied to Minecraft text (I.e. when a ChatMessage is compiled).
+	 * However, it is supported by {@link me.deftware.client.framework.render.batching.font.FontRenderStack}
+	 */
+	public interface ChatColor {
+
+		Color getColor();
+
+		ChatColor deepCopy();
+
+	}
+
+	public static class MinecraftColor implements ChatColor {
 
 		/**
 		 * Only available in Minecraft >= 1.16
@@ -63,7 +76,7 @@ public enum ChatColors {
 
 		private @Getter Color color;
 
-		public ChatColor(TextColor color, Formatting formatting) {
+		public MinecraftColor(TextColor color, Formatting formatting) {
 			this.textColor = color;
 			this.formatting = formatting;
 			if (formatting != null && formatting.getColorValue() != null) {
@@ -89,7 +102,7 @@ public enum ChatColors {
 		}
 
 		public ChatColor deepCopy() {
-			return new ChatColor(textColor, formatting);
+			return new MinecraftColor(textColor, formatting);
 		}
 
 	}
