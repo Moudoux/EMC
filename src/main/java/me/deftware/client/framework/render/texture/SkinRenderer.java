@@ -20,8 +20,12 @@ import java.util.UUID;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
+ * Mods using this class should create their own texture rendering based on GlTexture, this
+ * class will be removed in future updates.
+ *
  * @author Deftware
  */
+@Deprecated
 public class SkinRenderer {
 
     private static final HashMap<String, Pair<Boolean, Identifier>> loadedSkins = new HashMap<>();

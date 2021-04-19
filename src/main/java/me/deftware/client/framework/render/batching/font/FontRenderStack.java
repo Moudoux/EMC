@@ -31,9 +31,8 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 	@Override
 	public FontRenderStack begin() {
 		// Bind texture
-		int glId = font.getGlId();
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, glId);
-		RenderSystem.setShaderTexture(0, glId);
+		RenderSystem.enableTexture();
+		font.getTextureAtlas().bind();
 		// Set up buffer
 		return super.begin(GL11.GL_QUADS);
 	}

@@ -11,6 +11,7 @@ import java.nio.ByteBuffer;
 /**
  * @author Deftware, Ananas
  */
+@Deprecated
 public class GraphicsUtil {
 
     public static int loadTextureFromBufferedImage(BufferedImage image) {
@@ -33,9 +34,9 @@ public class GraphicsUtil {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, clampModeS);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, clampModeT);
 
-        //Setup texture scaling filtering
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        // Setup texture scaling filtering
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
         // Minecraft modifies these
         GL11.glPixelStorei(GL11.GL_UNPACK_ROW_LENGTH, 0);
