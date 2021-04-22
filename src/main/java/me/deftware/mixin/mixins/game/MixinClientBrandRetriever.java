@@ -8,8 +8,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClientBrandRetriever.class)
 public class MixinClientBrandRetriever {
-    @Inject(method = "getClientModName", at = @At("TAIL"), cancellable = true)
+
+    @Inject(method = "getClientModName", at = @At("TAIL"), cancellable = true, remap = false)
     private static void getClientBranding(CallbackInfoReturnable<String> cir) {
         cir.setReturnValue("vanilla");
     }
+
 }
