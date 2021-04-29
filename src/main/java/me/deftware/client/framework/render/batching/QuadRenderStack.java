@@ -15,21 +15,21 @@ public class QuadRenderStack extends RenderStack<QuadRenderStack> {
 		return begin(GL11.GL_QUADS);
 	}
 
-	public QuadRenderStack drawRect(double x, double y, double xx, double yy, boolean scaling) {
-		return drawRect(x, y, xx, yy, scaling, null);
+	public QuadRenderStack drawRect(double x, double y, double xx, double yy) {
+		return drawRect(x, y, xx, yy, null);
 	}
 
-	public QuadRenderStack drawRect(double x, double y, double xx, double yy, boolean scaling, Shader shader) {
-		return drawRect((float) x, (float) y, (float) xx, (float) yy, scaling, shader);
+	public QuadRenderStack drawRect(double x, double y, double xx, double yy, Shader shader) {
+		return drawRect((float) x, (float) y, (float) xx, (float) yy, shader);
 	}
 
-	public QuadRenderStack drawRect(float x, float y, float xx, float yy, boolean scaling) {
-		return drawRect(x, y, xx, yy, scaling, null);
+	public QuadRenderStack drawRect(float x, float y, float xx, float yy) {
+		return drawRect(x, y, xx, yy, null);
 	}
 
-	public QuadRenderStack drawRect(float x, float y, float xx, float yy, boolean scaling, Shader shader) {
+	public QuadRenderStack drawRect(float x, float y, float xx, float yy, Shader shader) {
 		// Apply scaling
-		if (scaling) {
+		if (scaled) {
 			x *= getScale();
 			y *= getScale();
 			xx *= getScale();

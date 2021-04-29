@@ -2,6 +2,7 @@ package me.deftware.client.framework.render.batching;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.Getter;
+import lombok.Setter;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.render.gl.GLX;
 import net.minecraft.client.MinecraftClient;
@@ -43,11 +44,19 @@ public abstract class RenderStack<T> {
 		scaleChangeCallback.forEach(Runnable::run);
 	}
 
+	@Getter
+	protected boolean scaled = true;
+
 	protected float red = 1f, green = 1f, blue = 1f, alpha = 1f, lineWidth = 2f;
 	protected Color lastColor = Color.white;
 
 	protected BufferBuilder builder = Tessellator.getInstance().getBuffer();
 	private int mode = -1;
+
+	public T setScaled(boolean scaling) {
+		this.scaled = scaling;
+		return (T) this;
+	}
 
 	public T push() {
 		GLX.INSTANCE.push();

@@ -20,7 +20,6 @@ import java.util.Map;
 public class FontRenderStack extends RenderStack<FontRenderStack> {
 
 	private int offset = 0;
-	private @Setter boolean scaled;
 	private final LegacyBitmapFont font;
 
 	public FontRenderStack(IFontProvider font) {

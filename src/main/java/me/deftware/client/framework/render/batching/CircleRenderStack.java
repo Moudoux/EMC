@@ -12,8 +12,8 @@ public class CircleRenderStack extends RenderStack<CircleRenderStack> {
 		return begin(GL11.GL_TRIANGLE_FAN);
 	}
 
-	public CircleRenderStack drawFilledCircle(float xx, float yy, float radius, boolean scaling) {
-		if (scaling) {
+	public CircleRenderStack drawFilledCircle(float xx, float yy, float radius) {
+		if (scaled) {
 			xx *= getScale();
 			yy *= getScale();
 			radius *= getScale();
