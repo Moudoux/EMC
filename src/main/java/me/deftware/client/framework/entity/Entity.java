@@ -339,19 +339,19 @@ public class Entity {
 	}
 
 	public float getRotationYaw() {
-		return entity.method_36454();
+		return entity.getYaw();
 	}
 
 	public float getRotationPitch() {
-		return entity.method_36455();
+		return entity.getPitch();
 	}
 
 	public void setRotationYaw(float yaw) {
-		entity.method_36456(yaw);
+		entity.setPitch(yaw);
 	}
 
 	public void setRotationPitch(float pitch) {
-		entity.method_36457(pitch);
+		entity.setPitch(pitch);
 	}
 
 	public void setPosition(double x, double y, double z) {

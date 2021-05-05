@@ -41,8 +41,8 @@ public class RotationLogic extends EntityPlayer {
 		float[] rotations = getRotations(vec);
 		float oldYaw = entity.prevYaw;
 		float oldPitch = entity.prevPitch;
-		entity.method_36456(limitAngleChange(oldYaw, rotations[0], 30));
-		entity.method_36457(rotations[1]);
+		entity.setYaw(limitAngleChange(oldYaw, rotations[0], 30));
+		entity.setPitch(rotations[1]);
 		return Math.abs(oldYaw - rotations[0]) + Math.abs(oldPitch - rotations[1]) < 1F;
 	}
 
@@ -67,8 +67,8 @@ public class RotationLogic extends EntityPlayer {
 
 	public float getAngleToClientRotation(Entity entity) {
 		float[] needed = getRotations(entity.getBoundingBox().getCenter());
-		float diffYaw = MathHelper.wrapDegrees(this.entity.method_36454()) - needed[0];
-		float diffPitch = MathHelper.wrapDegrees(this.entity.method_36455()) - needed[1];
+		float diffYaw = MathHelper.wrapDegrees(this.entity.getYaw()) - needed[0];
+		float diffPitch = MathHelper.wrapDegrees(this.entity.getPitch()) - needed[1];
 		return MathHelper.sqrt(diffYaw * diffYaw + diffPitch * diffPitch);
 	}
 
