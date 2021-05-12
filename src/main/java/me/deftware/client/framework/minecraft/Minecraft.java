@@ -14,6 +14,7 @@ import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.util.hit.EntityHitResult;
@@ -116,7 +117,7 @@ public class Minecraft {
 	}
 
 	public static void connectToServer(ServerConnectionInfo server) {
-		// MinecraftClient.getInstance().openScreen(new ConnectScreen(new MultiplayerScreen(null), MinecraftClient.getInstance(), server));
+		ConnectScreen.method_36877(new MultiplayerScreen(null), MinecraftClient.getInstance(), ServerAddress.parse(server.address), server);
 	}
 
 	public static void openChat(String originText) {

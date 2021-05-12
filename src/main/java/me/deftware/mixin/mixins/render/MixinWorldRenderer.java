@@ -44,7 +44,7 @@ public abstract class MixinWorldRenderer {
 	@Shadow
 	protected abstract boolean canDrawEntityOutlines();
 
-	@Shadow @Final private BlockEntityRenderDispatcher field_27741;
+	@Shadow @Final private BlockEntityRenderDispatcher blockEntityRenderDispatcher;
 
 	@Inject(method = "tickRainSplashing", at = @At("HEAD"), cancellable = true)
 	private void renderRain(Camera camera, CallbackInfo ci) {
@@ -124,7 +124,7 @@ public abstract class MixinWorldRenderer {
 			shaderTarget = ShaderTarget.STORAGE;
 		}
 		// field_27741
-		field_27741.render(blockEntity, tickDelta, matrix,
+		this.blockEntityRenderDispatcher.render(blockEntity, tickDelta, matrix,
 				flag ? shaderTarget.getOutlineVertexConsumerProvider() : original
 		);
 	}

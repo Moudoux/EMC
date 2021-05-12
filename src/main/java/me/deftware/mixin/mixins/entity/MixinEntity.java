@@ -10,7 +10,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityPose;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,7 +17,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @SuppressWarnings("ConstantConditions")
 @Mixin(Entity.class)
@@ -29,12 +27,6 @@ public abstract class MixinEntity implements IMixinEntity {
 
     @Shadow
     protected boolean onGround;
-
-    @Shadow
-    public float pitch;
-
-    @Shadow
-    public float yaw;
 
     @Shadow
     protected boolean inNetherPortal;
@@ -51,7 +43,12 @@ public abstract class MixinEntity implements IMixinEntity {
     @Shadow
     protected Vec3d movementMultiplier;
 
-    @Shadow protected abstract void unsetRemoved();
+    @Shadow
+    protected abstract void unsetRemoved();
+
+    @Shadow public abstract float getYaw();
+
+    @Shadow public abstract float getPitch();
 
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)

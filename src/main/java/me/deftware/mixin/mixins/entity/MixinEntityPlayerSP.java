@@ -40,6 +40,9 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
     @Shadow
     public abstract boolean isUsingItem();
 
+    @Shadow
+    public abstract float getYaw(float tickDelta);
+
     @Inject(method = "closeHandledScreen", at = @At("HEAD"))
     private void onCloseHandledScreen(CallbackInfo ci) {
         new EventGuiContainerClose().broadcast();
@@ -85,7 +88,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void tick(CallbackInfo ci) {
-        EventUpdate event = new EventUpdate(((ClientPlayerEntity) (Object) this).getX(), ((ClientPlayerEntity) (Object) this).getY(), ((ClientPlayerEntity) (Object) this).getZ(), yaw, pitch, onGround);
+        EventUpdate event = new EventUpdate(((ClientPlayerEntity) (Object) this).getX(), ((ClientPlayerEntity) (Object) this).getY(), ((ClientPlayerEntity) (Object) this).getZ(), getYaw(), getPitch(), onGround);
         event.broadcast();
         if (event.isCanceled()) {
             ci.cancel();
@@ -124,7 +127,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
     @Inject(method = "sendMovementPackets", at = @At(value = "HEAD"), cancellable = true)
     private void onSendMovementPackets(CallbackInfo ci) {
         ClientPlayerEntity entity = (ClientPlayerEntity) (Object) this;
-        EventPlayerWalking event = new EventPlayerWalking(entity.getX(), entity.getY(), entity.getZ(), yaw, pitch, onGround);
+        EventPlayerWalking event = new EventPlayerWalking(entity.getX(), entity.getY(), entity.getZ(), getYaw(), getPitch(), onGround);
         event.broadcast();
         if (event.isCanceled()) {
             ci.cancel();
@@ -134,7 +137,7 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
     @Inject(method = "sendMovementPackets", at = @At(value = "TAIL"), cancellable = true)
     private void onSendMovementPacketsTail(CallbackInfo ci) {
         ClientPlayerEntity entity = (ClientPlayerEntity) (Object) this;
-        EventPlayerWalking event = new EventPlayerWalking.PostEvent(entity.getX(), entity.getY(), entity.getZ(), yaw, pitch, onGround);
+        EventPlayerWalking event = new EventPlayerWalking.PostEvent(entity.getX(), entity.getY(), entity.getZ(), getYaw(), getPitch(), onGround);
         event.broadcast();
         if (event.isCanceled()) {
             ci.cancel();
