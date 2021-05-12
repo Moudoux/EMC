@@ -12,6 +12,9 @@
     "homepage": "https://emc-framework.gitlab.io/",
     "sources": "https://gitlab.com/EMC-Framework/EMC"
   },
+  "depends": {
+    "java": ">=16"
+  },
   "license": "GPL-3.0",
   "custom": {
     "mm:early_risers": [

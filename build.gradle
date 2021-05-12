@@ -1,7 +1,7 @@
 import org.gradle.internal.os.OperatingSystem
 
 plugins {
-	id 'fabric-loom' version '0.8.1'
+	id 'fabric-loom' version '0.8-SNAPSHOT'
 	id "io.freefair.lombok" version "6.0.0-m2"
 }
 
