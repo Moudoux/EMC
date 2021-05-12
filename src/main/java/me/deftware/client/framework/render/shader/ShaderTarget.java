@@ -36,7 +36,7 @@ public enum ShaderTarget {
 	}
 
 	public void init(VertexConsumerProvider.Immediate entityVertexConsumers) {
-		framebuffer = new Framebuffer(MinecraftClient.getInstance().getFramebuffer().viewportWidth, MinecraftClient.getInstance().getFramebuffer().viewportHeight, true, MinecraftClient.IS_SYSTEM_MAC);
+		// framebuffer = new Framebuffer(MinecraftClient.getInstance().getFramebuffer().viewportWidth, MinecraftClient.getInstance().getFramebuffer().viewportHeight, true, MinecraftClient.IS_SYSTEM_MAC);
 		outlineVertexConsumerProvider = new OutlineVertexConsumerProvider(entityVertexConsumers);
 	}
 

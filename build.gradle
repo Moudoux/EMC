@@ -3,6 +3,7 @@ import org.gradle.internal.os.OperatingSystem
 plugins {
 	id 'fabric-loom' version '0.8-SNAPSHOT'
 	id "io.freefair.lombok" version "6.0.0-m2"
+	id 'maven-publish'
 }
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_16
@@ -63,17 +64,18 @@ minecraft {
 	refmapName = 'mixins.emc.refmap.json'
 }
 
-task createPom {
-	doLast {
-		pom {
-			//noinspection GroovyAssignabilityCheck
-			project {
-				groupId "me.deftware"
-				artifactId "EMC-F-v2"
-				version "${version}-${project.minecraftVersion}"
-			}
-		}.writeTo("maven/me/deftware/EMC-F-v2/${version}-${project.minecraftVersion}/EMC-F-v2-${version}-${project.minecraftVersion}.pom")
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			groupId 'me.deftware'
+			artifactId "EMC-F-v2"
+			version "${version}-${project.minecraftVersion}"
+		}
 	}
+}
+
+tasks.withType(GenerateMavenPom).all {
+	destination = layout.buildDirectory.file("../maven/me/deftware/EMC-F-v2/${version}-${project.minecraftVersion}/EMC-F-v2-${version}-${project.minecraftVersion}.pom").get().asFile
 }
 
 task generateApiDocumentation(type: Javadoc) {
@@ -107,6 +109,6 @@ task copyToMinecraft(type: Copy) {
 	}
 }
 
-build.dependsOn(createPom)
+build.dependsOn(generatePomFileForMavenJavaPublication)
 build.finalizedBy(copyBuilds)
 copyToMinecraft.dependsOn(build)

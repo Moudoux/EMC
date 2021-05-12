@@ -116,7 +116,7 @@ public class Minecraft {
 	}
 
 	public static void connectToServer(ServerConnectionInfo server) {
-		MinecraftClient.getInstance().openScreen(new ConnectScreen(new MultiplayerScreen(null), MinecraftClient.getInstance(), server));
+		// MinecraftClient.getInstance().openScreen(new ConnectScreen(new MultiplayerScreen(null), MinecraftClient.getInstance(), server));
 	}
 
 	public static void openChat(String originText) {
