@@ -1,6 +1,6 @@
 
 build:
-  image: kaiwinter/docker-java8-maven
+  image: java:16
   stage: build
   variables:
     GRADLE_OPTS: "-Dorg.gradle.daemon=false"

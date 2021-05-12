@@ -1,24 +1,11 @@
-import net.fabricmc.loom.LoomGradlePlugin
 import org.gradle.internal.os.OperatingSystem
 
-buildscript {
-	repositories {
-		jcenter()
-		mavenCentral()
-		maven { url = "https://maven.fabricmc.net/" }
-		maven { url = "https://plugins.gradle.org/m2/" }
-	}
-	dependencies {
-		classpath "io.freefair.gradle:lombok-plugin:5.1.1"
-		classpath "net.fabricmc:fabric-loom:0.4-SNAPSHOT"
-	}
+plugins {
+	id 'fabric-loom' version '0.8.1'
+	id "io.freefair.lombok" version "6.0.0-m2"
 }
 
-apply plugin: "io.freefair.lombok"
-apply plugin: LoomGradlePlugin
-apply plugin: 'maven'
-
-sourceCompatibility = targetCompatibility = 1.8
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_16
 
 def getVersionFromJava() {
 	def ver = 0.0, patch = 0
@@ -40,25 +27,23 @@ if (OperatingSystem.current().isMacOsX()) {
 } else if (OperatingSystem.current().isLinux()) {
 	minecraftRoot = System.getenv('HOME') + "/.minecraft"
 }
-def mcVersion = "${project.minecraftVersion}"
-def mappingsVer = "${mcVersion}${project.mappingsVer}"
 version = getVersionFromJava()
 
 repositories {
-	mavenCentral()
-	jcenter()
-	maven { url = 'https://maven.fabricmc.net' }
 	maven { url = 'https://gitlab.com/EMC-Framework/maven/raw/master/' }
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:${mcVersion}"
-	mappings "net.fabricmc:yarn:${mappingsVer}:v2"
-	implementation 'com.google.code.findbugs:jsr305:3.0.2'
-	modImplementation "net.fabricmc:fabric-loader:0.9.2+build.206"
+	minecraft "com.mojang:minecraft:${project.minecraftVersion}"
+	mappings "net.fabricmc:yarn:${project.minecraftVersion}${project.mappingsVer}:v2"
+
+	modImplementation "net.fabricmc:fabric-loader:0.11.3"
 	modImplementation 'com.github.modmuss50:Fabric-ASM:b97939c03a'
-	include 'com.github.modmuss50:Fabric-ASM:b97939c03a'
+
+	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 	implementation files("deps/mocked.jar")
+
+	include 'com.github.modmuss50:Fabric-ASM:b97939c03a'
 }
 
 sourceSets {
@@ -78,7 +63,6 @@ minecraft {
 	refmapName = 'mixins.emc.refmap.json'
 }
 
-//noinspection GroovyAssignabilityCheck
 task createPom {
 	doLast {
 		pom {
@@ -86,13 +70,12 @@ task createPom {
 			project {
 				groupId "me.deftware"
 				artifactId "EMC-F-v2"
-				version "${version}-${mcVersion}"
+				version "${version}-${project.minecraftVersion}"
 			}
-		}.writeTo("maven/me/deftware/EMC-F-v2/${version}-${mcVersion}/EMC-F-v2-${version}-${mcVersion}.pom")
+		}.writeTo("maven/me/deftware/EMC-F-v2/${version}-${project.minecraftVersion}/EMC-F-v2-${version}-${project.minecraftVersion}.pom")
 	}
 }
 
-//noinspection GroovyAssignabilityCheck
 task generateApiDocumentation(type: Javadoc) {
 	source = ['src/main/java/me/deftware/client']
 	title = "EMC Framework Documentation"
@@ -100,30 +83,27 @@ task generateApiDocumentation(type: Javadoc) {
 	failOnError false
 }
 
-//noinspection GroovyAssignabilityCheck
 task sourcesJar(type: Jar, dependsOn: classes) {
-	archiveClassifier = 'sources'
+	archiveClassifier.set('sources')
 	from sourceSets.main.allSource
 }
 
-//noinspection GroovyAssignabilityCheck
 task copyBuilds(type: Copy) {
 	from "$rootDir/build/libs/EMC-${version}.jar"
-	into "$rootDir/maven/me/deftware/EMC-F-v2/${version}-${mcVersion}/"
+	into "$rootDir/maven/me/deftware/EMC-F-v2/${version}-${project.minecraftVersion}/"
 	rename { String fileName ->
-		fileName.replace("${version}", "${version}-${mcVersion}").replace("EMC", "EMC-F-v2")
+		fileName.replace(version.toString(), "${version}-${project.minecraftVersion}".toString()).replace("EMC", "EMC-F-v2")
 	}
 	doLast {
-		project.ant.checksum(file: "$rootDir/maven/me/deftware/EMC-F-v2/${version}-${mcVersion}/EMC-F-v2-${version}-${mcVersion}.jar", algorithm: "sha1", todir: "$rootDir/maven/me/deftware/EMC-F-v2/${version}-${mcVersion}/")
+		project.ant.checksum(file: "$rootDir/maven/me/deftware/EMC-F-v2/${version}-${project.minecraftVersion}/EMC-F-v2-${version}-${project.minecraftVersion}.jar", algorithm: "sha1", todir: "$rootDir/maven/me/deftware/EMC-F-v2/${version}-${project.minecraftVersion}/")
 	}
 }
 
-//noinspection GroovyAssignabilityCheck
 task copyToMinecraft(type: Copy) {
 	from "$rootDir/build/libs/EMC-${version}.jar"
-	into "${minecraftRoot}/libraries/me/deftware/EMC-F-v2/${version}-${mcVersion}/"
+	into "${minecraftRoot}/libraries/me/deftware/EMC-F-v2/${version}-${project.minecraftVersion}/"
 	rename { String fileName ->
-		fileName.replace("EMC", "EMC-F-v2").replace(".jar", "-${mcVersion}.jar")
+		fileName.replace("EMC", "EMC-F-v2").replace(".jar", "-${project.minecraftVersion}.jar".toString())
 	}
 }
 
