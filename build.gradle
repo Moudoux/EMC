@@ -1,5 +1,3 @@
-import org.gradle.internal.os.OperatingSystem
-
 plugins {
 	id 'fabric-loom' version '0.8-SNAPSHOT'
 	id "io.freefair.lombok" version "6.0.0-m2"
@@ -22,15 +20,10 @@ def getVersionFromJava() {
 	return "${ver}.${patch}".toString()
 }
 
-def minecraftRoot = System.getenv('APPDATA') + "/.minecraft"
-if (OperatingSystem.current().isMacOsX()) {
-	minecraftRoot = System.getenv('HOME') + "/Library/Application Support/minecraft"
-} else if (OperatingSystem.current().isLinux()) {
-	minecraftRoot = System.getenv('HOME') + "/.minecraft"
-}
 version = getVersionFromJava()
 
 repositories {
+	maven { url 'https://jitpack.io' }
 	maven { url = 'https://gitlab.com/EMC-Framework/maven/raw/master/' }
 }
 
@@ -39,12 +32,12 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.minecraftVersion}${project.mappingsVer}:v2"
 
 	modImplementation "net.fabricmc:fabric-loader:0.11.3"
-	modImplementation 'com.github.modmuss50:Fabric-ASM:b97939c03a'
+	modImplementation 'com.github.Chocohead:Fabric-ASM:v2.2'
 
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 	implementation files("deps/mocked.jar")
 
-	include 'com.github.modmuss50:Fabric-ASM:b97939c03a'
+	include 'com.github.Chocohead:Fabric-ASM:v2.2'
 }
 
 sourceSets {
@@ -74,6 +67,15 @@ publishing {
 	}
 }
 
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
+
+
 tasks.withType(GenerateMavenPom).all {
 	destination = layout.buildDirectory.file("../maven/me/deftware/EMC-F-v2/${version}-${project.minecraftVersion}/EMC-F-v2-${version}-${project.minecraftVersion}.pom").get().asFile
 }
@@ -101,14 +103,8 @@ task copyBuilds(type: Copy) {
 	}
 }
 
-task copyToMinecraft(type: Copy) {
-	from "$rootDir/build/libs/EMC-${version}.jar"
-	into "${minecraftRoot}/libraries/me/deftware/EMC-F-v2/${version}-${project.minecraftVersion}/"
-	rename { String fileName ->
-		fileName.replace("EMC", "EMC-F-v2").replace(".jar", "-${project.minecraftVersion}.jar".toString())
-	}
+build {
+	dependsOn(generatePomFileForMavenJavaPublication)
+	finalizedBy(copyBuilds)
 }
 
-build.dependsOn(generatePomFileForMavenJavaPublication)
-build.finalizedBy(copyBuilds)
-copyToMinecraft.dependsOn(build)

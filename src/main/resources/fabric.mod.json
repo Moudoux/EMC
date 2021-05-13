@@ -3,7 +3,7 @@
   "id": "emc",
   "name": "EMC Framework",
   "description": "Provides an API for EMC with Fabric",
-  "version": "2.0.0",
+  "version": "${version}",
   "environment": "client",
   "authors": [
     "deftware"
@@ -15,8 +15,8 @@
   "depends": {
     "java": ">=16"
   },
-  "license": "GPL-3.0",
-  "custom": {
+  "license": "MIT",
+  "entrypoints": {
     "mm:early_risers": [
       "me.deftware.launch.EarlyRiser"
     ]
