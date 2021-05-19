@@ -9,6 +9,7 @@ import me.deftware.client.framework.global.types.BlockProperty;
 import me.deftware.client.framework.global.types.PropertyManager;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.math.position.BlockPosition;
+import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.client.framework.util.WebUtils;
 import me.deftware.client.framework.world.block.Block;
 import me.deftware.client.framework.world.block.BlockState;
@@ -73,6 +74,10 @@ public class World {
 
 	public static int getWorldHeight() {
 		return Objects.requireNonNull(MinecraftClient.getInstance().world).getHeight();
+	}
+
+	public static int getBlockLightLevel(BlockPosition position) {
+		return Objects.requireNonNull(MinecraftClient.getInstance().world).getLightLevel(position.getMinecraftBlockPos());
 	}
 
 	public static BlockState getStateFromBlockPos(BlockPosition position) {

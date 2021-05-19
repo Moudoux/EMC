@@ -1,5 +1,6 @@
 package me.deftware.client.framework.global.types;
 
+import me.deftware.client.framework.math.box.VoxelShape;
 import me.deftware.client.framework.world.block.Block;
 
 public class BlockProperty implements IProperty {
@@ -8,6 +9,8 @@ public class BlockProperty implements IProperty {
 
     private int luminance = 0;
     private boolean translucent = false, render = true;
+
+    private VoxelShape voxelShape;
 
     public BlockProperty(Block block) {
         this(block.getID());
@@ -20,6 +23,11 @@ public class BlockProperty implements IProperty {
     @Override
     public int getId() {
         return id;
+    }
+
+    public BlockProperty setVoxelShape(VoxelShape voxelShape) {
+        this.voxelShape = voxelShape;
+        return this;
     }
 
     public int getLuminance() {
@@ -47,6 +55,10 @@ public class BlockProperty implements IProperty {
     public BlockProperty setRender(boolean render) {
         this.render = render;
         return this;
+    }
+
+    public VoxelShape getVoxelShape() {
+        return voxelShape;
     }
 
 }
