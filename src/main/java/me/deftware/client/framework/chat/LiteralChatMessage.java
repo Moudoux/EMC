@@ -17,4 +17,8 @@ public class LiteralChatMessage extends ChatMessage {
 		sectionList.add(section);
 	}
 
+	public static LiteralChatMessage formatted(String text, Object... params) {
+		return new LiteralChatMessage(String.format(text, params));
+	}
+
 }

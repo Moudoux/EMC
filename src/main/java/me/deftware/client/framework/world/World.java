@@ -25,6 +25,7 @@ import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.LightType;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.*;
@@ -77,7 +78,7 @@ public class World {
 	}
 
 	public static int getBlockLightLevel(BlockPosition position) {
-		return Objects.requireNonNull(MinecraftClient.getInstance().world).getLightLevel(position.getMinecraftBlockPos());
+		return Objects.requireNonNull(MinecraftClient.getInstance().world).getLightLevel(LightType.BLOCK, position.getMinecraftBlockPos());
 	}
 
 	public static BlockState getStateFromBlockPos(BlockPosition position) {

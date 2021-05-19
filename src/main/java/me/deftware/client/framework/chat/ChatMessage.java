@@ -1,5 +1,6 @@
 package me.deftware.client.framework.chat;
 
+import com.mojang.brigadier.Message;
 import lombok.Getter;
 import me.deftware.client.framework.chat.hud.ChatHud;
 import me.deftware.client.framework.chat.style.ChatStyle;
@@ -17,10 +18,34 @@ import java.util.Optional;
 /**
  * @author Deftware
  */
-public class ChatMessage {
+public class ChatMessage implements Message {
 
 	private LiteralText compiledText; /* Cache */
-	protected @Getter final List<ChatSection> sectionList = new ArrayList<>();
+
+	@Getter
+	protected final List<ChatSection> sectionList = new ArrayList<>();
+
+	public static ChatMessage join(ChatMessage... messages) {
+		ChatMessage message = null;
+		if (messages.length != 0) {
+			message = messages[0];
+			if (messages.length > 1) {
+				for (int i = 1; i < messages.length; i++) {
+					message.join(messages[i]);
+				}
+			}
+		}
+		return message;
+	}
+
+	@Override
+	public String getString() {
+		return this.toString();
+	}
+
+	public String toString() {
+		return this.toString(false);
+	}
 
 	public String toString(boolean withFormatting) {
 		StringBuilder builder = new StringBuilder();

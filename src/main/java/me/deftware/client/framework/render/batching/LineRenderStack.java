@@ -46,7 +46,7 @@ public class LineRenderStack extends RenderStack<LineRenderStack> {
 	}
 
 	@Override
-	protected VertexConsumer vertex(double x, double y, double z) {
+	public VertexConstructor vertex(double x, double y, double z) {
 		return super.vertex(x, y, z).normal(1, 1, 1);
 	}
 

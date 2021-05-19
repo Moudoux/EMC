@@ -314,6 +314,18 @@ public class Entity {
 		return new Vector3d(getPosX(), getPosY(), getPosZ());
 	}
 
+	public int getChunkX() {
+		return entity.getChunkPos().x;
+	}
+
+	public int getChunkY() {
+		return 0;
+	}
+
+	public int getChunkZ() {
+		return entity.getChunkPos().z;
+	}
+
 	public double getPosX() {
 		return entity.getX();
 	}

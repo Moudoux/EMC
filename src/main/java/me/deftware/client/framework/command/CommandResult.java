@@ -10,6 +10,7 @@ import net.minecraft.server.command.ServerCommandSource;
 /**
  * @author Deftware
  */
+@Deprecated
 public class CommandResult {
 
 	private final CommandContext<?> context;

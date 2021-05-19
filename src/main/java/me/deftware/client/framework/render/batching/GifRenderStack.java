@@ -81,7 +81,7 @@ public class GifRenderStack extends RenderStack<GifRenderStack> {
     /**
      * Uploads the next frame in the gif
      */
-    private void next() {
+    private void nextFrame() {
         if (lastFrame < System.currentTimeMillis()) {
             if (frameIndex >= frames.size())
                 frameIndex = 0;
@@ -128,7 +128,7 @@ public class GifRenderStack extends RenderStack<GifRenderStack> {
         vertex(x1, y0, 0).texture(u1, v0).next();
         vertex(x0, y0, 0).texture(u0, v0).next();
         // Update texture
-        next();
+        nextFrame();
         return this;
     }
 

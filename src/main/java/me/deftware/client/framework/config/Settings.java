@@ -1,18 +1,19 @@
 package me.deftware.client.framework.config;
 
 import com.google.gson.*;
-import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.minecraft.Minecraft;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.Consumer;
 
 /**
  * Simple Json based config for EMC mods
@@ -21,51 +22,45 @@ import java.util.function.Consumer;
  */
 public class Settings {
 
-	private JsonObject config;
-	private final File configFile;
-	private final Queue<Consumer<Void>> shutdownQueue = new ConcurrentLinkedQueue<>();
+	public static final Path configDir = Paths.get(Minecraft.getRunDir().getAbsolutePath(), "libraries", "EMC", Minecraft.getMinecraftVersion(), "configs");
+	public static final double revision = 4.0;
 
-	public Settings(String modName) {
-		configFile = new File(String.format("%s/libraries/EMC/%s/configs/%s_config.json", Minecraft.getRunDir().getAbsolutePath(), Minecraft.getMinecraftVersion(), modName));
-		try {
-			if (configFile.exists() && getConfigFileContents().trim().equals("") && !configFile.delete()) {
-				Bootstrap.logger.error("Failed to delete empty file {}", configFile.getName());
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		JsonObject jsonObject;
-		try {
-			// Load config from file
-			jsonObject = configFile.exists() ?
-					new Gson().fromJson(getConfigFileContents(), JsonObject.class) : createConfig(configFile);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			Bootstrap.logger.error("Failed to load config for {}, resetting it...", modName);
-			// Delete old config file
-			if (configFile.exists() && !configFile.delete()) {
-				Bootstrap.logger.error("Failed to delete {}", configFile.getName());
-			}
-			// Create new
-			jsonObject = createConfig(configFile);
-		}
-		config = jsonObject;
+	private final Queue<Runnable> shutdownQueue = new ConcurrentLinkedQueue<>();
+	private JsonObject config = empty();
+
+	private final Logger logger;
+	private final File configFile;
+
+	public Settings(String name) {
+		this(name, "_config");
 	}
 
-	private JsonObject createConfig(File file) {
-		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("version", 4.0);
+	public Settings(String name, String suffix) {
+		this.logger = LogManager.getLogger(name + "/" + this.getClass().getSimpleName());
+		this.configFile = configDir.resolve(name + suffix + ".json").toFile();
+		this.load();
+		// Flush
+		this.save();
+	}
+
+	private void load() {
 		try {
-			if (!configFile.exists()) {
-				// Create a new file
-				if (!configFile.createNewFile()) {
-					throw new Exception("Failed to create config file for " + file.getName());
-				}
+			if (this.configFile.exists()) {
+				this.logger.debug("Loading {}", this.configFile.getAbsolutePath());
+				String contents = getConfigFileContents().trim();
+				if (contents.isEmpty())
+					throw new Exception("Empty config file");
+				this.config = new Gson().fromJson(contents, JsonObject.class);
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			Bootstrap.logger.error("Failed to create config {}", file.getName());
+			this.logger.error("Failed to read mod config, resetting...", ex);
+			this.config = empty();
 		}
+	}
+
+	private JsonObject empty() {
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("version", revision);
 		return jsonObject;
 	}
 
@@ -75,10 +70,9 @@ public class Settings {
 
 	public void setupShutdownHook() {
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			Thread.currentThread().setName(configFile.getName() + " config shutdown thread");
-			Bootstrap.logger.info("Saving {}", configFile.getName());
-			for (Consumer<Void> consumer : shutdownQueue) {
-				consumer.accept(null);
+			this.logger.info("Saving {}", configFile.getName());
+			for (Runnable consumer : shutdownQueue) {
+				consumer.run();
 			}
 			save();
 		}));
@@ -92,7 +86,7 @@ public class Settings {
 		this.config = json;
 	}
 
-	public Queue<Consumer<Void>> getShutdownQueue() {
+	public Queue<Runnable> getShutdownQueue() {
 		return shutdownQueue;
 	}
 
@@ -110,7 +104,7 @@ public class Settings {
 			writer.println(jsonContent);
 			writer.close();
 		} catch (Exception ex) {
-			Bootstrap.logger.error("Failed to save config", ex);
+			this.logger.error("Failed to save config", ex);
 		}
 	}
 

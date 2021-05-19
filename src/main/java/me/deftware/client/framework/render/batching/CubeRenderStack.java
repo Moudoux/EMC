@@ -38,8 +38,8 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 	}
 
 	@Override
-	protected VertexConsumer vertex(double x, double y, double z) {
-		VertexConsumer vertex = super.vertex(x, y, z);
+	public VertexConstructor vertex(double x, double y, double z) {
+		VertexConstructor vertex = super.vertex(x, y, z);
 		if (lines)
 			vertex.normal(0, 0, 0);
 		return vertex;

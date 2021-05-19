@@ -8,6 +8,7 @@ import me.deftware.client.framework.chat.style.ChatStyle;
 import me.deftware.client.framework.fonts.legacy.LegacyBitmapFont;
 import me.deftware.client.framework.registry.font.IFontProvider;
 import me.deftware.client.framework.render.batching.RenderStack;
+import me.deftware.client.framework.render.batching.VertexConstructor;
 import net.minecraft.client.render.*;
 import org.lwjgl.opengl.GL11;
 
@@ -54,8 +55,9 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 	}
 
 	@Override
-	protected VertexConsumer vertex(double x, double y, double z) {
-		return builder.vertex(getModel(), (float) x,  (float) y,  (float) z);
+	public VertexConstructor vertex(double x, double y, double z) {
+		builder.vertex(getModel(), (float) x,  (float) y,  (float) z);
+		return this;
 	}
 
 	public FontRenderStack drawString(double x, double y, String message) {
