@@ -3,9 +3,9 @@ package me.deftware.client.framework.render.shader;
 import lombok.Getter;
 import lombok.Setter;
 
-import net.minecraft.class_6367;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
+import net.minecraft.client.gl.SimpleFramebuffer;
 import net.minecraft.client.render.OutlineVertexConsumerProvider;
 import net.minecraft.client.render.VertexConsumerProvider;
 
@@ -37,7 +37,7 @@ public enum ShaderTarget {
 	}
 
 	public void init(VertexConsumerProvider.Immediate entityVertexConsumers) {
-		framebuffer = new class_6367(MinecraftClient.getInstance().getFramebuffer().viewportWidth, MinecraftClient.getInstance().getFramebuffer().viewportHeight, true, MinecraftClient.IS_SYSTEM_MAC);
+		framebuffer = new SimpleFramebuffer(MinecraftClient.getInstance().getFramebuffer().viewportWidth, MinecraftClient.getInstance().getFramebuffer().viewportHeight, true, MinecraftClient.IS_SYSTEM_MAC);
 		outlineVertexConsumerProvider = new OutlineVertexConsumerProvider(entityVertexConsumers);
 	}
 

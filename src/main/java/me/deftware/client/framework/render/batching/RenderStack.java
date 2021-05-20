@@ -199,7 +199,7 @@ public abstract class RenderStack<T> {
 
 	protected static void setMatrix(float width, float height) {
 		RenderSystem.clear(256, MinecraftClient.IS_SYSTEM_MAC);
-		Matrix4f matrix4f = Matrix4f.method_34239(0.0F, width, 0.0F, height, 1000.0F, 3000.0F);
+		Matrix4f matrix4f = Matrix4f.projectionMatrix(0.0F, width, 0.0F, height, 1000.0F, 3000.0F);
 		RenderSystem.setProjectionMatrix(matrix4f);
 		MatrixStack matrixStack = RenderSystem.getModelViewStack();
 		matrixStack.loadIdentity();

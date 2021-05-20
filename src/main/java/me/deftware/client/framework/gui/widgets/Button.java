@@ -5,14 +5,15 @@ import lombok.Setter;
 import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.gui.GuiEventListener;
 import me.deftware.mixin.imp.IMixinGuiButton;
+import net.minecraft.class_6382;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 
 /**
  * @author Deftware
  */
-public abstract class Button extends AbstractButtonWidget implements GuiEventListener {
+public abstract class Button extends ClickableWidget implements GuiEventListener {
 
 	private @Getter @Setter boolean shouldPlaySound = true;
 
@@ -39,6 +40,11 @@ public abstract class Button extends AbstractButtonWidget implements GuiEventLis
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void method_37020(class_6382 arg) {
+		// TODO: What does this do
 	}
 
 	public abstract void onButtonClick(double mouseX, double mouseY);

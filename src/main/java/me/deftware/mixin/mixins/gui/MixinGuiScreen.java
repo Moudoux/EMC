@@ -13,9 +13,10 @@ import me.deftware.client.framework.item.Item;
 import me.deftware.mixin.imp.IMixinGuiScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -39,19 +40,19 @@ public class MixinGuiScreen implements IMixinGuiScreen {
     protected boolean shouldSendPostRenderEvent = true;
 
     @Unique
-    protected InstanceList<Button, AbstractButtonWidget> emcButtonList =
-            new InstanceList<>(() -> this.buttons, button -> button instanceof Button, button -> (Button) button);
+    protected InstanceList<Button, Drawable> emcButtonList =
+            new InstanceList<>(() -> this.field_33816, button -> button instanceof Button, button -> (Button) button);
 
     @Shadow
     protected TextRenderer textRenderer;
 
     @Shadow
     @Final
-    protected List<AbstractButtonWidget> buttons;
+    private List<Drawable> field_33816;
 
     @Shadow
     @Final
-    protected List<Element> children;
+    private List<Element> children;
 
     @Shadow
     protected MinecraftClient client;
@@ -71,8 +72,8 @@ public class MixinGuiScreen implements IMixinGuiScreen {
     }
 
     @Override
-    public List<AbstractButtonWidget> getButtonList() {
-        return buttons;
+    public List<Drawable> getButtonList() {
+        return field_33816;
     }
 
     @Override
@@ -83,6 +84,11 @@ public class MixinGuiScreen implements IMixinGuiScreen {
     @Override
     public List<Element> getEventList() {
         return children;
+    }
+
+    @Override
+    public void addChildElement(Element element) {
+        this.children.add(element);
     }
 
     @Inject(method = "render", at = @At("HEAD"))

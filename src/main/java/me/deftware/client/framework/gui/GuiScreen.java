@@ -15,7 +15,6 @@ import me.deftware.mixin.imp.IMixinGuiScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import org.lwjgl.glfw.GLFW;
@@ -125,7 +124,7 @@ public abstract class GuiScreen extends Screen {
 		} else {
 			onKeyPressed(keyCode, action, modifiers);
 			// TextFieldWidget inherits AbstractButtonWidget so this applies to both normal buttons and textfield's
-			if (keyCode == GLFW.GLFW_KEY_TAB && children.stream().anyMatch(e -> e instanceof AbstractButtonWidget && ((AbstractButtonWidget) e).active)) {
+			/*if (keyCode == GLFW.GLFW_KEY_TAB && children.stream().anyMatch(e -> e instanceof AbstractButtonWidget && ((AbstractButtonWidget) e).active)) {
 				int i = Iterables.indexOf(children, e -> e instanceof AbstractButtonWidget && ((AbstractButtonWidget) e).isFocused()),
 						newIndex = i == Iterables.indexOf(children, e -> e == children.stream().filter(t -> t instanceof AbstractButtonWidget && ((AbstractButtonWidget) t).active).reduce((first, second) -> second).get()) || i == -1 ?
 								Iterables.indexOf(children, e -> e == children.stream().filter(t -> t instanceof AbstractButtonWidget && ((AbstractButtonWidget) t).active).findFirst().get()) : i + 1;
@@ -133,18 +132,18 @@ public abstract class GuiScreen extends Screen {
 					children.get(newIndex).changeFocus(true);
 				}
 				children.get(newIndex).changeFocus(true);
-			}
+			}*/
 			super.keyPressed(keyCode, action, modifiers);
 		}
 		return false;
 	}
 
 	public void addEventListener(GuiEventListener listener) {
-		this.children.add(listener);
+		addRawEventListener(listener);
 	}
 
 	public void addRawEventListener(Element listener) {
-		this.children.add(listener);
+		((IMixinGuiScreen) this).addChildElement(listener);
 	}
 
 	protected void renderBackgroundWrap(int offset) {
@@ -156,8 +155,8 @@ public abstract class GuiScreen extends Screen {
 	}
 
 	protected GuiScreen addButton(Button button) {
-		children.add(button);
-		buttons.add(button);
+		method_37060(button);
+		addRawEventListener(button);
 		return this;
 	}
 
@@ -176,8 +175,7 @@ public abstract class GuiScreen extends Screen {
 	}
 
 	protected void clearButtons() {
-		buttons.clear();
-		children.removeIf(element -> element instanceof Button);
+		method_37067();
 	}
 
 	protected void clearTexts() {

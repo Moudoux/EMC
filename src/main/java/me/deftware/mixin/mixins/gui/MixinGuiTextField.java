@@ -3,7 +3,7 @@ package me.deftware.mixin.mixins.gui;
 import me.deftware.client.framework.event.events.EventChatboxType;
 import me.deftware.mixin.imp.IMixinGuiTextField;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
@@ -22,7 +22,7 @@ import java.lang.ref.WeakReference;
 import java.util.function.BiFunction;
 
 @Mixin(TextFieldWidget.class)
-public abstract class MixinGuiTextField extends AbstractButtonWidget implements IMixinGuiTextField {
+public abstract class MixinGuiTextField extends ClickableWidget implements IMixinGuiTextField {
 
     public MixinGuiTextField(int x, int y, Text message) {
         super(x, y, 200, 20, message);
