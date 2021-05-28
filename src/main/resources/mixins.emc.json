@@ -55,6 +55,7 @@
     "network.MixinCPacketPlayer",
     "network.MixinNetHandlerLoginClient",
     "network.MixinNetHandlerPlayClient",
+    "network.MixinPlayerInteractEntityC2SPacket",
     "network.MixinNetworkManager",
     "network.MixinNetworkPlayerInfo",
     "network.MixinServerListEntryNormal",

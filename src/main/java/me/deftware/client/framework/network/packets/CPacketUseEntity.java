@@ -2,6 +2,7 @@ package me.deftware.client.framework.network.packets;
 
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.network.PacketWrapper;
+import me.deftware.mixin.imp.IMixinPlayerInteractEntityC2SPacket;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 
@@ -19,14 +20,14 @@ public class CPacketUseEntity extends PacketWrapper {
     }
 
     public Type getType() {
-        /*switch (((PlayerInteractEntityC2SPacket) packet).getClass()) {
+        switch (((IMixinPlayerInteractEntityC2SPacket) packet).getActionType()) {
             case ATTACK:
                 return Type.ATTACK;
             case INTERACT:
                 return Type.INTERACT;
             case INTERACT_AT:
                 return Type.INTERACT_AT;
-        }*/ // FIXME
+        }
         return Type.UNKNOWN;
     }
 
