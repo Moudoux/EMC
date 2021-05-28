@@ -55,7 +55,7 @@ public abstract class MixinEntity implements IMixinEntity {
     public void changeLookDirection(double cursorX, double cursorY, CallbackInfo ci) {
         if ((Object) this == MinecraftClient.getInstance().player && CameraEntityMan.isActive()) {
             CameraEntityMan.fakePlayer.changeLookDirection(cursorX, cursorY);
-            CameraEntityMan.fakePlayer.setHeadYaw(CameraEntityMan.fakePlayer.getHeadYaw());
+            CameraEntityMan.fakePlayer.setHeadYaw(CameraEntityMan.fakePlayer.getYaw());
             ci.cancel();
         }
     }
