@@ -5,8 +5,8 @@ import me.deftware.client.framework.fonts.minecraft.FontRenderer;
 import me.deftware.client.framework.gui.GuiScreen;
 import me.deftware.client.framework.render.gl.GLX;
 import me.deftware.client.framework.util.types.Pair;
-import net.minecraft.class_6382;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.client.util.math.MatrixStack;
 
@@ -46,7 +46,7 @@ public class StringList extends EntryListWidget<StringList.StringEntry> {
 	}
 
 	@Override
-	public void method_37020(class_6382 arg) {
+	public void appendNarrations(NarrationMessageBuilder builder) {
 
 	}
 

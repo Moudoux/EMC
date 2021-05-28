@@ -155,7 +155,7 @@ public abstract class GuiScreen extends Screen {
 	}
 
 	protected GuiScreen addButton(Button button) {
-		method_37060(button);
+		addDrawable(button);
 		addRawEventListener(button);
 		return this;
 	}
@@ -175,7 +175,7 @@ public abstract class GuiScreen extends Screen {
 	}
 
 	protected void clearButtons() {
-		method_37067();
+		clearChildren();
 	}
 
 	protected void clearTexts() {

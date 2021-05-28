@@ -59,7 +59,7 @@ public class RotationLogic extends EntityPlayer {
 		double diffX = vec.getX() - eyesPos.getX();
 		double diffY = vec.getY() - eyesPos.getY();
 		double diffZ = vec.getZ() - eyesPos.getZ();
-		double diffXZ = MathHelper.sqrt(diffX * diffX + diffZ * diffZ);
+		double diffXZ = Math.sqrt(diffX * diffX + diffZ * diffZ);
 		float yaw = (float) Math.toDegrees(Math.atan2(diffZ, diffX)) - 90F;
 		float pitch = (float) -Math.toDegrees(Math.atan2(diffY, diffXZ));
 		return new float[]{MathHelper.wrapDegrees(yaw), MathHelper.wrapDegrees(pitch)};

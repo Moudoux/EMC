@@ -16,7 +16,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -41,14 +40,14 @@ public class MixinGuiScreen implements IMixinGuiScreen {
 
     @Unique
     protected InstanceList<Button, Drawable> emcButtonList =
-            new InstanceList<>(() -> this.field_33816, button -> button instanceof Button, button -> (Button) button);
+            new InstanceList<>(() -> this.drawables, button -> button instanceof Button, button -> (Button) button);
 
     @Shadow
     protected TextRenderer textRenderer;
 
     @Shadow
     @Final
-    private List<Drawable> field_33816;
+    private List<Drawable> drawables;
 
     @Shadow
     @Final
@@ -73,7 +72,7 @@ public class MixinGuiScreen implements IMixinGuiScreen {
 
     @Override
     public List<Drawable> getButtonList() {
-        return field_33816;
+        return drawables;
     }
 
     @Override

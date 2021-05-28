@@ -5,8 +5,8 @@ import lombok.Setter;
 import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.gui.GuiEventListener;
 import me.deftware.mixin.imp.IMixinGuiButton;
-import net.minecraft.class_6382;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 
@@ -43,8 +43,8 @@ public abstract class Button extends ClickableWidget implements GuiEventListener
 	}
 
 	@Override
-	public void method_37020(class_6382 arg) {
-		// TODO: What does this do
+	public void appendNarrations(NarrationMessageBuilder builder) {
+
 	}
 
 	public abstract void onButtonClick(double mouseX, double mouseY);
