@@ -105,6 +105,8 @@ public abstract class RenderStack<T> implements VertexConstructor {
 	}
 
 	protected void drawBuffer() {
+		if (RenderSystem.getShader() != null && RenderSystem.getShader().lineWidth != null)
+			RenderSystem.getShader().lineWidth.set(RenderSystem.getShaderLineWidth());
 		builder.end();
 		BufferRenderer.draw(builder);
 	}
@@ -137,7 +139,7 @@ public abstract class RenderStack<T> implements VertexConstructor {
 			case GL11.GL_QUADS:
 				return VertexFormat.DrawMode.QUADS;
 			case GL11.GL_LINE_STRIP:
-				return VertexFormat.DrawMode.LINE_STRIP;
+				return VertexFormat.DrawMode.DEBUG_LINE_STRIP;
 			case GL11.GL_LINES:
 				// Not sure why DEBUG_LINES behaves differently from LINES
 				// LINES does not work at all.

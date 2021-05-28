@@ -1,6 +1,5 @@
 package me.deftware.client.framework.render.batching;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.math.box.BoundingBox;
 import me.deftware.client.framework.minecraft.Minecraft;
 import net.minecraft.client.render.*;
@@ -17,32 +16,6 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 	@Override
 	public CubeRenderStack begin() {
 		return begin(false);
-	}
-
-	@Override
-	protected VertexFormat getFormat() {
-		if (lines)
-			// POSITION_COLOR_NORMAL_PADDING
-			return VertexFormats.LINES;
-		return super.getFormat();
-	}
-
-	@Override
-	protected void setShader() {
-		if (lines) {
-			// POSITION_COLOR_NORMAL_PADDING (rendertype_lines)
-			RenderSystem.setShader(GameRenderer::getRenderTypeLinesShader);
-			return;
-		}
-		super.setShader();
-	}
-
-	@Override
-	public VertexConstructor vertex(double x, double y, double z) {
-		VertexConstructor vertex = super.vertex(x, y, z);
-		if (lines)
-			vertex.normal(0, 0, 0);
-		return vertex;
 	}
 
 	public CubeRenderStack begin(boolean lines) {
@@ -133,8 +106,7 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 
 		builder.end();
 		BufferRenderer.draw(builder);
-
-		builder.begin(VertexFormat.DrawMode.LINES, getFormat());
+		builder.begin(VertexFormat.DrawMode.DEBUG_LINES, getFormat());
 
 		vertex(box.minX, box.minY, box.minZ).next();
 		vertex(box.minX, box.maxY, box.minZ).next();
