@@ -1,14 +1,9 @@
 package me.deftware.client.framework.render.batching;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.block.TileEntity;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.minecraft.Minecraft;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
@@ -31,23 +26,6 @@ public class LineRenderStack extends RenderStack<LineRenderStack> {
 			eyes = eyes.rotateX(-(float) Math.toRadians(Minecraft.getCamera().getRotationPitch()))
 				.rotateY(-(float) Math.toRadians(Minecraft.getCamera().getRotationYaw()));
 		return super.begin(mode);
-	}
-
-	@Override
-	protected VertexFormat getFormat() {
-		// POSITION_COLOR_NORMAL_PADDING
-		return VertexFormats.LINES;
-	}
-
-	@Override
-	protected void setShader() {
-		// POSITION_COLOR_NORMAL_PADDING (rendertype_lines)
-		RenderSystem.setShader(GameRenderer::getRenderTypeLinesShader);
-	}
-
-	@Override
-	public VertexConstructor vertex(double x, double y, double z) {
-		return super.vertex(x, y, z).normal(1, 1, 1);
 	}
 
 	public LineRenderStack drawLine(float x1, float y1, float x2, float y2) {

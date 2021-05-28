@@ -139,7 +139,9 @@ public abstract class RenderStack<T> implements VertexConstructor {
 			case GL11.GL_LINE_STRIP:
 				return VertexFormat.DrawMode.LINE_STRIP;
 			case GL11.GL_LINES:
-				return VertexFormat.DrawMode.LINES;
+				// Not sure why DEBUG_LINES behaves differently from LINES
+				// LINES does not work at all.
+				return VertexFormat.DrawMode.DEBUG_LINES;
 			case GL11.GL_TRIANGLE_FAN:
 				return VertexFormat.DrawMode.TRIANGLE_FAN;
 			case GL11.GL_TRIANGLE_STRIP:
