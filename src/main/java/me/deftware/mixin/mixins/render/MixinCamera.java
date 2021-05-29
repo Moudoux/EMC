@@ -5,6 +5,7 @@ import me.deftware.client.framework.event.events.EventCameraClip;
 import me.deftware.client.framework.render.camera.entity.CameraEntityMan;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.CameraSubmersionType;
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -44,13 +45,11 @@ public class MixinCamera {
     }
 
     @Inject(at = @At("HEAD"), cancellable = true, method = "getSubmersionType")
-    public void getSubmergedFluidState(CallbackInfoReturnable<FluidState> info) {
-        EventAnimation event = new EventAnimation(EventAnimation.AnimationType.Underwater);
-        event.broadcast();
+    public void getSubmergedFluidState(CallbackInfoReturnable<CameraSubmersionType> info) {
+        EventAnimation event = new EventAnimation(EventAnimation.AnimationType.Underwater).broadcast();
         if (event.isCanceled()) {
             // Assuming that cancel is in this case completely ignoring fog and not to keep old fog rendered
-            info.setReturnValue(Fluids.EMPTY.getDefaultState());
-            info.cancel();
+            info.setReturnValue(CameraSubmersionType.NONE);
         }
     }
 
