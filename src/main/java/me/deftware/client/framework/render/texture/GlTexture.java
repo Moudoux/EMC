@@ -63,19 +63,27 @@ public class GlTexture {
         this.upload(getImageBuffer(image), false);
     }
 
-    public void draw(int x, int y, int width, int height) {
-        draw(x, y, width, height, 0, 0, width, height);
+    public GlTexture draw(int x, int y, int width, int height) {
+        return draw(x, y, width, height, 0, 0, width, height);
     }
 
-    public void draw(int x, int y, int width, int height, int u, int v, int textureWidth, int textureHeight) {
+    public GlTexture draw(int x, int y, int width, int height, int u, int v, int textureWidth, int textureHeight) {
+        drawTexture(x, y, width, height, u, v, textureWidth, textureHeight);
+        return this;
+    }
+
+    public static void drawTexture(int x, int y, int width, int height, int u, int v, int textureWidth, int textureHeight) {
         // Render call to Minecraft, highly version dependent
         Screen.drawTexture(GLX.INSTANCE.getStack(), x, y, u, v, width, height, textureWidth, textureHeight);
     }
 
     public GlTexture bind() {
-        RenderSystem.bindTexture(glId);
-        RenderSystem.setShaderTexture(0, glId);
+        bindTexture(glId);
         return this;
+    }
+
+    public void unbind() {
+        bindTexture(0);
     }
 
     public void upload(BufferedImage image) {
@@ -127,6 +135,11 @@ public class GlTexture {
         }
         buffer.flip();
         return buffer;
+    }
+
+    public static void bindTexture(int id) {
+        RenderSystem.bindTexture(id);
+        RenderSystem.setShaderTexture(0, id);
     }
 
     public static void bindTexture(MinecraftIdentifier texture) {
