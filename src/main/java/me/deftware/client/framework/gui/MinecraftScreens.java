@@ -1,14 +1,15 @@
 package me.deftware.client.framework.gui;
 
 import me.deftware.client.framework.helper.ScreenHelper;
+import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.client.framework.util.ResourceUtils;
-import me.deftware.mixin.imp.IMixinTitleScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.option.OptionsScreen;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
+import net.minecraft.client.realms.gui.screen.RealmsMainScreen;
 import net.minecraft.util.Pair;
 
 import java.util.Objects;
@@ -39,9 +40,8 @@ public enum MinecraftScreens {
 		MinecraftClient.getInstance().openScreen(screenFunction.apply(parent));
 	}
 
-	@SuppressWarnings("ConstantConditions")
 	public static void openRealms() {
-		((IMixinTitleScreen) new TitleScreen()).switchToRealmsPub();
+		MinecraftClient.getInstance().openScreen(new RealmsMainScreen(Minecraft.getScreen()));
 	}
 
 }
