@@ -26,10 +26,10 @@ import java.nio.ByteBuffer;
 public class GlTexture {
 
     @Getter
-    private int glId;
+    protected int glId;
 
     @Getter
-    private int textureWidth, textureHeight, scaling;
+    protected int textureWidth, textureHeight, scaling;
 
     public GlTexture(EMCMod mod, String asset) throws IOException {
         this(
@@ -54,6 +54,10 @@ public class GlTexture {
     }
 
     public GlTexture(BufferedImage image, int scaling) {
+        this.init(image, scaling);
+    }
+
+    protected void init(BufferedImage image, int scaling) {
         this.scaling = scaling;
         this.textureWidth = image.getWidth();
         this.textureHeight = image.getHeight();
@@ -80,6 +84,10 @@ public class GlTexture {
     public GlTexture bind() {
         bindTexture(glId);
         return this;
+    }
+
+    public boolean isReady() {
+        return glId != 0;
     }
 
     public void unbind() {
