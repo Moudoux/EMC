@@ -64,16 +64,16 @@ public abstract class GuiScreen extends Screen {
 
 	@Override
 	public boolean mouseReleased(double x, double y, int button) {
-		onMouseReleased((int) Math.round(x), (int) Math.round(y), button);
-		super.mouseReleased(x, y, button);
-		return false;
+		if (onMouseReleased((int) Math.round(x), (int) Math.round(y), button))
+			return true;
+		return super.mouseReleased(x, y, button);
 	}
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-		onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton);
-		super.mouseClicked(mouseX, mouseY, mouseButton);
-		return false;
+		if (onMouseClicked((int) Math.round(mouseX), (int) Math.round(mouseY), mouseButton))
+			return true;
+		return super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	@Override
@@ -113,8 +113,7 @@ public abstract class GuiScreen extends Screen {
 	}
 
 	@Override
-	@SuppressWarnings("OptionalGetWithoutIsPresent")
-	public boolean keyPressed(int keyCode, int action, int modifiers) {
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
 			if (escGoesBack) {
 				goBack();
@@ -122,20 +121,17 @@ public abstract class GuiScreen extends Screen {
 			}
 			return onGoBackRequested();
 		} else {
-			onKeyPressed(keyCode, action, modifiers);
-			// TextFieldWidget inherits AbstractButtonWidget so this applies to both normal buttons and textfield's
-			/*if (keyCode == GLFW.GLFW_KEY_TAB && children.stream().anyMatch(e -> e instanceof AbstractButtonWidget && ((AbstractButtonWidget) e).active)) {
-				int i = Iterables.indexOf(children, e -> e instanceof AbstractButtonWidget && ((AbstractButtonWidget) e).isFocused()),
-						newIndex = i == Iterables.indexOf(children, e -> e == children.stream().filter(t -> t instanceof AbstractButtonWidget && ((AbstractButtonWidget) t).active).reduce((first, second) -> second).get()) || i == -1 ?
-								Iterables.indexOf(children, e -> e == children.stream().filter(t -> t instanceof AbstractButtonWidget && ((AbstractButtonWidget) t).active).findFirst().get()) : i + 1;
-				if (i != -1 && ((AbstractButtonWidget) children.get(i)).isFocused()) {
-					children.get(newIndex).changeFocus(true);
-				}
-				children.get(newIndex).changeFocus(true);
-			}*/
-			super.keyPressed(keyCode, action, modifiers);
+			if (onKeyPressed(keyCode, scanCode, modifiers))
+				return true;
+			return super.keyPressed(keyCode, scanCode, modifiers);
 		}
-		return false;
+	}
+
+	@Override
+	public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
+		if (onKeyReleased(keyCode, scanCode, modifiers))
+			return true;
+		return super.keyReleased(keyCode, scanCode, modifiers);
 	}
 
 	public void addEventListener(GuiEventListener listener) {
@@ -221,20 +217,22 @@ public abstract class GuiScreen extends Screen {
 
 	protected abstract void onDraw(int mouseX, int mouseY, float partialTicks);
 
-	protected abstract void onUpdate();
+	protected void onUpdate() { }
 
 	/**
 	 * @see GLFW#GLFW_RELEASE
 	 * @see GLFW#GLFW_PRESS
 	 * @see GLFW#GLFW_REPEAT
 	 */
-	protected abstract void onKeyPressed(int keyCode, int action, int modifiers);
+	protected boolean onKeyPressed(int keyCode, int scanCode, int modifiers) { return false; }
 
-	protected abstract void onMouseReleased(int mouseX, int mouseY, int mouseButton);
+	protected boolean onKeyReleased(int keyCode, int scanCode, int modifiers) { return false; }
 
-	protected abstract void onMouseClicked(int mouseX, int mouseY, int mouseButton);
+	protected boolean onMouseReleased(int mouseX, int mouseY, int mouseButton) { return false; }
 
-	protected abstract void onGuiResize(int w, int h);
+	protected boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) { return false; }
+
+	protected void onGuiResize(int w, int h) { }
 
 	protected boolean onGoBackRequested() {
 		return false;
