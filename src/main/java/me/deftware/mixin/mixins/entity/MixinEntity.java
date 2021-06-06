@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @SuppressWarnings("ConstantConditions")
 @Mixin(Entity.class)
@@ -49,6 +50,8 @@ public abstract class MixinEntity implements IMixinEntity {
     @Shadow public abstract float getYaw();
 
     @Shadow public abstract float getPitch();
+
+    @Shadow private boolean glowing;
 
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)
@@ -125,6 +128,11 @@ public abstract class MixinEntity implements IMixinEntity {
                 ci.cancel();
             }
         }
+    }
+
+    @Inject(method = "isGlowing", at = @At("HEAD"), cancellable = true)
+    private void isGlowing(CallbackInfoReturnable<Boolean> cir) {
+        cir.setReturnValue(glowing);
     }
 
     @Override
