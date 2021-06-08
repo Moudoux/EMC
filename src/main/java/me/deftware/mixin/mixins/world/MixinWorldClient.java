@@ -48,8 +48,7 @@ public abstract class MixinWorldClient implements IMixinWorldClient {
         boolean barrier = GameMap.INSTANCE.get(GameKeys.FULL_BARRIER_TEXTURE, false),
                 light = GameMap.INSTANCE.get(GameKeys.FULL_LIGHT_TEXTURE, false);
         if (
-                MinecraftClient.getInstance().interactionManager.getCurrentGameMode() == GameMode.SURVIVAL &&
-                        (barrier || light)
+                barrier || light
         ) {
             BlockState blockState = ((World) (Object) this).getBlockState(pos);
             Block block = blockState.getBlock();
