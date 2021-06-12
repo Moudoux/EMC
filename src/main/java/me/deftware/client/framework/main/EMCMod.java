@@ -35,14 +35,14 @@ public abstract class EMCMod {
 	public void init(JsonObject json) {
 		modInfo = json;
 		meta = new Gson().fromJson(json, ModMeta.class);
+		settings = new Settings(meta.getName());
+		settings.setupShutdownHook();
+		physicalFile = LocationUtil.getClassPhysicalLocation(this.getClass()).toFile();
 		try {
 			resourceManager = new ModResourceManager(this, "assets");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		settings = new Settings(meta.getName());
-		settings.setupShutdownHook();
-		physicalFile = LocationUtil.getClassPhysicalLocation(this.getClass()).toFile();
 		Bootstrap.logger.debug("Physical jar of {} is {}", meta.getName(), physicalFile.getAbsolutePath());
 		initialize();
 	}
