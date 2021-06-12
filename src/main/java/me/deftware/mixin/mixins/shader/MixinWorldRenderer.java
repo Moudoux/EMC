@@ -52,10 +52,15 @@ public abstract class MixinWorldRenderer {
         return FrameworkConstants.CAN_RENDER_SHADER;
     }
 
-    @Inject(method = "loadEntityOutlineShader", at = @At("RETURN"))
-    private void reload(CallbackInfo ci) {
+    @Unique
+    private void initShaders() {
         for (Shader shader : Shader.SHADERS)
             shader.init(MinecraftClient.getInstance(), bufferBuilders.getEntityVertexConsumers());
+    }
+
+    @Inject(method = "loadEntityOutlineShader", at = @At("RETURN"))
+    private void reload(CallbackInfo ci) {
+        initShaders();
     }
 
     @Inject(method = "onResized", at = @At("HEAD"))
@@ -86,11 +91,14 @@ public abstract class MixinWorldRenderer {
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;canDrawEntityOutlines()Z", opcode = 180, ordinal = 0))
     private boolean onClear(WorldRenderer worldRenderer) {
-        if (canUseShaders()) {
-            for (Shader shader : Shader.SHADERS)
-                shader.getFramebuffer().clear(MinecraftClient.IS_SYSTEM_MAC);
-            this.client.getFramebuffer().beginWrite(false);
+        for (Shader shader : Shader.SHADERS) {
+            if (shader.getFramebuffer() == null) {
+                // Not initialised?
+                shader.init(MinecraftClient.getInstance(), bufferBuilders.getEntityVertexConsumers());
+            }
+            shader.getFramebuffer().clear(MinecraftClient.IS_SYSTEM_MAC);
         }
+        this.client.getFramebuffer().beginWrite(false);
         return false;
     }
 
