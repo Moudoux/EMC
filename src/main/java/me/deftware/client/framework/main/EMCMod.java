@@ -1,8 +1,11 @@
 package me.deftware.client.framework.main;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import lombok.Getter;
 import me.deftware.client.framework.config.Settings;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
+import me.deftware.client.framework.resource.ModResourceManager;
 import me.deftware.client.framework.util.path.LocationUtil;
 
 import java.io.File;
@@ -16,17 +19,31 @@ import java.net.URLClassLoader;
  */
 public abstract class EMCMod {
 
+	@Deprecated
+	public JsonObject modInfo;
+
+	@Getter
+	protected ModResourceManager resourceManager;
+
+	@Getter
+	protected ModMeta meta;
+
 	public URLClassLoader classLoader;
 	private Settings settings;
-	public JsonObject modInfo;
 	public File physicalFile;
 
 	public void init(JsonObject json) {
 		modInfo = json;
-		settings = new Settings(modInfo.get("name").getAsString());
+		meta = new Gson().fromJson(json, ModMeta.class);
+		try {
+			resourceManager = new ModResourceManager(this, "assets");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		settings = new Settings(meta.getName());
 		settings.setupShutdownHook();
 		physicalFile = LocationUtil.getClassPhysicalLocation(this.getClass()).toFile();
-		Bootstrap.logger.debug("Physical jar of {} is {}", modInfo.get("name").getAsString(), physicalFile.getAbsolutePath());
+		Bootstrap.logger.debug("Physical jar of {} is {}", meta.getName(), physicalFile.getAbsolutePath());
 		initialize();
 	}
 
@@ -39,7 +56,7 @@ public abstract class EMCMod {
 	 * Unloads your mod from EMC
 	 */
 	public void disable() {
-		Bootstrap.getMods().remove(modInfo.get("name").getAsString());
+		Bootstrap.getMods().remove(meta.getName());
 	}
 
 	/**

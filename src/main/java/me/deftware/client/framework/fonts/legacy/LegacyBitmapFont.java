@@ -5,19 +5,15 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
-import me.deftware.client.framework.registry.font.TTFRegistry;
 import me.deftware.client.framework.render.batching.RenderStack;
 import me.deftware.client.framework.render.texture.GlTexture;
-import me.deftware.client.framework.render.texture.GraphicsUtil;
 import me.deftware.client.framework.util.path.OSUtils;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.io.File;
 import java.io.FileInputStream;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,8 +31,6 @@ public class LegacyBitmapFont {
     @Getter
     public final Map<Character, CharData> characterMap = new HashMap<>();
 
-    protected Font stdFont;
-    public String fontName;
     protected int fontSize;
     public boolean scaled;
 
@@ -50,28 +44,31 @@ public class LegacyBitmapFont {
     @Getter
     public int textureWidth, textureHeight;
 
+    @Setter
+    protected Font baseFont, stdFont;
+
     private FontMetrics metrics;
 
-    public LegacyBitmapFont(String fontName, int fontSize, boolean scaled) {
-        this.fontName = fontName;
+    public LegacyBitmapFont(Font font, int fontSize, boolean scaled) {
+        this.baseFont = font;
         this.fontSize = fontSize;
         this.scaled = scaled;
         RenderStack.scaleChangeCallback.add(() -> {
-            setupFont();
+            setFont(baseFont);
             initialize();
         });
-        setupFont();
+        setFont(baseFont);
     }
 
-    public LegacyBitmapFont(String fontName, int fontSize) {
-        this(fontName, fontSize, true);
+    public LegacyBitmapFont(Font font, int fontSize) {
+        this(font, fontSize, true);
     }
 
-    public void setupFont() {
-        Font fallback = new Font(this.fontName, Font.PLAIN, this.fontSize);
+    public static Font getSystem(String name) {
+        Font fallback = new Font(name, Font.PLAIN, 18);
         if (OSUtils.isWindows()) {
             try {
-                File font = Paths.get(System.getenv("LOCALAPPDATA"), "Microsoft", "Windows", "Fonts", fontName + ".ttf").toFile();
+                File font = Paths.get(System.getenv("LOCALAPPDATA"), "Microsoft", "Windows", "Fonts", name + ".ttf").toFile();
                 if (font.exists()) {
                     fallback = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(font.getAbsolutePath()));
                 }
@@ -79,9 +76,20 @@ public class LegacyBitmapFont {
                 ex.printStackTrace();
             }
         }
-        this.stdFont = TTFRegistry.getFont(this.fontName, fallback)
-                .deriveFont(Font.PLAIN, fontSize * (scaled ? RenderStack.getScale() : 1f));
-        this.metrics = new Canvas().getFontMetrics(this.stdFont);
+        return fallback;
+    }
+
+    private Font derive(Font font) {
+        return font.deriveFont(Font.PLAIN, fontSize * (scaled ? RenderStack.getScale() : 1f));
+    }
+
+    public void setFont(Font font) {
+        this.stdFont = derive(font);
+        setMetrics(font);
+    }
+
+    public void setMetrics(Font font) {
+        this.metrics = new Canvas().getFontMetrics(derive(font));
     }
 
     public void initialize() {
