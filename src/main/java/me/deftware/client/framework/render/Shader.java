@@ -9,6 +9,8 @@ import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.client.render.OutlineVertexConsumerProvider;
 import net.minecraft.client.render.VertexConsumerProvider;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -16,7 +18,9 @@ import java.util.function.Predicate;
  */
 public class Shader {
 
-    private final ShaderEffect shaderEffect;
+    public static final List<Shader> SHADERS = new ArrayList<>();
+
+    private ShaderEffect shaderEffect;
     private Predicate<Object> targetPredicate = obj -> true;
 
     private Framebuffer framebuffer;
@@ -24,17 +28,22 @@ public class Shader {
 
     private boolean render = false, enabled = false;
 
-    public Shader(MinecraftIdentifier identifier, ModResourceManager resourceManager) throws Exception {
-        this(
-                new ShaderEffect(MinecraftClient.getInstance().getTextureManager(), resourceManager, MinecraftClient.getInstance().getFramebuffer(), identifier)
-        );
-    }
+    private final MinecraftIdentifier identifier;
+    private final ModResourceManager resourceManager;
 
-    public Shader(ShaderEffect shaderEffect) {
-        this.shaderEffect = shaderEffect;
+    public Shader(MinecraftIdentifier identifier, ModResourceManager resourceManager) {
+        this.identifier = identifier;
+        this.resourceManager = resourceManager;
     }
 
     public void init(MinecraftClient client, VertexConsumerProvider.Immediate entityVertexConsumers) {
+        if (shaderEffect != null)
+            shaderEffect.close();
+        try {
+            shaderEffect = new ShaderEffect(MinecraftClient.getInstance().getTextureManager(), resourceManager, MinecraftClient.getInstance().getFramebuffer(), identifier);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         shaderEffect.setupDimensions(client.getWindow().getFramebufferWidth(), client.getWindow().getFramebufferHeight());
         framebuffer = shaderEffect.getSecondaryTarget("final");
         outlineVertexConsumerProvider = new OutlineVertexConsumerProvider(entityVertexConsumers);

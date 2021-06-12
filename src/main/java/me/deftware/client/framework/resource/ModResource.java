@@ -33,7 +33,7 @@ public class ModResource implements Resource {
 
     @Override
     public String getResourcePackName() {
-        return "EMC";
+        return "Minecraft";
     }
 
     @Override

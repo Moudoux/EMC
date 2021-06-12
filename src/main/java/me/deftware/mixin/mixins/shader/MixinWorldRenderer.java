@@ -3,7 +3,6 @@ package me.deftware.mixin.mixins.shader;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.FrameworkConstants;
-import me.deftware.client.framework.event.events.EventShader;
 import me.deftware.client.framework.registry.BlockRegistry;
 import me.deftware.client.framework.render.Shader;
 import me.deftware.client.framework.world.World;
@@ -29,8 +28,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Mixin(WorldRenderer.class)
@@ -48,9 +45,6 @@ public abstract class MixinWorldRenderer {
     private MinecraftClient client;
 
     @Unique
-    private final List<Shader> shaders = new ArrayList<>();
-
-    @Unique
     private boolean canUseShaders() {
         if (!FrameworkConstants.OPTIFINE) {
             return true;
@@ -58,31 +52,22 @@ public abstract class MixinWorldRenderer {
         return FrameworkConstants.CAN_RENDER_SHADER;
     }
 
-    @Inject(method = "reload(Lnet/minecraft/resource/ResourceManager;)V", at = @At("RETURN"))
-    public void reload(ResourceManager manager, CallbackInfo ci) {
-        initShaders();
+    @Inject(method = "loadEntityOutlineShader", at = @At("RETURN"))
+    private void reload(CallbackInfo ci) {
+        for (Shader shader : Shader.SHADERS)
+            shader.init(MinecraftClient.getInstance(), bufferBuilders.getEntityVertexConsumers());
     }
 
     @Inject(method = "onResized", at = @At("HEAD"))
     private void onResized(int width, int height, CallbackInfo ci) {
-        for (Shader shader : shaders)
+        for (Shader shader : Shader.SHADERS)
             shader.getShaderEffect().setupDimensions(width, height);
-    }
-
-    @Unique
-    private void initShaders() {
-        for (Shader shader : shaders)
-            shader.getShaderEffect().close();
-        shaders.clear();
-        new EventShader(shaders).broadcast();
-        for (Shader shader : shaders)
-            shader.init(MinecraftClient.getInstance(), bufferBuilders.getEntityVertexConsumers());
     }
 
     @Unique
     private Shader getShader(Object obj) {
         if (canUseShaders()) {
-            for (Shader shader : shaders) {
+            for (Shader shader : Shader.SHADERS) {
                 if (shader.isEnabled() && shader.getTargetPredicate().test(obj))
                     return shader;
             }
@@ -102,7 +87,7 @@ public abstract class MixinWorldRenderer {
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;canDrawEntityOutlines()Z", opcode = 180, ordinal = 0))
     private boolean onClear(WorldRenderer worldRenderer) {
         if (canUseShaders()) {
-            for (Shader shader : shaders)
+            for (Shader shader : Shader.SHADERS)
                 shader.getFramebuffer().clear(MinecraftClient.IS_SYSTEM_MAC);
             this.client.getFramebuffer().beginWrite(false);
         }
@@ -114,7 +99,7 @@ public abstract class MixinWorldRenderer {
         if (canUseShaders()) {
             RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SrcFactor.ZERO, GlStateManager.DstFactor.ONE);
-            for (Shader shader : shaders) {
+            for (Shader shader : Shader.SHADERS) {
                 if (shader.isRender()) {
                     targetBuffer = shader.getFramebuffer();
                     shader.getFramebuffer().draw(this.client.getWindow().getFramebufferWidth(), this.client.getWindow().getFramebufferHeight(), false);
@@ -158,7 +143,7 @@ public abstract class MixinWorldRenderer {
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/OutlineVertexConsumerProvider;draw()V", opcode = 180))
     private void onVertexDraw(OutlineVertexConsumerProvider outlineVertexConsumerProvider) {
         if (canUseShaders()) {
-            for (Shader shader : shaders) {
+            for (Shader shader : Shader.SHADERS) {
                 if (shader.isRender()) {
                     targetBuffer = shader.getFramebuffer();
                     shader.getOutlineVertexConsumerProvider().draw();
