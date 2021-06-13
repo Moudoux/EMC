@@ -80,7 +80,8 @@ public abstract class MixinWorldRenderer {
     @Inject(method = "onResized", at = @At("HEAD"))
     private void onResized(int width, int height, CallbackInfo ci) {
         for (Shader shader : Shader.SHADERS)
-            shader.getShaderEffect().setupDimensions(width, height);
+            if (shader.getShaderEffect() != null)
+                shader.getShaderEffect().setupDimensions(width, height);
     }
 
     @Inject(method = "render", at = @At("HEAD"))
