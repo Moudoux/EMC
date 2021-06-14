@@ -111,7 +111,7 @@ public abstract class MixinWorldRenderer {
             for (Shader shader : Shader.SHADERS) {
                 if (shader.isRender()) {
                     targetBuffer = shader.getFramebuffer();
-                    shader.getFramebuffer().draw(this.client.getWindow().getFramebufferWidth(), this.client.getWindow().getFramebufferHeight(), MinecraftClient.IS_SYSTEM_MAC);
+                    shader.getFramebuffer().draw(this.client.getWindow().getFramebufferWidth(), this.client.getWindow().getFramebufferHeight(), false);
                     shader.setRender(false);
                 }
             }
