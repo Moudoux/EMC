@@ -8,6 +8,7 @@ import me.deftware.client.framework.util.ResourceUtils;
 import me.deftware.client.framework.util.minecraft.MinecraftIdentifier;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.texture.AbstractTexture;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -150,8 +151,9 @@ public class GlTexture {
         RenderSystem.setShaderTexture(0, id);
     }
 
-    public static void bindTexture(MinecraftIdentifier texture) {
-        MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
+    public static void bindTexture(MinecraftIdentifier id) {
+        AbstractTexture texture = MinecraftClient.getInstance().getTextureManager().getTexture(id);
+        bindTexture(texture.getGlId());
     }
 
 }
