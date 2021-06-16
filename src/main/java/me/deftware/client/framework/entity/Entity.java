@@ -359,7 +359,7 @@ public class Entity {
 	}
 
 	public void setRotationYaw(float yaw) {
-		entity.setPitch(yaw);
+		entity.setYaw(yaw);
 	}
 
 	public void setRotationPitch(float pitch) {
