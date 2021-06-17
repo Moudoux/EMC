@@ -19,6 +19,7 @@ import me.deftware.mixin.imp.IMixinWorld;
 import me.deftware.mixin.imp.IMixinWorldClient;
 import net.fabricmc.loader.util.sat4j.minisat.constraints.cnf.Lits;
 import net.minecraft.block.FluidBlock;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
@@ -46,7 +47,7 @@ public class World {
 	}
 
 	public static Stream<TileEntity> getLoadedTileEntities() {
-		return Objects.requireNonNull(((IMixinWorld) MinecraftClient.getInstance().world)).getLoadedTilesAccessor().stream();
+		return Objects.requireNonNull(((IMixinWorld) MinecraftClient.getInstance().world)).getLoadedTilesAccessor().values().stream();
 	}
 
 	public static Stream<Entity> getLoadedEntities() {
@@ -55,6 +56,10 @@ public class World {
 
 	public static Entity getEntityById(int id) {
 		return Objects.requireNonNull(((IMixinWorldClient) MinecraftClient.getInstance().world)).getLoadedEntitiesAccessor().getOrDefault(id, null);
+	}
+
+	public static TileEntity getTileEntityFromEntity(BlockEntity entity) {
+		return Objects.requireNonNull(((IMixinWorld) MinecraftClient.getInstance().world)).getLoadedTilesAccessor().get(entity);
 	}
 
 	public static int getDifficulty() {

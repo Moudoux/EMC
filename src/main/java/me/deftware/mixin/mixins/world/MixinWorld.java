@@ -1,20 +1,14 @@
 package me.deftware.mixin.mixins.world;
 
 import me.deftware.client.framework.entity.block.TileEntity;
-import me.deftware.client.framework.event.events.EventTileBlockRemoved;
 import me.deftware.client.framework.world.classifier.BlockClassifier;
 import me.deftware.mixin.imp.IMixinWorld;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ChestBlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockEntityTickInvoker;
-import net.minecraft.world.chunk.WorldChunk;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,28 +16,27 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
 
 @Mixin(World.class)
 public abstract class MixinWorld implements IMixinWorld {
 
 	@Unique
-	public final HashMap<BlockEntityTickInvoker, TileEntity> emcTileEntities = new HashMap<>();
+	public final HashMap<BlockEntity, TileEntity> emcTileEntities = new HashMap<>();
 
 	@Unique
 	public final HashMap<Long, BlockEntity> longTileEntities = new HashMap<>();
 
-	@Override
 	@Unique
-	public Collection<TileEntity> getLoadedTilesAccessor() {
-		return emcTileEntities.values();
+	@Override
+	public Map<BlockEntity, TileEntity> getLoadedTilesAccessor() {
+		return emcTileEntities;
 	}
 
-	@Override
 	@Unique
+	@Override
 	public HashMap<Long, BlockEntity> getInternalLongToBlockEntity() {
 		return longTileEntities;
 	}
@@ -51,8 +44,8 @@ public abstract class MixinWorld implements IMixinWorld {
 	@Inject(method = "addBlockEntityTicker", at = @At("HEAD"))
 	public void addBlockEntityTicker(BlockEntityTickInvoker blockEntityTickInvoker, CallbackInfo ci) {
 		if (longTileEntities.containsKey(blockEntityTickInvoker.getPos().asLong())) {
-			emcTileEntities.put(blockEntityTickInvoker,
-					TileEntity.newInstance(longTileEntities.remove(blockEntityTickInvoker.getPos().asLong())));
+			BlockEntity entity = longTileEntities.remove(blockEntityTickInvoker.getPos().asLong());
+			emcTileEntities.put(entity, TileEntity.newInstance(entity, blockEntityTickInvoker));
 		}
 	}
 
@@ -60,7 +53,7 @@ public abstract class MixinWorld implements IMixinWorld {
 	protected Object tickBlockEntities(Iterator<BlockEntityTickInvoker> iterator) {
 		BlockEntityTickInvoker ticker = iterator.next();
 		if (ticker.isRemoved()) {
-			emcTileEntities.remove(ticker);
+			emcTileEntities.values().removeIf(e -> e.getTicker().equals(ticker));
 		}
 		return ticker;
 	}

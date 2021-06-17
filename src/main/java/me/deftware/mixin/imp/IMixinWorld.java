@@ -3,13 +3,13 @@ package me.deftware.mixin.imp;
 import me.deftware.client.framework.entity.block.TileEntity;
 import net.minecraft.block.entity.BlockEntity;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 public interface IMixinWorld {
 
-	Collection<TileEntity> getLoadedTilesAccessor();
+	Map<BlockEntity, TileEntity> getLoadedTilesAccessor();
 
 	HashMap<Long, BlockEntity> getInternalLongToBlockEntity();
-	
+
 }

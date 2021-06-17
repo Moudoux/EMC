@@ -6,14 +6,15 @@ import net.minecraft.block.DoubleBlockProperties;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.EnderChestBlockEntity;
 import net.minecraft.block.entity.TrappedChestBlockEntity;
+import net.minecraft.world.chunk.BlockEntityTickInvoker;
 
 /**
  * @author Deftware
  */
 public class ChestEntity extends StorageEntity {
 
-	public ChestEntity(BlockEntity entity) {
-		super(entity);
+	public ChestEntity(BlockEntity entity, BlockEntityTickInvoker ticker) {
+		super(entity, ticker);
 	}
 
 	@Override

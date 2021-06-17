@@ -17,7 +17,9 @@ import java.util.HashMap;
 @Mixin(WorldChunk.class)
 public class MixinWorldChunk {
 
-	@Shadow @Final private World world;
+	@Shadow
+	@Final
+	World world;
 
 	@Inject(method = "updateTicker", at = @At("HEAD"))
 	private <T extends BlockEntity> void test(T blockEntity, CallbackInfo ci) {
@@ -25,9 +27,7 @@ public class MixinWorldChunk {
 		if (blockState.getBlockEntityTicker(this.world, blockEntity.getType()) != null) {
 			long pos = blockEntity.getPos().asLong();
 			HashMap<Long, BlockEntity> entities = ((IMixinWorld) world).getInternalLongToBlockEntity();
-			if (!entities.containsKey(pos)) {
-				entities.put(pos, blockEntity);
-			}
+			entities.put(pos, blockEntity);
 		}
 	}
 
