@@ -119,9 +119,10 @@ public abstract class MixinWorldRenderer {
                 }
             }
             RenderSystem.disableBlend();
-            return false;
+        } else {
+            GlStateManager.disableLighting();
         }
-        return canDrawEntityOutlines();
+        return false;
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/entity/BlockEntityRenderDispatcher;render(Lnet/minecraft/block/entity/BlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;)V", opcode = 180, ordinal = 0))
