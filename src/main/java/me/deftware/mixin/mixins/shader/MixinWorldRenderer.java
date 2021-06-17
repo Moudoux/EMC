@@ -119,8 +119,6 @@ public abstract class MixinWorldRenderer {
                 }
             }
             RenderSystem.disableBlend();
-        } else {
-            GlStateManager.disableLighting();
         }
         return false;
     }
