@@ -36,6 +36,10 @@ public class Shader {
         this.resourceManager = resourceManager;
     }
 
+    public void init(MinecraftClient client) {
+        init(client, null);
+    }
+
     public void init(MinecraftClient client, VertexConsumerProvider.Immediate entityVertexConsumers) {
         if (shaderEffect != null)
             shaderEffect.close();
@@ -46,7 +50,8 @@ public class Shader {
         }
         shaderEffect.setupDimensions(client.getWindow().getFramebufferWidth(), client.getWindow().getFramebufferHeight());
         framebuffer = shaderEffect.getSecondaryTarget("final");
-        outlineVertexConsumerProvider = new OutlineVertexConsumerProvider(entityVertexConsumers);
+        if (entityVertexConsumers != null)
+            outlineVertexConsumerProvider = new OutlineVertexConsumerProvider(entityVertexConsumers);
     }
 
     public boolean isEnabled() {

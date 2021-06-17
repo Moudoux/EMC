@@ -7,11 +7,13 @@ import me.deftware.client.framework.global.GameMap;
 import me.deftware.client.framework.helper.GlStateHelper;
 import me.deftware.client.framework.helper.WindowHelper;
 import me.deftware.client.framework.minecraft.Minecraft;
+import me.deftware.client.framework.render.Shader;
 import me.deftware.client.framework.render.batching.RenderStack;
 import me.deftware.client.framework.render.gl.GLX;
 import me.deftware.client.framework.util.minecraft.MinecraftIdentifier;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
@@ -26,6 +28,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -54,9 +57,22 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     @Final
     private Camera camera;
 
-    @Shadow protected abstract double getFov(Camera camera, float tickDelta, boolean changingFov);
+    @Shadow
+    protected abstract double getFov(Camera camera, float tickDelta, boolean changingFov);
 
-    @Shadow public abstract Matrix4f getBasicProjectionMatrix(double d);
+    @Shadow
+    public abstract Matrix4f getBasicProjectionMatrix(double d);
+
+    @Shadow
+    @Nullable
+    private ShaderEffect shader;
+
+    @Shadow
+    @Final
+    private MinecraftClient client;
+
+    @Shadow
+    private boolean shadersEnabled;
 
     @Unique
     private final Consumer<Float> renderEvent = partialTicks -> new EventRender3D(partialTicks).broadcast();
@@ -139,6 +155,23 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     @Override
     public void loadCustomShader(MinecraftIdentifier location) {
         loadShader(location);
+    }
+
+    @Override
+    public void loadShader(Shader shader) {
+        if (shader == null) {
+            this.shader = null;
+            this.shadersEnabled = false;
+            return;
+        }
+        if (this.shader != null)
+            this.shader.close();
+        if (shader.getShaderEffect() == null)
+            shader.init(client);
+        else
+            shader.getShaderEffect().setupDimensions(client.getWindow().getFramebufferWidth(), client.getWindow().getFramebufferHeight());
+        this.shader = shader.getShaderEffect();
+        this.shadersEnabled = true;
     }
 
     @Redirect(method = "updateTargetedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileUtil;raycast(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/function/Predicate;D)Lnet/minecraft/util/hit/EntityHitResult;"))
