@@ -47,10 +47,11 @@ public abstract class GuiSlot extends AlwaysSelectedEntryListWidget<GuiSlot.Cust
 	}
 
 	public int getSelectedSlot() {
-		if (getSelected() == null) {
+		CustomItem item = getSelectedOrNull();
+		if (item == null) {
 			return -1;
 		}
-		return getSelected().id;
+		return item.id;
 	}
 
 	public void doDraw(int mouseX, int mouseY, float partialTicks) {

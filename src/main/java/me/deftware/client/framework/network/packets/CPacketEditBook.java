@@ -15,7 +15,7 @@ public class CPacketEditBook extends PacketWrapper {
     }
 
     public CPacketEditBook(ItemStack book) {
-        super(new BookUpdateC2SPacket(book.getMinecraftItemStack(), true, 0)); // TODO: Verify last variable (Main hand)
+        super(null); //new BookUpdateC2SPacket(book.getMinecraftItemStack(), true, 0)); // TODO: Verify last variable (Main hand)
     }
 
 }
