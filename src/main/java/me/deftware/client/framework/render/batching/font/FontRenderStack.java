@@ -23,9 +23,16 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 	private int offset = 0;
 	private final LegacyBitmapFont font;
 
+	@Setter
+	private int maxLigatureSize = 5;
+
+	@Setter
+	private boolean ligatures;
+
 	public FontRenderStack(IFontProvider font) {
 		this.font = font.getFont();
 		this.scaled = this.font.scaled;
+		this.ligatures = this.font.isLigatures();
 	}
 
 	@Override
@@ -65,7 +72,7 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 	}
 
 	public FontRenderStack drawString(int x, int y, String message) {
-		renderCharBuffer(message.toCharArray(), x, y, lastColor);
+		renderCharBuffer(message.split(""), x, y, lastColor);
 		offset = 0;
 		return this;
 	}
@@ -80,13 +87,13 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 			Color color = Color.white;
 			if (style.getColor() != null)
 				color = style.getColor().getColor();
-			renderCharBuffer(section.getText().toCharArray(), x, y, color);
+			renderCharBuffer(section.getText().split(""), x, y, color);
 		}
 		offset = 0;
 		return this;
 	}
 
-	private void renderCharBuffer(char[] buffer, int x, int y, Color color) {
+	private void renderCharBuffer(String[] buffer, int x, int y, Color color) {
 		// Scale position
 		if (scaled) {
 			x *= RenderStack.getScale();
@@ -95,21 +102,44 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 
 		// Get font data
 		int shadow = font.getShadow();
-		Map<Character, LegacyBitmapFont.CharData> characterMap = font.getCharacterMap();
+		Map<String, LegacyBitmapFont.CharData> characterMap = font.getCharacterMap();
 
 		for (int character = 0; character < buffer.length; character++) {
+			// Skip empty characters
+			if (buffer[character].isEmpty())
+				continue;
+
 			// Skip spaces
-			if (buffer[character] == ' ') {
+			if (buffer[character].equalsIgnoreCase(" ")) {
 				offset += font.getStringWidth(" ");
 				continue;
 			}
 
+			int index = character;
+
+			if (ligatures) {
+				// Check for ligatures
+				String tempString = buffer[character];
+				for (int i = 1; i <= maxLigatureSize; i++) {
+					if (character + i >= buffer.length)
+						break;
+					tempString += buffer[character + i];
+					if (characterMap.containsKey(tempString)) {
+						// Found ligature
+						buffer[index] = tempString;
+						character += i;
+						break;
+					}
+				}
+			}
+
 			// Replace unknown characters with a question mark
-			if (!font.characterMap.containsKey(buffer[character]))
-				buffer[character] = '?';
+			if (!characterMap.containsKey(buffer[index])) {
+				buffer[index] = "?";
+			}
 
 			// Get character data
-			LegacyBitmapFont.CharData data = characterMap.get(buffer[character]);
+			LegacyBitmapFont.CharData data = characterMap.get(buffer[index]);
 
 			// Draw shadow
 			if (shadow > 0) {
@@ -124,6 +154,7 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 			drawCharacter(x + offset, y, data);
 			offset += data.getWidth();
 		}
+
 
 		// Reset shader color
 		// RenderSystem.setShaderColor(1, 1, 1,1);

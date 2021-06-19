@@ -10,15 +10,14 @@ import me.deftware.client.framework.render.texture.GlTexture;
 import me.deftware.client.framework.util.path.OSUtils;
 
 import java.awt.*;
+import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -29,7 +28,7 @@ import java.util.function.Consumer;
 public class LegacyBitmapFont {
 
     @Getter
-    public final Map<Character, CharData> characterMap = new HashMap<>();
+    public final Map<String, CharData> characterMap = new HashMap<>();
 
     protected int fontSize;
     public boolean scaled;
@@ -46,6 +45,9 @@ public class LegacyBitmapFont {
 
     @Setter
     protected Font baseFont, stdFont;
+
+    @Getter
+    protected boolean ligatures = false;
 
     private FontMetrics metrics;
 
@@ -85,6 +87,7 @@ public class LegacyBitmapFont {
 
     public void setFont(Font font) {
         this.stdFont = derive(font);
+        this.ligatures = this.stdFont.getAttributes().containsKey(TextAttribute.LIGATURES);
         setMetrics(font);
     }
 
@@ -94,52 +97,67 @@ public class LegacyBitmapFont {
 
     public void initialize() {
         destroy();
-        List<Character> characters = new ArrayList<>();
+        List<String> characters = new ArrayList<>();
         // Lowercase alphabet
         for (char lowercaseAlphabet = 'a'; lowercaseAlphabet <= 'z'; lowercaseAlphabet++) {
-            characters.add(lowercaseAlphabet);
+            characters.add(Character.toString(lowercaseAlphabet));
         }
         // Uppercase alphabet
         for (char uppercaseAlphabet = 'A'; uppercaseAlphabet <= 'Z'; uppercaseAlphabet++) {
-            characters.add(uppercaseAlphabet);
+            characters.add(Character.toString(uppercaseAlphabet));
         }
         // Numbers
         for (char numeric = 48; numeric <= 57; numeric++) { // 0 - 9 in ASCII
-            characters.add(numeric);
+            characters.add(Character.toString(numeric));
         }
         // Additional and special characters
         char[] specialCharacters = {'!', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
                 ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', '"'};
         for (char specialCharacter : specialCharacters) {
-            characters.add(specialCharacter);
+            characters.add(Character.toString(specialCharacter));
         }
-
+        // Ligatures
+        if (this.ligatures) {
+            characters.addAll(Arrays.asList(
+                    "--", "---", "==", "===", "!=", "!==", "=!=", "=:=", "=/=", "<=", ">=", "&&", "&&&", "&=", "++", "+++", "***",
+                    ";;", "!!", "??", "?:", "?.", "?=", "<:", ":<", ":>", ">:", "<>", "<<<", ">>>", "<<", ">>", "||", "-|", "_|_",
+                    "|-", "||-", "|=", "||=", "##", "###", "####", "#{", "#[", "]#", "#(", "#?", "#_", "#_(", "#:", "#!", "#=", "^=",
+                    "<$>", "<$", "$>", "<+>", "<+", "+>", "<*>", "<*", "*>", "</", "</>", "/>", "<!--", "<#--", "-->", "->", "->>", "<<-",
+                    "<-", "<=<", "=<<", "<<=", "<==", "<=>", "<==>", "==>", "=>", "=>>", ">=>", ">>=", ">>-", ">-", ">--", "-<", "-<<", ">->",
+                    "<-<", "<-|", "<=|", "|=>", "|->", "<->", "<~~", "<~", "<~>", "~~", "~~>", "~>", "~-", "-~", "~@", "[||]", "|]", "[|", "|}",
+                    "{|", "[<", ">]", "|>", "<|", "||>", "<||", "|||>", "<|||", "<|>", "...", "..", ".=", ".-", "..<", ".?", "::", ":::", ":=",
+                    "::=", ":?", ":?>", "//", "///", "/*", "*/", "/=", "//=", "/==", "@_", "__"
+            ));
+        }
         textureAtlas = characterGenerate(characters);
     }
 
-    protected GlTexture characterGenerate(List<Character> characters) {
+    protected GlTexture characterGenerate(List<String> characters) {
+        int characterWidth = 60, maxPerRow = 30;
         // Calculate size of texture
         // fixedWidth must be more than the width of the widest character
-        int width = 0, height = 0, fixedWidth = getStringWidth('W') * 2;
+        int xLocation = 0, height = getStringHeight();
         List<Consumer<Graphics2D>> generation = new ArrayList<>();
-        for (char character : characters) {
-            String letterBuffer = String.valueOf(character);
+        for (int i = 0; i < characters.size(); i++) {
+            if (i > 0 && i % maxPerRow == 0) {
+                height += getStringHeight() + 10;
+                xLocation = 0;
+            }
+            String character = characters.get(i);
             int textWidth = getStringWidth(character), textHeight = getStringHeight();
-            if (height < textHeight)
-                height = textHeight;
-            width += fixedWidth;
-            int xOffset = width;
+            int xOffset = xLocation, yOffset = height - getStringHeight();
             generation.add(graphics -> {
                 // Draw character
-                graphics.drawString(letterBuffer, xOffset, textHeight - textHeight / 4);
+                graphics.drawString(character, xOffset, yOffset + (textHeight - textHeight / 4));
                 // Generate data
-                CharData data = new CharData(textWidth, textHeight, xOffset, 0);
+                CharData data = new CharData(textWidth, textHeight, xOffset, yOffset, character);
                 characterMap.put(character, data);
             });
+            xLocation += characterWidth;
         }
 
         // Setup texture
-        BufferedImage characterTexture = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage characterTexture = new BufferedImage(characterWidth * maxPerRow, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = characterTexture.createGraphics();
         graphics.setFont(stdFont);
         graphics.setColor(Color.white);
@@ -199,6 +217,8 @@ public class LegacyBitmapFont {
          * Texture offsets
          */
         private int u, v;
+
+        private String character;
 
     }
 
