@@ -5,6 +5,7 @@ import me.deftware.client.framework.render.gl.GLX;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
 /**
@@ -69,9 +70,10 @@ public abstract class GuiSlot extends AlwaysSelectedEntryListWidget<GuiSlot.Cust
 		children().clear();
 		for (int index = 0; index < getISize(); index++) {
 			addEntry(new CustomItem(index) {
+
 				@Override
-				public Text method_37006() {
-					return null; // TODO: What does this do
+				public Text getNarration() {
+					return new LiteralText("");
 				}
 
 				@Override
