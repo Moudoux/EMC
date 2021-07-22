@@ -63,9 +63,12 @@ public class MixinNetHandlerPlayClient implements IMixinNetworkHandler {
     private void onExplosion(ExplosionS2CPacket packet, CallbackInfo ci) {
         EventKnockback event = new EventKnockback(packet.getPlayerVelocityX(), packet.getPlayerVelocityY(), packet.getPlayerVelocityZ());
         event.broadcast();
-        if (event.isCanceled()) {
-            ci.cancel();
+        if (!event.isCanceled()) {
+            MinecraftClient.getInstance().player.setVelocity(
+                    MinecraftClient.getInstance().player.getVelocity().add(event.getX(), event.getY(), event.getZ())
+            );
         }
+        ci.cancel();
     }
 
     @Inject(method = "onVelocityUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setVelocityClient(DDD)V"), cancellable = true)

@@ -1,6 +1,6 @@
 package me.deftware.mixin.imp;
 
-import me.deftware.client.framework.render.Shader;
+import me.deftware.client.framework.render.shader.Shader;
 import me.deftware.client.framework.util.minecraft.MinecraftIdentifier;
 
 public interface IMixinEntityRenderer {

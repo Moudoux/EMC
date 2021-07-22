@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.entity.block.TileEntity;
-import me.deftware.client.framework.render.Shader;
+import me.deftware.client.framework.render.shader.EntityShader;
 import me.deftware.client.framework.world.World;
 import me.deftware.client.framework.world.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -49,8 +49,8 @@ public abstract class MixinWorldRenderer {
 
     @Unique
     private void initShaders() {
-        for (Shader shader : Shader.SHADERS)
-            shader.init(MinecraftClient.getInstance(), bufferBuilders.getEntityVertexConsumers());
+        for (EntityShader shader : EntityShader.SHADERS)
+            shader.init(bufferBuilders.getEntityVertexConsumers());
     }
 
     @Unique
@@ -66,7 +66,7 @@ public abstract class MixinWorldRenderer {
 
     @Inject(method = "onResized", at = @At("HEAD"))
     private void onResized(int width, int height, CallbackInfo ci) {
-        for (Shader shader : Shader.SHADERS)
+        for (EntityShader shader : EntityShader.SHADERS)
             if (shader.getShaderEffect() != null)
                 shader.getShaderEffect().setupDimensions(width, height);
     }
@@ -76,19 +76,19 @@ public abstract class MixinWorldRenderer {
 
     @Inject(method = "render", at = @At("HEAD"))
     private void onRender(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci) {
-        this.anyShaderEnabled = Shader.SHADERS.stream().anyMatch(Shader::isEnabled);
+        this.anyShaderEnabled = EntityShader.SHADERS.stream().anyMatch(EntityShader::isEnabled);
         this.tickDelta = tickDelta;
         this.targetBuffer = null;
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;canDrawEntityOutlines()Z", opcode = 180, ordinal = 0))
     private boolean onClear(WorldRenderer worldRenderer) {
-        for (Shader shader : Shader.SHADERS) {
+        for (EntityShader shader : EntityShader.SHADERS) {
             if (shader.getFramebuffer() == null) {
                 // Not initialised?
-                shader.init(MinecraftClient.getInstance(), bufferBuilders.getEntityVertexConsumers());
+                shader.init(bufferBuilders.getEntityVertexConsumers());
             }
-            shader.getFramebuffer().clear(MinecraftClient.IS_SYSTEM_MAC);
+            shader.getFramebuffer().clear();
         }
         this.client.getFramebuffer().beginWrite(false);
         return false;
@@ -96,13 +96,13 @@ public abstract class MixinWorldRenderer {
 
     @Redirect(method = "drawEntityOutlinesFramebuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;canDrawEntityOutlines()Z", opcode = 180))
     private boolean onDrawEntityFramebuffer(WorldRenderer worldRenderer) {
-        boolean anyMatch = Shader.SHADERS.stream().anyMatch(Shader::isRender);
+        boolean anyMatch = EntityShader.SHADERS.stream().anyMatch(EntityShader::isRender);
         if (canUseShaders() && anyMatch) {
             RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SrcFactor.ZERO, GlStateManager.DstFactor.ONE);
-            for (Shader shader : Shader.SHADERS) {
+            for (EntityShader shader : EntityShader.SHADERS) {
                 if (shader.isRender()) {
-                    targetBuffer = shader.getFramebuffer();
+                    targetBuffer = shader.getFramebuffer().getMinecraftBuffer();
                     shader.getFramebuffer().draw(this.client.getWindow().getFramebufferWidth(), this.client.getWindow().getFramebufferHeight(), false);
                     shader.setRender(false);
                 }
@@ -116,7 +116,7 @@ public abstract class MixinWorldRenderer {
     private void renderBlocKEntity(BlockEntityRenderDispatcher blockEntityRenderDispatcher, BlockEntity blockEntity, float tickDelta, MatrixStack matrix, VertexConsumerProvider vertexConsumerProvider) {
         if (canUseShaders() && anyShaderEnabled) {
             Block block = null;
-            for (Shader shader : Shader.SHADERS) {
+            for (EntityShader shader : EntityShader.SHADERS) {
                 if (shader.isEnabled()) {
                     if (block == null) {
                         TileEntity tileEntity = World.getTileEntityFromEntity(blockEntity);
@@ -126,7 +126,7 @@ public abstract class MixinWorldRenderer {
                     }
                     if (shader.getTargetPredicate().test(block)) {
                         shader.setRender(true);
-                        targetBuffer = shader.getFramebuffer();
+                        targetBuffer = shader.getFramebuffer().getMinecraftBuffer();
                         vertexConsumerProvider = shader.getOutlineVertexConsumerProvider();
                     }
                 }
@@ -146,13 +146,13 @@ public abstract class MixinWorldRenderer {
     private void doRenderEntity(WorldRenderer worldRenderer, Entity entity, double cameraX, double cameraY, double cameraZ, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
         if (canUseShaders() && anyShaderEnabled) {
             me.deftware.client.framework.entity.Entity emcEntity = null;
-            for (Shader shader : Shader.SHADERS) {
+            for (EntityShader shader : EntityShader.SHADERS) {
                 if (shader.isEnabled()) {
                     if (emcEntity == null)
                         emcEntity = World.getEntityById(entity.getId());
                     if (shader.getTargetPredicate().test(emcEntity)) {
                         shader.setRender(true);
-                        targetBuffer = shader.getFramebuffer();
+                        targetBuffer = shader.getFramebuffer().getMinecraftBuffer();
                         vertexConsumers = shader.getOutlineVertexConsumerProvider();
                     }
                 }
@@ -164,9 +164,9 @@ public abstract class MixinWorldRenderer {
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/OutlineVertexConsumerProvider;draw()V", opcode = 180))
     private void onVertexDraw(OutlineVertexConsumerProvider outlineVertexConsumerProvider) {
         if (canUseShaders() && anyShaderEnabled) {
-            for (Shader shader : Shader.SHADERS) {
+            for (EntityShader shader : EntityShader.SHADERS) {
                 if (shader.isRender()) {
-                    targetBuffer = shader.getFramebuffer();
+                    targetBuffer = shader.getFramebuffer().getMinecraftBuffer();
                     shader.getOutlineVertexConsumerProvider().draw();
                     shader.getShaderEffect().render(tickDelta);
                 }

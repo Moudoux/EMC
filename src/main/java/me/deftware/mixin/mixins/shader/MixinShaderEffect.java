@@ -48,6 +48,11 @@ public class MixinShaderEffect implements Uniformable {
         modifications.put(name, shaderConsumer);
     }
 
+    @Override
+    public List<PostProcessShader> getPostShaders() {
+        return passes;
+    }
+
     @Inject(method = "render", at = @At("HEAD"))
     private void onRender(float tickDelta, CallbackInfo ci) {
         modifications.values().forEach(Runnable::run);

@@ -8,9 +8,7 @@ import me.deftware.client.framework.command.commands.*;
 import me.deftware.client.framework.config.Settings;
 import me.deftware.client.framework.event.EventBus;
 import me.deftware.client.framework.global.GameMap;
-import me.deftware.client.framework.global.types.BlockProperty;
 import me.deftware.client.framework.global.types.BlockPropertyManager;
-import me.deftware.client.framework.global.types.PropertyManager;
 import me.deftware.client.framework.input.Keyboard;
 import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.main.bootstrap.discovery.AbstractModDiscovery;
@@ -112,13 +110,13 @@ public class Bootstrap {
             RenderStack.setScale(EMCSettings.getPrimitive("RENDER_SCALE", 1.0f));
             modDiscoveries.forEach(discovery -> {
                 discovery.discover();
-                if (discovery.getSize() != 0) {
-                    logger.info("{} found {} mod{}", discovery.getClass().getSimpleName(), discovery.getSize(), discovery.getSize() != 1 ? "s" : "");
+                if (discovery.size() != 0) {
+                    logger.info("{} found {} mod{}", discovery.getClass().getSimpleName(), discovery.size(), discovery.size() != 1 ? "s" : "");
                 }
-                discovery.getMods().forEach(AbstractModDiscovery.AbstractModEntry::init);
+                discovery.stream().forEach(AbstractModDiscovery.AbstractModEntry::init);
             });
             registerFrameworkCommands();
-            modDiscoveries.forEach(discovery -> discovery.getMods().forEach(mod -> {
+            modDiscoveries.forEach(discovery -> discovery.stream().forEach(mod -> {
                 try {
                     loadMod(mod);
                 } catch (Exception ex) {

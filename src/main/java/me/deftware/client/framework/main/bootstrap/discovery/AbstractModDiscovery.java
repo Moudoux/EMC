@@ -17,20 +17,20 @@ public abstract class AbstractModDiscovery {
 
     public abstract void discover();
 
-    public Stream<AbstractModEntry> getMods() {
+    public Stream<AbstractModEntry> stream() {
         return entries.stream();
     }
 
-    public int getSize() {
+    public int size() {
         return entries.size();
     }
 
     public abstract static class AbstractModEntry {
 
-        JsonObject json;
+        protected JsonObject json;
         private final File file;
 
-        AbstractModEntry(File file, JsonObject json) {
+        public AbstractModEntry(File file, JsonObject json) {
             this.file = file;
             this.json = json;
         }

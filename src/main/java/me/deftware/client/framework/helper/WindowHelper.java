@@ -1,7 +1,7 @@
 package me.deftware.client.framework.helper;
 
 import me.deftware.client.framework.gui.GuiScreen;
-import me.deftware.client.framework.render.Shader;
+import me.deftware.client.framework.render.shader.Shader;
 import me.deftware.client.framework.util.minecraft.MinecraftIdentifier;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
 import me.deftware.mixin.imp.IMixinMinecraft;

@@ -80,6 +80,7 @@
     "render.MixinWorldRenderer",
     "render.MixinBufferBuilder",
     "render.MixinRenderLayers",
+    "render.MixinParticleManager",
     "world.MixinWorld",
     "world.MixinChunkRenderRegion",
     "world.MixinWorldClient",

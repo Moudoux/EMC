@@ -5,6 +5,7 @@ import me.deftware.client.framework.global.GameKeys;
 import me.deftware.client.framework.global.GameMap;
 import me.deftware.client.framework.math.vector.Vector3d;
 import me.deftware.client.framework.render.camera.entity.CameraEntityMan;
+import me.deftware.client.framework.world.World;
 import me.deftware.mixin.imp.IMixinEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -80,7 +81,7 @@ public abstract class MixinEntity implements IMixinEntity {
     @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true)
     public void pushAwayFrom(Entity entity, CallbackInfo info) {
         if (((Object) this) == MinecraftClient.getInstance().player) {
-            if (new EventEntityPush(me.deftware.client.framework.entity.Entity.newInstance(entity)).broadcast().isCanceled()) {
+            if (new EventEntityPush(World.getEntityById(entity.getId())).broadcast().isCanceled()) {
                 info.cancel();
             }
         }
