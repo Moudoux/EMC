@@ -90,7 +90,10 @@ public abstract class MixinEntity implements IMixinEntity {
     @Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;noClip:Z", opcode = 180))
     private boolean noClipCheck(Entity self) {
         boolean noClipCheck = GameMap.INSTANCE.get(GameKeys.NOCLIP, false);
-        return (self instanceof ClientPlayerEntity && self == MinecraftClient.getInstance().player) && (noClip || noClipCheck);
+        if (self == MinecraftClient.getInstance().player) {
+            return noClip || noClipCheck;
+        }
+        return self.noClip;
     }
 
     @Inject(method = "slowMovement", at = @At(value = "TAIL"), cancellable = true)
