@@ -42,14 +42,16 @@ public class Keyboard {
 	}
 
 	public static String getKeyName(int glfwCodePoint) {
-		if (normalKeys.containsKey(glfwCodePoint)) {
-			return normalKeys.get(glfwCodePoint);
-		} else if (functionKeys.containsKey(glfwCodePoint)) {
-			return functionKeys.get(glfwCodePoint);
-		} else if (mouseButtons.containsKey(glfwCodePoint)) {
-			return mouseButtons.get(glfwCodePoint);
+		int scanCode = GLFW.glfwGetKeyScancode(glfwCodePoint);
+		return getKeyName(glfwCodePoint, scanCode);
+	}
+
+	public static String getKeyName(int codePoint, int scanCode) {
+		String name = GLFW.glfwGetKeyName(codePoint, scanCode);
+		if (name == null) {
+			return normalKeys.getOrDefault(codePoint, functionKeys.getOrDefault(codePoint, "Unknown"));
 		}
-		return "Unknown";
+		return name;
 	}
 
 	public static String getClipboardString() {

@@ -98,23 +98,11 @@ public class LegacyBitmapFont {
     public void initialize() {
         destroy();
         List<String> characters = new ArrayList<>();
-        // Lowercase alphabet
-        for (char lowercaseAlphabet = 'a'; lowercaseAlphabet <= 'z'; lowercaseAlphabet++) {
-            characters.add(Character.toString(lowercaseAlphabet));
-        }
-        // Uppercase alphabet
-        for (char uppercaseAlphabet = 'A'; uppercaseAlphabet <= 'Z'; uppercaseAlphabet++) {
-            characters.add(Character.toString(uppercaseAlphabet));
-        }
-        // Numbers
-        for (char numeric = 48; numeric <= 57; numeric++) { // 0 - 9 in ASCII
+        // https://en.wikipedia.org/wiki/List_of_Unicode_characters
+        for (char numeric = 33; numeric <= 255; numeric++) {
+            if (numeric == 160) // Non breaking space
+                continue;
             characters.add(Character.toString(numeric));
-        }
-        // Additional and special characters
-        char[] specialCharacters = {'!', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
-                ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', '"'};
-        for (char specialCharacter : specialCharacters) {
-            characters.add(Character.toString(specialCharacter));
         }
         // Ligatures
         if (this.ligatures) {
