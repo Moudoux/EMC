@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.8-SNAPSHOT'
+	id 'fabric-loom' version '0.9-SNAPSHOT'
 	id "io.freefair.lombok" version "6.0.0-m2"
 	id 'maven-publish'
 }
@@ -53,8 +53,10 @@ task mockJar(type: Jar) {
 	from sourceSets.mock.output
 }
 
-minecraft {
-	refmapName = 'mixins.emc.refmap.json'
+loom {
+	mixin {
+		defaultRefmapName = 'mixins.emc.refmap.json'
+	}
 }
 
 publishing {

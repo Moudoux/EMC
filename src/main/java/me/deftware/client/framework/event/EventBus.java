@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 public class EventBus {
 
 	private static final Object lock = new Object();
-	private static final MultiMap<Class<?>, Listener> listeners = new MultiMap<>();
+	public static final MultiMap<Class<?>, Listener> listeners = new MultiMap<>();
 
 	public static synchronized void registerClass(Class<?> clazz, Object instance) {
 		synchronized (lock) {
@@ -49,7 +49,7 @@ public class EventBus {
 			for (Class<?> event : listeners.keySet()) {
 				Collection<Listener> listenerCollection = listeners.get(event);
 				for (Listener listener : listenerCollection) {
-					if (listener.getClassInstance().getClass() == clazz) {
+					if (listener.getClassInstance() != null && listener.getClassInstance().getClass() == clazz) {
 						removeList.put(event, listener);
 						Bootstrap.logger.debug("Unregistered " + listener.getClassInstance().getClass().getName());
 					}
@@ -71,7 +71,7 @@ public class EventBus {
 			if (listeners.containsKey(event.getClass())) {
 				listeners.get(event.getClass()).stream().sorted(Comparator.comparingInt(Listener::getPriority)).forEach(listener -> {
 					try {
-						listener.getMethod().invoke(listener.getClassInstance(), event);
+						listener.invoke(event);
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}

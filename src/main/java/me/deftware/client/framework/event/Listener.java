@@ -21,12 +21,12 @@ public class Listener {
         return priority;
     }
 
-    public Method getMethod() {
-        return method;
-    }
-
     public Object getClassInstance() {
         return classInstance;
+    }
+
+    public void invoke(Event event) throws Exception {
+        method.invoke(getClassInstance(), event);
     }
 
 }
