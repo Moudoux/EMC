@@ -3,6 +3,7 @@ package me.deftware.mixin.mixins.gui;
 import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.event.events.EventGetItemToolTip;
 import me.deftware.client.framework.item.Item;
+import me.deftware.client.framework.registry.ItemRegistry;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -43,7 +44,7 @@ public abstract class MixinCreativeInventoryScreen extends AbstractInventoryScre
         for (Text text : lines) {
             list.add(new ChatMessage().fromText(text));
         }
-        EventGetItemToolTip event = new EventGetItemToolTip(list, Item.newInstance(stack.getItem()), client.options.advancedItemTooltips);
+        EventGetItemToolTip event = new EventGetItemToolTip(list, ItemRegistry.INSTANCE.getItem(stack.getItem()), client.options.advancedItemTooltips);
         event.broadcast();
         List<Text> modifiedTextList = new ArrayList<>();
         for (ChatMessage text : event.getList()) {
@@ -52,9 +53,8 @@ public abstract class MixinCreativeInventoryScreen extends AbstractInventoryScre
         super.renderTooltip(matrices, modifiedTextList, x, y);
     }
 
-
-
     public MixinCreativeInventoryScreen(CreativeInventoryScreen.CreativeScreenHandler screenHandler, PlayerInventory playerInventory, Text text) {
         super(screenHandler, playerInventory, text);
     }
+
 }

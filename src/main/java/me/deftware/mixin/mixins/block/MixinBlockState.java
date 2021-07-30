@@ -8,8 +8,10 @@ import me.deftware.client.framework.global.types.BlockPropertyManager;
 import me.deftware.client.framework.global.types.PropertyManager;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.math.position.DoubleBlockPosition;
+import me.deftware.client.framework.world.player.PlayerEntry;
 import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
@@ -65,12 +67,13 @@ public abstract class MixinBlockState {
 				return;
 			}
 		}
+		PlayerEntity player = MinecraftClient.getInstance().player;
 		// Deprecated
-		if (!this.getFluidState().isEmpty()) {
+		if (!this.getFluidState().isEmpty() && player != null) {
 			boolean fullCube = GameMap.INSTANCE.get(GameKeys.FULL_LIQUID_VOXEL, false);
 			if (fullCube) {
-				if (!(pos.getX() == MinecraftClient.getInstance().player.getBlockPos().getX() &&
-						pos.getZ() == MinecraftClient.getInstance().player.getBlockPos().getZ())) {
+				if (!(pos.getX() == player.getBlockPos().getX() &&
+						pos.getZ() == player.getBlockPos().getZ())) {
 					fullCube = false;
 				}
 			}

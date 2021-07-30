@@ -8,17 +8,18 @@ import me.deftware.client.framework.helper.ScreenHelper;
 import me.deftware.client.framework.render.camera.GameCamera;
 import me.deftware.client.framework.util.minecraft.BlockSwingResult;
 import me.deftware.client.framework.util.minecraft.ServerConnectionInfo;
+import me.deftware.client.framework.world.World;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.option.Perspective;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -33,31 +34,9 @@ public class Minecraft {
 
 	public static final Queue<Runnable> RENDER_THREAD = new ConcurrentLinkedQueue<>();
 
-	private static final ComparedConversion<ClientPlayerEntity, MainEntityPlayer> mainPlayer =
-			new ComparedConversion<>(() -> MinecraftClient.getInstance().player, MainEntityPlayer::new);
+	private static MainEntityPlayer mainPlayer;
 
-	private static final ComparedConversion<net.minecraft.entity.Entity, Entity> cameraEntity =
-			new ComparedConversion<>(() -> MinecraftClient.getInstance().cameraEntity, Entity::newInstance);
-
-	private static final ComparedConversion<net.minecraft.entity.Entity, Entity> hitEntity =
-			new ComparedConversion<>(() -> {
-				if (MinecraftClient.getInstance().crosshairTarget != null) {
-					if (MinecraftClient.getInstance().crosshairTarget.getType() == HitResult.Type.ENTITY) {
-						return ((EntityHitResult) MinecraftClient.getInstance().crosshairTarget).getEntity();
-					}
-				}
-				return null;
-			}, Entity::newInstance);
-
-	private static final ComparedConversion<HitResult, BlockSwingResult> hitBlock =
-			new ComparedConversion<>(() -> {
-				if (MinecraftClient.getInstance().crosshairTarget != null) {
-					if (MinecraftClient.getInstance().crosshairTarget.getType() == HitResult.Type.BLOCK) {
-						return MinecraftClient.getInstance().crosshairTarget;
-					}
-				}
-				return null;
-			}, BlockSwingResult::new);
+	private static Entity cameraEntity;
 
 	private static final ComparedConversion<ServerInfo, ServerConnectionInfo> connectedServer =
 			new ComparedConversion<>(() -> MinecraftClient.getInstance().getCurrentServerEntry(), ServerConnectionInfo::new);
@@ -71,12 +50,22 @@ public class Minecraft {
 	 */
 	@Nullable
 	public static MainEntityPlayer getPlayer() {
-		return mainPlayer.get();
+		PlayerEntity player = MinecraftClient.getInstance().player;
+		if (player == null)
+			return null;
+		if (mainPlayer == null || mainPlayer.getMinecraftEntity() != player)
+			mainPlayer = (MainEntityPlayer) World.getEntityById(player.getId());
+		return mainPlayer;
 	}
 
 	@Nullable
 	public static Entity getCameraEntity() {
-		return cameraEntity.get();
+		net.minecraft.entity.Entity entity = MinecraftClient.getInstance().cameraEntity;
+		if (entity == null)
+			return null;
+		if (cameraEntity == null || cameraEntity.getMinecraftEntity() != entity)
+			cameraEntity = World.getEntityById(entity.getId());
+		return cameraEntity;
 	}
 
 	public static int getMinecraftChatScaledYOffset() {
@@ -194,12 +183,26 @@ public class Minecraft {
 
 	@Nullable
 	public static Entity getHitEntity() {
-		return hitEntity.get();
+		if (MinecraftClient.getInstance().crosshairTarget instanceof EntityHitResult entityHitResult) {
+			return World.getEntityById(
+					entityHitResult.getEntity().getId()
+			);
+		}
+		return null;
 	}
+
+	private static BlockSwingResult swingResult;
 
 	@Nullable
 	public static BlockSwingResult getHitBlock() {
-		return hitBlock.get();
+		if (MinecraftClient.getInstance().crosshairTarget instanceof BlockHitResult blockHitResult) {
+			if (swingResult == null)
+				swingResult = new BlockSwingResult(blockHitResult);
+			else
+				swingResult.setReference(blockHitResult);
+			return swingResult;
+		}
+		return null;
 	}
 
 	public static float getRenderPartialTicks() {

@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -34,20 +35,26 @@ public class MixinCamera {
         }
     }
 
+    @Unique
+    private final EventCameraClip eventCameraClip = new EventCameraClip();
+
     @Inject(at = @At("HEAD"), cancellable = true, method = "clipToSpace")
     public void clipToSpace(double camDistance, CallbackInfoReturnable<Double> info) {
-        EventCameraClip event = new EventCameraClip(camDistance);
-        event.broadcast();
-        if (event.isCanceled()) {
-            info.setReturnValue(event.getDistance());
+        eventCameraClip.create(camDistance);
+        eventCameraClip.broadcast();
+        if (eventCameraClip.isCanceled()) {
+            info.setReturnValue(eventCameraClip.getDistance());
             info.cancel();
         }
     }
 
+    @Unique
+    private final EventAnimation eventAnimation = new EventAnimation();
+
     @Inject(at = @At("HEAD"), cancellable = true, method = "getSubmersionType")
     public void getSubmergedFluidState(CallbackInfoReturnable<CameraSubmersionType> info) {
-        EventAnimation event = new EventAnimation(EventAnimation.AnimationType.Underwater).broadcast();
-        if (event.isCanceled()) {
+        eventAnimation.create(EventAnimation.AnimationType.Underwater).broadcast();
+        if (eventAnimation.isCanceled()) {
             // Assuming that cancel is in this case completely ignoring fog and not to keep old fog rendered
             info.setReturnValue(CameraSubmersionType.NONE);
         }

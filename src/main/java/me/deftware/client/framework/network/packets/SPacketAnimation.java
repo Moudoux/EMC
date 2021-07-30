@@ -2,11 +2,9 @@ package me.deftware.client.framework.network.packets;
 
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.network.PacketWrapper;
-import net.minecraft.client.MinecraftClient;
+import me.deftware.client.framework.world.World;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntityAnimationS2CPacket;
-
-import java.util.Objects;
 
 /**
  * @author Deftware
@@ -26,7 +24,7 @@ public class SPacketAnimation extends PacketWrapper {
 	}
 
 	public Entity getEntity() {
-		return Entity.newInstance(Objects.requireNonNull(MinecraftClient.getInstance().world).getEntityById(getEntityID()));
+		return World.getEntityById(getEntityID());
 	}
 
 }

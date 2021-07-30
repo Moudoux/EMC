@@ -1,6 +1,5 @@
 package me.deftware.client.framework.entity.types.objects;
 
-import me.deftware.client.framework.conversion.ComparedConversion;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.item.ItemStack;
 
@@ -9,15 +8,14 @@ import me.deftware.client.framework.item.ItemStack;
  */
 public class ItemEntity extends Entity {
 
-	private final ComparedConversion<net.minecraft.item.ItemStack, ItemStack> itemStack;
+	private final ItemStack stack = ItemStack.EMPTY;
 
 	public ItemEntity(net.minecraft.entity.Entity entity) {
 		super(entity);
-		this.itemStack = new ComparedConversion<>(() -> getMinecraftEntity().getStack(), ItemStack::new);
 	}
 
 	public ItemStack getStack() {
-		return itemStack.get();
+		return stack.setStack(getMinecraftEntity().getStack());
 	}
 
 	public net.minecraft.entity.ItemEntity getMinecraftEntity() {

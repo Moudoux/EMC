@@ -1,6 +1,7 @@
 package me.deftware.client.framework.world.block;
 
 import me.deftware.client.framework.math.position.BlockPosition;
+import me.deftware.client.framework.registry.BlockRegistry;
 
 /**
  * @author Deftware
@@ -20,11 +21,10 @@ public class BlockState {
 	}
 
 	public Block getBlock(BlockPosition position) {
-		Block block = Block.newInstance(getMinecraftBlockState().getBlock());
+		Block block = BlockRegistry.INSTANCE.getBlock(getMinecraftBlockState().getBlock());
 		block.setBlockPosition(position);
 		return block;
 	}
-
 
 	public Material getMaterial() {
 		return material;

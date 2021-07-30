@@ -8,7 +8,8 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 public class AppliedStatusEffect {
 
 	private final StatusEffect effect;
-	private final StatusEffectInstance instance;
+
+	private StatusEffectInstance instance;
 
 	public AppliedStatusEffect(StatusEffectInstance instance) {
 		this.effect = new StatusEffect(instance.getEffectType());
@@ -44,6 +45,11 @@ public class AppliedStatusEffect {
 
 	public boolean isAmbient() {
 		return instance.isAmbient();
+	}
+
+	public AppliedStatusEffect setInstance(StatusEffectInstance instance) {
+		this.instance = instance;
+		return this;
 	}
 
 }

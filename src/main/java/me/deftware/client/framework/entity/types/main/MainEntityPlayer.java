@@ -1,9 +1,7 @@
 package me.deftware.client.framework.entity.types.main;
 
-import me.deftware.client.framework.conversion.ConvertedList;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.EntityHand;
-import me.deftware.client.framework.inventory.Slot;
 import me.deftware.client.framework.item.ItemStack;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.math.vector.Vector3d;
@@ -27,9 +25,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The main Minecraft player
@@ -37,11 +33,6 @@ import java.util.Set;
  * @author Deftware
  */
 public class MainEntityPlayer extends RotationLogic {
-
-	private final ConvertedList<Slot, net.minecraft.screen.slot.Slot> inventorySlots =
-			new ConvertedList<>(() -> Objects.requireNonNull(MinecraftClient.getInstance().player).currentScreenHandler.slots, pair ->
-					pair.getLeft().getMinecraftSlot() == Objects.requireNonNull(MinecraftClient.getInstance().player).currentScreenHandler.slots.get(pair.getRight())
-					, Slot::new);
 
 	public MainEntityPlayer(PlayerEntity entity) {
 		super(entity);
@@ -139,10 +130,6 @@ public class MainEntityPlayer extends RotationLogic {
 	/*
 		Inventory management
 	 */
-
-	public List<Slot> getInventorySlots() {
-		return inventorySlots.poll();
-	}
 
 	/**
 	 * Moves an item from the main inventory into the hotbar

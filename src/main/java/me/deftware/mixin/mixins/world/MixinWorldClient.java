@@ -68,8 +68,7 @@ public abstract class MixinWorldClient implements IMixinWorldClient {
 
     @Inject(method = "addEntityPrivate", at = @At("TAIL"))
     private void addEntityPrivate(int id, net.minecraft.entity.Entity entity, CallbackInfo ci) {
-        Entity e = entity instanceof PlayerEntity ?
-                new EntityPlayer((PlayerEntity) entity) : Entity.newInstance(entity);
+        Entity e = Entity.newInstance(entity);
         entities.put(id, e);
         new EventEntityUpdated(EventEntityUpdated.Change.Added, e).broadcast();
     }

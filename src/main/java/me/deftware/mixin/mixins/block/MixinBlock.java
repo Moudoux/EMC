@@ -10,6 +10,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -20,18 +21,22 @@ public abstract class MixinBlock {
     @Shadow
     public abstract Item asItem();
 
+    @Unique
+    private final EventSlowdown eventSlowdown = new EventSlowdown();
+
     @Inject(method = "getSlipperiness", at = @At("TAIL"), cancellable = true)
     public void getSlipperiness(CallbackInfoReturnable<Float> cir) {
         if (((IMixinAbstractBlock) this).getTheSlipperiness() != 0.6f) {
             Block block = Block.getBlockFromItem(this.asItem());
-            EventSlowdown event = null;
+            boolean flag = false;
             if (block instanceof IceBlock || block.getTranslationKey().contains("blue_ice") || block.getTranslationKey().contains("packed_ice")) {
-                event = new EventSlowdown(EventSlowdown.SlowdownType.Slipperiness, 0.6f);
+                flag = true;
+                eventSlowdown.create(EventSlowdown.SlowdownType.Slipperiness, 0.6f);
             }
-            if (event != null) {
-                event.broadcast();
-                if (event.isCanceled()) {
-                    cir.setReturnValue(event.getMultiplier());
+            if (flag) {
+                eventSlowdown.broadcast();
+                if (eventSlowdown.isCanceled()) {
+                    cir.setReturnValue(eventSlowdown.getMultiplier());
                 }
             }
         }
@@ -41,16 +46,18 @@ public abstract class MixinBlock {
     private void onGetVelocityMultiplier(CallbackInfoReturnable<Float> cir) {
         if (((IMixinAbstractBlock) this).getTheVelocityMultiplier() != 1.0f) {
             Block block = Block.getBlockFromItem(this.asItem());
-            EventSlowdown event = null;
+            boolean flag = false;
             if (block instanceof HoneyBlock) {
-                event = new EventSlowdown(EventSlowdown.SlowdownType.Honey);
+                flag = true;
+                eventSlowdown.create(EventSlowdown.SlowdownType.Honey, 1);
             } else if (block instanceof SoulSandBlock) {
-                event = new EventSlowdown(EventSlowdown.SlowdownType.Soulsand);
+                flag = true;
+                eventSlowdown.create(EventSlowdown.SlowdownType.Soulsand, 1);
             }
-            if (event != null) {
-                event.broadcast();
-                if (event.isCanceled()) {
-                    cir.setReturnValue(event.getMultiplier());
+            if (flag) {
+                eventSlowdown.broadcast();
+                if (eventSlowdown.isCanceled()) {
+                    cir.setReturnValue(eventSlowdown.getMultiplier());
                 }
             }
         }

@@ -2,6 +2,7 @@ package me.deftware.client.framework.render.camera;
 
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.math.vector.Vector3d;
+import me.deftware.client.framework.world.World;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 
@@ -27,7 +28,7 @@ public class GameCamera {
 	}
 
 	public Entity getFocusedEntity() {
-		return Entity.newInstance(getMinecraftCamera().getFocusedEntity());
+		return World.getEntityById(getMinecraftCamera().getFocusedEntity().getId());
 	}
 
 	public double getRenderPosX() {

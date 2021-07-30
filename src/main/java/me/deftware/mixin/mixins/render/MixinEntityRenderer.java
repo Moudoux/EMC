@@ -75,10 +75,16 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
     private boolean shadersEnabled;
 
     @Unique
-    private final Consumer<Float> renderEvent = partialTicks -> new EventRender3D(partialTicks).broadcast();
+    private final EventRender3D eventRender3D = new EventRender3D();
 
     @Unique
-    private final Consumer<Float> renderEventNoBobbing = partialTicks -> new EventRender3DNoBobbing(partialTicks).broadcast();
+    private final EventRender3DNoBobbing eventRender3DNoBobbing = new EventRender3DNoBobbing();
+
+    @Unique
+    private final Consumer<Float> renderEvent = partialTicks -> eventRender3D.create(partialTicks).broadcast();
+
+    @Unique
+    private final Consumer<Float> renderEventNoBobbing = partialTicks -> eventRender3DNoBobbing.create(partialTicks).broadcast();
 
     @Inject(method = "renderHand", at = @At("HEAD"))
     private void renderHand(MatrixStack matrixStack, Camera camera, float partialTicks, CallbackInfo ci) {
@@ -110,14 +116,23 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
         action.accept(partialTicks);
     }
 
+    @Unique
+    private final EventHurtcam eventHurtcam = new EventHurtcam();
+
     @Inject(method = "bobViewWhenHurt", at = @At("HEAD"), cancellable = true)
     private void hurtCameraEffect(MatrixStack stack, float partialTicks, CallbackInfo ci) {
-        EventHurtcam event = new EventHurtcam();
-        event.broadcast();
-        if (event.isCanceled()) {
+        eventHurtcam.setCanceled(false);
+        eventHurtcam.broadcast();
+        if (eventHurtcam.isCanceled()) {
             ci.cancel();
         }
     }
+
+    @Unique
+    private final EventRender2D eventRender2D = new EventRender2D();
+
+    @Unique
+    private final EventMatrixRender eventMatrixRender = new EventMatrixRender();
 
     @Redirect(method = "render", at = @At(value = "INVOKE", opcode = 180, target = "Lnet/minecraft/client/gui/hud/InGameHud;render(Lnet/minecraft/client/util/math/MatrixStack;F)V"))
     private void onRender2D(InGameHud inGameHud, MatrixStack matrices, float tickDelta) {
@@ -135,11 +150,11 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
             // Minecraft modifies opacity under water
             GLX.INSTANCE.color(1, 1, 1, 1);
             GLX.INSTANCE.refresh(matrices);
-            new EventRender2D(tickDelta).broadcast();
+            eventRender2D.create(tickDelta).broadcast();
             // Render with custom matrix
             RenderStack.reloadCustomMatrix();
             RenderStack.setupGl();
-            new EventMatrixRender(tickDelta).broadcast();
+            eventMatrixRender.create(tickDelta).broadcast();
             RenderStack.restoreGl();
             RenderStack.reloadMinecraftMatrix();
         }

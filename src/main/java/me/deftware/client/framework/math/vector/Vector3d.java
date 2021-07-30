@@ -1,5 +1,6 @@
 package me.deftware.client.framework.math.vector;
 
+import lombok.Setter;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.block.TileEntity;
 import me.deftware.client.framework.math.position.BlockPosition;
@@ -18,6 +19,7 @@ public class Vector3d {
 
 	public static final Vector3d ZERO = new Vector3d(0.0D, 0.0D, 0.0D);
 
+	@Setter
 	protected Vec3d vec3d;
 
 	public Vector3d(double x, double y, double z) {

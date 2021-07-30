@@ -10,6 +10,7 @@ import me.deftware.client.framework.global.types.PropertyManager;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.minecraft.Minecraft;
+import me.deftware.client.framework.registry.BlockRegistry;
 import me.deftware.client.framework.util.WebUtils;
 import me.deftware.client.framework.world.block.Block;
 import me.deftware.client.framework.world.block.BlockState;
@@ -23,10 +24,12 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.LightType;
+import net.minecraft.world.biome.Biome;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.*;
@@ -37,6 +40,8 @@ import java.util.stream.Stream;
  * @author Deftware, CDAGaming
  */
 public class World {
+
+	private static final me.deftware.client.framework.world.Biome biome = new me.deftware.client.framework.world.Biome();
 
 	private static final float[] tickRates = new float[20];
 	private static long timeLastTimeUpdate;
@@ -86,13 +91,18 @@ public class World {
 		return Objects.requireNonNull(MinecraftClient.getInstance().world).getLightLevel(LightType.BLOCK, position.getMinecraftBlockPos());
 	}
 
+	public static me.deftware.client.framework.world.Biome getBiome() {
+		net.minecraft.entity.Entity player = Objects.requireNonNull(MinecraftClient.getInstance().player);
+		return biome.setReference(player.world.getBiome(player.getBlockPos()));
+	}
+
 	public static BlockState getStateFromBlockPos(BlockPosition position) {
 		return new BlockState(Objects.requireNonNull(MinecraftClient.getInstance().world).getBlockState(position.getMinecraftBlockPos()));
 	}
 
 	public static Block getBlockFromPosition(BlockPosition position) {
 		BlockState blockState = getStateFromBlockPos(position);
-		Block block = Block.newInstance(blockState.getMinecraftBlockState().getBlock());
+		Block block = BlockRegistry.INSTANCE.getBlock(blockState.getMinecraftBlockState().getBlock());
 		block.setBlockPosition(position);
 		block.setLocationBlockState(blockState);
 		return block;
@@ -134,6 +144,7 @@ public class World {
 								: dimension.getDimension().hashCode();
 	}
 
+	@Deprecated
 	public static String getBiomeCategoryName() {
 		net.minecraft.entity.Entity player = Objects.requireNonNull(MinecraftClient.getInstance().player);
 		return player.world.getBiome(player.getBlockPos()).getCategory().getName();

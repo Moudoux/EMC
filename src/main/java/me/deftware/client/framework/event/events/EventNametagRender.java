@@ -1,6 +1,7 @@
 package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
+import me.deftware.client.framework.world.World;
 import me.deftware.mixin.imp.IMixinWorldClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
@@ -14,12 +15,10 @@ public class EventNametagRender extends Event {
 
     private me.deftware.client.framework.entity.Entity entity;
 
-    public EventNametagRender(Entity entity) {
-        me.deftware.client.framework.entity.Entity emcEntity
-                = Objects.requireNonNull(((IMixinWorldClient) MinecraftClient.getInstance().world)).getLoadedEntitiesAccessor().getOrDefault(entity.getId(), null);
-        if (emcEntity != null) {
-            this.entity = emcEntity;
-        }
+    public EventNametagRender create(Entity entity) {
+        setCanceled(false);
+        this.entity = World.getEntityById(entity.getId());
+        return this;
     }
 
     public me.deftware.client.framework.entity.Entity getEntity() {

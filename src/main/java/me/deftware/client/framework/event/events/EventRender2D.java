@@ -9,14 +9,16 @@ import me.deftware.client.framework.event.Event;
  */
 public class EventRender2D extends Event {
 
-	private float partialTicks;
-
-	public EventRender2D(float partialTicks) {
-		this.partialTicks = partialTicks;
-	}
+	protected float partialTicks;
 
 	public float getPartialTicks() {
 		return partialTicks;
+	}
+
+	public EventRender2D create(float partialTicks) {
+		this.setCanceled(false);
+		this.partialTicks = partialTicks;
+		return this;
 	}
 
 }

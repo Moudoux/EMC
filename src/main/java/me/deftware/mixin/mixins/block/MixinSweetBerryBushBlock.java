@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -17,11 +18,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(SweetBerryBushBlock.class)
 public class MixinSweetBerryBushBlock {
 
+    @Unique
+    private final EventSlowdown slowdown = new EventSlowdown();
+
     @Redirect(method = "onEntityCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;slowMovement(Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/Vec3d;)V"))
     private void onSlowMovement(Entity entity, BlockState state, Vec3d multiplier) {
-        EventSlowdown eventSlowdown = new EventSlowdown(EventSlowdown.SlowdownType.BerryBush);
-        eventSlowdown.broadcast();
-        if(!eventSlowdown.isCanceled()) {
+        slowdown.create(EventSlowdown.SlowdownType.BerryBush, 1);
+        slowdown.broadcast();
+        if(!slowdown.isCanceled()) {
             entity.slowMovement(state, multiplier);
         }
     }

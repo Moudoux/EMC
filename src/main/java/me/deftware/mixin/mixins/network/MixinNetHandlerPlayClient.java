@@ -48,12 +48,15 @@ public class MixinNetHandlerPlayClient implements IMixinNetworkHandler {
         return playerEntryMap;
     }
 
+    @Unique
+    private final EventAnimation eventAnimation = new EventAnimation();
+
     @Inject(method = "onEntityStatus", at = @At("HEAD"), cancellable = true)
     public void onEntityStatus(EntityStatusS2CPacket packet, CallbackInfo ci) {
         if (packet.getStatus() == 35) {
-            EventAnimation event = new EventAnimation(EventAnimation.AnimationType.Totem);
-            event.broadcast();
-            if (event.isCanceled()) {
+            eventAnimation.create(EventAnimation.AnimationType.Totem);
+            eventAnimation.broadcast();
+            if (eventAnimation.isCanceled()) {
                 ci.cancel();
             }
         }

@@ -56,11 +56,14 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         }
     }
 
+    @Unique
+    private final EventSlowdown eventSlowdown = new EventSlowdown();
+
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "net/minecraft/client/network/ClientPlayerEntity.isUsingItem()Z", ordinal = 0))
     private boolean itemUseSlowdownEvent(ClientPlayerEntity self) {
-        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Item_Use);
-        event.broadcast();
-        if (event.isCanceled()) {
+        eventSlowdown.create(EventSlowdown.SlowdownType.Item_Use, 1);
+        eventSlowdown.broadcast();
+        if (eventSlowdown.isCanceled()) {
             return false;
         }
         return isUsingItem();
@@ -68,9 +71,9 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "net/minecraft/entity/player/HungerManager.getFoodLevel()I"))
     private int hungerSlowdownEvent(HungerManager self) {
-        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Hunger);
-        event.broadcast();
-        if (event.isCanceled()) {
+        eventSlowdown.create(EventSlowdown.SlowdownType.Hunger, 1);
+        eventSlowdown.broadcast();
+        if (eventSlowdown.isCanceled()) {
             return 7;
         }
         return self.getFoodLevel();
@@ -78,19 +81,22 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
     private boolean onBlindnessSlowdown(ClientPlayerEntity self, StatusEffect effect) {
-        EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Blindness);
-        event.broadcast();
-        if (event.isCanceled()) {
+        eventSlowdown.create(EventSlowdown.SlowdownType.Blindness, 1);
+        eventSlowdown.broadcast();
+        if (eventSlowdown.isCanceled()) {
             return false;
         }
         return self.hasStatusEffect(effect);
     }
 
+    @Unique
+    private final EventUpdate eventUpdate = new EventUpdate();
+
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void tick(CallbackInfo ci) {
-        EventUpdate event = new EventUpdate(((ClientPlayerEntity) (Object) this).getX(), ((ClientPlayerEntity) (Object) this).getY(), ((ClientPlayerEntity) (Object) this).getZ(), getYaw(), getPitch(), onGround);
-        event.broadcast();
-        if (event.isCanceled()) {
+        eventUpdate.create(((ClientPlayerEntity) (Object) this).getX(), ((ClientPlayerEntity) (Object) this).getY(), ((ClientPlayerEntity) (Object) this).getZ(), getYaw(), getPitch(), onGround);
+        eventUpdate.broadcast();
+        if (eventUpdate.isCanceled()) {
             ci.cancel();
         }
     }
@@ -124,22 +130,28 @@ public abstract class MixinEntityPlayerSP extends MixinEntity implements IMixinE
         mountJumpStrength = height; // TODO: Verify
     }
 
+    @Unique
+    private final EventPlayerWalking eventPlayerWalking = new EventPlayerWalking();
+
     @Inject(method = "sendMovementPackets", at = @At(value = "HEAD"), cancellable = true)
     private void onSendMovementPackets(CallbackInfo ci) {
         ClientPlayerEntity entity = (ClientPlayerEntity) (Object) this;
-        EventPlayerWalking event = new EventPlayerWalking(entity.getX(), entity.getY(), entity.getZ(), getYaw(), getPitch(), onGround);
-        event.broadcast();
-        if (event.isCanceled()) {
+        eventPlayerWalking.create(entity.getX(), entity.getY(), entity.getZ(), getYaw(), getPitch(), onGround);
+        eventPlayerWalking.broadcast();
+        if (eventPlayerWalking.isCanceled()) {
             ci.cancel();
         }
     }
 
+    @Unique
+    private final EventPlayerWalking.PostEvent postEvent = new EventPlayerWalking.PostEvent();
+
     @Inject(method = "sendMovementPackets", at = @At(value = "TAIL"), cancellable = true)
     private void onSendMovementPacketsTail(CallbackInfo ci) {
         ClientPlayerEntity entity = (ClientPlayerEntity) (Object) this;
-        EventPlayerWalking event = new EventPlayerWalking.PostEvent(entity.getX(), entity.getY(), entity.getZ(), getYaw(), getPitch(), onGround);
-        event.broadcast();
-        if (event.isCanceled()) {
+        postEvent.create(entity.getX(), entity.getY(), entity.getZ(), getYaw(), getPitch(), onGround);
+        postEvent.broadcast();
+        if (postEvent.isCanceled()) {
             ci.cancel();
         }
     }

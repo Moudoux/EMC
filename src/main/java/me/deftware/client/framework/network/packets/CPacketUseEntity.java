@@ -20,15 +20,15 @@ public class CPacketUseEntity extends PacketWrapper {
     }
 
     public Type getType() {
-        switch (((IMixinPlayerInteractEntityC2SPacket) packet).getActionType()) {
-            case ATTACK:
-                return Type.ATTACK;
-            case INTERACT:
-                return Type.INTERACT;
-            case INTERACT_AT:
-                return Type.INTERACT_AT;
-        }
-        return Type.UNKNOWN;
+        Type type = ((IMixinPlayerInteractEntityC2SPacket) packet).getActionType();
+        if (type == null)
+            return Type.UNKNOWN;
+        return switch (type) {
+            case ATTACK -> Type.ATTACK;
+            case INTERACT -> Type.INTERACT;
+            case INTERACT_AT -> Type.INTERACT_AT;
+            default -> Type.UNKNOWN;
+        };
     }
 
     public enum Type {

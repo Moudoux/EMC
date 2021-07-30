@@ -1,6 +1,5 @@
 package me.deftware.client.framework.entity.types;
 
-import me.deftware.client.framework.conversion.ConvertedList;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.types.objects.ClonedPlayerMP;
 import me.deftware.client.framework.inventory.Inventory;
@@ -13,9 +12,7 @@ import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Deftware
@@ -23,12 +20,11 @@ import java.util.UUID;
 public class EntityPlayer extends LivingEntity {
 
 	private final Inventory inventory;
-	private final ConvertedList<AppliedStatusEffect, StatusEffectInstance> statusEffects;
+	private final Map<net.minecraft.entity.effect.StatusEffect, AppliedStatusEffect> statusEffects = new HashMap<>();
 
 	public EntityPlayer(PlayerEntity entity) {
 		super(entity);
 		inventory = new Inventory(entity);
-		this.statusEffects = new ConvertedList<>(() -> getMinecraftEntity().getStatusEffects(), null, AppliedStatusEffect::new);
 	}
 
 	public boolean isUsingItem() {
@@ -56,9 +52,7 @@ public class EntityPlayer extends LivingEntity {
 	}
 
 	public AppliedStatusEffect getStatusEffect(StatusEffect effect) {
-		return new AppliedStatusEffect(Objects.requireNonNull(
-				getMinecraftEntity().getStatusEffect(effect.getMinecraftStatusEffect())
-		));
+		return statusEffects.get(effect.getMinecraftStatusEffect());
 	}
 
 	public void removeStatusEffect(StatusEffect effect) {
@@ -73,8 +67,28 @@ public class EntityPlayer extends LivingEntity {
 		getMinecraftEntity().addStatusEffect(effect.getMinecraftStatusEffectInstance());
 	}
 
+	private final List<AppliedStatusEffect> activeEffects = new ArrayList<>();
+
 	public List<AppliedStatusEffect> getStatusEffects() {
-		return statusEffects.poll();
+		PlayerEntity player = getMinecraftEntity();
+		int size = player.getStatusEffects().size();
+		if (size != 0) {
+			if (statusEffects.keySet().size() != size) {
+				for (StatusEffectInstance effect : player.getStatusEffects()) {
+					if (!statusEffects.containsKey(effect.getEffectType()))
+						statusEffects.put(effect.getEffectType(), new AppliedStatusEffect(effect));
+					else
+						statusEffects.get(effect.getEffectType()).setInstance(effect);
+				}
+				// Remove old effects
+				if (statusEffects.keySet().size() != size)
+					statusEffects.keySet().removeIf(e -> !player.hasStatusEffect(e));
+				activeEffects.clear();
+				activeEffects.addAll(statusEffects.values());
+			}
+			return activeEffects;
+		}
+		return Collections.emptyList();
 	}
 
 	public float getSaturationLevel() {

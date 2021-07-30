@@ -5,10 +5,13 @@ import lombok.Setter;
 import me.deftware.client.framework.event.Event;
 
 public class EventCameraClip extends Event {
+
     private @Setter @Getter double distance;
 
-    public EventCameraClip(double desiredDistance) {
-        distance = desiredDistance;
+    public EventCameraClip create(double desiredDistance) {
+        setCanceled(false);
+        this.distance = desiredDistance;
+        return this;
     }
 
 }

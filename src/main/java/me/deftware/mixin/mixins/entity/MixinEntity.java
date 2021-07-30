@@ -14,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -96,12 +97,15 @@ public abstract class MixinEntity implements IMixinEntity {
         return self.noClip;
     }
 
+    @Unique
+    private final EventSlowdown slowdown = new EventSlowdown();
+
     @Inject(method = "slowMovement", at = @At(value = "TAIL"), cancellable = true)
     private void onSlowMovement(BlockState state, Vec3d multiplier, CallbackInfo ci) {
         if (((Object) this) == MinecraftClient.getInstance().player) {
-            EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Web);
-            event.broadcast();
-            if (event.isCanceled()) {
+            slowdown.create(EventSlowdown.SlowdownType.Web, 1);
+            slowdown.broadcast();
+            if (slowdown.isCanceled()) {
                 Vec3d cobSlowness = new Vec3d(0.25D, 0.05000000074505806D, 0.25D);
                 if (multiplier.x == cobSlowness.x && multiplier.y == cobSlowness.y && multiplier.z == cobSlowness.z) {
                     this.movementMultiplier = Vec3d.ZERO;

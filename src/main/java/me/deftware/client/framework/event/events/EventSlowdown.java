@@ -10,13 +10,11 @@ public class EventSlowdown extends Event {
 	private SlowdownType type;
 	private float multiplier = 1f;
 
-	public EventSlowdown(SlowdownType type, float multiplier) {
+	public EventSlowdown create(SlowdownType type, float multiplier) {
+		setCanceled(false);
 		this.type = type;
 		this.multiplier = multiplier;
-	}
-
-	public EventSlowdown(SlowdownType type) {
-		this.type = type;
+		return this;
 	}
 
 	public SlowdownType getType() {

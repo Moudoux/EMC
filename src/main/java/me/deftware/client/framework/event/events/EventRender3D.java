@@ -11,12 +11,14 @@ public class EventRender3D extends Event {
 
 	private float partialTicks;
 
-	public EventRender3D(float partialTicks) {
-		this.partialTicks = partialTicks;
-	}
-
 	public float getPartialTicks() {
 		return partialTicks;
+	}
+
+	public EventRender3D create(float partialTicks) {
+		this.setCanceled(false);
+		this.partialTicks = partialTicks;
+		return this;
 	}
 
 }

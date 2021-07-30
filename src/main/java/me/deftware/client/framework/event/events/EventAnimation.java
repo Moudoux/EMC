@@ -10,12 +10,14 @@ public class EventAnimation extends Event {
 
     private AnimationType type;
 
-    public EventAnimation(AnimationType type) {
-        this.type = type;
-    }
-
     public AnimationType getAnimationType() {
         return type;
+    }
+
+    public EventAnimation create(AnimationType type) {
+        setCanceled(false);
+        this.type = type;
+        return this;
     }
 
     public enum AnimationType {
