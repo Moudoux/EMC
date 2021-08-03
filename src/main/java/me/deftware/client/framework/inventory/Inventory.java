@@ -2,6 +2,7 @@ package me.deftware.client.framework.inventory;
 
 import me.deftware.client.framework.item.Item;
 import me.deftware.client.framework.item.ItemStack;
+import me.deftware.client.framework.util.Util;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
@@ -18,7 +19,7 @@ public class Inventory {
 	/**
 	 * 36 (Main) + 4 (Armor) + 1 (Offhand)
 	 */
-	protected final List<ItemStack> main = DefaultedList.ofSize(36, ItemStack.EMPTY), armor = DefaultedList.ofSize(4, ItemStack.EMPTY), combined = new ArrayList<>();
+	protected final List<ItemStack> main = Util.getEmptyStackList(36), armor = Util.getEmptyStackList(4), combined = new ArrayList<>();
 
 	protected ItemStack offhand;
 

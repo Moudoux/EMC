@@ -32,7 +32,14 @@ import java.util.*;
  */
 public class ItemStack {
 
-	public static final ItemStack EMPTY = new ItemStack(net.minecraft.item.ItemStack.EMPTY);
+	public static final ItemStack EMPTY = new ItemStack(net.minecraft.item.ItemStack.EMPTY) {
+		@Override
+		public ItemStack setStack(net.minecraft.item.ItemStack itemStack) {
+			if (item != null)
+				throw new IllegalStateException("Cannot update reference of global empty stack!");
+			return super.setStack(itemStack);
+		}
+	};
 
 	protected final List<Pair<Enchantment, Integer>> enchantments = new ArrayList<>();
 
@@ -63,6 +70,10 @@ public class ItemStack {
 			this.item = ItemRegistry.INSTANCE.getItem(itemStack.getItem());
 		}
 		return this;
+	}
+
+	public static ItemStack getEmpty() {
+		return new ItemStack(net.minecraft.item.ItemStack.EMPTY);
 	}
 
 	public static void init(List<net.minecraft.item.ItemStack> original, List<ItemStack> stack) {
@@ -251,7 +262,7 @@ public class ItemStack {
 	}
 
 	public static ArrayList<ItemStack> loadAllItems(NbtCompound compound, int size) {
-		DefaultedList<ItemStack> list = DefaultedList.ofSize(size, ItemStack.EMPTY);
+		DefaultedList<ItemStack> list = DefaultedList.ofSize(size, ItemStack.getEmpty());
 		net.minecraft.nbt.NbtList itemTag = compound.getMinecraftCompound().getList("Items", 10);
 		for(int index = 0; index < itemTag.size(); index++) {
 			net.minecraft.nbt.NbtCompound item = itemTag.getCompound(index);

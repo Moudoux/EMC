@@ -8,7 +8,7 @@ import me.deftware.client.framework.item.ItemStack;
  */
 public class ItemEntity extends Entity {
 
-	private final ItemStack stack = ItemStack.EMPTY;
+	private final ItemStack stack = ItemStack.getEmpty();
 
 	public ItemEntity(net.minecraft.entity.Entity entity) {
 		super(entity);

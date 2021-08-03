@@ -1,7 +1,9 @@
 package me.deftware.client.framework.entity.types;
 
 import me.deftware.client.framework.entity.Entity;
+import me.deftware.client.framework.item.ItemStack;
 import me.deftware.mixin.imp.IMixinEntity;
+import net.minecraft.util.Hand;
 
 /**
  * @author Deftware
@@ -57,6 +59,15 @@ public class LivingEntity extends Entity {
 		((IMixinEntity) getMinecraftEntity()).removeRemovedReason(); // TODO: Verify this
 		getMinecraftEntity().setHealth(20f);
 		getMinecraftEntity().updatePosition(getPosX(), getPosY(), getPosZ());
+	}
+
+	private final ItemStack main = ItemStack.getEmpty(), offhand = ItemStack.getEmpty();
+
+	@Override
+	public ItemStack getEntityHeldItem(boolean offhand) {
+		if (offhand)
+			return this.offhand.setStack(getMinecraftEntity().getStackInHand(Hand.OFF_HAND));
+		return main.setStack(getMinecraftEntity().getStackInHand(Hand.MAIN_HAND));
 	}
 	
 }
