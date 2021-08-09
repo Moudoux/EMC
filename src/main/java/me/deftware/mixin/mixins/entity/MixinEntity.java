@@ -115,27 +115,16 @@ public abstract class MixinEntity implements IMixinEntity {
         }
     }
 
-    @Redirect(method = "move", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.isSneaking()Z", opcode = 180, ordinal = 0))
-    private boolean sneakingCheck(Entity self) {
-        if (self == MinecraftClient.getInstance().player) {
-            EventSneakingCheck event = new EventSneakingCheck(isSneaking());
-            event.broadcast();
-            if (event.isSneaking()) {
-                return true;
-            }
-        }
-        return getFlag(1);
-    }
-
     @Inject(method = "setVelocityClient", at = @At("HEAD"), cancellable = true)
     private void onSetVelocityClient(double x, double y, double z, CallbackInfo ci) {
-        if ((Object) this == MinecraftClient.getInstance().player) {
-            EventKnockback event = new EventKnockback(x, y, z);
-            event.broadcast();
-            if (event.isCanceled()) {
-                ci.cancel();
+        Entity entity = (Entity) (Object) this;
+        if (entity == MinecraftClient.getInstance().player) {
+            EventKnockback event = new EventKnockback(x, y, z).broadcast();
+            if (!event.isCanceled()) {
+                entity.setVelocity(event.getX(), event.getY(), event.getZ());
             }
         }
+        ci.cancel();
     }
 
     @Inject(method = "isGlowing", at = @At("HEAD"), cancellable = true)

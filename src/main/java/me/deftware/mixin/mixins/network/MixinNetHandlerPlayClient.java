@@ -64,8 +64,7 @@ public class MixinNetHandlerPlayClient implements IMixinNetworkHandler {
 
     @Inject(method = "onExplosion", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;setVelocity(Lnet/minecraft/util/math/Vec3d;)V"), cancellable = true)
     private void onExplosion(ExplosionS2CPacket packet, CallbackInfo ci) {
-        EventKnockback event = new EventKnockback(packet.getPlayerVelocityX(), packet.getPlayerVelocityY(), packet.getPlayerVelocityZ());
-        event.broadcast();
+        EventKnockback event = new EventKnockback(packet.getPlayerVelocityX(), packet.getPlayerVelocityY(), packet.getPlayerVelocityZ()).broadcast();
         if (!event.isCanceled()) {
             MinecraftClient.getInstance().player.setVelocity(
                     MinecraftClient.getInstance().player.getVelocity().add(event.getX(), event.getY(), event.getZ())
@@ -74,23 +73,12 @@ public class MixinNetHandlerPlayClient implements IMixinNetworkHandler {
         ci.cancel();
     }
 
-    @Inject(method = "onVelocityUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setVelocityClient(DDD)V"), cancellable = true)
-    public void onVelocityUpdate(EntityVelocityUpdateS2CPacket packet, CallbackInfo ci) {
-        if (MinecraftClient.getInstance().player != null && MinecraftClient.getInstance().player.getId() == packet.getId()) {
-            EventKnockback event = new EventKnockback(packet.getVelocityX(), packet.getVelocityY(), packet.getVelocityZ());
-            event.broadcast();
-            if (event.isCanceled()) {
-                ci.cancel();
-            }
-        }
-    }
-
     @Inject(method = "onChunkData", at = @At("HEAD"), cancellable = true)
     public void onReceiveChunkData(ChunkDataS2CPacket packet, CallbackInfo ci) {
-        EventChunkDataReceive event = new EventChunkDataReceive(packet);
-        event.broadcast();
+        EventChunkDataReceive event = new EventChunkDataReceive(packet).broadcast();
         if (event.isCanceled()) {
             ci.cancel();
         }
     }
+
 }
