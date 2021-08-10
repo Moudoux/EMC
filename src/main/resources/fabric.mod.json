@@ -20,5 +20,8 @@
     "mm:early_risers": [
       "me.deftware.launch.EarlyRiser"
     ]
+  },
+  "custom": {
+    "fabric-renderer-indigo:force_compatibility" : true
   }
 }
