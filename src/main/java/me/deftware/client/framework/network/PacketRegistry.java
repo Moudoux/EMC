@@ -1,5 +1,7 @@
 package me.deftware.client.framework.network;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.deftware.client.framework.network.packets.*;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.*;
@@ -17,6 +19,10 @@ import java.util.HashMap;
 public class PacketRegistry {
 
     public static final PacketRegistry INSTANCE = new PacketRegistry();
+
+    @Getter
+    @Setter
+    private SocksProxy proxy;
 
     private final HashMap<Class<? extends Packet<?>>, Class<? extends PacketWrapper>> packetMap = new HashMap<>();
 
