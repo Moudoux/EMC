@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.client.framework.entity.block.TileEntity;
 import me.deftware.client.framework.render.shader.EntityShader;
+import me.deftware.client.framework.world.ClientWorld;
 import me.deftware.client.framework.world.World;
 import me.deftware.client.framework.world.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -119,7 +120,7 @@ public abstract class MixinWorldRenderer {
             for (EntityShader shader : EntityShader.SHADERS) {
                 if (shader.isEnabled()) {
                     if (block == null) {
-                        TileEntity tileEntity = World.getTileEntityFromEntity(blockEntity);
+                        TileEntity tileEntity = ClientWorld.getClientWorld().getTileEntityByReference(blockEntity);
                         if (tileEntity == null)
                             break;
                         block = tileEntity.getBlock();
@@ -149,7 +150,7 @@ public abstract class MixinWorldRenderer {
             for (EntityShader shader : EntityShader.SHADERS) {
                 if (shader.isEnabled()) {
                     if (emcEntity == null)
-                        emcEntity = World.getEntityById(entity.getId());
+                        emcEntity = ClientWorld.getClientWorld().getEntityByReference(entity);
                     if (shader.getTargetPredicate().test(emcEntity)) {
                         shader.setRender(true);
                         targetBuffer = shader.getFramebuffer().getMinecraftBuffer();

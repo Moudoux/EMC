@@ -9,7 +9,7 @@ import me.deftware.client.framework.chat.LiteralChatMessage;
 import me.deftware.client.framework.chat.builder.ChatBuilder;
 import me.deftware.client.framework.chat.event.ChatClickEvent;
 import me.deftware.client.framework.chat.hud.ChatHud;
-import me.deftware.client.framework.chat.hud.ChatHudLine;
+import me.deftware.client.framework.chat.hud.HudLine;
 import me.deftware.client.framework.chat.style.ChatColors;
 import me.deftware.client.framework.command.CommandBuilder;
 import me.deftware.client.framework.command.CommandRegister;
@@ -55,8 +55,8 @@ public abstract class AbstractPagedOutputCommand extends EMCModCommand {
     private final List<ChatMessage> previousOuput = new ArrayList<>();
 
     protected void removePreviousOutput() {
-        List<ChatHudLine> removalQueue = new ArrayList<>();
-        for (ChatHudLine line : ChatHud.getLines()) {
+        List<HudLine> removalQueue = new ArrayList<>();
+        for (HudLine line : ChatHud.getLines()) {
             for (ChatMessage message : previousOuput) {
                 if (line.getMessage().toString(false).equalsIgnoreCase(message.toString(false))) {
                     removalQueue.add(line);

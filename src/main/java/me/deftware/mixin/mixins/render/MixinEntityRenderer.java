@@ -142,11 +142,6 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
             if (operation != null) {
                 operation.run();
             }
-            // Other actions
-            operation = Minecraft.RENDER_THREAD.poll();
-            if (operation != null) {
-                operation.run();
-            }
             // Minecraft modifies opacity under water
             GLX.INSTANCE.color(1, 1, 1, 1);
             GLX.INSTANCE.refresh(matrices);

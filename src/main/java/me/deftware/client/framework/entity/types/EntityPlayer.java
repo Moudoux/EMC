@@ -2,6 +2,7 @@ package me.deftware.client.framework.entity.types;
 
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.types.objects.ClonedPlayerMP;
+import me.deftware.client.framework.inventory.EntityInventory;
 import me.deftware.client.framework.inventory.Inventory;
 import me.deftware.client.framework.item.effect.AppliedStatusEffect;
 import me.deftware.client.framework.item.effect.StatusEffect;
@@ -19,12 +20,12 @@ import java.util.*;
  */
 public class EntityPlayer extends LivingEntity {
 
-	private final Inventory inventory;
+	private final EntityInventory inventory;
 	private final Map<net.minecraft.entity.effect.StatusEffect, AppliedStatusEffect> statusEffects = new HashMap<>();
 
 	public EntityPlayer(PlayerEntity entity) {
 		super(entity);
-		inventory = new Inventory(entity);
+		inventory = new EntityInventory(entity);
 	}
 
 	public boolean isUsingItem() {
@@ -47,7 +48,7 @@ public class EntityPlayer extends LivingEntity {
 		getMinecraftEntity().getAbilities().flying = flag;
 	}
 
-	public Inventory getInventory() {
+	public EntityInventory getInventory() {
 		return inventory;
 	}
 
@@ -121,7 +122,7 @@ public class EntityPlayer extends LivingEntity {
 	}
 
 	public void openInventory() {
-		Minecraft.RENDER_THREAD.add(() -> MinecraftClient.getInstance().openScreen(new InventoryScreen(getMinecraftEntity())));
+		Minecraft.getMinecraftGame().runOnRenderThread(() -> MinecraftClient.getInstance().openScreen(new InventoryScreen(getMinecraftEntity())));
 	}
 
 	public int getFoodLevel() {

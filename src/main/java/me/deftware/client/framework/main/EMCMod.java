@@ -19,9 +19,6 @@ import java.net.URLClassLoader;
  */
 public abstract class EMCMod {
 
-	@Deprecated
-	public JsonObject modInfo;
-
 	@Getter
 	protected ModResourceManager resourceManager;
 
@@ -33,7 +30,6 @@ public abstract class EMCMod {
 	public File physicalFile;
 
 	public void init(JsonObject json) {
-		modInfo = json;
 		meta = new Gson().fromJson(json, ModMeta.class);
 		settings = new Settings(meta.getName());
 		settings.setupShutdownHook();

@@ -62,11 +62,6 @@ public class LocationUtil {
         return getClassPhysicalLocation(Bootstrap.class);
     }
 
-    @Nonnull
-    public static LocationUtil getMinecraftDir() {
-        return new LocationUtil(Minecraft.getRunDir());
-    }
-
     @Nullable
     public File toFile() {
         if (file != null) {

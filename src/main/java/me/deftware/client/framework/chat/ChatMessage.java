@@ -4,7 +4,7 @@ import com.mojang.brigadier.Message;
 import lombok.Getter;
 import me.deftware.client.framework.chat.hud.ChatHud;
 import me.deftware.client.framework.chat.style.ChatStyle;
-import me.deftware.client.framework.fonts.minecraft.FontRenderer;
+import me.deftware.client.framework.fonts.FontRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.text.LiteralText;

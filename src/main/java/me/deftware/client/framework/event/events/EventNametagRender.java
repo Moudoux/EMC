@@ -1,12 +1,8 @@
 package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
-import me.deftware.client.framework.world.World;
-import me.deftware.mixin.imp.IMixinWorldClient;
-import net.minecraft.client.MinecraftClient;
+import me.deftware.client.framework.world.ClientWorld;
 import net.minecraft.entity.Entity;
-
-import java.util.Objects;
 
 /**
  * Triggered when entity (including player) nametag is being rendered
@@ -17,7 +13,7 @@ public class EventNametagRender extends Event {
 
     public EventNametagRender create(Entity entity) {
         setCanceled(false);
-        this.entity = World.getEntityById(entity.getId());
+        this.entity = ClientWorld.getClientWorld().getEntityByReference(entity);
         return this;
     }
 

@@ -3,29 +3,25 @@ package me.deftware.mixin.mixins.world;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import me.deftware.client.framework.entity.Entity;
-import me.deftware.client.framework.entity.types.EntityPlayer;
 import me.deftware.client.framework.event.events.EventEntityUpdated;
 import me.deftware.client.framework.event.events.EventWorldLoad;
 import me.deftware.client.framework.global.GameKeys;
 import me.deftware.client.framework.global.GameMap;
 import me.deftware.client.framework.world.classifier.BlockClassifier;
-import me.deftware.mixin.imp.IMixinWorldClient;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -33,11 +29,16 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
+/**
+ * @author Deftware
+ */
 @Mixin(ClientWorld.class)
-public abstract class MixinWorldClient implements IMixinWorldClient {
+public abstract class MixinWorldClient extends MixinWorld implements me.deftware.client.framework.world.ClientWorld {
 
-    @Shadow public abstract void addParticle(ParticleEffect parameters, double x, double y, double z, double velocityX, double velocityY, double velocityZ);
+    @Shadow
+    public abstract void addParticle(ParticleEffect parameters, double x, double y, double z, double velocityX, double velocityY, double velocityZ);
 
     @Unique
     private final Int2ObjectMap<Entity> entities = new Int2ObjectOpenHashMap<>();
@@ -78,10 +79,34 @@ public abstract class MixinWorldClient implements IMixinWorldClient {
         new EventEntityUpdated(EventEntityUpdated.Change.Removed, entities.remove(entityId)).broadcast();
     }
 
+
     @Override
-    @Unique
-    public Int2ObjectMap<Entity> getLoadedEntitiesAccessor() {
-        return entities;
+    public Stream<Entity> getLoadedEntities() {
+        return entities.values().stream();
+    }
+
+    @Override
+    public Entity _getEntityById(int id) {
+        return entities.get(id);
+    }
+
+    @Override
+    public void _addEntity(int id, Entity entity) {
+        ((ClientWorld) (Object) this).addEntity(id, entity.getMinecraftEntity());
+    }
+
+    @Override
+    public void _removeEntity(int id) {
+        ((ClientWorld) (Object) this).removeEntity(id, net.minecraft.entity.Entity.RemovalReason.DISCARDED);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends Entity> @Nullable T getEntityByReference(net.minecraft.entity.Entity reference) {
+        if (reference != null) {
+            return (T) entities.get(reference.getId());
+        }
+        return null;
     }
 
 }

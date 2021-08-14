@@ -4,10 +4,8 @@ import me.deftware.client.framework.main.EMCMod;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.client.framework.util.path.OSUtils;
-import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -29,7 +27,7 @@ public class ResourceUtils {
             ZipFile zipFile = new ZipFile(mod.physicalFile);
             ZipEntry entry = zipFile.getEntry(resourcePath);
             in = zipFile.getInputStream(entry);
-        } catch (IOException e) {
+        } catch (Exception e) {
             Bootstrap.logger.error("Requested resource does not exist", e);
             return null;
         }
@@ -45,9 +43,9 @@ public class ResourceUtils {
     public static InputStream getStreamFromMinecraftResources(String resourcePath) {
         InputStream resource;
         try {
-            Bootstrap.logger.debug("Getting resource from: " + Minecraft.getRunningLocation() + File.separator + resourcePath);
-            resource = new FileInputStream(Minecraft.getRunningLocation() + File.separator + resourcePath);
-        } catch (URISyntaxException | FileNotFoundException e) {
+            Bootstrap.logger.debug("Getting resource from: " + Minecraft.getMinecraftGame()._getGameDir() + File.separator + resourcePath);
+            resource = new FileInputStream(Minecraft.getMinecraftGame()._getGameDir() + File.separator + resourcePath);
+        } catch (Exception e) {
             Bootstrap.logger.error("Requested resource does not exist", e);
             return null;
         }
@@ -69,29 +67,12 @@ public class ResourceUtils {
                 resource = new FileInputStream("/home/" + System.getProperty("user.name") + File.separator + resourcePath);
             }
             Bootstrap.logger.debug("Getting resource from: " + System.getProperty("user.home") + File.separator + resourcePath);
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             Bootstrap.logger.error("Requested resource does not exist", e);
             return null;
         }
         return resource;
     }
 
-    /**
-     * Returns a boolean of whether an external mod menu is present in this version
-     *
-     * @return Boolean depending on Mod Menu and MC Version/Modloader
-     */
-    public static boolean hasExternalModMenu() {
-        return hasSpecificMod("modmenu");
-    }
-
-    /**
-     * Returns a boolean of whether an external mod is present in this version
-     *
-     * @return Boolean depending on Mod ID and MC Version/Modloader
-     */
-    public static boolean hasSpecificMod(String modId) {
-        return FabricLoader.getInstance().isModLoaded(modId);
-    }
 }
 

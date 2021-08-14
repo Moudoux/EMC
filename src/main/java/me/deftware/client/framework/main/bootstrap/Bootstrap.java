@@ -70,14 +70,14 @@ public class Bootstrap {
                 if (System.getProperty("logging" + i, "null").equalsIgnoreCase("null")) break;
                 logger.debug(System.getProperty("logging" + i));
             }
-            File capesCache = new File(Minecraft.getRunDir(), "libraries/EMC/capes/");
+            File capesCache = new File(Minecraft.getMinecraftGame()._getGameDir(), "libraries/EMC/capes/");
             if (!capesCache.exists()) {
                 if (!capesCache.mkdirs()) {
                     logger.warn("Failed to create EMC capes dir");
                 }
             }
             logger.info("Loading EMC v{}.{}", FrameworkConstants.VERSION, FrameworkConstants.PATCH);
-            EMC_ROOT = new File(Minecraft.getRunDir(), "libraries" + File.separator + "EMC" + File.separator + Minecraft.getMinecraftVersion() + File.separator);
+            EMC_ROOT = new File(Minecraft.getMinecraftGame()._getGameDir(), "libraries" + File.separator + "EMC" + File.separator + Minecraft.getMinecraftVersion() + File.separator);
             logger.info("EMC root dir is {}", EMC_ROOT.getAbsolutePath());
             EMC_CONFIGS = new File(EMC_ROOT.getAbsolutePath() + File.separator + "configs" + File.separator);
             if (!EMC_ROOT.exists()) {

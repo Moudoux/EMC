@@ -19,6 +19,7 @@ import me.deftware.client.framework.math.position.ChunkBlockPosition;
 import me.deftware.client.framework.math.vector.Vector3d;
 import me.deftware.client.framework.nbt.NbtCompound;
 import me.deftware.client.framework.util.Util;
+import me.deftware.client.framework.world.ClientWorld;
 import me.deftware.client.framework.world.EnumFacing;
 import me.deftware.client.framework.world.World;
 import me.deftware.mixin.imp.IMixinAbstractClientPlayer;
@@ -85,7 +86,7 @@ public class Entity {
 		this.boundingBox = new BoundingBox(entity);
 		this.blockPosition = new BlockPosition(entity);
 		if (entity.getVehicle() != null)
-			this.vehicle = World.getEntityById(entity.getVehicle().getId());
+			this.vehicle = ClientWorld.getClientWorld().getEntityByReference(entity.getVehicle());
 		if (entity.getArmorItems() instanceof DefaultedList<net.minecraft.item.ItemStack> defaultedList)
 			ItemStack.init(defaultedList, this.armourItems = Util.getEmptyStackList(defaultedList.size()));
 	}
@@ -126,7 +127,7 @@ public class Entity {
 		if (entity.getVehicle() == null)
 			return null;
 		if (vehicle == null || vehicle.getMinecraftEntity() != entity.getVehicle())
-			vehicle = World.getEntityById(entity.getVehicle().getId());
+			vehicle = ClientWorld.getClientWorld().getEntityByReference(entity.getVehicle());
 		return vehicle;
 	}
 

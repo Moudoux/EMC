@@ -8,6 +8,7 @@ import net.minecraft.network.packet.c2s.play.*;
 import net.minecraft.network.packet.s2c.play.CloseScreenS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityAnimationS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityS2CPacket;
+import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 
 import java.util.HashMap;
 
@@ -42,6 +43,7 @@ public class PacketRegistry {
         // Server bound
         register(EntityS2CPacket.class, SPacketEntity.class);
         register(EntityAnimationS2CPacket.class, SPacketAnimation.class);
+        register(WorldTimeUpdateS2CPacket.class, SPacketWorldTime.class);
     }
 
     public void register(Class<? extends Packet<?>> minecraft, Class<? extends PacketWrapper> translated) {

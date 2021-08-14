@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class Settings {
 
-	public static final Path configDir = Paths.get(Minecraft.getRunDir().getAbsolutePath(), "libraries", "EMC", Minecraft.getMinecraftVersion(), "configs");
+	public static final Path configDir = Paths.get(Minecraft.getMinecraftGame()._getGameDir().getAbsolutePath(), "libraries", "EMC", Minecraft.getMinecraftVersion(), "configs");
 	public static final double revision = 4.0;
 
 	private final Queue<Runnable> shutdownQueue = new ConcurrentLinkedQueue<>();

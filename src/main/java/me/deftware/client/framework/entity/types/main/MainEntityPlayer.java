@@ -9,7 +9,6 @@ import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.client.framework.world.EnumFacing;
 import me.deftware.mixin.imp.IMixinEntityPlayerSP;
 import me.deftware.mixin.imp.IMixinEntityRenderer;
-import me.deftware.mixin.imp.IMixinMinecraft;
 import me.deftware.mixin.imp.IMixinPlayerControllerMP;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
@@ -56,10 +55,6 @@ public class MainEntityPlayer extends RotationLogic {
 	public void swapHands() {
 		Objects.requireNonNull(MinecraftClient.getInstance().player).networkHandler.sendPacket(new PlayerActionC2SPacket(
 				PlayerActionC2SPacket.Action.SWAP_ITEM_WITH_OFFHAND, BlockPos.ORIGIN, Direction.DOWN));
-	}
-
-	public void setRightClickDelayTimer(int delay) {
-		((IMixinMinecraft) MinecraftClient.getInstance()).setRightClickDelayTimer(delay);
 	}
 
 	public void processRightClick(boolean offhand) {
@@ -142,7 +137,7 @@ public class MainEntityPlayer extends RotationLogic {
 
 	public boolean placeStackInHotbar(ItemStack stack) {
 		for (int index = 0; index < 9; index++) {
-			if (Objects.requireNonNull(Minecraft.getPlayer()).getInventory().getStackInSlot(index).isEmpty()) {
+			if (Objects.requireNonNull(Minecraft.getMinecraftGame()._getPlayer()).getInventory().getStackInSlot(index).isEmpty()) {
 				Objects.requireNonNull(MinecraftClient.getInstance().player).networkHandler
 						.sendPacket(new CreativeInventoryActionC2SPacket(36 + index, stack.getMinecraftItemStack()));
 				return true;

@@ -1,6 +1,7 @@
 package me.deftware.mixin.mixins.render;
 
 import me.deftware.client.framework.event.events.EventEntityRender;
+import me.deftware.client.framework.world.ClientWorld;
 import me.deftware.client.framework.world.World;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -23,7 +24,7 @@ public class MixinEntityRenderDispatcher {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void render(Entity entity, double x, double y, double z, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
         if (!(entity instanceof ClientPlayerEntity) && entity instanceof LivingEntity) {
-            eventEntityRender.create(World.getEntityById(entity.getId()), x, y, z);
+            eventEntityRender.create(ClientWorld.getClientWorld().getEntityByReference(entity), x, y, z);
             eventEntityRender.broadcast();
             if (eventEntityRender.isCanceled()) {
                 ci.cancel();

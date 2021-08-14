@@ -1,6 +1,5 @@
 package me.deftware.mixin.mixins.world;
 
-import me.deftware.mixin.imp.IMixinWorld;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.world.World;
@@ -26,7 +25,7 @@ public class MixinWorldChunk {
 		BlockState blockState = blockEntity.getCachedState();
 		if (blockState.getBlockEntityTicker(this.world, blockEntity.getType()) != null) {
 			long pos = blockEntity.getPos().asLong();
-			HashMap<Long, BlockEntity> entities = ((IMixinWorld) world).getInternalLongToBlockEntity();
+			HashMap<Long, BlockEntity> entities = ((me.deftware.client.framework.world.World) world).getInternalLongToBlockEntity();
 			entities.put(pos, blockEntity);
 		}
 	}

@@ -6,7 +6,7 @@ import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
 import me.deftware.client.framework.main.bootstrap.Bootstrap;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.command.CommandSource;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -18,12 +18,12 @@ import java.util.Map;
  */
 public class CommandRegister {
 
-    private static CommandDispatcher<ServerCommandSource> dispatcher = new CommandDispatcher<>();
+    private static CommandDispatcher<CommandSource> dispatcher = new CommandDispatcher<>();
 
     /**
      * @return Brigadier dispatcher object
      */
-    public static CommandDispatcher<ServerCommandSource> getDispatcher() {
+    public static CommandDispatcher<CommandSource> getDispatcher() {
         return dispatcher;
     }
 
@@ -41,9 +41,9 @@ public class CommandRegister {
      * @param command The command to register
      */
     public static synchronized void registerCommand(CommandBuilder<?> command) {
-        CommandNode<ServerCommandSource> node = dispatcher.register(command.build());
+        CommandNode<CommandSource> node = dispatcher.register(command.build());
         for (Object alias : command.getAliases()) {
-            LiteralArgumentBuilder<ServerCommandSource> argumentBuilder = LiteralArgumentBuilder.literal((String) alias);
+            LiteralArgumentBuilder<CommandSource> argumentBuilder = LiteralArgumentBuilder.literal((String) alias);
             dispatcher.register(argumentBuilder.redirect(node));
         }
     }
@@ -77,7 +77,7 @@ public class CommandRegister {
      * @return an array of all registered commands, with argument usage
      */
     public static ArrayList<String> getCommandsAndUsage() {
-        Map<CommandNode<ServerCommandSource>, String> map = getSmartUsage();
+        Map<CommandNode<CommandSource>, String> map = getSmartUsage();
         return new ArrayList<>(map.values());
     }
 
@@ -86,7 +86,7 @@ public class CommandRegister {
      *
      * @return a map of all root commands with their correct usage
      */
-    public static Map<CommandNode<ServerCommandSource>, String> getSmartUsage() {
+    public static Map<CommandNode<CommandSource>, String> getSmartUsage() {
         return dispatcher.getSmartUsage(dispatcher.getRoot(), MinecraftClient.getInstance().player.getCommandSource());
     }
 

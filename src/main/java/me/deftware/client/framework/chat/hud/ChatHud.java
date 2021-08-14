@@ -35,11 +35,11 @@ public class ChatHud {
 		getMixinHudImpl().setTheChatLine(message.build(), line, MinecraftClient.getInstance().inGameHud.getTicks(), false);
 	}
 
-	public static List<ChatHudLine> getLines() {
+	public static List<HudLine> getLines() {
 		return getMixinHudImpl().getLines();
 	}
 
-	public static void remove(ChatHudLine line) {
+	public static void remove(HudLine line) {
 		getMixinHudImpl().removeMessage(line);
 	}
 

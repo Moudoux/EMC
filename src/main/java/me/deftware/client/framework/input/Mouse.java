@@ -1,8 +1,8 @@
 package me.deftware.client.framework.input;
 
 import me.deftware.client.framework.helper.WindowHelper;
+import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.client.framework.render.batching.RenderStack;
-import me.deftware.mixin.imp.IMixinMinecraft;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
@@ -31,11 +31,11 @@ public class Mouse {
 	 */
 	public static void clickMouse(int button) {
 		if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
-			((IMixinMinecraft) MinecraftClient.getInstance()).doClickMouse();
+			Minecraft.getMinecraftGame().doClickMouse();
 		} else if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
-			((IMixinMinecraft) MinecraftClient.getInstance()).doRightClickMouse();
+			Minecraft.getMinecraftGame().doRightClickMouse();
 		} else if (button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE) {
-			((IMixinMinecraft) MinecraftClient.getInstance()).doMiddleClickMouse();
+			Minecraft.getMinecraftGame().doMiddleClickMouse();
 		}
 	}
 

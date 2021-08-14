@@ -7,7 +7,7 @@ import me.deftware.client.framework.minecraft.Minecraft;
  */
 public class FrameworkConstants {
 
-    public static double VERSION = 16.1;
+    public static double VERSION = 17.0;
     public static int PATCH = 0, SCHEME = 4;
 
     public static boolean VALID_EMC_INSTANCE = false, SUBSYSTEM_IN_USE = false, OPTIFINE = false, CAN_RENDER_SHADER = true;

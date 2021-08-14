@@ -22,9 +22,9 @@ public class CommandMods extends EMCModCommand {
 				Bootstrap.getMods().values().forEach(mod ->
 					new ChatBuilder().withPrefix().withText(String.format(
 							"%s by %s version %s",
-							mod.modInfo.get("name").getAsString(),
-							mod.modInfo.get("author").getAsString(),
-							mod.modInfo.get("version").getAsInt())
+							mod.getMeta().getName(),
+							mod.getMeta().getAuthor(),
+							mod.getMeta().getVersion())
 					).withColor(ChatColors.GRAY).build().print()
 				);
 			}

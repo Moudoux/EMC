@@ -1,51 +1,34 @@
 package me.deftware.mixin.mixins.network;
 
-import com.google.common.collect.Maps;
 import me.deftware.client.framework.event.events.EventAnimation;
 import me.deftware.client.framework.event.events.EventChunkDataReceive;
 import me.deftware.client.framework.event.events.EventKnockback;
+import me.deftware.client.framework.network.NetworkHandler;
 import me.deftware.client.framework.world.player.PlayerEntry;
-import me.deftware.mixin.imp.IMixinNetworkHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityStatusS2CPacket;
-import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.List;
+import java.util.stream.Collectors;
 
+/**
+ * @author Deftware
+ */
 @Mixin(ClientPlayNetworkHandler.class)
-public class MixinNetHandlerPlayClient implements IMixinNetworkHandler {
-
-    @Unique
-    private final Map<UUID, PlayerEntry> playerEntryMap = Maps.newHashMap();
-
-    @Redirect(method = "onPlayerList", at = @At(value = "INVOKE", target = "Ljava/util/Map;remove(Ljava/lang/Object;)Ljava/lang/Object;"))
-    private Object onPlayerListUpdate(Map<UUID, PlayerListEntry> map, Object key) {
-        playerEntryMap.remove((UUID) key);
-        return map.remove((UUID) key);
-    }
-
-    @Redirect(method = "onPlayerList", at = @At(value = "INVOKE", target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"))
-    private Object onPlayerListAdd(Map<UUID, PlayerListEntry> map, Object key, Object value) {
-        playerEntryMap.put((UUID) key, new PlayerEntry((PlayerListEntry) value));
-        return map.put((UUID) key, (PlayerListEntry) value);
-    }
+public class MixinNetHandlerPlayClient implements NetworkHandler {
 
     @Override
-    public Map<UUID, PlayerEntry> getPlayerEntryMap() {
-        return playerEntryMap;
+    public List<PlayerEntry> _getPlayerList() {
+        return ((ClientPlayNetworkHandler) (Object) this).getPlayerList()
+                .stream().map(PlayerEntry.class::cast).collect(Collectors.toList());
     }
 
     @Unique

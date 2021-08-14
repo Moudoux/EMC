@@ -1,13 +1,10 @@
 package me.deftware.mixin.mixins.gui;
 
-import me.deftware.client.framework.event.events.EventChatboxType;
-import me.deftware.mixin.imp.IMixinGuiTextField;
+import me.deftware.client.framework.gui.widgets.TextField;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
-import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,180 +15,78 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.awt.*;
-import java.lang.ref.WeakReference;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
+/**
+ * @author Deftware
+ */
 @Mixin(TextFieldWidget.class)
-public abstract class MixinGuiTextField extends ClickableWidget implements IMixinGuiTextField {
-
-    public MixinGuiTextField(int x, int y, Text message) {
-        super(x, y, 200, 20, message);
-    }
+public class MixinGuiTextField extends MixinGuiButton implements TextField {
 
     @Unique
-    private boolean overlay = false, passwordField = false;
+    private String overlay = "";
 
     @Unique
-    private String overlayText = "";
-
-    @Shadow
-    private int maxLength;
-
-    @Shadow
-    private int focusedTicks;
-
-    @Shadow
-    private String suggestion;
-
-    @Shadow
-    private boolean focusUnlocked;
-
-    @Shadow
-    private int selectionEnd;
-
-    @Shadow
-    private int selectionStart;
-
-    @Shadow
-    private int firstCharacterIndex;
-
-    @Shadow
-    @Final
-    private TextRenderer textRenderer;
+    private boolean passwordField = false;
 
     @Shadow
     private BiFunction<String, Integer, OrderedText> renderTextProvider;
 
     @Shadow
-    private boolean editable;
+    @Final
+    private TextRenderer textRenderer;
 
-    @Shadow public abstract String getText();
-
-    @Override
-    public int getHeight() {
-        return this.height;
-    }
-
-    @Override
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    @Override
-    public TextRenderer getFontRendererInstance() {
-        return textRenderer;
-    }
-
-    @Override
-    public int getCursorCounter() {
-        return focusedTicks;
-    }
-
-    @Override
-    public int getSelectionEnd() {
-        return selectionEnd;
-    }
-
-    @Override
-    public int getLineScrollOffset() {
-        return firstCharacterIndex;
-    }
-
-    @Override
-    public int getX() {
-        return x;
-    }
-
-    @Override
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    @Override
-    public int getY() {
-        return y;
-    }
-
-    @Override
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    @Override
-    public int getWidth() {
-        return width;
-    }
-
-    @Override
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    @Unique @Override
-    public void setPasswordField(boolean flag) {
-        this.passwordField = flag;
-    }
-
-    @SuppressWarnings("ConstantConditions")
     @Inject(method = "renderButton", at = @At("RETURN"))
     public void drawTextFieldReturn(MatrixStack matrixStack, int mouseX, int mouseY, float tickDelta, CallbackInfo ci) {
-        if (overlay) {
-            String currentText = getText();
-            int currentWidth = ((IMixinGuiTextField) this).getFontRendererInstance().getWidth(currentText);
-            int x = isFocused() ? ((IMixinGuiTextField) this).getX() + 4 : ((IMixinGuiTextField) this).getX();
-            int y = isFocused() ? ((IMixinGuiTextField) this).getY() + (((IMixinGuiTextField) this).getHeight() - 8) / 2 : ((IMixinGuiTextField) this).getY();
-            ((IMixinGuiTextField) this).getFontRendererInstance().drawWithShadow(matrixStack, overlayText, x + currentWidth - 3, y - 2, Color.GRAY.getRGB());
-            WeakReference<EventChatboxType> event = new WeakReference<>(new EventChatboxType(getText(), overlayText));
-            event.get().broadcast();
-            overlayText = event.get().getOverlay();
+        TextFieldWidget self = (TextFieldWidget) (Object) this;
+        if (!overlay.isEmpty()) {
+            int currentWidth = textRenderer.getWidth(self.getText());
+            int x = getPositionX(), y = getPositionY();
+            if (self.isFocused()) {
+                x += 4;
+                y += (getComponentHeight() - 8) / 2;
+            }
+            textRenderer.drawWithShadow(matrixStack, overlay, x + currentWidth - 3, y - 2, Color.GRAY.getRGB());
         }
     }
 
     @Redirect(method = "renderButton", at = @At(value = "INVOKE", target = "Ljava/util/function/BiFunction;apply(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"))
     public Object render(BiFunction<String, Integer, OrderedText> biFunction, Object text, Object index) {
         String data = (String) text;
-        if (passwordField) {
-            StringBuilder hidden = new StringBuilder();
-            for (int i = 0; i < data.length(); i++) {
-                hidden.append("*");
-            }
-            data = hidden.toString();
-        }
+        if (passwordField)
+            data = "*".repeat(data.length());
         return renderTextProvider.apply(data, (int) index);
     }
 
-    public int getMaxTextLength() {
-        return maxLength;
+    @Override
+    public void _setText(String text) {
+        ((TextFieldWidget) (Object) this).setText(text);
     }
 
     @Override
-    public boolean getHasBorder() {
-        return focusUnlocked;
+    public String _getText() {
+        return ((TextFieldWidget) (Object) this).getText();
     }
 
     @Override
-    public boolean getIsEditable() {
-        return editable;
+    public void _setPasswordMode(boolean state) {
+        this.passwordField = true;
     }
 
     @Override
-    public BiFunction<String, Integer, OrderedText> getRenderTextProvider() {
-        return renderTextProvider;
+    public void _setMaxLength(int length) {
+        ((TextFieldWidget) (Object) this).setMaxLength(length);
     }
 
     @Override
-    public String getSuggestion() {
-        return suggestion;
+    public void _setOverlay(String text) {
+        this.overlay = text;
     }
 
     @Override
-    public int getCursorMax() {
-        return selectionStart;
-    }
-
-    @Override
-    public void setOverlay(boolean flag) {
-        overlay = flag;
+    public void _setPredicate(Predicate<String> predicate) {
+        ((TextFieldWidget) (Object) this).setTextPredicate(predicate);
     }
 
 }

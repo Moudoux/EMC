@@ -1,6 +1,6 @@
 package me.deftware.mixin.mixins.game;
 
-import me.deftware.mixin.imp.IMixinTimer;
+import me.deftware.client.framework.world.WorldTimer;
 import net.minecraft.client.render.RenderTickCounter;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(RenderTickCounter.class)
-public class MixinTimer implements IMixinTimer {
+public class MixinTimer implements WorldTimer {
 
     @Final
     @Shadow

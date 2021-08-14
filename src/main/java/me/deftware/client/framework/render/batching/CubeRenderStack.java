@@ -27,7 +27,7 @@ public class CubeRenderStack extends RenderStack<CubeRenderStack> {
 	public CubeRenderStack draw(BoundingBox box) {
 		if (box == null)
 			return this;
-		Box minecraftBox = box.getOffsetMinecraftBox(-Minecraft.getCamera().getRenderPosX(), -Minecraft.getCamera().getRenderPosY(), -Minecraft.getCamera().getRenderPosZ());
+		Box minecraftBox = box.getOffsetMinecraftBox(-Minecraft.getMinecraftGame().getCamera()._getRenderPosX(), -Minecraft.getMinecraftGame().getCamera()._getRenderPosY(), -Minecraft.getMinecraftGame().getCamera()._getRenderPosZ());
 		if (lines)
 			drawSelectionBoundingBox(minecraftBox);
 		else

@@ -3,12 +3,8 @@ package me.deftware.client.framework.inventory;
 import me.deftware.client.framework.item.Item;
 import me.deftware.client.framework.item.ItemStack;
 import me.deftware.client.framework.util.Util;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.inventory.DoubleInventory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,84 +12,57 @@ import java.util.List;
  */
 public class Inventory {
 
-	/**
-	 * 36 (Main) + 4 (Armor) + 1 (Offhand)
-	 */
-	protected final List<ItemStack> main = Util.getEmptyStackList(36), armor = Util.getEmptyStackList(4), combined = new ArrayList<>();
+	protected final List<ItemStack> delegate;
+	protected final net.minecraft.inventory.Inventory inventory;
 
-	protected ItemStack offhand;
-
-	protected final PlayerEntity entity;
-
-	public Inventory(PlayerEntity entity) {
-		this.entity = entity;
-		ItemStack.init(entity.getInventory().main, main);
-		ItemStack.init(entity.getInventory().armor, armor);
-		offhand = new ItemStack(entity.getOffHandStack());
-		combined.addAll(main);
-		combined.addAll(armor);
-		combined.add(offhand);
+	public Inventory(net.minecraft.inventory.Inventory inventory) {
+		this.inventory = inventory;
+		this.delegate = Util.getEmptyStackList(inventory.size());
+		this.refresh();
 	}
 
 	public int findItem(Item item) {
-		for (int i = 0; i < entity.getInventory().size(); i++) {
-			net.minecraft.item.ItemStack it = entity.getInventory().getStack(i);
-			if (it.getItem().getTranslationKey().equals(item.getTranslationKey())) {
+		for (int i = 0; i < delegate.size(); i++) {
+			ItemStack it = delegate.get(i);
+			if (it.getItem().equals(item)) {
 				return i;
 			}
 		}
 		return -1;
 	}
 
+	public void refresh() {
+		for (int i = 0; i < delegate.size(); i++)
+			delegate.get(i).setStack(inventory.getStack(i));
+	}
+
 	public int getSize() {
-		return combined.size();
+		return delegate.size();
 	}
 
-	public List<ItemStack> getArmourInventory() {
-		return armor;
+	public boolean isEmpty() {
+		return inventory.isEmpty();
 	}
 
-	public List<ItemStack> getMainInventory() {
-		return main;
-	}
-	
-	public int getFirstEmptyStack() {
-		return entity.getInventory().getEmptySlot();
-	}
-
-	public int getCurrentItem() {
-		return entity.getInventory().selectedSlot;
+	public boolean isFull() {
+		for (ItemStack itemStack : delegate)
+			if (itemStack.isEmpty())
+				return false;
+		return true;
 	}
 
-	public int getFirstEmptySlot() {
-		return entity.getInventory().getEmptySlot();
+	public boolean isDouble() {
+		return inventory instanceof DoubleInventory;
 	}
 
-	public void setCurrentItem(int id) {
-		entity.getInventory().selectedSlot = id;
-	}
-
-	public ItemStack getHeldItem(boolean offhand) {
-		if (offhand)
-			return this.offhand.setStack(entity.getOffHandStack());
-		return main.get(getCurrentItem()).setStack(entity.getInventory().getStack(getCurrentItem()));
+	public List<ItemStack> getInventory() {
+		return delegate;
 	}
 
 	public ItemStack getStackInSlot(int slotId) {
-		if (slotId >= combined.size())
+		if (slotId >= delegate.size())
 			return ItemStack.EMPTY;
-		return combined.get(slotId).setStack(entity.getInventory().getStack(slotId));
-	}
-
-	public ItemStack getStackInArmourSlot(int slotId) {
-		if (slotId >= armor.size())
-			return ItemStack.EMPTY;
-		return armor.get(slotId).setStack(entity.getInventory().armor.get(slotId));
-	}
-
-	public boolean hasElytra() {
-		net.minecraft.item.ItemStack chest = entity.getEquippedStack(EquipmentSlot.CHEST);
-		return chest != null && chest.getItem() == Items.ELYTRA;
+		return delegate.get(slotId).setStack(inventory.getStack(slotId));
 	}
 
 }

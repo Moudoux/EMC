@@ -2,6 +2,7 @@ package me.deftware.client.framework.network.packets;
 
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.network.PacketWrapper;
+import me.deftware.client.framework.world.ClientWorld;
 import me.deftware.client.framework.world.World;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.Packet;
@@ -24,10 +25,9 @@ public class SPacketEntity extends PacketWrapper {
 
 	@Nullable
 	public Entity getEntity() {
-		net.minecraft.entity.Entity entity = ((EntityS2CPacket) packet).getEntity(MinecraftClient.getInstance().world);
-		if (entity == null)
-			return null;
-		return World.getEntityById(entity.getId());
+		return ClientWorld.getClientWorld().getEntityByReference(
+				((EntityS2CPacket) packet).getEntity(MinecraftClient.getInstance().world)
+		);
 	}
 
 }

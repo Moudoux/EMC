@@ -2,9 +2,9 @@ package me.deftware.client.framework.command;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import net.minecraft.command.CommandSource;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.function.Consumer;
  */
 public class CommandBuilder<T> {
 
-    private LiteralArgumentBuilder<ServerCommandSource> builder;
+    private LiteralArgumentBuilder<CommandSource> builder;
     private final List<String> aliases = new ArrayList<>();
 
     /**
@@ -42,7 +42,7 @@ public class CommandBuilder<T> {
      * @return The adjusted command builder
      */
     public CommandBuilder<?> set(LiteralArgumentBuilder<?> argument) {
-        builder = (LiteralArgumentBuilder<ServerCommandSource>) argument;
+        builder = (LiteralArgumentBuilder<CommandSource>) argument;
         return this;
     }
 
@@ -52,7 +52,7 @@ public class CommandBuilder<T> {
      * @param argument the argument to append
      * @return the adjusted command builder
      */
-    public CommandBuilder<?> append(LiteralArgumentBuilder<ServerCommandSource> argument) {
+    public CommandBuilder<?> append(LiteralArgumentBuilder<CommandSource> argument) {
         if (builder == null) {
             builder = argument;
         } else {
@@ -90,7 +90,7 @@ public class CommandBuilder<T> {
         return aliases;
     }
 
-    protected LiteralArgumentBuilder<ServerCommandSource> build() {
+    protected LiteralArgumentBuilder<CommandSource> build() {
         return builder;
     }
 

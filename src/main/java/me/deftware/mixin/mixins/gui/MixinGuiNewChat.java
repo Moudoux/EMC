@@ -1,10 +1,11 @@
 package me.deftware.mixin.mixins.gui;
 
 import me.deftware.client.framework.chat.ChatMessage;
-import me.deftware.client.framework.chat.hud.ChatHudLine;
+import me.deftware.client.framework.chat.hud.HudLine;
 import me.deftware.client.framework.event.events.EventChatReceive;
 import me.deftware.mixin.imp.IMixinGuiNewChat;
 import net.minecraft.client.gui.hud.ChatHud;
+import net.minecraft.client.gui.hud.ChatHudLine;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
@@ -25,11 +26,11 @@ public abstract class MixinGuiNewChat implements IMixinGuiNewChat {
 
     @Shadow
     @Final
-    private List<net.minecraft.client.gui.hud.ChatHudLine<Text>> messages;
+    private List<ChatHudLine<Text>> messages;
 
     @Shadow
     @Final
-    private List<net.minecraft.client.gui.hud.ChatHudLine<OrderedText>> visibleMessages;
+    private List<ChatHudLine<OrderedText>> visibleMessages;
 
     @Unique
     private EventChatReceive event;
@@ -43,7 +44,7 @@ public abstract class MixinGuiNewChat implements IMixinGuiNewChat {
     }
 
     @Override
-    public void removeMessage(ChatHudLine line) {
+    public void removeMessage(HudLine line) {
         String text = line.getMessage().toString(false);
         messages.removeIf(message -> message.getText().getString().equalsIgnoreCase(text));
         visibleMessages.removeIf(message -> {
@@ -63,12 +64,12 @@ public abstract class MixinGuiNewChat implements IMixinGuiNewChat {
     }
 
     @Override
-    public List<ChatHudLine> getLines() {
-        List<ChatHudLine> list = new ArrayList<>();
+    public List<HudLine> getLines() {
+        List<HudLine> list = new ArrayList<>();
         for (int index = 0; index < messages.size(); index++) {
-            net.minecraft.client.gui.hud.ChatHudLine<Text> line = messages.get(index);
+            ChatHudLine<Text> line = messages.get(index);
             if (line.getText() instanceof LiteralText) {
-                list.add(new ChatHudLine(new ChatMessage().fromText(line.getText()),  index));
+                list.add(new HudLine(new ChatMessage().fromText(line.getText()),  index));
             }
         }
         return list;

@@ -5,7 +5,7 @@ import lombok.Setter;
 import me.deftware.client.framework.chat.ChatMessage;
 import me.deftware.client.framework.chat.ChatSection;
 import me.deftware.client.framework.chat.style.ChatStyle;
-import me.deftware.client.framework.fonts.legacy.LegacyBitmapFont;
+import me.deftware.client.framework.fonts.AtlasTextureFont;
 import me.deftware.client.framework.registry.font.IFontProvider;
 import me.deftware.client.framework.render.batching.RenderStack;
 import me.deftware.client.framework.render.batching.VertexConstructor;
@@ -21,7 +21,7 @@ import java.util.Map;
 public class FontRenderStack extends RenderStack<FontRenderStack> {
 
 	private int offset = 0;
-	private final LegacyBitmapFont font;
+	private final AtlasTextureFont font;
 
 	@Setter
 	private int maxLigatureSize = 5;
@@ -102,7 +102,7 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 
 		// Get font data
 		int shadow = font.getShadow();
-		Map<String, LegacyBitmapFont.CharData> characterMap = font.getCharacterMap();
+		Map<String, AtlasTextureFont.CharData> characterMap = font.getCharacterMap();
 
 		for (int character = 0; character < buffer.length; character++) {
 			// Skip empty characters
@@ -139,7 +139,7 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 			}
 
 			// Get character data
-			LegacyBitmapFont.CharData data = characterMap.get(buffer[index]);
+			AtlasTextureFont.CharData data = characterMap.get(buffer[index]);
 
 			// Draw shadow
 			if (shadow > 0) {
@@ -172,7 +172,7 @@ public class FontRenderStack extends RenderStack<FontRenderStack> {
 		return getStringWidth(text.toString(false));
 	}
 
-	private void drawCharacter(int x, int y, LegacyBitmapFont.CharData data) {
+	private void drawCharacter(int x, int y, AtlasTextureFont.CharData data) {
 		// Size
 		int width = data.getWidth(), height = data.getHeight();
 		// Offsets
