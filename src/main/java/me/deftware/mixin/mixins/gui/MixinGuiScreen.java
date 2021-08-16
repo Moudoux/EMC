@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  * @author Deftware
  */
 @Mixin(Screen.class)
-public abstract class  MixinGuiScreen implements MinecraftScreen {
+public abstract class MixinGuiScreen implements MinecraftScreen {
 
     @Unique
     private final EventScreen event = new EventScreen((Screen) (Object) this);
@@ -52,6 +52,9 @@ public abstract class  MixinGuiScreen implements MinecraftScreen {
     @Shadow
     protected abstract void renderTooltipFromComponents(MatrixStack matrices, List<TooltipComponent> components, int x, int y);
 
+    @Shadow
+    protected abstract void clearChildren();
+
     @Override
     public <T extends GenericComponent> List<T> getChildren(Class<T> clazz) {
         return this.children.stream()
@@ -62,8 +65,7 @@ public abstract class  MixinGuiScreen implements MinecraftScreen {
 
     @Override
     public void _clearChildren() {
-        drawables.clear();
-        children.clear();
+        this.clearChildren();
     }
 
     @Override
