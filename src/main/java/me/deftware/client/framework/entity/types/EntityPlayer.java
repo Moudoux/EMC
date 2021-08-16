@@ -3,7 +3,6 @@ package me.deftware.client.framework.entity.types;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.types.objects.ClonedPlayerMP;
 import me.deftware.client.framework.inventory.EntityInventory;
-import me.deftware.client.framework.inventory.Inventory;
 import me.deftware.client.framework.item.effect.AppliedStatusEffect;
 import me.deftware.client.framework.item.effect.StatusEffect;
 import me.deftware.client.framework.minecraft.Minecraft;
@@ -68,9 +67,7 @@ public class EntityPlayer extends LivingEntity {
 		getMinecraftEntity().addStatusEffect(effect.getMinecraftStatusEffectInstance());
 	}
 
-	private final List<AppliedStatusEffect> activeEffects = new ArrayList<>();
-
-	public List<AppliedStatusEffect> getStatusEffects() {
+	public Collection<AppliedStatusEffect> getStatusEffects() {
 		PlayerEntity player = getMinecraftEntity();
 		int size = player.getStatusEffects().size();
 		if (size != 0) {
@@ -84,10 +81,8 @@ public class EntityPlayer extends LivingEntity {
 				// Remove old effects
 				if (statusEffects.keySet().size() != size)
 					statusEffects.keySet().removeIf(e -> !player.hasStatusEffect(e));
-				activeEffects.clear();
-				activeEffects.addAll(statusEffects.values());
 			}
-			return activeEffects;
+			return statusEffects.values();
 		}
 		return Collections.emptyList();
 	}
