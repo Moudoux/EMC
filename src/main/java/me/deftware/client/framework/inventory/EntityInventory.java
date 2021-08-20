@@ -31,10 +31,12 @@ public class EntityInventory extends Inventory {
 	}
 
 	public List<ItemStack> getArmourInventory() {
+		ItemStack.copyReferences(entity.getInventory().armor, armor);
 		return armor;
 	}
 
 	public List<ItemStack> getMainInventory() {
+		ItemStack.copyReferences(entity.getInventory().main, main);
 		return main;
 	}
 

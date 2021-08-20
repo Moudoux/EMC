@@ -55,10 +55,6 @@ public class Inventory {
 		return inventory instanceof DoubleInventory;
 	}
 
-	public List<ItemStack> getInventory() {
-		return delegate;
-	}
-
 	public ItemStack getStackInSlot(int slotId) {
 		if (slotId >= delegate.size())
 			return ItemStack.EMPTY;
