@@ -12,6 +12,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
@@ -111,8 +112,26 @@ public abstract class MixinGuiScreen implements MinecraftScreen {
         event.setType(EventScreen.Type.Draw).broadcast();
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Inject(method = "render", at = @At("RETURN"))
     private void onPostDraw(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if (!((Object) this instanceof HandledScreen)) {
+            this.onPostDrawEvent(matrices, mouseX, mouseY, delta);
+        }
+    }
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void init(Text title, CallbackInfo ci) {
+        event.setType(EventScreen.Type.Init).broadcast();
+    }
+
+    @Inject(method = "init(Lnet/minecraft/client/MinecraftClient;II)V", at = @At("RETURN"))
+    private void init(CallbackInfo ci) {
+        event.setType(EventScreen.Type.Setup).broadcast();
+    }
+
+    @Unique
+    protected void onPostDrawEvent(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         event.setType(EventScreen.Type.PostDraw).broadcast();
         // Render tooltip
         for (Element element : children) {
@@ -126,16 +145,6 @@ public abstract class MixinGuiScreen implements MinecraftScreen {
                 }
             }
         }
-    }
-
-    @Inject(method = "<init>", at = @At("RETURN"))
-    private void init(Text title, CallbackInfo ci) {
-        event.setType(EventScreen.Type.Init).broadcast();
-    }
-
-    @Inject(method = "init(Lnet/minecraft/client/MinecraftClient;II)V", at = @At("RETURN"))
-    private void init(CallbackInfo ci) {
-        event.setType(EventScreen.Type.Setup).broadcast();
     }
 
 }
