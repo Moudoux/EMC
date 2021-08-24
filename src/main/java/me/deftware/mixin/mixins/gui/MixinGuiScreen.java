@@ -7,7 +7,7 @@ import me.deftware.client.framework.gui.widgets.properties.Tooltipable;
 import me.deftware.client.framework.gui.screens.MinecraftScreen;
 import me.deftware.client.framework.gui.widgets.NativeComponent;
 import me.deftware.client.framework.gui.widgets.GenericComponent;
-import me.deftware.client.framework.item.Item;
+import me.deftware.client.framework.registry.ItemRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
@@ -99,7 +99,7 @@ public abstract class MixinGuiScreen implements MinecraftScreen {
         List<ChatMessage> list = cir.getReturnValue().stream()
                 .map(t -> new ChatMessage().fromText(t))
                 .collect(Collectors.toList());
-        new EventGetItemToolTip(list, Item.newInstance(stack.getItem()), client.options.advancedItemTooltips).broadcast();
+        new EventGetItemToolTip(list, ItemRegistry.INSTANCE.getItem(stack.getItem()), client.options.advancedItemTooltips).broadcast();
         cir.setReturnValue(
                 list.stream().map(ChatMessage::build).collect(Collectors.toList())
         );

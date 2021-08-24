@@ -59,9 +59,9 @@ public abstract class MixinGuiContainer<T extends ScreenHandler> extends MixinGu
         return inventoryTitle.get();
     }
 
-    @Inject(method = "drawMouseoverTooltip", at = @At("RETURN"))
-    private void onPostDraw(MatrixStack matrices, int mouseX, int mouseY, CallbackInfo ci) {
-        this.onPostDrawEvent(matrices, mouseX, mouseY, 0);
+    @Inject(method = "render", at = @At("RETURN"))
+    private void onPostDraw(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        this.onPostDrawEvent(matrices, mouseX, mouseY, delta);
     }
 
 }
