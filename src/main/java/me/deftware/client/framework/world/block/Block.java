@@ -3,8 +3,11 @@ package me.deftware.client.framework.world.block;
 import lombok.Getter;
 import lombok.Setter;
 import me.deftware.client.framework.chat.ChatMessage;
+import me.deftware.client.framework.fonts.FontRenderer;
+import me.deftware.client.framework.gui.widgets.SelectableList;
 import me.deftware.client.framework.item.IItem;
 import me.deftware.client.framework.math.position.BlockPosition;
+import me.deftware.client.framework.render.ItemRenderer;
 import me.deftware.client.framework.world.block.types.CropBlock;
 import me.deftware.client.framework.world.block.types.ShulkerBlock;
 import me.deftware.client.framework.world.block.types.StorageBlock;
@@ -15,7 +18,7 @@ import net.minecraft.util.registry.Registry;
 /**
  * @author Deftware
  */
-public class Block implements IItem {
+public class Block implements IItem, SelectableList.ListItem {
 
 	protected final net.minecraft.block.Block block;
 	protected BlockPosition blockPosition;
@@ -98,6 +101,12 @@ public class Block implements IItem {
 	@Override
 	public Item getAsItem() {
 		return getMinecraftBlock().asItem();
+	}
+
+	@Override
+	public void render(int index, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, float tickDelta) {
+		ItemRenderer.drawBlock(x, y + 5, this);
+		FontRenderer.drawString(getName(), x + 28, y + ((entryHeight / 2) - (FontRenderer.getFontHeight() / 2)) - 3, 0xFFFFFF);
 	}
 
 }

@@ -1,5 +1,6 @@
 package me.deftware.client.framework.gui.widgets;
 
+import me.deftware.client.framework.gui.widgets.properties.Tooltipable;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.LiteralText;
@@ -10,19 +11,18 @@ import java.util.function.Predicate;
  * @author Deftware
  */
 @SuppressWarnings("ConstantConditions")
-public interface TextField extends Component {
+public interface TextField extends Component, Tooltipable {
 
 	/**
 	 * Creates a new TextField instance
 	 *
-	 * @param id Unique ID
 	 * @param x x coordinate
 	 * @param y y coordinate
 	 * @param width The width
 	 * @param height The height
 	 * @return A TextField instance
 	 */
-	static TextField create(int id, int x, int y, int width, int height) {
+	static TextField create(int x, int y, int width, int height) {
 		return (TextField) new TextFieldWidget(MinecraftClient.getInstance().textRenderer, x, y, width, height, new LiteralText(""));
 	}
 

@@ -8,13 +8,13 @@ import me.deftware.client.framework.gui.screens.MinecraftScreen;
 import me.deftware.client.framework.gui.widgets.NativeComponent;
 import me.deftware.client.framework.gui.widgets.GenericComponent;
 import me.deftware.client.framework.registry.ItemRegistry;
+import me.deftware.client.framework.render.gl.GLX;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -107,6 +107,7 @@ public abstract class MixinGuiScreen implements MinecraftScreen {
 
     @Inject(method = "render", at = @At("HEAD"))
     private void onDraw(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        GLX.INSTANCE.refresh();
         event.setMouseX(mouseX);
         event.setMouseY(mouseY);
         event.setType(EventScreen.Type.Draw).broadcast();
@@ -135,16 +136,21 @@ public abstract class MixinGuiScreen implements MinecraftScreen {
         event.setType(EventScreen.Type.PostDraw).broadcast();
         // Render tooltip
         for (Element element : children) {
-            if (element instanceof ClickableWidget button) {
-                if (button.isHovered()) {
-                    List<TooltipComponent> list = ((Tooltipable<?>) button)._getTooltip();
+            if (element instanceof Tooltipable tooltipable) {
+                if (tooltipable.isMouseOverComponent(mouseX, mouseY)) {
+                    List<TooltipComponent> list = tooltipable.getTooltipComponents(mouseX, mouseY);
                     if (list != null && !list.isEmpty()) {
-                        this.renderTooltipFromComponents(matrices, list, mouseX, mouseY);
+                        this.renderTooltip(mouseX, mouseY, list);
                         break;
                     }
                 }
             }
         }
+    }
+
+    @Override
+    public void renderTooltip(int x, int y, List<TooltipComponent> tooltipComponents) {
+        this.renderTooltipFromComponents(GLX.INSTANCE.getStack(), tooltipComponents, x, y);
     }
 
 }

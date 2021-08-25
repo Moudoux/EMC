@@ -1,111 +1,176 @@
 package me.deftware.client.framework.gui.widgets;
 
+import lombok.Setter;
+import me.deftware.client.framework.chat.ChatMessage;
+import me.deftware.client.framework.gui.widgets.properties.Tooltipable;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
+import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Deftware
  */
-public abstract class SelectableList extends AlwaysSelectedEntryListWidget<SelectableList.CustomItem> implements GenericComponent {
+public class SelectableList<T extends SelectableList.ListItem> extends EntryListWidget<SelectableList<T>.ItemEntry> implements Tooltipable, GenericComponent {
 
-	public SelectableList(int width, int height, int topIn, int bottomIn, int slotHeightIn) {
-		super(MinecraftClient.getInstance(), width, height, topIn, bottomIn, slotHeightIn);
+	private final List<T> delegate;
+
+	@Setter
+	private boolean extended = false;
+
+	public SelectableList(List<T> delegate, int width, int height, int top, int bottom, int itemHeight) {
+		super(MinecraftClient.getInstance(), width, height, top, bottom, itemHeight);
+		this.delegate = delegate;
+	}
+
+	public interface ListItem {
+
+		void render(int index, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, float tickDelta);
+
+		default boolean onMouseClicked(double mouseX, double mouseY, int button) {
+			return true;
+		}
+
+		default ChatMessage[] getTooltip() {
+			return null;
+		}
+
+	}
+
+	public void reset() {
+		this.setScrollbarPosition(0);
+		this.deselect();
+	}
+
+	public List<T> getDelegate() {
+		return delegate;
+	}
+
+	public void deselect() {
+		this.setSelected(null);
+	}
+
+	public void setSelectedItem(T item) {
+		this.setSelected(this.map.get(item));
+		this.onSelectionUpdate(item);
+	}
+
+	public T getSelectedItem() {
+		if (this.getSelectedOrNull() != null) {
+			return this.getSelectedOrNull().item;
+		}
+		return null;
+	}
+
+	public T getHoveredItem(int mouseX, int mouseY) {
+		ItemEntry entry = this.getEntryAtPosition(mouseX, mouseY);
+		if (entry != null) {
+			return entry.item;
+		}
+		return null;
+	}
+
+	public void setScrollbarPosition(int y) {
+		this.setScrollAmount(y);
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float tickDelta) {
-		super.render(matrixStack, mouseX, mouseY, tickDelta);
-		if (children().size() != getISize()) {
-			buildItems();
+	public boolean isMouseOverComponent(int mouseX, int mouseY) {
+		return this.getHoveredItem(mouseX, mouseY) != null;
+	}
+
+	@Override
+	public List<TooltipComponent> getTooltipComponents(int mouseX, int mouseY) {
+		ItemEntry entry = this.getEntryAtPosition(mouseX, mouseY);
+		if (entry != null) {
+			return entry.tooltipComponents;
 		}
+		return null;
 	}
 
 	@Override
 	public int getRowWidth() {
-		return getCustomRowWidth();
+		if (extended) {
+			return width - 12;
+		}
+		return super.getRowWidth();
 	}
 
 	@Override
 	protected int getScrollbarPositionX() {
-		return getCustomScrollbarPositionX();
-	}
-
-	public void resetScrollPosition() {
-		this.setScrollAmount(0);
-	}
-
-	protected int getCustomRowWidth() {
-		return 220;
-	}
-
-	protected int getCustomScrollbarPositionX() {
-		return this.width / 2 + 124;
-	}
-
-	public int getSelectedSlot() {
-		CustomItem item = getSelectedOrNull();
-		if (item == null) {
-			return -1;
+		if (extended) {
+			return width - 6;
 		}
-		return item.id;
+		return super.getScrollbarPositionX();
 	}
 
-	public void clickElement(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
-		if (children().size() + 1 > slotIndex && slotIndex >= 0) {
-			setSelected(children().get(slotIndex));
+	protected void onSelectionUpdate(T item) { }
+
+	protected void onDrawItem(T item, int index, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, float tickDelta) { }
+
+	/*
+		1.14+ logic
+	 */
+
+	private final Map<T, ItemEntry> map = new HashMap<>();
+
+	@Override
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float tickDelta) {
+		if (this.delegate.size() != this.map.size()) {
+			this.rebuild();
 		}
+		super.render(matrixStack, mouseX, mouseY, tickDelta);
 	}
 
-	public void buildItems() {
-		SelectableList.this.setSelected(null);
+	private void rebuild() {
+		this.map.clear();
 		children().clear();
-		for (int index = 0; index < getISize(); index++) {
-			addEntry(new CustomItem(index) {
-
-				@Override
-				public Text getNarration() {
-					return new LiteralText("");
-				}
-
-				@Override
-				public void render(MatrixStack matrixStack, int x, int y, int io, int i3, int i4, int i5, int i6, boolean b, float v) {
-					if (getISize() == 0) {
-						return;
-					}
-					if (id == getISize()) {
-						return;
-					}
-					drawISlot(id, (SelectableList.this.width / 2) - 105, y);
-				}
-
-				@Override
-				public boolean mouseClicked(double mouseX, double mouseY, int button) {
-					if (button == 0) {
-						SelectableList.this.setSelected(this);
-						return true;
-					} else {
-						return false;
-					}
-				}
-			});
+		for (T item : this.delegate) {
+			ItemEntry entry = new ItemEntry(item);
+			this.map.put(item, entry);
+			children().add(entry);
 		}
 	}
 
-	public abstract static class CustomItem extends AlwaysSelectedEntryListWidget.Entry<SelectableList.CustomItem> {
+	protected class ItemEntry extends EntryListWidget.Entry<ItemEntry> {
 
-		protected int id;
+		private final T item;
+		private final List<TooltipComponent> tooltipComponents = new ArrayList<>();
 
-		public CustomItem(int id) {
-			this.id = id;
+		public ItemEntry(T item) {
+			this.item = item;
+			ChatMessage[] tooltip = item.getTooltip();
+			if (tooltip != null && tooltip.length > 0) {
+				SelectableList.this._setTooltip(tooltipComponents, tooltip);
+			}
+		}
+
+		@Override
+		public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+			x += 8;
+			this.item.render(index, x, y, entryWidth, entryHeight, mouseX, mouseY, tickDelta);
+			SelectableList.this.onDrawItem(item, index, x, y, entryWidth, entryHeight, mouseX, mouseY, tickDelta);
+		}
+
+		@Override
+		public boolean mouseClicked(double mouseX, double mouseY, int button) {
+			if (this.item.onMouseClicked(mouseX, mouseY, button)) {
+				SelectableList.this.setSelected(this);
+				SelectableList.this.onSelectionUpdate(item);
+				return true;
+			}
+			return false;
 		}
 
 	}
 
-	protected abstract int getISize();
-
-	protected abstract void drawISlot(int id, int x, int y);
+	@Override
+	public void appendNarrations(NarrationMessageBuilder builder) { }
 
 }

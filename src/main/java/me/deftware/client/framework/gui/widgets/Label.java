@@ -1,12 +1,17 @@
 package me.deftware.client.framework.gui.widgets;
 
+import lombok.Getter;
 import me.deftware.client.framework.chat.ChatMessage;
+import me.deftware.client.framework.gui.widgets.properties.Tooltipable;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Drawable;
+import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -16,11 +21,13 @@ import java.util.stream.Collectors;
  * @since 17.0.0
  * @author Deftware
  */
-public class Label implements Drawable, GenericComponent {
+public class Label implements Drawable, Element, GenericComponent, Tooltipable {
 
 	private List<Text> text;
-	private int width, height, x, y;
 	private final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+
+	@Getter
+	private int width, height, x, y;
 
 	public Label(int x, int y, ChatMessage... text) {
 		this.setText(text);
@@ -47,6 +54,18 @@ public class Label implements Drawable, GenericComponent {
 			textRenderer.drawWithShadow(matrices, line, center, y, 0xFFFFFF);
 			y += textRenderer.fontHeight;
 		}
+	}
+
+	private final List<TooltipComponent> tooltipComponents = new ArrayList<>();
+
+	@Override
+	public List<TooltipComponent> getTooltipComponents(int mouseX, int mouseY) {
+		return this.tooltipComponents;
+	}
+
+	@Override
+	public boolean isMouseOverComponent(int mouseX, int mouseY) {
+		return mouseX > this.x && mouseX < this.x + this.width && mouseY > this.y && mouseY < this.y + this.height;
 	}
 
 }
