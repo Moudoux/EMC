@@ -129,6 +129,7 @@ public class SelectableList<T extends SelectableList.ListItem> extends EntryList
 	}
 
 	private void rebuild() {
+		this.deselect();
 		this.map.clear();
 		children().clear();
 		for (T item : this.delegate) {
