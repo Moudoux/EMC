@@ -85,11 +85,17 @@ public class SelectableList<T extends SelectableList.ListItem> extends EntryList
 		return this.getHoveredItem(mouseX, mouseY) != null;
 	}
 
+	private final List<TooltipComponent> tooltipComponents = new ArrayList<>();
+
 	@Override
 	public List<TooltipComponent> getTooltipComponents(int mouseX, int mouseY) {
 		ItemEntry entry = this.getEntryAtPosition(mouseX, mouseY);
 		if (entry != null) {
-			return entry.tooltipComponents;
+			ChatMessage[] tooltip = entry.item.getTooltip();
+			if (tooltip != null && tooltip.length > 0) {
+				SelectableList.this._setTooltip(tooltipComponents, tooltip);
+				return tooltipComponents;
+			}
 		}
 		return null;
 	}
@@ -142,14 +148,9 @@ public class SelectableList<T extends SelectableList.ListItem> extends EntryList
 	protected class ItemEntry extends EntryListWidget.Entry<ItemEntry> {
 
 		private final T item;
-		private final List<TooltipComponent> tooltipComponents = new ArrayList<>();
 
 		public ItemEntry(T item) {
 			this.item = item;
-			ChatMessage[] tooltip = item.getTooltip();
-			if (tooltip != null && tooltip.length > 0) {
-				SelectableList.this._setTooltip(tooltipComponents, tooltip);
-			}
 		}
 
 		@Override
