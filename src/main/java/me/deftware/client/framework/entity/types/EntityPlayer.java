@@ -117,7 +117,7 @@ public class EntityPlayer extends LivingEntity {
 	}
 
 	public void openInventory() {
-		Minecraft.getMinecraftGame().runOnRenderThread(() -> MinecraftClient.getInstance().openScreen(new InventoryScreen(getMinecraftEntity())));
+		Minecraft.getMinecraftGame().runOnRenderThread(() -> MinecraftClient.getInstance().setScreen(new InventoryScreen(getMinecraftEntity())));
 	}
 
 	public int getFoodLevel() {

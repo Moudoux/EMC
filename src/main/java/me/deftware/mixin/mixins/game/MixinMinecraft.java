@@ -107,7 +107,7 @@ public abstract class MixinMinecraft implements Minecraft {
 
     @Override
     public void openScreen(GenericScreen screen) {
-        ((MinecraftClient) (Object) this).openScreen((Screen) screen);
+        ((MinecraftClient) (Object) this).setScreen((Screen) screen);
     }
 
     @Nullable

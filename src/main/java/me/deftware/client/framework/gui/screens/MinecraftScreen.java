@@ -35,7 +35,7 @@ public interface MinecraftScreen extends GenericScreen {
 	 * Closes the current screen
 	 */
 	default void close() {
-		MinecraftClient.getInstance().openScreen(null);
+		MinecraftClient.getInstance().setScreen(null);
 	}
 
 	/**

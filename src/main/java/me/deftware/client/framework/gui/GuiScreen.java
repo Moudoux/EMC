@@ -126,7 +126,7 @@ public abstract class GuiScreen extends Screen implements GenericScreen {
 	}
 
 	protected boolean goBack() {
-		MinecraftClient.getInstance().openScreen((Screen) parent);
+		MinecraftClient.getInstance().setScreen((Screen) parent);
 		return true;
 	}
 

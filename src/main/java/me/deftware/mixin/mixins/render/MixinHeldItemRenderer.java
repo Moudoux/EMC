@@ -37,9 +37,9 @@ public class MixinHeldItemRenderer {
     @Inject(method = "renderFirstPersonMap", at = @At("HEAD"))
     private void renderFirstPersonMap(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int swingProgress,
         ItemStack stack, CallbackInfo info) {
-        if (copiedStack != null && ItemStack.areTagsEqual(copiedStack, stack)) return;
+        if (copiedStack != null && ItemStack.areNbtEqual(copiedStack, stack)) return;
         copiedStack = stack.copy();
-        NbtCompound compoundTag = stack.getTag();
+        NbtCompound compoundTag = stack.getNbt();
         if (compoundTag != null && compoundTag.contains("Decorations", 9)) {
             // Try and Get Decoration X and Z
             String mapName = compoundTag.getCompound("display").getString("Name");

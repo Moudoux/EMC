@@ -58,7 +58,7 @@ public enum ScreenRegistry {
 			Screen screen = this.supplier.apply(params);
 			if (screen == null)
 				throw new Exception("Null screen");
-			MinecraftClient.getInstance().openScreen(screen);
+			MinecraftClient.getInstance().setScreen(screen);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

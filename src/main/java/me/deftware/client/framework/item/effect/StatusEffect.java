@@ -1,6 +1,7 @@
 package me.deftware.client.framework.item.effect;
 
-import net.minecraft.entity.effect.StatusEffectType;
+
+import net.minecraft.entity.effect.StatusEffectCategory;
 
 /**
  * @author Deftware
@@ -12,8 +13,8 @@ public class StatusEffect {
 
 	public StatusEffect(net.minecraft.entity.effect.StatusEffect statusEffect) {
 		this.statusEffect = statusEffect;
-		this.effectType = statusEffect.getType() == StatusEffectType.BENEFICIAL ?
-				EffectType.BENEFICIAL : statusEffect.getType() == StatusEffectType.HARMFUL ?
+		this.effectType = statusEffect.getCategory() == StatusEffectCategory.BENEFICIAL ?
+				EffectType.BENEFICIAL : statusEffect.getCategory() == StatusEffectCategory.HARMFUL ?
 				EffectType.HARMFUL : EffectType.NEUTRAL;
 	}
 

@@ -96,7 +96,7 @@ public class ItemStack {
 	}
 
 	public List<Pair<Enchantment, Integer>> getEnchantments() {
-		net.minecraft.nbt.NbtCompound tag = itemStack.getTag();
+		net.minecraft.nbt.NbtCompound tag = itemStack.getNbt();
 		if (tag != null && tag.contains("Enchantments", 9)) {
 			net.minecraft.nbt.NbtList list = tag.getList("Enchantments", 10);
 			if (!list.isEmpty()) {
@@ -204,7 +204,7 @@ public class ItemStack {
 	}
 
 	public void setStackDisplayName(ChatMessage name) {
-		net.minecraft.nbt.NbtCompound nbt = itemStack.getOrCreateSubTag("display");
+		net.minecraft.nbt.NbtCompound nbt = itemStack.getOrCreateSubNbt("display");
 		nbt.putString("Name", LiteralText.Serializer.toJson(name.build()));
 	}
 	
@@ -250,15 +250,15 @@ public class ItemStack {
 	}
 
 	public boolean hasNbt() {
-		return itemStack.hasTag();
+		return itemStack.hasNbt();
 	}
 
 	public NbtCompound getNbt() {
-		return new NbtCompound(itemStack.getTag());
+		return new NbtCompound(itemStack.getNbt());
 	}
 
 	public void setNbtList(String key, NbtList compound) {
-		itemStack.putSubTag(key, compound.getMinecraftListTag());
+		itemStack.setSubNbt(key, compound.getMinecraftListTag());
 	}
 
 	public static ArrayList<ItemStack> loadAllItems(NbtCompound compound, int size) {
