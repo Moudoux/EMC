@@ -124,8 +124,8 @@ public abstract class MixinEntity implements IMixinEntity {
             if (!event.isCanceled()) {
                 entity.setVelocity(event.getX(), event.getY(), event.getZ());
             }
+            ci.cancel();
         }
-        ci.cancel();
     }
 
     @Inject(method = "isGlowing", at = @At("HEAD"), cancellable = true)
