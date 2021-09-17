@@ -2,7 +2,9 @@ package me.deftware.mixin.mixins.shader;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import lombok.Getter;
 import me.deftware.client.framework.entity.block.TileEntity;
+import me.deftware.client.framework.render.WorldEntityRenderer;
 import me.deftware.client.framework.render.shader.EntityShader;
 import me.deftware.client.framework.world.ClientWorld;
 import me.deftware.client.framework.world.block.Block;
@@ -11,8 +13,10 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
 import org.lwjgl.opengl.*;
 import org.spongepowered.asm.mixin.Final;
@@ -25,8 +29,11 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Mixin(WorldRenderer.class)
-public abstract class MixinWorldRenderer {
+public abstract class MixinWorldRenderer implements WorldEntityRenderer {
 
     @Shadow
     @Final
@@ -39,6 +46,8 @@ public abstract class MixinWorldRenderer {
     @Final
     private MinecraftClient client;
 
+    @Shadow @Final private EntityRenderDispatcher entityRenderDispatcher;
+
     @Unique
     private void initShaders() {
         for (EntityShader shader : EntityShader.SHADERS)
@@ -50,6 +59,10 @@ public abstract class MixinWorldRenderer {
 
     @Unique
     private Framebuffer targetBuffer;
+
+    @Unique
+    @Getter
+    private final List<Statue> statues = new ArrayList<>();
 
     @Inject(method = "loadEntityOutlineShader", at = @At("RETURN"))
     private void reload(CallbackInfo ci) {
@@ -156,6 +169,19 @@ public abstract class MixinWorldRenderer {
         }
         renderEntity(entity, cameraX, cameraY, cameraZ, tickDelta, matrices, vertexConsumers);
         GlStateManager._glBindFramebuffer(GL30.GL_FRAMEBUFFER, buffer);
+    }
+
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;drawCurrentLayer()V"))
+    private void onRenderStatues(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci) {
+        for (Statue statue : this.statues) {
+            this.entityRenderDispatcher.render(statue.getEntity().getMinecraftEntity(),
+                    statue.getPosition().getX() - camera.getPos().getX(),
+                    statue.getPosition().getY() - camera.getPos().getY(),
+                    statue.getPosition().getZ() - camera.getPos().getZ(),
+                    statue.getEntity().getRotationYaw(), tickDelta, matrices, this.bufferBuilders.getEntityVertexConsumers(),
+                    this.entityRenderDispatcher.getLight(statue.getEntity().getMinecraftEntity(), tickDelta)
+            );
+        }
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/OutlineVertexConsumerProvider;draw()V", opcode = 180))

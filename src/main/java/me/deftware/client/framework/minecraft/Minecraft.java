@@ -5,6 +5,7 @@ import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.entity.types.main.MainEntityPlayer;
 import me.deftware.client.framework.gui.screens.GenericScreen;
 import me.deftware.client.framework.gui.screens.MinecraftScreen;
+import me.deftware.client.framework.render.WorldEntityRenderer;
 import me.deftware.client.framework.render.camera.GameCamera;
 import me.deftware.client.framework.util.minecraft.BlockSwingResult;
 import me.deftware.client.framework.world.ClientWorld;
@@ -49,6 +50,8 @@ public interface Minecraft {
 			return null;
 		return this.getClientWorld().getEntityByReference(MinecraftClient.getInstance().cameraEntity);
 	}
+
+	WorldEntityRenderer getWorldEntityRenderer();
 
 	GameCamera getCamera();
 

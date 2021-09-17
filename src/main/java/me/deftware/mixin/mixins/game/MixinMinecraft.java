@@ -10,6 +10,7 @@ import me.deftware.client.framework.gui.screens.MinecraftScreen;
 import me.deftware.client.framework.minecraft.ClientOptions;
 import me.deftware.client.framework.minecraft.Minecraft;
 import me.deftware.client.framework.minecraft.ServerDetails;
+import me.deftware.client.framework.render.WorldEntityRenderer;
 import me.deftware.client.framework.render.camera.GameCamera;
 import me.deftware.client.framework.util.minecraft.BlockSwingResult;
 import me.deftware.client.framework.world.ClientWorld;
@@ -230,6 +231,11 @@ public abstract class MixinMinecraft implements Minecraft {
             screen.getEventScreen().setType(EventScreen.Type.Tick).broadcast();
         }
         return options.debugEnabled;
+    }
+
+    @Override
+    public WorldEntityRenderer getWorldEntityRenderer() {
+        return (WorldEntityRenderer) ((MinecraftClient) (Object) this).worldRenderer;
     }
 
 }
