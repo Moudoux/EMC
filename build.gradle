@@ -31,7 +31,7 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraftVersion}"
 	mappings "net.fabricmc:yarn:${project.minecraftVersion}${project.mappingsVer}:v2"
 
-	modImplementation "net.fabricmc:fabric-loader:0.11.3"
+	modImplementation "net.fabricmc:fabric-loader:0.11.7"
 	modImplementation 'com.github.Chocohead:Fabric-ASM:v2.2'
 
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'
