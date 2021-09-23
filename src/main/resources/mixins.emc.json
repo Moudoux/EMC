@@ -60,6 +60,7 @@
     "network.MixinServerListEntryNormal",
     "network.MixinPlayerListEntry",
     "network.MixinServerInfo",
+    "network.MixinTelemetry",
     "render.MixinBackgroundRenderer",
     "render.MixinBlockFluidRenderer",
     "render.MixinBlockModelRenderer",

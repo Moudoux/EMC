@@ -211,7 +211,7 @@ public abstract class MixinMinecraft implements Minecraft {
     }
 
     @Inject(method = "isModded", at = @At(value = "TAIL"), cancellable = true)
-    public void isModdedCheck(CallbackInfoReturnable<Boolean> cir) {
+    private static void isModdedCheck(CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(false);
     }
 

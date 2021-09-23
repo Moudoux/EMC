@@ -8,17 +8,18 @@ import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilEnvironment;
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
 import me.deftware.client.framework.minecraft.Minecraft;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.Session;
 
 import java.net.Proxy;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
  * Allows modifying and creating sessions
+ * TODO: Remake
  *
  * @author Deftware
  */
@@ -48,7 +49,7 @@ public class AuthLibSession {
 	}
 
 	public AuthLibSession() {
-		this(YggdrasilEnvironment.PROD);
+		this(YggdrasilEnvironment.PROD.getEnvironment());
 	}
 
 	public void setCredentials(String username, String password) {
@@ -84,7 +85,7 @@ public class AuthLibSession {
 			return session;
 		}
 		session = new Session(userAuthentication.getSelectedProfile().getName(), userAuthentication.getSelectedProfile().getId().toString(),
-				userAuthentication.getAuthenticatedToken(), userAuthentication.getSelectedProfile().getName().contains("@") ? "mojang" : "legacy");
+				userAuthentication.getAuthenticatedToken(), Optional.of(""), Optional.of(""), userAuthentication.getSelectedProfile().getName().contains("@") ? Session.AccountType.MOJANG : Session.AccountType.LEGACY);
 		return session;
 	}
 
@@ -98,11 +99,11 @@ public class AuthLibSession {
 	}
 
 	public void setOfflineSession(String username) {
-		Minecraft.getMinecraftGame().setSession(new Session(username, "", "0", "legacy"));
+		Minecraft.getMinecraftGame().setSession(new Session(username, "", "0", Optional.empty(), Optional.of(uuid.toString()), Session.AccountType.LEGACY));
 	}
 
 	public void setManualSession(String username, String uuid, String accessToken) {
-		Session session = new Session(username, uuid, accessToken, "mojang");
+		Session session = new Session(username, uuid, accessToken, Optional.empty(), Optional.of(this.uuid.toString()), Session.AccountType.MOJANG);
 		Map<String, Object> map = new HashMap<>();
 		map.put("accessToken", accessToken);
 		map.put("displayName", username);
