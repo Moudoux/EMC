@@ -5,18 +5,16 @@ import com.mojang.authlib.Environment;
 import java.util.StringJoiner;
 
 /**
- * Custom implementation of the YggdrasilEnvironment allowing the use of custom auth hosts
- *
  * @author Deftware
  */
-public class CustomYggdrasil {
+public class AuthEnvironment {
 
 	String authHost, accountsHost, sessionHost;
 
 	/**
 	 * The provided URLs should NOT include a trailing slash.
 	 */
-	public CustomYggdrasil(String authHost, String accountsHost, String sessionHost) {
+	public AuthEnvironment(String authHost, String accountsHost, String sessionHost) {
 		this.authHost = authHost;
 		this.accountsHost = accountsHost;
 		this.sessionHost = sessionHost;
@@ -45,7 +43,8 @@ public class CustomYggdrasil {
 		return "PROD";
 	}
 
-	public String asString() {
+	@Override
+	public String toString() {
 		return new StringJoiner(", ", "", "")
 				.add("authHost='" + authHost + "'")
 				.add("accountsHost='" + accountsHost + "'")
