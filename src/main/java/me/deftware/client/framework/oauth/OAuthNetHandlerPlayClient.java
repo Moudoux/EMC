@@ -3,10 +3,10 @@ package me.deftware.client.framework.oauth;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.UserApiService;
 import me.deftware.client.framework.chat.ChatMessage;
-import net.minecraft.class_6628;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.util.telemetry.TelemetrySender;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.packet.s2c.play.DisconnectS2CPacket;
 
@@ -21,7 +21,7 @@ public class OAuthNetHandlerPlayClient extends ClientPlayNetworkHandler {
 
     public OAuthNetHandlerPlayClient(MinecraftClient mcIn, Screen screenIn, ClientConnection networkManagerIn,
                                      GameProfile profileIn, OAuth.OAuthCallback callback) {
-        super(mcIn, screenIn, networkManagerIn, profileIn, new class_6628(mcIn, UserApiService.OFFLINE, Optional.empty(), Optional.empty(), profileIn.getId()));
+        super(mcIn, screenIn, networkManagerIn, profileIn, new TelemetrySender(mcIn, UserApiService.OFFLINE, Optional.empty(), Optional.empty(), profileIn.getId()));
         this.callback = callback;
     }
 

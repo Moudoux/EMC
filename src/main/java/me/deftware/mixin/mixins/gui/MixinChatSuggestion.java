@@ -30,7 +30,7 @@ public class MixinChatSuggestion {
     @Shadow @Final
     Screen owner;
 
-    @Redirect(method = "refresh", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/StringReader;peek()C"))
+    @Redirect(method = "refresh", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/StringReader;peek()C", remap = false))
     private char onPeek(StringReader stringReader) {
         String trigger = CommandRegister.getCommandTrigger();
         if (textField.getText().startsWith(trigger) && isDispatcherActive()) {
@@ -46,7 +46,7 @@ public class MixinChatSuggestion {
         return stringReader.peek();
     }
 
-    @Redirect(method = "refresh", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/CommandDispatcher;parse(Lcom/mojang/brigadier/StringReader;Ljava/lang/Object;)Lcom/mojang/brigadier/ParseResults;"))
+    @Redirect(method = "refresh", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/CommandDispatcher;parse(Lcom/mojang/brigadier/StringReader;Ljava/lang/Object;)Lcom/mojang/brigadier/ParseResults;", remap = false))
     private ParseResults<CommandSource> onParse(CommandDispatcher<CommandSource> commandDispatcher, StringReader reader, Object source) {
         ClientCommandSource clientCommandSource = (ClientCommandSource) source;
         if (textField.getText().startsWith(CommandRegister.getCommandTrigger()) && isDispatcherActive()) {

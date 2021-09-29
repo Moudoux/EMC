@@ -22,7 +22,7 @@ public abstract class MixinFrameBuffer {
 	public @Shadow int textureHeight;
 	private @Shadow int depthAttachment;
 
-	@Redirect(method = "initFbo", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;_texImage2D(IIIIIIIILjava/nio/IntBuffer;)V", ordinal = 0))
+	@Redirect(method = "initFbo", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;_texImage2D(IIIIIIIILjava/nio/IntBuffer;)V", remap = false, ordinal = 0))
 	private void texImage2D(int target, int level, int internalFormat, int width, int height, int border, int format, int type, IntBuffer pixels) {
 		GlStateManager._texImage2D(
 				GL11.GL_TEXTURE_2D, 0, ARBFramebufferObject.GL_DEPTH24_STENCIL8,
@@ -32,7 +32,7 @@ public abstract class MixinFrameBuffer {
 		);
 	}
 
-	@Redirect(method = "initFbo", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;_glFramebufferTexture2D(IIIII)V", ordinal = 1))
+	@Redirect(method = "initFbo", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;_glFramebufferTexture2D(IIIII)V", remap = false, ordinal = 1))
 	private void framebufferTexture2D(int target, int attachment, int textureTarget, int texture, int level) {
 		GlStateManager._glFramebufferTexture2D(
 				target,
