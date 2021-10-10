@@ -29,7 +29,7 @@ public enum ItemType {
 		} else if (this.equals(ItemBlock)) {
 			return item instanceof BlockItem;
 		} else if (this.equals(ItemSoup)) {
-			return item instanceof MushroomStewItem;
+			return item instanceof StewItem;
 		} else if (this.equals(WritableBook)) {
 			return item instanceof WritableBookItem;
 		} else if (this.equals(ItemHoe)) {

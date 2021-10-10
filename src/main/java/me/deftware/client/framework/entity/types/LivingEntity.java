@@ -32,11 +32,11 @@ public class LivingEntity extends Entity {
 	}
 
 	public void setMovementMultiplier(float multiplier) {
-		getMinecraftEntity().flyingSpeed = multiplier;
+		getMinecraftEntity().airStrafingSpeed = multiplier;
 	}
 
 	public float getMovementMultiplier() {
-		return getMinecraftEntity().flyingSpeed;
+		return getMinecraftEntity().airStrafingSpeed;
 	}
 
 	public int getHurtTime() {
