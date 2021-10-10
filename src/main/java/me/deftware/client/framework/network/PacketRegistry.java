@@ -29,7 +29,7 @@ public class PacketRegistry {
 
     private PacketRegistry() {
         register(PlayerInteractEntityC2SPacket.class, CPacketUseEntity.class);
-        register(CloseScreenS2CPacket.class, CPacketCloseWindow.class);
+        register(CloseHandledScreenC2SPacket.class, CPacketCloseWindow.class);
         register(KeepAliveC2SPacket.class, CPacketKeepAlive.class);
         register(ClientStatusC2SPacket.class, CPacketClientStatus.class);
         // Move packets
