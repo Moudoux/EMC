@@ -22,6 +22,7 @@ import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.Session;
+import net.minecraft.util.ModStatus;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
@@ -210,9 +211,11 @@ public abstract class MixinMinecraft implements Minecraft {
         doItemPick();
     }
 
-    @Inject(method = "isModded", at = @At(value = "TAIL"), cancellable = true)
-    private static void isModdedCheck(CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(false);
+    @Inject(method = "getModStatus", at = @At(value = "TAIL"), cancellable = true)
+    private static void isModdedCheck(CallbackInfoReturnable<ModStatus> cir) {
+        cir.setReturnValue(
+                new ModStatus(ModStatus.Confidence.PROBABLY_NOT, "Client jar signature and brand is untouched")
+        );
     }
 
     @Inject(method = "getVersionType", at = @At("HEAD"), cancellable = true)

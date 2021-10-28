@@ -38,7 +38,7 @@ public class GLX {
     }
 
     public Matrix4f getModel() {
-        return stack.peek().getModel();
+        return stack.peek().getPositionMatrix();
     }
 
     public void modelViewStack(Runnable action) {

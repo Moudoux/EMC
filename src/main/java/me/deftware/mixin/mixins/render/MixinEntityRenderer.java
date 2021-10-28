@@ -96,15 +96,15 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
            matrix.push();
            // TODO: Verify this
            double d = this.getFov(camera, partialTicks, true);
-           matrix.peek().getModel().multiply(this.getBasicProjectionMatrix(d));
-           MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrix.peek().getModel());
+           matrix.peek().getPositionMatrix().multiply(this.getBasicProjectionMatrix(d));
+           MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrix.peek().getPositionMatrix());
            // Camera transformation stack
            matrix.pop();
            matrix.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(this.camera.getPitch()));
            matrix.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(this.camera.getYaw() + 180f));
            loadPushPop(renderEventNoBobbing, matrix, partialTicks);
            // Reset projection
-           MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrixStack.peek().getModel());
+           MinecraftClient.getInstance().gameRenderer.loadProjectionMatrix(matrixStack.peek().getPositionMatrix());
            GlStateHelper.enableLighting();
            GLX.INSTANCE.refresh(matrixStack);
        }

@@ -14,6 +14,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -48,15 +49,12 @@ public abstract class MixinWorldClient extends MixinWorld implements me.deftware
     private BlockPos.Mutable onGetBlockParticle(BlockPos.Mutable pos) {
         boolean barrier = GameMap.INSTANCE.get(GameKeys.FULL_BARRIER_TEXTURE, false),
                 light = GameMap.INSTANCE.get(GameKeys.FULL_LIGHT_TEXTURE, false);
-        if (
-                barrier || light
-        ) {
+        if (barrier || light) {
             BlockState blockState = ((World) (Object) this).getBlockState(pos);
             Block block = blockState.getBlock();
-            if (barrier && block == Blocks.BARRIER)
-                this.addParticle(ParticleTypes.BARRIER, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-            if (light && block == Blocks.LIGHT)
-                this.addParticle(ParticleTypes.LIGHT, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+            ParticleEffect effect = new BlockStateParticleEffect(ParticleTypes.BLOCK_MARKER, blockState);
+            if (barrier && block == Blocks.BARRIER || light && block == Blocks.LIGHT)
+                this.addParticle(effect, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
         }
         return pos;
     }
