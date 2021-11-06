@@ -44,7 +44,7 @@ public class GLX {
     public void modelViewStack(Runnable action) {
         MatrixStack matrixStack = RenderSystem.getModelViewStack();
         matrixStack.push();
-        matrixStack.method_34425(GLX.INSTANCE.getModel());
+        matrixStack.multiplyPositionMatrix(GLX.INSTANCE.getModel());
         RenderSystem.applyModelViewMatrix();
         action.run();
         matrixStack.pop();

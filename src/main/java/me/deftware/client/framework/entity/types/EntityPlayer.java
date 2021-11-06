@@ -11,6 +11,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.shape.VoxelShape;
 
 import java.util.*;
 
@@ -113,7 +114,8 @@ public class EntityPlayer extends LivingEntity {
 	}
 
 	public boolean isAtEdge() {
-		return Objects.requireNonNull(MinecraftClient.getInstance().world).getCollisions(getMinecraftEntity(), getMinecraftEntity().getBoundingBox().offset(0, -0.5, 0).expand(-0.001, 0, -0.001), (foundEntity) -> true).count() == 0;
+		Iterable<VoxelShape> iterable = Objects.requireNonNull(MinecraftClient.getInstance().world).getCollisions(getMinecraftEntity(), getMinecraftEntity().getBoundingBox().offset(0, -0.5, 0).expand(-0.001, 0, -0.001));
+		return !iterable.iterator().hasNext();
 	}
 
 	public void openInventory() {
