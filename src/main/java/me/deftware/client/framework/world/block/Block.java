@@ -7,18 +7,23 @@ import me.deftware.client.framework.fonts.FontRenderer;
 import me.deftware.client.framework.gui.widgets.SelectableList;
 import me.deftware.client.framework.item.IItem;
 import me.deftware.client.framework.math.position.BlockPosition;
+import me.deftware.client.framework.registry.Identifiable;
 import me.deftware.client.framework.render.ItemRenderer;
 import me.deftware.client.framework.world.block.types.CropBlock;
 import me.deftware.client.framework.world.block.types.ShulkerBlock;
 import me.deftware.client.framework.world.block.types.StorageBlock;
 import net.minecraft.block.*;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
+
+import java.awt.*;
 
 /**
  * @author Deftware
  */
-public class Block implements IItem, SelectableList.ListItem {
+public class Block implements IItem, SelectableList.ListItem, Identifiable {
 
 	protected final net.minecraft.block.Block block;
 	protected BlockPosition blockPosition;
@@ -66,6 +71,10 @@ public class Block implements IItem, SelectableList.ListItem {
 		return new BlockState(block.getDefaultState());
 	}
 
+	public Color getColor() {
+		return new Color(block.getDefaultState().getMapColor(MinecraftClient.getInstance().world, BlockPos.ORIGIN).color, true);
+	}
+
 	public boolean isAir() {
 		return block instanceof AirBlock;
 	}
@@ -87,7 +96,7 @@ public class Block implements IItem, SelectableList.ListItem {
 	}
 
 	public String getIdentifierKey() {
-		return getTranslationKey().substring("block.minecraft.".length());
+		return Registry.BLOCK.getId(block).getPath();
 	}
 
 	public String getTranslationKey() {

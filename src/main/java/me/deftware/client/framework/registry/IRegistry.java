@@ -14,4 +14,15 @@ public interface IRegistry<Type, InternalType> {
 
 	void register(String id, InternalType object);
 
+	interface IdentifiableRegistry<T extends Identifiable, I> extends IRegistry<T, I> {
+
+		@Override
+		default Optional<T> find(String id) {
+			return stream()
+					.filter(i -> i.getTranslationKey().equalsIgnoreCase(id) || i.getIdentifierKey().equalsIgnoreCase(id))
+					.findFirst();
+		}
+
+	}
+
 }

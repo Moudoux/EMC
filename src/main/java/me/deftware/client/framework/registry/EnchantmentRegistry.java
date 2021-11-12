@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 /**
  * @author Deftware
  */
-public enum EnchantmentRegistry implements IRegistry<Enchantment, net.minecraft.enchantment.Enchantment> {
+public enum EnchantmentRegistry implements IRegistry.IdentifiableRegistry<Enchantment, net.minecraft.enchantment.Enchantment> {
 
 	INSTANCE;
 
@@ -23,14 +23,6 @@ public enum EnchantmentRegistry implements IRegistry<Enchantment, net.minecraft.
 	@Override
 	public void register(String id, net.minecraft.enchantment.Enchantment object) {
 		enchantments.putIfAbsent(id, new Enchantment(object));
-	}
-
-	@Override
-	public Optional<Enchantment> find(String id) {
-		return stream().filter(enchantment ->
-				enchantment.getTranslationKey().equalsIgnoreCase(id) ||
-						enchantment.getTranslationKey().substring("enchantment.minecraft:".length()).equalsIgnoreCase(id)
-		).findFirst();
 	}
 
 }

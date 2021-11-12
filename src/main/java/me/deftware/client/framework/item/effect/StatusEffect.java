@@ -1,12 +1,13 @@
 package me.deftware.client.framework.item.effect;
 
-
 import net.minecraft.entity.effect.StatusEffectCategory;
+import me.deftware.client.framework.registry.Identifiable;
+import net.minecraft.util.registry.Registry;
 
 /**
  * @author Deftware
  */
-public class StatusEffect {
+public class StatusEffect implements Identifiable {
 
 	private final net.minecraft.entity.effect.StatusEffect statusEffect;
 	private final EffectType effectType;
@@ -26,8 +27,14 @@ public class StatusEffect {
 		return effectType;
 	}
 
+	@Override
 	public String getTranslationKey() {
 		return statusEffect.getTranslationKey();
+	}
+
+	@Override
+	public String getIdentifierKey() {
+		return Registry.STATUS_EFFECT.getId(statusEffect).getPath();
 	}
 
 }

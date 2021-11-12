@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 /**
  * @author Deftware
  */
-public enum BlockRegistry implements IRegistry<Block, net.minecraft.block.Block> {
+public enum BlockRegistry implements IRegistry.IdentifiableRegistry<Block, net.minecraft.block.Block> {
 
 	INSTANCE;
 
@@ -28,14 +28,6 @@ public enum BlockRegistry implements IRegistry<Block, net.minecraft.block.Block>
 		Block block = Block.newInstance(object);
 		blocks.putIfAbsent(id, block);
 		map.putIfAbsent(object, block);
-	}
-
-	@Override
-	public Optional<Block> find(String id) {
-		return stream().filter(block ->
-			block.getTranslationKey().equalsIgnoreCase(id) ||
-					block.getTranslationKey().substring("block.minecraft:".length()).equalsIgnoreCase(id)
-		).findFirst();
 	}
 
 	public Block getBlock(net.minecraft.block.Block block) {
