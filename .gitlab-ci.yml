@@ -1,6 +1,6 @@
 
 build:
-  image: openjdk:16
+  image: openjdk:17
   stage: build
   variables:
     GRADLE_OPTS: "-Dorg.gradle.daemon=false"
