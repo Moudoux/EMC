@@ -8,6 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.Objects;
+
 /**
  * @author Deftware
  */
@@ -81,6 +83,11 @@ public class BlockPosition {
 			return pos.getX() == getX() && pos.getY() == getY() && pos.getZ() == getZ();
 		}
 		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) (getX() + getY() + getZ());
 	}
 
 	@Override
