@@ -51,7 +51,7 @@ public class MixinBiome {
             PlacedFeature placedFeature = list.get(i).get();
             DecoratorConfig data = new DecoratorConfig(i, biomeFeature);
             BuiltinRegistries.PLACED_FEATURE.getKey(placedFeature).ifPresent(k -> data.setId(k.getValue().getPath()));
-            for (PlacementModifier modifier : placedFeature.method_39825()) {
+            for (PlacementModifier modifier : placedFeature.getPlacementModifiers()) {
                 // System.out.printf("\t[Placement modifier] %s\n", modifier.getClass().getSimpleName());
                 if (modifier instanceof HeightRangePlacementModifier) {
                     data.setHeightProvider(((HeightPlacementAccessor) modifier).getHeight());
