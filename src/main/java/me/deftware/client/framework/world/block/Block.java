@@ -15,10 +15,11 @@ import me.deftware.client.framework.world.block.types.StorageBlock;
 import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author Deftware
@@ -67,12 +68,10 @@ public class Block implements IItem, SelectableList.ListItem, Identifiable {
 		return false;
 	}
 
-	public BlockState getDefaultBlockState() {
-		return new BlockState(block.getDefaultState());
-	}
-
-	public Color getColor() {
-		return new Color(block.getDefaultState().getMapColor(MinecraftClient.getInstance().world, BlockPos.ORIGIN).color, true);
+	public InputStream getAsset() throws IOException {
+		Identifier blockResource = Registry.BLOCK.getId(block);
+		Identifier blockTexture = new Identifier(blockResource.getNamespace(), "textures/block/" + blockResource.getPath() + ".png");
+		return MinecraftClient.getInstance().getResourceManager().getResource(blockTexture).getInputStream();
 	}
 
 	public boolean isAir() {

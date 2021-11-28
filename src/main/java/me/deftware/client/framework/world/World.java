@@ -5,6 +5,7 @@ import me.deftware.client.framework.math.position.BlockPosition;
 import me.deftware.client.framework.registry.BlockRegistry;
 import me.deftware.client.framework.world.block.Block;
 import me.deftware.client.framework.world.block.BlockState;
+import me.deftware.client.framework.world.chunk.ChunkAccessor;
 import net.minecraft.block.entity.BlockEntity;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -53,6 +54,11 @@ public interface World {
 	 * Disconnects from the world/server
 	 */
 	void _disconnect();
+
+	/**
+	 * @return A chunk in the world
+	 */
+	ChunkAccessor getChunk(int x, int z);
 
 	/**
 	 * End = 1
