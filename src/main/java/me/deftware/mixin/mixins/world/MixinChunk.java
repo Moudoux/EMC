@@ -28,4 +28,9 @@ public class MixinChunk implements ChunkAccessor {
         return ((WorldChunk) (Object) this).getHeight();
     }
 
+    @Override
+    public int getChunkMinY() {
+        return ((WorldChunk) (Object) this).getBottomY();
+    }
+
 }

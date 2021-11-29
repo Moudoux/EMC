@@ -58,11 +58,6 @@ public abstract class MixinWorldClient extends MixinWorld implements me.deftware
         return pos;
     }
 
-    @Inject(method = "<init>", at = @At("TAIL"))
-    private void onConstructed(ClientPlayNetworkHandler clientPlayNetworkHandler, ClientWorld.Properties properties, RegistryKey<World> registryKey, DimensionType dimensionType, int i, int j, Supplier<Profiler> supplier, WorldRenderer worldRenderer, boolean bl, long l, CallbackInfo ci) {
-        new EventWorldLoad().broadcast();
-    }
-
     @Inject(method = "addEntityPrivate", at = @At("TAIL"))
     private void addEntityPrivate(int id, net.minecraft.entity.Entity entity, CallbackInfo ci) {
         Entity e = Entity.newInstance(entity);

@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.Getter;
 import me.deftware.client.framework.entity.Entity;
 import me.deftware.client.framework.event.events.EventScreen;
+import me.deftware.client.framework.event.events.EventWorldLoad;
 import me.deftware.client.framework.gui.screens.GenericScreen;
 import me.deftware.client.framework.gui.screens.MinecraftScreen;
 import me.deftware.client.framework.minecraft.ClientOptions;
@@ -239,6 +240,11 @@ public abstract class MixinMinecraft implements Minecraft {
     @Override
     public WorldEntityRenderer getWorldEntityRenderer() {
         return (WorldEntityRenderer) ((MinecraftClient) (Object) this).worldRenderer;
+    }
+
+    @Inject(method = "setWorld", at = @At("TAIL"))
+    private void onSetWorld(net.minecraft.client.world.ClientWorld world, CallbackInfo ci) {
+        new EventWorldLoad((ClientWorld) world).broadcast();
     }
 
 }
