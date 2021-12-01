@@ -2,7 +2,8 @@ package me.deftware.client.framework.main.subsystem;
 
 import lombok.Getter;
 import me.deftware.client.framework.util.path.LocationUtil;
-import net.fabricmc.loader.FabricLoader;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.impl.FabricLoaderImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,7 +20,7 @@ public class FabricModifier {
 	/**
 	 * The original fabric loader instance
 	 */
-	private final FabricLoader original = FabricLoader.INSTANCE;
+	private final FabricLoader original = FabricLoaderImpl.INSTANCE;
 
 	/**
 	 * The custom EMC mods directory
@@ -34,11 +35,16 @@ public class FabricModifier {
 	}
 
 	public void run() throws Throwable {
-		FabricLoader loader = new FabricLoader() {
+		FabricLoader loader = new FabricLoaderImpl() {
 			private final Logger logger = LogManager.getLogger("EMC|Subsystem");
 
 			@Override
-			public Path getModsDir() {
+			public File getModsDirectory() {
+				return modsDir.toFile();
+			}
+
+			@Override
+			public Path getInternalModsDirectory() {
 				return modsDir;
 			}
 
@@ -47,9 +53,10 @@ public class FabricModifier {
 				logger.info("Loading modified Fabric loader by EMC");
 				super.load();
 			}
+
 		};
 		// Replace the fabric instance with our custom one
-		ClassModifier<FabricLoader> modifier = new ClassModifier<>(FabricLoader.class);
+		ClassModifier<FabricLoaderImpl> modifier = new ClassModifier<>(FabricLoaderImpl.class);
 		modifier.setField("INSTANCE", loader);
 	}
 
