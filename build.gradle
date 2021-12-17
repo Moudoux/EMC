@@ -40,19 +40,6 @@ dependencies {
 	include 'com.github.Chocohead:Fabric-ASM:v2.3'
 }
 
-sourceSets {
-
-	mock {
-		compileClasspath += main.compileClasspath
-	}
-
-}
-
-task mockJar(type: Jar) {
-	archiveFileName = "mocked.jar"
-	from sourceSets.mock.output
-}
-
 loom {
 	mixin {
 		useLegacyMixinAp = true
@@ -60,12 +47,22 @@ loom {
 	}
 }
 
+def artifactVersion = project.hasProperty("av") ? project.property("av").toString() : project.minecraftVersion
+
 publishing {
 	publications {
-		mavenJava(MavenPublication) {
+		emc(MavenPublication) {
 			groupId 'me.deftware'
 			artifactId "EMC-F-v2"
-			version "${version}-${project.minecraftVersion}"
+			version "${version}-${artifactVersion}"
+
+			from components['java']
+		}
+	}
+
+	repositories {
+		maven {
+			url "$rootDir/maven/"
 		}
 	}
 }
@@ -78,36 +75,9 @@ processResources {
 	}
 }
 
-
-tasks.withType(GenerateMavenPom).all {
-	destination = layout.buildDirectory.file("../maven/me/deftware/EMC-F-v2/${version}-${project.minecraftVersion}/EMC-F-v2-${version}-${project.minecraftVersion}.pom").get().asFile
-}
-
 task generateApiDocumentation(type: Javadoc) {
 	source = ['src/main/java/me/deftware/client']
 	title = "EMC Framework Documentation"
 	destinationDir = file("docs")
 	failOnError false
 }
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-	archiveClassifier.set('sources')
-	from sourceSets.main.allSource
-}
-
-task copyBuilds(type: Copy) {
-	from "$rootDir/build/libs/EMC-${version}.jar"
-	into "$rootDir/maven/me/deftware/EMC-F-v2/${version}-${project.minecraftVersion}/"
-	rename { String fileName ->
-		fileName.replace(version.toString(), "${version}-${project.minecraftVersion}".toString()).replace("EMC", "EMC-F-v2")
-	}
-	doLast {
-		project.ant.checksum(file: "$rootDir/maven/me/deftware/EMC-F-v2/${version}-${project.minecraftVersion}/EMC-F-v2-${version}-${project.minecraftVersion}.jar", algorithm: "sha1", todir: "$rootDir/maven/me/deftware/EMC-F-v2/${version}-${project.minecraftVersion}/")
-	}
-}
-
-build {
-	dependsOn(generatePomFileForMavenJavaPublication)
-	finalizedBy(copyBuilds)
-}
-

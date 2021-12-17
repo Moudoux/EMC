@@ -1,19 +1,14 @@
-
 build:
   image: openjdk:17
   stage: build
   variables:
     GRADLE_OPTS: "-Dorg.gradle.daemon=false"
-  # build script expects lowercase name
-  before_script:
-    - mkdir emc
-    # suppress error for moving self in subdirectory
-    - mv * emc || true
-    - cd emc
-  script: ./gradlew build --stacktrace
+  script:
+    - ./gradlew publish --stacktrace
+    - ./gradlew publish -Pav=1.18.1 --stacktrace
   artifacts:
     paths:
-      - emc/maven
+      - maven
     name: "emc-$CI_COMMIT_SHORT_SHA-snapshot"
 
 deploy:
@@ -38,7 +33,7 @@ deploy:
     - git config --global user.name "$GIT_NAME"
   script:
     - git clone git@gitlab.com:EMC-Framework/maven.git maven-remote
-    - rsync -r -I emc/maven/* maven-remote
+    - rsync -r -I maven/* maven-remote
     - cd maven-remote
     # - node update-latest.js
     - git add .
