@@ -86,6 +86,11 @@ public class MixinWorld implements me.deftware.client.framework.world.World {
 	}
 
 	@Override
+	public boolean _hasChunk(int x, int z) {
+		return ((World) (Object) this).isChunkLoaded(x, z);
+	}
+
+	@Override
 	public int _getDimension() {
 		RegistryKey<World> key = ((World) (Object) this).getRegistryKey();
 		if (World.END.equals(key)) {
