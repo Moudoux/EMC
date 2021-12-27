@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import me.deftware.client.framework.world.block.Block;
 import me.deftware.mixin.mixins.biome.CountInvoker;
-import net.minecraft.util.math.intprovider.ConstantIntProvider;
-import net.minecraft.util.math.intprovider.IntProvider;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.decorator.CountPlacementModifier;
 import net.minecraft.world.gen.heightprovider.HeightProvider;
@@ -45,6 +43,11 @@ public class DecoratorConfig {
      * The size of a generation
      */
     private int size;
+
+    /**
+     * Rarity
+     */
+    private int chance = 1;
 
     /**
      * Specifies the chance a block will be discarded if it's spawned in the air
@@ -97,6 +100,8 @@ public class DecoratorConfig {
                 .add("heightType=" + this.structureType.name())
                 .add("feature=" + this.feature.name())
                 .add("generator=" + this.featureType.name())
+                .add("chance=" + this.chance)
+                .add("height=" + (this.heightProvider == null ? "Unknown" : this.heightProvider.toString()))
                 .add("blocks=[" + String.join(",", this.blockList.stream().map(Block::getIdentifierKey).toArray(String[]::new)) + "]")
                 .toString();
     }

@@ -93,6 +93,7 @@
     "biome.CountInvoker",
     "biome.HeightPlacementAccessor",
     "biome.MixinChunkRandom",
+    "biome.RarityAccessor",
     "world.MixinChunk",
     "world.MixinChunkSection",
     "world.MixinChunkManager"

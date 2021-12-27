@@ -37,6 +37,7 @@ public class MixinBiome {
     @Unique
     private static void register(Biome biome, Identifier identifier) {
         BiomeDecorator decorator = new BiomeDecorator();
+        // System.out.printf("== Biome %s ==\n", identifier.getPath());
         parseFeature(biome.getGenerationSettings(), GenerationStep.Feature.UNDERGROUND_ORES, decorator);
         parseFeature(biome.getGenerationSettings(), GenerationStep.Feature.UNDERGROUND_DECORATION, decorator);
         BiomeDecorator.BIOME_DECORATORS.put(identifier, decorator);
@@ -57,6 +58,9 @@ public class MixinBiome {
                     data.setHeightProvider(((HeightPlacementAccessor) modifier).getHeight());
                 } else if (modifier instanceof AbstractCountPlacementModifier) {
                     data.setRepeat((CountInvoker) modifier);
+                } else if (modifier instanceof RarityFilterPlacementModifier) {
+                    RarityAccessor accessor = (RarityAccessor) modifier;
+                    data.setChance(accessor.getChance());
                 }
             }
             List<FeatureConfig> configs = placedFeature.getDecoratedFeatures()
@@ -80,6 +84,7 @@ public class MixinBiome {
                     data.setFeatureType(DecoratorConfig.FeatureType.ScatteredOre);
                 }
             }
+            // System.out.println(data);
             decorator.getDecorators().add(data);
         }
     }
