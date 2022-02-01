@@ -1,5 +1,6 @@
 package me.deftware.client.framework.inventory;
 
+import me.deftware.client.framework.entity.EntityHand;
 import me.deftware.client.framework.item.ItemStack;
 import me.deftware.client.framework.util.Util;
 import net.minecraft.entity.EquipmentSlot;
@@ -49,8 +50,13 @@ public class EntityInventory extends Inventory {
 		entity.getInventory().selectedSlot = id;
 	}
 
+	@Deprecated
 	public ItemStack getHeldItem(boolean offhand) {
-		if (offhand)
+		return this.getHeldItem(offhand ? EntityHand.OffHand : EntityHand.MainHand);
+	}
+
+	public ItemStack getHeldItem(EntityHand hand) {
+		if (hand == EntityHand.OffHand)
 			return this.offhand.setStack(entity.getOffHandStack());
 		return main.get(getCurrentItem()).setStack(entity.getInventory().getStack(getCurrentItem()));
 	}
