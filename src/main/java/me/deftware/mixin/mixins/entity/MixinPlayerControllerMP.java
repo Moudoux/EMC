@@ -117,7 +117,7 @@ public class MixinPlayerControllerMP implements IMixinPlayerControllerMP {
 
     @Redirect(method = "breakBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;onBreak(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/player/PlayerEntity;)V"))
     private void onBlockBreak(Block block, World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        block.onBroken(world, pos, state);
+        block.onBreak(world, pos, state, player);
         new EventBlockUpdate(EventBlockUpdate.State.Break,
                 DoubleBlockPosition.fromMinecraftBlockPos(pos),
                 BlockRegistry.INSTANCE.getBlock(block),
@@ -125,6 +125,7 @@ public class MixinPlayerControllerMP implements IMixinPlayerControllerMP {
         ).broadcast();
     }
 
+    /*
     @Redirect(method = "breakBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;onBroken(Lnet/minecraft/world/WorldAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)V"))
     private void onBlockBroken(Block block, WorldAccess world, BlockPos pos, BlockState state) {
         block.onBroken(world, pos, state);
@@ -134,6 +135,7 @@ public class MixinPlayerControllerMP implements IMixinPlayerControllerMP {
                 EntityHand.MainHand
         ).broadcast();
     }
+     */
 
     @Redirect(method = "interactBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;useOnBlock(Lnet/minecraft/item/ItemUsageContext;)Lnet/minecraft/util/ActionResult;"))
     private ActionResult onBlockPlace(ItemStack instance, ItemUsageContext context) {
@@ -142,7 +144,7 @@ public class MixinPlayerControllerMP implements IMixinPlayerControllerMP {
 
         if (result.isAccepted() && item instanceof BlockItem blockItem) {
             Block block = blockItem.getBlock();
-            BlockPos pos = context.getBlockPos();
+            BlockPos pos = context.getBlockPos().offset(context.getSide());
 
             new EventBlockUpdate(
                     EventBlockUpdate.State.Place,

@@ -28,13 +28,9 @@ public class EventBlockUpdate extends Event {
          */
         Place,
         /**
-         * When a block is being broken
-         */
-        Break,
-        /**
          * When a block is broken
          */
-        Broken
+        Break
     }
 
 }

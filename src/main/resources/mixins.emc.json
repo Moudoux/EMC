@@ -60,6 +60,7 @@
     "network.MixinPlayerListEntry",
     "network.MixinServerInfo",
     "network.MixinTelemetry",
+    "network.ChunkDeltaAccessor",
     "render.MixinBackgroundRenderer",
     "render.MixinBlockFluidRenderer",
     "render.MixinBlockModelRenderer",
