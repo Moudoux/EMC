@@ -45,10 +45,10 @@ import java.util.function.Predicate;
 public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Shadow
-    private float movementFovMultiplier;
+    private float fovMultiplier;
 
     @Shadow
-    private float lastMovementFovMultiplier;
+    private float lastFovMultiplier;
 
     @Shadow
     protected abstract void loadShader(Identifier identifier);
@@ -201,13 +201,12 @@ public abstract class MixinEntityRenderer implements IMixinEntityRenderer {
 
     @Override
     public float getFovMultiplier() {
-        return movementFovMultiplier;
+        return fovMultiplier;
     }
 
     @Override
     public void updateFovMultiplier(float newFov) {
-        lastMovementFovMultiplier = newFov;
-        movementFovMultiplier = newFov;
+        fovMultiplier = lastFovMultiplier = newFov;
     }
 
 }

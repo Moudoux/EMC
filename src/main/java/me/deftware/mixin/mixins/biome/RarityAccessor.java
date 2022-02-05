@@ -1,6 +1,6 @@
 package me.deftware.mixin.mixins.biome;
 
-import net.minecraft.world.gen.decorator.RarityFilterPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.RarityFilterPlacementModifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 

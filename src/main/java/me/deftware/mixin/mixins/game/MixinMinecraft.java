@@ -73,7 +73,7 @@ public abstract class MixinMinecraft implements Minecraft {
     private int itemUseCooldown;
 
     @Shadow
-    protected abstract void doAttack();
+    protected abstract boolean doAttack();
 
     @Shadow
     protected abstract void doItemUse();

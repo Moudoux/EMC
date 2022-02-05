@@ -9,9 +9,9 @@ import net.minecraft.client.render.GameRenderer;
 import me.deftware.client.framework.render.texture.GlTexture;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public class GifRenderStack extends RenderStack<GifRenderStack> {
 
-    private final static Logger logger = LogManager.getLogger("GifRenderer");
+    private final static Logger logger = LoggerFactory.getLogger("GifRenderer");
 
     @Getter
     private boolean isAvailable = false;

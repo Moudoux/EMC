@@ -2,6 +2,7 @@ package me.deftware.mixin.mixins.render;
 
 import me.deftware.client.framework.global.GameKeys;
 import me.deftware.client.framework.global.GameMap;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.block.FluidRenderer;
 import net.minecraft.fluid.FluidState;
@@ -16,9 +17,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinBlockFluidRenderer {
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    public void render(BlockRenderView world, BlockPos pos, VertexConsumer vertexConsumer, FluidState state, CallbackInfoReturnable<Boolean> ci) {
+    public void render(BlockRenderView world, BlockPos pos, VertexConsumer vertexConsumer, BlockState blockState, FluidState fluidState, CallbackInfoReturnable<Boolean> cir) {
         if (!GameMap.INSTANCE.get(GameKeys.RENDER_FLUIDS, true))
-            ci.cancel();
+            cir.cancel();
     }
 
 }

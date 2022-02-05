@@ -1,7 +1,6 @@
 package me.deftware.client.framework.main.preprocessor;
 
 import com.google.gson.JsonObject;
-import me.deftware.client.framework.main.Main;
 import me.deftware.client.framework.main.bootstrap.discovery.ClasspathModDiscovery;
 
 import java.io.File;
@@ -23,7 +22,7 @@ public class PreProcessorMan implements Runnable {
 		for (JsonObject entry : this.classpathModDiscovery.getClasspathMods()) {
 			if (entry.has("preprocessor")) {
 				try {
-					ModPreProcessor instance = (ModPreProcessor) Main.class.getClassLoader().loadClass(entry.get("preprocessor").getAsString()).newInstance();
+					ModPreProcessor instance = (ModPreProcessor) PreProcessorMan.class.getClassLoader().loadClass(entry.get("preprocessor").getAsString()).newInstance();
 					instance.preProcessor = this;
 					this.preProcessorHashMap.put(entry.get("id").getAsString(), instance);
 				} catch (Exception ex) {

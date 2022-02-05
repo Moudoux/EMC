@@ -44,7 +44,6 @@ public class DirectoryModDiscovery extends AbstractModDiscovery {
 						DirectoryModEntry modEntry = new DirectoryModEntry(file);
 						entries.add(modEntry);
 					} catch (Exception ex) {
-                        Bootstrap.logger.debug(ex);
                         Bootstrap.logger.warn("Failed to load mod {}, is it an EMC mod?", file.getName());
 					}
 				}

@@ -10,15 +10,15 @@ import net.minecraft.client.util.InputUtil;
  */
 public enum MinecraftKeyBind {
 
-	SNEAK(MinecraftClient.getInstance().options.keySneak),
-	USE_ITEM(MinecraftClient.getInstance().options.keyUse),
-	JUMP(MinecraftClient.getInstance().options.keyJump),
-	SPRINT(MinecraftClient.getInstance().options.keySprint),
-	FORWARD(MinecraftClient.getInstance().options.keyForward),
-	BACK(MinecraftClient.getInstance().options.keyBack),
-	LEFT(MinecraftClient.getInstance().options.keyLeft),
-	RIGHT(MinecraftClient.getInstance().options.keyRight),
-	ATTACK(MinecraftClient.getInstance().options.keyAttack);
+	SNEAK(MinecraftClient.getInstance().options.sneakKey),
+	USE_ITEM(MinecraftClient.getInstance().options.useKey),
+	JUMP(MinecraftClient.getInstance().options.jumpKey),
+	SPRINT(MinecraftClient.getInstance().options.sprintKey),
+	FORWARD(MinecraftClient.getInstance().options.forwardKey),
+	BACK(MinecraftClient.getInstance().options.backKey),
+	LEFT(MinecraftClient.getInstance().options.leftKey),
+	RIGHT(MinecraftClient.getInstance().options.rightKey),
+	ATTACK(MinecraftClient.getInstance().options.attackKey);
 
 	private final KeyBinding bind;
 

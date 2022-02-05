@@ -2,8 +2,8 @@ package me.deftware.client.framework.config;
 
 import com.google.gson.*;
 import me.deftware.client.framework.minecraft.Minecraft;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class Settings {
 	}
 
 	public Settings(String name, String suffix) {
-		this.logger = LogManager.getLogger(name + "/" + this.getClass().getSimpleName());
+		this.logger = LoggerFactory.getLogger(name + "/" + this.getClass().getSimpleName());
 		this.configFile = configDir.resolve(name + suffix + ".json").toFile();
 		this.load();
 		// Flush
