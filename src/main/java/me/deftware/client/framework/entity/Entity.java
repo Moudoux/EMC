@@ -242,7 +242,7 @@ public class Entity {
 
 	public boolean isHostile() {
 		if (entity instanceof ChickenEntity) {
-			return ((ChickenEntity) entity).jockey;
+			return ((ChickenEntity) entity).hasJockey;
 		}
 		return entity instanceof Monster;
 	}

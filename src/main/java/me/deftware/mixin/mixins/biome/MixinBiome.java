@@ -6,6 +6,7 @@ import me.deftware.client.framework.world.gen.DecoratorConfig;
 import me.deftware.client.framework.world.block.Block;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.RegistryEntryList;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BuiltinBiomes;
@@ -20,10 +21,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -33,8 +33,8 @@ import java.util.stream.Collectors;
 public class MixinBiome {
 
     @Inject(method = "register", at = @At("RETURN"))
-    private static void onRegister(RegistryKey<Biome> registryKey, Biome biome, CallbackInfoReturnable<Biome> cir) {
-        register(biome, registryKey.getValue());
+    private static void onRegister(RegistryKey<Biome> key, Biome biome, CallbackInfo ci) {
+        register(biome, key.getValue());
     }
 
     @Unique
@@ -50,12 +50,12 @@ public class MixinBiome {
     private static void parseFeature(GenerationSettings generationSettings, GenerationStep.Feature biomeFeature, BiomeDecorator decorator) {
         if (biomeFeature.ordinal() >= generationSettings.getFeatures().size())
             return;
-        List<Supplier<PlacedFeature>> list = generationSettings.getFeatures().get(biomeFeature.ordinal());
+        RegistryEntryList<PlacedFeature> list = generationSettings.getFeatures().get(biomeFeature.ordinal());
         for (int i = 0; i < list.size(); i++) {
-            PlacedFeature placedFeature = list.get(i).get();
+            PlacedFeature placedFeature = list.get(i).value();
             DecoratorConfig data = new DecoratorConfig(i, biomeFeature);
             BuiltinRegistries.PLACED_FEATURE.getKey(placedFeature).ifPresent(k -> data.setId(k.getValue().getPath()));
-            for (PlacementModifier modifier : placedFeature.getPlacementModifiers()) {
+            for (PlacementModifier modifier : placedFeature.placementModifiers()) {
                 // System.out.printf("\t[Placement modifier] %s\n", modifier.getClass().getSimpleName());
                 if (modifier instanceof HeightRangePlacementModifier) {
                     data.setHeightProvider(((HeightPlacementAccessor) modifier).getHeight());
@@ -67,7 +67,7 @@ public class MixinBiome {
                 }
             }
             List<FeatureConfig> configs = placedFeature.getDecoratedFeatures()
-                    .map(ConfiguredFeature::getConfig)
+                    .map(ConfiguredFeature::config)
                     .collect(Collectors.toList());
             for (FeatureConfig config : configs) {
                 if (config instanceof OreFeatureConfig oreFeatureConfig) {
@@ -80,7 +80,7 @@ public class MixinBiome {
                 }
             }
             List<Feature<?>> features = placedFeature.getDecoratedFeatures()
-                            .map(ConfiguredFeature::getFeature)
+                            .map(ConfiguredFeature::feature)
                             .collect(Collectors.toList());
             for (Feature<?> feature : features) {
                 if (feature instanceof ScatteredOreFeature) {
