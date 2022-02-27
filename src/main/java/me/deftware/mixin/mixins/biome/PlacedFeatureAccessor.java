@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(PlacedFeature.class)
 public interface PlacedFeatureAccessor {
 
-    @Accessor
+    @Accessor("feature")
     RegistryEntry<ConfiguredFeature<?, ?>> getFeature();
 
 }
