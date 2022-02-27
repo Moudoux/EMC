@@ -5,10 +5,7 @@ import lombok.Setter;
 import me.deftware.client.framework.network.packets.*;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.*;
-import net.minecraft.network.packet.s2c.play.CloseScreenS2CPacket;
-import net.minecraft.network.packet.s2c.play.EntityAnimationS2CPacket;
-import net.minecraft.network.packet.s2c.play.EntityS2CPacket;
-import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
+import net.minecraft.network.packet.s2c.play.*;
 
 import java.util.HashMap;
 
@@ -44,6 +41,8 @@ public class PacketRegistry {
         register(EntityS2CPacket.class, SPacketEntity.class);
         register(EntityAnimationS2CPacket.class, SPacketAnimation.class);
         register(WorldTimeUpdateS2CPacket.class, SPacketWorldTime.class);
+        register(OpenScreenS2CPacket.class, SPacketOpenScreen.class);
+        register(SetTradeOffersS2CPacket.class, SPacketTradeOffers.class);
     }
 
     public void register(Class<? extends Packet<?>> minecraft, Class<? extends PacketWrapper> translated) {

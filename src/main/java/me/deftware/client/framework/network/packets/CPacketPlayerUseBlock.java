@@ -4,6 +4,7 @@ import me.deftware.client.framework.network.PacketWrapper;
 import me.deftware.client.framework.util.minecraft.BlockSwingResult;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.util.Hand;
 
 /**
@@ -18,4 +19,5 @@ public class CPacketPlayerUseBlock extends PacketWrapper {
 	public CPacketPlayerUseBlock(BlockSwingResult swingResult) {
 		this(new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, swingResult.getMinecraftHitResult()));
 	}
+
 }
