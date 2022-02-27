@@ -3,10 +3,14 @@ package me.deftware.client.framework.network.packets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import me.deftware.client.framework.network.PacketWrapper;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.SetTradeOffersS2CPacket;
 import net.minecraft.village.TradeOffer;
+
+import java.util.Map;
 
 public class SPacketTradeOffers extends PacketWrapper {
 
@@ -43,6 +47,15 @@ public class SPacketTradeOffers extends PacketWrapper {
         JsonObject json = new JsonObject();
         json.addProperty("count", stack.getCount());
         json.addProperty("id", stack.getItem().getTranslationKey());
+
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.get(stack);
+        if (!enchantments.isEmpty()) {
+            JsonArray meta = new JsonArray();
+            for (Map.Entry<Enchantment, Integer> enchantment : enchantments.entrySet()) {
+                meta.add(enchantment.getKey().getName(enchantment.getValue()).getString());
+            }
+            json.add("meta", meta);
+        }
         return json;
     }
 
