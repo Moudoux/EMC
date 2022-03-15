@@ -1,6 +1,9 @@
 package me.deftware.client.framework.gui;
 
 import lombok.Getter;
+import me.deftware.client.framework.chat.ChatMessage;
+import me.deftware.client.framework.gui.screens.MinecraftScreen;
+import me.deftware.client.framework.minecraft.Minecraft;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -23,7 +26,9 @@ public enum ScreenRegistry {
 	MainMenu(TitleScreen.class, parent -> new TitleScreen()),
 
 	IngameMenu(GameMenuScreen.class),
-	Disconnected(DisconnectedScreen.class),
+	Disconnected(DisconnectedScreen.class, args -> new DisconnectedScreen(
+			(Screen) args[0], ((ChatMessage) args[1]).build(), ((ChatMessage) args[2]).build()
+	)),
 	Container(HandledScreen.class),
 	Chat(ChatScreen.class),
 	Death(DeathScreen.class),
@@ -53,14 +58,22 @@ public enum ScreenRegistry {
 		this.supplier = supplier;
 	}
 
-	public void open(Object... params) {
+	public MinecraftScreen create(Object... params) {
 		try {
 			Screen screen = this.supplier.apply(params);
 			if (screen == null)
 				throw new Exception("Null screen");
-			MinecraftClient.getInstance().setScreen(screen);
+			return (MinecraftScreen) screen;
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}
+		return null;
+	}
+
+	public void open(Object... params) {
+		MinecraftScreen screen = this.create(params);
+		if (screen != null) {
+			Minecraft.getMinecraftGame().openScreen(screen);
 		}
 	}
 

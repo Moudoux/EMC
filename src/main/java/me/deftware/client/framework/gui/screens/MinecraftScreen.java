@@ -7,6 +7,9 @@ import me.deftware.client.framework.gui.widgets.GenericComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -36,6 +39,16 @@ public interface MinecraftScreen extends GenericScreen {
 	 */
 	default void close() {
 		MinecraftClient.getInstance().setScreen(null);
+	}
+
+	/**
+	 * Closes a screen handler
+	 */
+	static void closeHandledScreen(int syncId) {
+		ClientPlayerEntity entity = MinecraftClient.getInstance().player;
+		if (entity != null && entity.networkHandler != null) {
+			entity.networkHandler.sendPacket(new CloseHandledScreenC2SPacket(syncId));
+		}
 	}
 
 	/**
