@@ -3,9 +3,7 @@ package me.deftware.client.framework.world.chunk;
 import net.minecraft.world.gen.random.AbstractRandom;
 import net.minecraft.world.gen.random.ChunkRandom;
 
-import java.util.random.RandomGenerator;
-
-public interface ChunkGenerationRandom extends RandomGenerator {
+public interface ChunkGenerationRandom extends Randomizer {
 
     long _setPopulationSeed(long worldSeed, int blockX, int blockZ);
 

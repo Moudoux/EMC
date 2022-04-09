@@ -83,6 +83,7 @@
     "render.MixinBufferBuilder",
     "render.MixinRenderLayers",
     "render.MixinParticleManager",
+    "render.MixinLightmapTextureManager",
     "world.MixinWorld",
     "world.MixinWorldClient",
     "world.MixinWorldChunk",

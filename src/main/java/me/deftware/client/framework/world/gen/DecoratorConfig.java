@@ -9,6 +9,7 @@ import net.minecraft.world.gen.heightprovider.HeightProvider;
 import net.minecraft.world.gen.placementmodifier.CountPlacementModifier;
 
 import java.util.*;
+import java.util.random.RandomGenerator;
 
 /**
  * Represents Biome ore generation
@@ -79,16 +80,16 @@ public class DecoratorConfig {
         this.feature = feature;
     }
 
-    public int getY(Random random, DecoratorContext context) {
-        return this.heightProvider.get(random, context.getHeightContext());
+    public int getY(RandomGenerator random, DecoratorContext context) {
+        return this.heightProvider.get((Random) random, context.getHeightContext());
     }
 
     public int getFeature() {
         return feature.ordinal();
     }
 
-    public int getRepeat(Random random) {
-        return this.repeat.getInvokedCount(random, null);
+    public int getRepeat(RandomGenerator random) {
+        return this.repeat.getInvokedCount((Random) random, null);
     }
 
     @Override
