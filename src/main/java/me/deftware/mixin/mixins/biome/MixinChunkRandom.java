@@ -17,4 +17,19 @@ public abstract class MixinChunkRandom implements ChunkGenerationRandom {
         ((ChunkRandom) (Object) this).setDecoratorSeed(populationSeed, index, step);
     }
 
+    @Override
+    public int _nextInt(int bound) {
+        return ((ChunkRandom) (Object) this).nextInt(bound);
+    }
+
+    @Override
+    public float _nextFloat() {
+        return ((ChunkRandom) (Object) this).nextFloat();
+    }
+
+    @Override
+    public double _nextDouble() {
+        return ((ChunkRandom) (Object) this).nextDouble();
+    }
+
 }
