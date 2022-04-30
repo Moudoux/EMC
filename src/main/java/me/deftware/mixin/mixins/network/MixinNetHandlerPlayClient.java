@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Arrays;
@@ -94,6 +95,11 @@ public class MixinNetHandlerPlayClient implements NetworkHandler {
                 pos.getX(), pos.getY(), pos.getZ(),
                 accessor.getPositions(), blocks
         ).broadcast();
+    }
+
+    @Redirect(method = "onGameJoin", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/ClientBrandRetriever;getClientModName()Ljava/lang/String;"))
+    private String onGameJoin$GetClientBrand() {
+        return "vanilla";
     }
 
 }
