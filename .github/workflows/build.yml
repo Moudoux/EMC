@@ -1,0 +1,16 @@
+name: Build
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: eclipse-temurin:17-jdk
+      options: --user root
+    steps:
+      - uses: actions/checkout@v3
+      - uses: gradle/wrapper-validation-action@v1
+      - run: ./gradlew publish --stacktrace
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Artifacts
+          path: maven/
