@@ -2,13 +2,14 @@ package me.deftware.client.framework.wrappers.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiSlot;
+import org.lwjgl.glfw.GLFW;
 
-public abstract class IGuiSlot extends GuiSlot {
+public abstract class IGuiSlot extends GuiSlot implements CustomIGuiEventListener {
 
 	private int selectedSlot;
 
 	public IGuiSlot(int width, int height, int topIn, int bottomIn, int slotHeightIn) {
-		super(Minecraft.getMinecraft(), width, height, topIn, bottomIn, slotHeightIn);
+		super(Minecraft.getInstance(), width, height, topIn, bottomIn, slotHeightIn);
 	}
 
 	@Override
@@ -17,8 +18,9 @@ public abstract class IGuiSlot extends GuiSlot {
 	}
 
 	@Override
-	protected void elementClicked(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
-		selectedSlot = slotIndex;
+	protected boolean mouseClicked(int index, int p_195078_2_, double p_195078_3_, double p_195078_5_) {
+		selectedSlot = index;
+		return true;
 	}
 
 	@Override
@@ -44,20 +46,12 @@ public abstract class IGuiSlot extends GuiSlot {
 		return selectedSlot;
 	}
 
-	public void onMouseInput() {
-		handleMouseInput();
-	}
-
 	public void doDraw(int mouseX, int mouseY, float partialTicks) {
 		drawScreen(mouseX, mouseY, partialTicks);
 	}
 
-	public void registerScrollbars(int scrollUpButtonIDIn, int scrollDownButtonIDIn) {
-		registerScrollButtons(scrollUpButtonIDIn, scrollDownButtonIDIn);
-	}
-
 	public void clickElement(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
-		elementClicked(slotIndex, isDoubleClick, mouseX, mouseY);
+		mouseClicked(slotIndex, GLFW.GLFW_MOUSE_BUTTON_LEFT, mouseX, mouseY);
 	}
 
 }

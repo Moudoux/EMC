@@ -2,6 +2,10 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 
+/**
+ * Triggered by EMC framework in {@Link InternalGuiTextField}.
+ * when internal text field is initialized or character is typed into it
+ */
 public class EventChatboxType extends Event {
 
 	private String text, overlay;

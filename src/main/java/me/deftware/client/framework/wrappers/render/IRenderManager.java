@@ -6,35 +6,35 @@ import net.minecraft.client.Minecraft;
 public class IRenderManager {
 
 	public static double getRenderPosX() {
-		return ((IMixinRenderManager) Minecraft.getMinecraft().getRenderManager()).getRenderPosX();
+		return ((IMixinRenderManager) Minecraft.getInstance().getRenderManager()).getRenderPosX();
 	}
 
 	public static double getRenderPosY() {
-		return ((IMixinRenderManager) Minecraft.getMinecraft().getRenderManager()).getRenderPosY();
+		return ((IMixinRenderManager) Minecraft.getInstance().getRenderManager()).getRenderPosY();
 	}
 
 	public static double getRenderPosZ() {
-		return ((IMixinRenderManager) Minecraft.getMinecraft().getRenderManager()).getRenderPosZ();
+		return ((IMixinRenderManager) Minecraft.getInstance().getRenderManager()).getRenderPosZ();
 	}
 
 	public static float getPlayerViewY() {
-		return Minecraft.getMinecraft().getRenderManager().playerViewY;
+		return Minecraft.getInstance().getRenderManager().playerViewY;
 	}
 
 	public static float getPlayerViewX() {
-		return Minecraft.getMinecraft().getRenderManager().playerViewX;
+		return Minecraft.getInstance().getRenderManager().playerViewX;
 	}
 
 	public static double getViewerX() {
-		return Minecraft.getMinecraft().getRenderManager().viewerPosX;
+		return Minecraft.getInstance().getRenderManager().viewerPosX;
 	}
 
 	public static double getViewerY() {
-		return Minecraft.getMinecraft().getRenderManager().viewerPosY;
+		return Minecraft.getInstance().getRenderManager().viewerPosY;
 	}
 
 	public static double getViewerZ() {
-		return Minecraft.getMinecraft().getRenderManager().viewerPosZ;
+		return Minecraft.getInstance().getRenderManager().viewerPosZ;
 	}
 
 }

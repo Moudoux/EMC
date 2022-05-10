@@ -1,7 +1,7 @@
 package me.deftware.mixin.mixins;
 
+import me.deftware.client.framework.event.events.EventAnimation;
 import me.deftware.client.framework.event.events.EventKnockback;
-import me.deftware.client.framework.event.events.EventTotemAnimation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.Entity;
@@ -20,12 +20,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinNetHandlerPlayClient {
 
 	@Shadow
-	private Minecraft gameController;
+	private Minecraft client;
 
 	@Inject(method = "handleEntityStatus", at = @At("HEAD"), cancellable = true)
 	public void handleEntityStatus(SPacketEntityStatus packetIn, CallbackInfo ci) {
 		if (packetIn.getOpCode() == 35) {
-			EventTotemAnimation event = new EventTotemAnimation().send();
+			EventAnimation event = new EventAnimation(EventAnimation.AnimationType.Totem);
+			event.broadcast();
 			if (event.isCanceled()) {
 				ci.cancel();
 			}
@@ -38,16 +39,17 @@ public class MixinNetHandlerPlayClient {
 	 */
 	@Overwrite
 	public void handleExplosion(SPacketExplosion packetIn) {
-		PacketThreadUtil.checkThreadAndEnqueue(packetIn, (NetHandlerPlayClient) (Object) this, gameController);
-		Explosion explosion = new Explosion(gameController.world, (Entity) null, packetIn.getX(), packetIn.getY(),
+		PacketThreadUtil.checkThreadAndEnqueue(packetIn, (NetHandlerPlayClient) (Object) this, client);
+		Explosion explosion = new Explosion(client.world, (Entity) null, packetIn.getX(), packetIn.getY(),
 				packetIn.getZ(), packetIn.getStrength(), packetIn.getAffectedBlockPositions());
 		explosion.doExplosionB(true);
-		EventKnockback event = new EventKnockback(packetIn.getMotionX(), packetIn.getMotionY(), packetIn.getMotionZ()).send();
+		EventKnockback event = new EventKnockback(packetIn.getMotionX(), packetIn.getMotionY(), packetIn.getMotionZ());
+		event.broadcast();
 		if (event.isCanceled()) {
 			return;
 		}
-		gameController.player.motionX += packetIn.getMotionX();
-		gameController.player.motionY += packetIn.getMotionY();
-		gameController.player.motionZ += packetIn.getMotionZ();
+		client.player.motionX += packetIn.getMotionX();
+		client.player.motionY += packetIn.getMotionY();
+		client.player.motionZ += packetIn.getMotionZ();
 	}
 }

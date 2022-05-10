@@ -1,6 +1,5 @@
 package me.deftware.client.framework.apis.oauth;
 
-
 import me.deftware.mixin.imp.IMixinNetHandlerLoginClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -16,7 +15,8 @@ public class OAuthNetHandler extends NetHandlerLoginClient {
 
 	public OAuthNetHandler(NetworkManager networkManagerIn, Minecraft mcIn, GuiScreen previousScreenIn,
 						   OAuth.OAuthCallback callback) {
-		super(networkManagerIn, mcIn, previousScreenIn);
+		super(networkManagerIn, mcIn, previousScreenIn, (fakeConsumer) -> {
+		});
 		this.callback = callback;
 	}
 
@@ -29,7 +29,7 @@ public class OAuthNetHandler extends NetHandlerLoginClient {
 	public void handleLoginSuccess(SPacketLoginSuccess packetIn) {
 		((IMixinNetHandlerLoginClient) this).setGameProfile(packetIn.getProfile());
 		((IMixinNetHandlerLoginClient) this).getNetworkManager().setConnectionState(EnumConnectionState.PLAY);
-		((IMixinNetHandlerLoginClient) this).getNetworkManager().setNetHandler(new OAuthNetHandlerPlayClient(Minecraft.getMinecraft(), null,
+		((IMixinNetHandlerLoginClient) this).getNetworkManager().setNetHandler(new OAuthNetHandlerPlayClient(Minecraft.getInstance(), null,
 				((IMixinNetHandlerLoginClient) this).getNetworkManager(), ((IMixinNetHandlerLoginClient) this).getGameProfile(), callback));
 	}
 

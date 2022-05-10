@@ -1,7 +1,13 @@
 package me.deftware.mixin.mixins;
 
-import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
-
+import me.deftware.client.framework.event.events.EventKnockback;
+import me.deftware.client.framework.event.events.EventSlowdown;
+import me.deftware.client.framework.event.events.EventSneakingCheck;
+import me.deftware.client.framework.maps.SettingsMap;
+import me.deftware.mixin.imp.IMixinEntity;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.AxisAlignedBB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -9,14 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import me.deftware.client.framework.event.events.EventKnockback;
-import me.deftware.client.framework.event.events.EventNoClip;
-import me.deftware.client.framework.event.events.EventSlowdown;
-import me.deftware.client.framework.event.events.EventSneakingCheck;
-import me.deftware.mixin.imp.IMixinEntity;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.AxisAlignedBB;
+import static org.spongepowered.asm.lib.Opcodes.GETFIELD;
 
 @Mixin(Entity.class)
 public abstract class MixinEntity implements IMixinEntity {
@@ -85,23 +84,24 @@ public abstract class MixinEntity implements IMixinEntity {
 	public abstract boolean isSprinting();
 
 	@Shadow
-	public abstract boolean isRiding();
+	public abstract boolean isPassenger();
 
 	@Shadow
-	public abstract AxisAlignedBB getEntityBoundingBox();
+	public abstract AxisAlignedBB getBoundingBox();
 
 	@Shadow
 	public abstract boolean getFlag(int flag);
 
 	@Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;noClip:Z", opcode = GETFIELD))
 	private boolean noClipCheck(Entity self) {
-		EventNoClip event = new EventNoClip(noClip).send();
-		return noClip || event.isNoclip() && self instanceof EntityPlayerSP;
+		boolean noClipCheck = (boolean) SettingsMap.getValue(SettingsMap.MapKeys.ENTITY_SETTINGS, "NOCLIP", false);
+		return noClip || noClipCheck && self instanceof EntityPlayerSP;
 	}
 
 	@Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;isInWeb:Z", opcode = GETFIELD))
 	private boolean webCheck(Entity self) {
-		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Web).send();
+		EventSlowdown event = new EventSlowdown(EventSlowdown.SlowdownType.Web);
+		event.broadcast();
 		if (event.isCanceled()) {
 			isInWeb = false;
 		}
@@ -110,7 +110,8 @@ public abstract class MixinEntity implements IMixinEntity {
 
 	@Redirect(method = "move", at = @At(value = "INVOKE", target = "net/minecraft/entity/Entity.isSneaking()Z", opcode = GETFIELD, ordinal = 0))
 	private boolean sneakingCheck(Entity self) {
-		EventSneakingCheck event = new EventSneakingCheck(isSneaking()).send();
+		EventSneakingCheck event = new EventSneakingCheck(isSneaking());
+		event.broadcast();
 		if (event.isSneaking()) {
 			return true;
 		}
@@ -119,7 +120,8 @@ public abstract class MixinEntity implements IMixinEntity {
 
 	@Inject(method = "setVelocity", at = @At("HEAD"), cancellable = true)
 	private void setVelocity(double x, double y, double z, CallbackInfo ci) {
-		EventKnockback event = new EventKnockback(x, y, z).send();
+		EventKnockback event = new EventKnockback(x, y, z);
+		event.broadcast();
 		if (event.isCanceled()) {
 			ci.cancel();
 		}

@@ -27,7 +27,7 @@ public class IClassHandler {
 	 */
 	public static class IClass {
 
-		protected GuiScreen screen = Minecraft.getMinecraft().currentScreen;
+		protected GuiScreen screen = Minecraft.getInstance().currentScreen;
 		protected Class<?> clazz;
 
 		public IClass(Class<?> clazz) {
@@ -55,7 +55,7 @@ public class IClassHandler {
 		}
 
 		public String getText(int line) {
-			return ((IMixinGuiEditSign) screen).getTileSign().signText[line].getUnformattedText();
+			return ((IMixinGuiEditSign) screen).getTileSign().signText[line].getUnformattedComponentText();
 		}
 
 		public void setText(String text, int line) {

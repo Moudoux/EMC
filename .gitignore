@@ -1,4 +1,7 @@
+.DS_Store
 /*
+!/gradlew
+!/gradlew.bat
 !/.gitignore
 !/src
 !/gradle
@@ -6,8 +9,8 @@
 !/example_client.json
 !/build.gradle.forge
 !/build.gradle
-!/maven
-!/.travis.yml
+!/.gitlab-ci.yml
 !/versions.json
 !/build.bat
 !/gradle.properties
+!/settings.gradle

@@ -1,7 +1,5 @@
 package me.deftware.client.framework.utils;
 
-import java.util.regex.Pattern;
-
 import me.deftware.client.framework.FrameworkConstants;
 import me.deftware.mixin.imp.IMixinGuiNewChat;
 import net.minecraft.client.Minecraft;
@@ -9,7 +7,12 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+
 public class ChatProcessor {
+
+	private static ArrayList<String> history = new ArrayList<>();
 
 	private static final Pattern URL_PATTERN = Pattern
 			.compile("^(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
@@ -77,71 +80,46 @@ public class ChatProcessor {
 		return textComponent;
 	}
 
-	public static void printChatMessage(String chatMessage) {
-		ITextComponent textComponent = new net.minecraft.util.text.TextComponentString("");
-		String[] messageParts = chatMessage.split(" ");
-		int pathIndex = 0;
-
-		for (String messagePart : messageParts) {
-			ITextComponent append = new net.minecraft.util.text.TextComponentString(messagePart);
-			Style chatStyle = new Style();
-
-			if (ChatProcessor.URL_PATTERN.matcher(ChatColor.stripColor(messagePart)).matches()) {
-				chatStyle.setUnderlined(Boolean.valueOf(true));
-				chatStyle.setClickEvent(new net.minecraft.util.text.event.ClickEvent(
-						net.minecraft.util.text.event.ClickEvent.Action.OPEN_URL, ChatColor.stripColor(messagePart)));
+	public static void sendMessages() {
+		if (!history.isEmpty()) {
+			for (String message : history) {
+				printChatMessage(message, true);
 			}
-
-			String currentPath = chatMessage.substring(0, chatMessage.indexOf(messagePart, pathIndex));
-			String lastColor = ChatColor.getLastColors(currentPath);
-
-			if (lastColor.length() >= 2) {
-				char formattingChar = lastColor.charAt(1);
-				ChatProcessor.formatChatStyle(chatStyle, formattingChar);
-			}
-
-			append.setStyle(chatStyle);
-			textComponent.appendSibling(append);
-			textComponent.appendText(" ");
-			pathIndex += messagePart.length() - 1;
+			history.clear();
 		}
-
-		((IMixinGuiNewChat) Minecraft.getMinecraft().ingameGUI.getChatGUI()).setTheChatLine(textComponent, 0,
-				Minecraft.getMinecraft().ingameGUI.getUpdateCounter(), false);
 	}
 
-	public static void printChatComponent(ITextComponent textComponent) {
-		((IMixinGuiNewChat) Minecraft.getMinecraft().ingameGUI.getChatGUI()).setTheChatLine(textComponent, 0,
-				Minecraft.getMinecraft().ingameGUI.getUpdateCounter(), false);
+	public static void printChatMessage(String chatMessage, boolean send) {
+		if (!send) {
+			history.add(chatMessage);
+			return;
+		}
+		ITextComponent textComponent = getITextComponent(chatMessage);
+		((IMixinGuiNewChat) Minecraft.getInstance().ingameGUI.getChatGUI()).setTheChatLine(textComponent, 0,
+				Minecraft.getInstance().ingameGUI.getTicks(), false);
 	}
 
 	public static void printClientMessage(String chatMessage) {
-		ChatProcessor.printChatMessage(TextFormatting.AQUA.toString() + TextFormatting.BOLD.toString()
-				+ FrameworkConstants.FRAMEWORK_NAME + " " + TextFormatting.RESET.toString()
-				+ TextFormatting.GRAY.toString() + "> " + ChatColor.GRAY + chatMessage);
+		ChatProcessor.printChatMessage(ChatColor.AQUA.toString() + ChatColor.BOLD.toString()
+				+ FrameworkConstants.FRAMEWORK_NAME + " " + ChatColor.RESET.toString()
+				+ ChatColor.GRAY.toString() + "> " + ChatColor.GRAY + chatMessage, false);
 	}
 
 	public static void printFrameworkMessage(String msg) {
-		ChatProcessor.printChatMessage(TextFormatting.AQUA.toString() + TextFormatting.BOLD.toString()
-				+ FrameworkConstants.FRAMEWORK_NAME + " " + TextFormatting.RESET.toString()
-				+ TextFormatting.GRAY.toString() + "> " + ChatColor.GRAY + msg);
+		ChatProcessor.printChatMessage(ChatColor.AQUA.toString() + ChatColor.BOLD.toString()
+				+ FrameworkConstants.FRAMEWORK_NAME + " " + ChatColor.RESET.toString()
+				+ ChatColor.GRAY.toString() + "> " + ChatColor.GRAY + msg, false);
 	}
 
 	public static void printClientMessage(String chatMessage, boolean prefix) {
 		if (!prefix) {
-			ChatProcessor.printChatMessage(chatMessage);
+			ChatProcessor.printChatMessage(chatMessage, false);
 		} else {
 			ChatProcessor.printClientMessage(chatMessage);
 		}
 	}
 
-	public static void sendChatMessage(String chatMessage) {
-		Minecraft.getMinecraft().getConnection()
-				.sendPacket(new net.minecraft.network.play.client.CPacketChatMessage(chatMessage));
-	}
-
 	private static TextFormatting getTextFormattingByValue(char value) {
-		// Find the colorIndex
 		int index = 0;
 		for (ChatColor color : ChatColor.values()) {
 			if (color.code == value) {
@@ -159,33 +137,33 @@ public class ChatProcessor {
 
 	private static Style formatChatStyle(Style chatStyle, char formattingChar) {
 		switch (formattingChar) {
-		case 'k':
-			chatStyle.setObfuscated(Boolean.valueOf(true));
-			break;
-		case 'm':
-			chatStyle.setStrikethrough(Boolean.valueOf(true));
-			break;
-		case 'l':
-			chatStyle.setBold(Boolean.valueOf(true));
-			break;
-		case 'n':
-			chatStyle.setUnderlined(Boolean.valueOf(true));
-			break;
-		case 'o':
-			chatStyle.setItalic(Boolean.valueOf(true));
-			break;
-		case 'r':
-			chatStyle.setObfuscated(Boolean.valueOf(false));
-			chatStyle.setStrikethrough(Boolean.valueOf(false));
-			chatStyle.setBold(Boolean.valueOf(false));
-			chatStyle.setUnderlined(Boolean.valueOf(false));
-			chatStyle.setItalic(Boolean.valueOf(false));
-			chatStyle.setColor(TextFormatting.RESET);
-			break;
-		case 'p':
-		case 'q':
-		default:
-			chatStyle.setColor(ChatProcessor.getTextFormattingByValue(formattingChar));
+			case 'k':
+				chatStyle.setObfuscated(Boolean.valueOf(true));
+				break;
+			case 'm':
+				chatStyle.setStrikethrough(Boolean.valueOf(true));
+				break;
+			case 'l':
+				chatStyle.setBold(Boolean.valueOf(true));
+				break;
+			case 'n':
+				chatStyle.setUnderlined(Boolean.valueOf(true));
+				break;
+			case 'o':
+				chatStyle.setItalic(Boolean.valueOf(true));
+				break;
+			case 'r':
+				chatStyle.setObfuscated(Boolean.valueOf(false));
+				chatStyle.setStrikethrough(Boolean.valueOf(false));
+				chatStyle.setBold(Boolean.valueOf(false));
+				chatStyle.setUnderlined(Boolean.valueOf(false));
+				chatStyle.setItalic(Boolean.valueOf(false));
+				chatStyle.setColor(TextFormatting.RESET);
+				break;
+			case 'p':
+			case 'q':
+			default:
+				chatStyle.setColor(ChatProcessor.getTextFormattingByValue(formattingChar));
 		}
 
 		return chatStyle;

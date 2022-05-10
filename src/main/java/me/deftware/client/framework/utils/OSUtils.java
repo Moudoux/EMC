@@ -1,5 +1,8 @@
 package me.deftware.client.framework.utils;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiOverlayDebug;
+
 import java.io.File;
 
 public class OSUtils {
@@ -20,6 +23,7 @@ public class OSUtils {
 
 	/**
 	 * Returns the .minecraft directory, on all supported OSes
+	 *
 	 * @return
 	 */
 	public static String getMCDir() {
@@ -33,6 +37,14 @@ public class OSUtils {
 					+ "Application Support" + File.separator + "minecraft" + File.separator;
 		}
 		return minecraft;
+	}
+
+	public static String getVersion() {
+		return Minecraft.getInstance().getVersion();
+	}
+
+	public static String getRunningFolder() {
+		return getMCDir() + "versions" + File.separator + getVersion() + File.separator;
 	}
 
 }

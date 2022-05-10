@@ -2,6 +2,9 @@ package me.deftware.client.framework.event.events;
 
 import me.deftware.client.framework.event.Event;
 
+/**
+ * Triggered when players' position and/or logic is being updated
+ */
 public class EventUpdate extends Event {
 
 	private double posX, posY, posZ;
@@ -9,7 +12,7 @@ public class EventUpdate extends Event {
 	private boolean onGround;
 
 	public EventUpdate(double posX, double posY, double posZ, float rotationYaw, float rotationPitch,
-			boolean onGround) {
+					   boolean onGround) {
 		this.posX = posX;
 		this.posY = posY;
 		this.posZ = posZ;

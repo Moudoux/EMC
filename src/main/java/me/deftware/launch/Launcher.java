@@ -1,27 +1,16 @@
 package me.deftware.launch;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.jar.Manifest;
-
-import me.deftware.client.framework.FrameworkConstants;
-import me.deftware.client.framework.main.Bootstrap;
+import net.minecraft.launchwrapper.ITweaker;
+import net.minecraft.launchwrapper.LaunchClassLoader;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
 import org.spongepowered.tools.obfuscation.mcp.ObfuscationServiceMCP;
 
-import net.minecraft.launchwrapper.ITweaker;
-import net.minecraft.launchwrapper.LaunchClassLoader;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Used to inject EMC into Minecraft using Minecraft's launcherwrapper and ITweaker
- */
 public class Launcher implements ITweaker {
 
 	protected ArrayList<String> list = new ArrayList<>();
@@ -46,7 +35,7 @@ public class Launcher implements ITweaker {
 	@Override
 	public void injectIntoClassLoader(LaunchClassLoader classLoader) {
 		MixinBootstrap.init();
-		Mixins.addConfiguration("mixins.client.json");
+		Mixins.addConfiguration("mixins.emc.json");
 		MixinEnvironment.getDefaultEnvironment().setSide(MixinEnvironment.Side.CLIENT);
 		MixinEnvironment.getDefaultEnvironment().setObfuscationContext(ObfuscationServiceMCP.NOTCH);
 	}
@@ -60,4 +49,5 @@ public class Launcher implements ITweaker {
 	public String[] getLaunchArguments() {
 		return list.toArray(new String[list.size()]);
 	}
+
 }

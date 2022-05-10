@@ -2,83 +2,103 @@ package me.deftware.client.framework.wrappers.item;
 
 import me.deftware.mixin.imp.IMixinItemTool;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.*;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.IRegistry;
 
 public class IItem {
 
-	private Item item;
+    private Item item;
 
-	public IItem(String name) {
-		item = Item.getByNameOrId(name);
-	}
+    public IItem(String name) {
+        item = getByName(name);
+    }
 
-	public IItem(Item item) {
-		this.item = item;
-	}
+    public IItem(Item item) {
+        this.item = item;
+    }
 
-	public Item getItem() {
-		return item;
-	}
+    protected static Item getByName(String id) {
+        ResourceLocation resourceLocation = new ResourceLocation(id);
+        if (IRegistry.ITEM.containsKey(resourceLocation)) {
+            return IRegistry.ITEM.get(resourceLocation);
+        }
+        return null;
+    }
 
-	public String getName() {
-		return item.getItemStackDisplayName(new ItemStack(item));
-	}
+    public Item getItem() {
+        return item;
+    }
 
-	public int getID() {
-		return Item.getIdFromItem(item);
-	}
+    public String getName() {
+        return item.getName().getUnformattedComponentText();
+    }
 
-	public boolean isValidItem() {
-		return item != null;
-	}
+    public String getTranslationKey() {
+        return item.getTranslationKey();
+    }
 
-	public float getAttackDamage() {
-		return ((ItemSword) item).getDamageVsEntity() + 3.0F;
-	}
+    public String getItemKey() {
+        return getTranslationKey().substring("item.minecraft.".length());
+    }
 
-	public float getDamageVsEntity() {
-		return ((IMixinItemTool) item).getDamageVsEntity();
-	}
+    public int getID() {
+        return Item.getIdFromItem(item);
+    }
 
-	public boolean isThrowable() {
-		if (item instanceof ItemBow || item instanceof ItemSnowball || item instanceof ItemEgg
-				|| item instanceof ItemEnderPearl || item instanceof ItemSplashPotion
-				|| item instanceof ItemLingeringPotion || item instanceof ItemFishingRod) {
-			return true;
-		}
-		return false;
-	}
+    public boolean isValidItem() {
+        return item != null;
+    }
 
-	public boolean instanceOf(IItemType type) {
-		if (type.equals(IItemType.ItemFishingRod)) {
-			return item instanceof ItemFishingRod;
-		} else if (type.equals(IItemType.ItemPotion)) {
-			return item instanceof ItemPotion;
-		} else if (type.equals(IItemType.SplashPotion)) {
-			return item == Items.SPLASH_POTION;
-		} else if (type.equals(IItemType.ItemFood)) {
-			return item instanceof ItemFood;
-		} else if (type.equals(IItemType.ItemSword)) {
-			return item instanceof ItemSword;
-		} else if (type.equals(IItemType.ItemTool)) {
-			return item instanceof ItemTool;
-		} else if (type.equals(IItemType.ItemNameTag)) {
-			return item instanceof ItemNameTag;
-		} else if (type.equals(IItemType.ItemBlock)) {
-			return item instanceof ItemBlock;
-		} else if (type.equals(type.ItemSoup)) {
-			return item instanceof ItemSoup;
-		} else if (type.equals(IItemType.ItemHoe)) {
-			return item instanceof ItemHoe;
-		}
-		return false;
-	}
+    public float getAttackDamage() {
+        return ((ItemSword) item).getAttackDamage() + 3.0F;
+    }
 
-	public enum IItemType {
-		ItemPotion, ItemFishingRod, ItemFood, ItemSword, ItemTool, ItemNameTag, ItemBlock, ItemHoe, SplashPotion, ItemSoup
-	}
+    public float getDamageVsEntity() {
+        return ((IMixinItemTool) item).getAttackDamage();
+    }
+
+    public boolean isThrowable() {
+        if (item instanceof ItemBow || item instanceof ItemSnowball || item instanceof ItemEgg
+                || item instanceof ItemEnderPearl || item instanceof ItemSplashPotion
+                || item instanceof ItemLingeringPotion || item instanceof ItemFishingRod) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean instanceOf(IItemType type) {
+        if (type.equals(IItemType.ItemFishingRod)) {
+            return item instanceof ItemFishingRod;
+        } else if (type.equals(IItemType.ItemPotion)) {
+            return item instanceof ItemPotion;
+        } else if (type.equals(IItemType.SplashPotion)) {
+            return item == Items.SPLASH_POTION;
+        } else if (type.equals(IItemType.ItemFood)) {
+            return item instanceof ItemFood;
+        } else if (type.equals(IItemType.ItemSword)) {
+            return item instanceof ItemSword;
+        } else if (type.equals(IItemType.ItemTool)) {
+            return item instanceof ItemTool;
+        } else if (type.equals(IItemType.ItemNameTag)) {
+            return item instanceof ItemNameTag;
+        } else if (type.equals(IItemType.ItemBlock)) {
+            return item instanceof ItemBlock;
+        } else if (type.equals(IItemType.ItemSoup)) {
+            return item instanceof ItemSoup;
+        } else if (type.equals(IItemType.WritableBook)) {
+            return item instanceof ItemWritableBook;
+        } else if (type.equals(IItemType.ItemHoe)) {
+            return item instanceof ItemHoe;
+        } else if (type.equals(IItemType.ItemShulkerBox)) {
+            return item instanceof ItemBlock && ((ItemBlock) item).getTranslationKey().contains("shulker_box");
+        }
+        return false;
+    }
+
+    public enum IItemType {
+        ItemPotion, ItemFishingRod, ItemFood, ItemSword, ItemTool, ItemNameTag, ItemBlock, ItemHoe, SplashPotion,
+        ItemSoup, ItemShulkerBox, WritableBook
+    }
 
 }

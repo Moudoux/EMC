@@ -46,7 +46,7 @@ public class MCLeaksHandler {
 				MCLeaks.MCLeaksSession s = MCLeaks.session = new MCLeaks.MCLeaksSession(username, session);
 				MCLeaks.backupSession();
 
-				((IMixinMinecraft) Minecraft.getMinecraft()).setSession(new Session(username, MCLeaksHandler.getCustomuserUUID(username), token, "legacy"));
+				((IMixinMinecraft) Minecraft.getInstance()).setSession(new Session(username, MCLeaksHandler.getCustomuserUUID(username), token, "legacy"));
 
 				status.setMessage(ChatColor.GREEN + "Success");
 				status.setStatus(true);
@@ -71,7 +71,7 @@ public class MCLeaksHandler {
 		String s = packetIn.getServerId();
 		PublicKey publickey = packetIn.getPublicKey();
 		String s1 = (new BigInteger(CryptManager.getServerIdHash(s, publickey, secretkey))).toString(16);
-		MCLeaks.joinServer(MCLeaks.session, s1, Minecraft.getMinecraft().getCurrentServerData().serverIP);
+		MCLeaks.joinServer(MCLeaks.session, s1, Minecraft.getInstance().getCurrentServerData().serverIP);
 		networkManager.sendPacket(new CPacketEncryptionResponse(secretkey, publickey, packetIn.getVerifyToken()),
 				new GenericFutureListener<Future<? super Void>>() {
 					@Override
@@ -88,8 +88,8 @@ public class MCLeaksHandler {
 	 * @return
 	 */
 	public static String getCustomuserUUID(String username) throws Exception {
-			return  new Gson().fromJson(WebUtils.get("https://api.mojang.com/users/profiles/minecraft/" + username)
-					, JsonObject.class).get("id").getAsString();
+		return new Gson().fromJson(WebUtils.get("https://api.mojang.com/users/profiles/minecraft/" + username)
+				, JsonObject.class).get("id").getAsString();
 	}
 
 	/**

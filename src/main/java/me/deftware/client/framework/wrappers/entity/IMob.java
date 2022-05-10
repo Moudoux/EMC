@@ -1,5 +1,6 @@
 package me.deftware.client.framework.wrappers.entity;
 
+import me.deftware.client.framework.wrappers.world.IWorld;
 import net.minecraft.entity.Entity;
 
 public class IMob {
@@ -40,6 +41,10 @@ public class IMob {
 
 	public Entity getMob() {
 		return mob;
+	}
+
+	public IWorld getWorld() {
+		return new IWorld(mob.world);
 	}
 
 	public void setGlowing(boolean state) {

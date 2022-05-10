@@ -9,9 +9,6 @@ public class IPlayer {
 
 	private EntityPlayer player;
 
-	public IPlayer() {
-	}
-
 	public IPlayer(EntityPlayer player) {
 		this.player = player;
 	}
@@ -25,7 +22,7 @@ public class IPlayer {
 	}
 
 	public String getName() {
-		return player.getName();
+		return player.getGameProfile().getName();
 	}
 
 	public String getFormattedDisplayName() {
@@ -33,13 +30,13 @@ public class IPlayer {
 	}
 
 	public float getNametagSize() {
-		return Minecraft.getMinecraft().player.getDistanceToEntity(player) / 2.5F <= 1.5F ? 2.0F
-				: Minecraft.getMinecraft().player.getDistanceToEntity(player) / 2.5F;
+		return Minecraft.getInstance().player.getDistance(player) / 2.5F <= 1.5F ? 2.0F
+				: Minecraft.getInstance().player.getDistance(player) / 2.5F;
 	}
 
 	public boolean isSelf() {
-		if (player == Minecraft.getMinecraft().player
-				|| player.getName().equals(Minecraft.getMinecraft().getSession().getUsername())) {
+		if (player == Minecraft.getInstance().player
+				|| player.getName().equals(Minecraft.getInstance().getSession().getUsername())) {
 			return true;
 		}
 		return false;

@@ -13,13 +13,12 @@ public class IItemArmor extends IItem {
 		this.armor = (ItemArmor) getItem();
 	}
 
-
 	public int getDamageReduceAmount() {
-		return armor.damageReduceAmount;
+		return armor.getDamageReduceAmount();
 	}
 
 	public int getTypeOrdinal() {
-		return armor.armorType.ordinal();
+		return armor.getEquipmentSlot().ordinal();
 	}
 
 }

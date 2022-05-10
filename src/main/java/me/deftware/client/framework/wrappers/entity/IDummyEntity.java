@@ -15,27 +15,27 @@ public class IDummyEntity extends IEntity {
 	public static class dummyEntity extends Entity {
 
 		public dummyEntity(IBlockPos pos) {
-			super(Minecraft.getMinecraft().player.getEntityWorld());
+			super(net.minecraft.entity.EntityType.PLAYER, Minecraft.getInstance().player.getEntityWorld());
 			posX = pos.getX();
 			posY = pos.getY();
 			posZ = pos.getZ();
 		}
 
+
 		@Override
-		protected void entityInit() {
+		protected void registerData() {
 
 		}
 
 		@Override
-		protected void readEntityFromNBT(NBTTagCompound compound) {
+		protected void readAdditional(NBTTagCompound nbtTagCompound) {
 
 		}
 
 		@Override
-		protected void writeEntityToNBT(NBTTagCompound compound) {
+		protected void writeAdditional(NBTTagCompound nbtTagCompound) {
 
 		}
-
 	}
 
 }
